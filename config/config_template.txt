@@ -1,0 +1,81 @@
+# =============================================
+# =============================================
+# Global Settings
+# =============================================
+# =============================================
+
+#
+#text    to be substituted by user => text
+#[a|b]   user can select one option or none => 
+#          always defaults to none
+#<a|b>   user must select one option => a
+
+WORK_DIR      = Folder Name
+
+SOURCE_DIR    = Folder Name
+
+DATA_FILE     = File Name
+# location: SOURCE_DIR/input/DATA_FILE
+
+KEY_FILE      = File Name
+# location: SOURCE_DIR/input/KEY_FILE
+# Format is hex
+
+INPUT_FORMAT  = <binary|hex> # Default => hex
+
+OUTPUT_FORMAT = <binary|hex> # Default => hex
+# if OUTPUT_FORMAT = hex, files will have extension hex
+# if OUTPUT_FORMAT = bin, files will have extension bin
+
+MEASUREMENT_FORMAT = <dat|txt> # Default => txt
+
+PROJECT = Project_name
+OUT_FILE      = [%COUNTER%|%DATE%]filename 
+
+# location: WORK_DIR/output/OUT_FILE
+#    and    WORK_DIR/measurement/OUT_FILE
+# e.g.  OUT_FILE = %COUNTER%aes
+#       results in file: 0012aes
+# e.g.  OUT_FILE = %DATE%aes
+#       results in file: 20120625-13:24:01aes
+# e.g.  OUT_FILE = mytestaes
+#       results in file: mytestaes
+
+VERBOSE = <on|off> # Default = off
+
+
+# =============================================
+# =============================================
+# Control Board Settings
+# =============================================
+# =============================================
+
+CLK_DIV
+#SEND_RESET2VICTIM
+TIME_OUT
+TRIGGER
+
+# =============================================
+# =============================================
+# Oscilloscope Settings
+# =============================================
+# =============================================
+
+RESOURCE        
+AUTOSCALE       
+CHANNEL1_RANGE 
+TIME_RANGE     
+TRIGGER_SOURCE 
+TRIGGER_MODE   
+SOURCE          
+ACQUIRE_MODE   
+WAVE_DATA_SIZE
+SCREEN_CAP 
+
+# =============================================
+# =============================================
+# Applications Settings
+# =============================================
+# ============================================= 
+
+   
