@@ -2,8 +2,8 @@
 
 import os
 import re
-#from sys import argv
-import socket
+from sys import argv
+from socket import *
 import sys
 #import visa
 from numpy import *
@@ -170,9 +170,12 @@ def get_waveform_trigger() :
 	ftrigger.close()
 
 def oscilloscope_connect(osc_ipaddress, osc_portnos):
-	osc_socket = socket.socket ( socket.AF_INET, socket.SOCK_STREAM )
-	osc_socket.connect(osc_ipaddress, osc_portnos)#have to put in error checks dummy
-	osc_socket.send("*IDN?")
+	osc_socket = socket( AF_INET, SOCK_STREAM )
+	print "got socket"
+	osc_socket.connect(("192.168.0.10", 5025))#have to put in error checks dummy
+	print "connected"
+	osc_socket.send("*IDN?"+'\n')
+	print "query sent"
 	osc_id = osc_socket.recv(200)
 	print "\tConnected to Oscilloscope ID :"+ osc_id
 	print "\n"
