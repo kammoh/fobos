@@ -2,13 +2,13 @@
 
 import os
 import re
-#from sys import argv
+from sys import argv
 import sys
-import oscilloscope_core
+from oscilloscope_core import *
 import socket
 from numpy import *
 
-oscilloscope_ipaddress = "134.40.174.43"
+oscilloscope_ipaddress = "192.168.0.10"
 oscilloscope_portno = 5025	
 	
 ################################################################################
@@ -17,8 +17,8 @@ oscilloscope_portno = 5025
 script, osc_config_file = argv
 
 ## Clear Screen
-#os.system('clear')
-clear_screen()
+os.system('clear')
+#clear_screen()
 
 ## Print Header on Konsole
 print_header(osc_config_file)
