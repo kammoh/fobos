@@ -5,18 +5,9 @@ import re
 from sys import argv
 from socket import *
 import sys
+from oscilloscope_agilent import *
 #import visa
 from numpy import *
-
-osc_attributes = {
- 'RESOURCE' : "",        'AUTOSCALE' : "",        'IMPEDANCE' : "",        'CHANNEL_RANGE1' : "",
- 'CHANNEL_RANGE2' : "",   'CHANNEL_RANGE3' : "",   'CHANNEL_RANGE4' : "",   'CHANNEL1_DISPLAY' : "",
- 'CHANNEL2_DISPLAY' : "", 'CHANNEL3_DISPLAY' : "", 'CHANNEL4_DISPLAY' : "", 'TIME_RANGE' : "",
- 'TIMEBASE_REF' : "",     'TRIGGER_SOURCE' : "",   'TRIGGER_MODE' : "",     'TRIGGER_SWEEP' : "",
- 'TRIGGER_LEVEL' : "",    'TRIGGER_SLOPE' : "",    'SAMPLE_INPUT' : "",     'ACQUIRE_TYPE' : "",
- 'ACQUIRE_MODE' : "",     'ACQUIRE_COMPLETE' : "", 'WAVE_DATA_SIZE' : "",   'NUM_PWR_TRACE' : "",
- 'SCREEN_CAP' : "",       'SCREEN_FORMAT' : "",    'SCREEN_NAME' : "",      'OUTPUT_DIR' : "",
- }
  
 def clear_screen():
     if (sys.platform == "linux2" ):
@@ -49,14 +40,20 @@ def remove_comments(data_list) :
 
 def get_attribs(data_list) :
 #count = 0
-        print "Assigning Attributes"
+        print "Acquiring Attributes"
         for object in data_list :
-            if re.match('^RESOURCE', object) :
-				value = re.split("=", object)
-				osc_attributes['RESOURCE'] = value[1].strip(" ")			
+            if re.match('^OSCILLOSCOPE\b', object) :
+		value = re.split("=", object)
+		osc_attributes['OSCILLOSCOPE'] = value[1].strip(" ")
+            elif re.match('^OSCILLOSCOPE_IP\b', object) :
+		value = re.split("=", object)
+		osc_attributes['OSCILLOSCOPE_IP'] = value[1].strip(" ")
+            elif re.match('^OSCILLOSCOPE_PORT\b', object) :
+		value = re.split("=", object)
+		osc_attributes['OSCILLOSCOPE_PORT'] = value[1].strip(" ")	  
             elif re.match('^AUTOSCALE', object) :
-				value = re.split("=", object)
-				osc_attributes['AUTOSCALE'] = value[1].strip(" ")
+		value = re.split("=", object)
+		osc_attributes['AUTOSCALE'] = value[1].strip(" ")
             elif re.match('^IMPEDANCE', object) :
                 value = re.split("=", object)
                 osc_attributes['IMPEDANCE'] = value[1].strip(" ")
@@ -136,8 +133,15 @@ def get_attribs(data_list) :
                 value = re.split("=", object)
                 osc_attributes['OUTPUT_DIR'] = value[1].strip(" ")                        
 		return(osc_attributes) 
-
-def get_waveform_power() :
+		
+def set_osc_attrib(osc_attributes, osc_socket) :
+  if re.match('AGILENT', osc_attributes['OSCILLOSCOPE']) :
+    osc_attributes = parse_attrib_agilent(osc_attributes)
+    for key, value in osc_attributes.items() :
+	osc.socket.send(value)
+  return(osc_attributes)
+  
+def get_waveform_power(oscilloscope_socket) :
 	MyInstrument.write(":WAVEFORM:FORMAT BYTE")
 	cmd_string = ":WAVEFORM:SOURCE CHAN1"
 	MyInstrument.write(cmd_string)
@@ -171,12 +175,8 @@ def get_waveform_trigger() :
 
 def oscilloscope_connect(osc_ipaddress, osc_portnos):
 	osc_socket = socket( AF_INET, SOCK_STREAM )
-	print "got socket"
-	osc_socket.connect(("192.168.0.10", 5025))#have to put in error checks dummy
-	print "connected"
+	osc_socket.connect((osc_ipaddress, osc_portnos))#have to put in error checks dummy
 	osc_socket.send("*IDN?"+'\n')
-	print "query sent"
 	osc_id = osc_socket.recv(200)
-	print "\tConnected to Oscilloscope ID :"+ osc_id
-	print "\n"
+	print "\tConnected to Oscilloscope ID :"+ osc_id+'\n'
 	return (osc_socket)
