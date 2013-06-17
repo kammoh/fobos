@@ -139,7 +139,7 @@ def set_osc_attrib(osc_attributes, osc_socket) :
   if re.match('AGILENT', osc_attributes['OSCILLOSCOPE']) :
     osc_attributes = parse_attrib_agilent(osc_attributes)
     for key, value in osc_attributes.items() :
-	osc.socket.send(value)
+	osc_socket.send(value)
   return(osc_attributes)
   
 def get_waveform_power(oscilloscope_socket) :
