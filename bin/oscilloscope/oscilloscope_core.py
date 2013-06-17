@@ -42,13 +42,13 @@ def get_attribs(data_list) :
 #count = 0
         print "Acquiring Attributes"
         for object in data_list :
-            if re.match('^OSCILLOSCOPE\b', object) :
+            if re.match('^OSCILLOSCOPE\W', object) :
 		value = re.split("=", object)
 		osc_attributes['OSCILLOSCOPE'] = value[1].strip(" ")
-            elif re.match('^OSCILLOSCOPE_IP\b', object) :
+            elif re.match('^OSCILLOSCOPE_IP\W', object) :
 		value = re.split("=", object)
 		osc_attributes['OSCILLOSCOPE_IP'] = value[1].strip(" ")
-            elif re.match('^OSCILLOSCOPE_PORT\b', object) :
+            elif re.match('^OSCILLOSCOPE_PORT\W', object) :
 		value = re.split("=", object)
 		osc_attributes['OSCILLOSCOPE_PORT'] = value[1].strip(" ")	  
             elif re.match('^AUTOSCALE', object) :
