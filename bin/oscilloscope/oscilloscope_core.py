@@ -6,6 +6,7 @@ from sys import argv
 from socket import *
 import sys
 from oscilloscope_agilent import *
+from oscilloscope_global import *
 #import visa
 from numpy import *
  
