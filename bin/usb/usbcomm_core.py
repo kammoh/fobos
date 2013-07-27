@@ -23,6 +23,10 @@ def print_header():
     sys.stdout.write("\tControl Board -> %s\n" % DeviceName)
     sys.stdout.write("\tVersion -> %s\n" % VERSION)
     sys.stdout.write("-----------------------------------------------\n") 
+	
+def print_OpenADCheader():
+	print_header()
+	sys.stdout.write("\tStarting FOBOS- OpenADC Communication Script\n")
 
 def initialize_usbcomm():
     status = usbcomm.DmgrOpen(handle, DeviceName)
@@ -115,10 +119,10 @@ def readMainClockFreq(USBHandle, debug) :
 
 def readDCMClockFreq(USBHandle, debug) :
   dcmclkfreq_hex = [0,0,0,0]
-  dcmclkfreq_hex[0] = getByte(USBHandle, 0x05, debug)
-  dcmclkfreq_hex[1] = getByte(USBHandle, 0x06, debug)
-  dcmclkfreq_hex[2] = getByte(USBHandle, 0x07, debug)
-  dcmclkfreq_hex[3] = getByte(USBHandle, 0x08, debug)
+  dcmclkfreq_hex[0] = getByte(USBHandle, 0x07, debug)
+  dcmclkfreq_hex[1] = getByte(USBHandle, 0x08, debug)
+  dcmclkfreq_hex[2] = getByte(USBHandle, 0x09, debug)
+  dcmclkfreq_hex[3] = getByte(USBHandle, 0x0A, debug)
   dcmclkfreq_MHz = int(arrayToString(dcmclkfreq_hex), 16)/1000000
   sys.stdout.write("\tDCM Clock Frequency - %d MHz\n" % dcmclkfreq_MHz)
 
@@ -136,42 +140,6 @@ def terminate_usbcomm(USBHandle):
     usbcomm.DeppDisable(USBHandle[0])
     status = usbcomm.DmgrClose(handle[0])
 
-
- 
-#def getReg(regVal):
-
-#Declare Control Board Here
-DeviceName = 'Nexys3'
-
-
-#Clearing Screen
-clear_screen()  
-
-#Printing Header
-print_header()
-
-#taps to be set here
-taps = 0x0A
-dbg = 0
-USBHandle = initialize_usbcomm()
-sys.stdout.write("\tSending Global Reset to FPGA\n")
-status = putByte(USBHandle, 0x00, 0x07, dbg)
-#time.sleep(3)
-status = putByte(USBHandle, 0x00, 0x06, dbg)
-sys.stdout.write("\tSetting the Phase shift taps to %d\n" % taps)
-status = putByte(USBHandle, 0x01, taps, dbg)
-sys.stdout.write("\tStarting Phase shift routine\n")
-status = putByte(USBHandle, 0x00, 0x20, dbg)
-sys.stdout.write("\tStarting Clock Counters\n")
-status = putByte(USBHandle, 0x00, 0x00, dbg)
-pollRegforValue(USBHandle, dbg)
-readMainClockFreq(USBHandle, dbg)
-readDCMClockFreq(USBHandle, dbg)
-readBrdClockFreq(USBHandle, dbg)
-#dataflag = getByte(USBHandle, 0x01, dbg)
-#bytestream_LB = streamBytes(USBHandle, 0x04)
-#bytestream_UB = streamBytes(USBHandle, 0x05)
-terminate_usbcomm(USBHandle)
 
 
 
