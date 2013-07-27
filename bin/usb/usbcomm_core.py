@@ -8,9 +8,14 @@ import os
 from usbcomm_global import * 
 import traceback
 
-    
-def clear_screen():
-  os.system( [ 'clear', 'cls' ][ os.name == 'nt' ] )
+def clear_screen() :
+  os.system("clear")
+
+def arrayToString(array):
+  r = ''
+  for num in array:
+    r += '%02X' % num
+  return r
   
 def print_header():
     sys.stdout.write("-----------------------------------------------\n")
@@ -32,35 +37,104 @@ def initialize_usbcomm():
 	return handle
       else:
 	sys.stdout.write("\tDepp protocol not enabled. Exiting Program\n")
+	status = usbcomm.DmgrClose(handle[0])
 	sys.exit(0)
     else:
       sys.stdout.write("\tUSB Communication Failure. Exiting Program \n")
       sys.exit(0)
 
       
-def getRegByte(USBHandle, regByte):
+def getByte(USBHandle, regByte, debug):
+  dataBYTE = c_ubyte
+  dataP = POINTER(dataBYTE)
+  bufBYTE = c_ubyte(10)
+  dataBYTEP = cast(addressof(bufBYTE), dataP)
   if (usbcomm.DeppGetReg(USBHandle[0], regByte, dataBYTEP, 0)) :
-    sys.stdout.write("\tRead Data from Reg -> %X " %regByte)
-    sys.stdout.write("Data -> %X\n" % dataBYTEP[0])
-    return (dataBYTEP)
+    if (debug == 1):
+      sys.stdout.write("\tReading from Reg -> %02X " %regByte)
+      sys.stdout.write(": Data -> %02X\n" % dataBYTEP[0])
+    dataVAL = dataBYTEP[0]
+    return (dataVAL)
   else :
     sys.stdout.write("\tCould not read register -> %X\n" % regByte)
     return (0)
     
-def putRegByte(USBHandle, regByte, dataBYTE):
+def putByte(USBHandle, regByte, dataBYTE, debug):
     if (usbcomm.DeppPutReg(USBHandle[0], regByte, dataBYTE, 0)) :
-      sys.stdout.write("\tRead Data from Reg -> %X " %regByte)
-      sys.stdout.write("Data -> %X\n" % dataBYTE)
-      #sys.stdout.write("\tPut Data -> %x to Reg -> %x\n" % dataBYTE % regByte)
+      if (debug == 1):
+	sys.stdout.write("\tSending Data -> %X " %dataBYTE)
+	sys.stdout.write("to Reg -> %X\n" % regByte)
+	#sys.stdout.write("\tPut Data -> %x to Reg -> %x\n" % dataBYTE % regByte)
       return (1)
     else :
       sys.stdout.write("\tCould not write to register -> %X\n" % regByte)
       return (0)
   
+def streamBytes(USBHandle, regByte) :
+	streamdataBYTE = c_ubyte
+	streamdataP = POINTER(c_ubyte)
+	streambufBYTE = c_ubyte(20000)
+	streamdataBYTEP = cast(addressof(streambufBYTE), streamdataP)
+  
+	if (usbcomm.DeppGetRegRepeat(USBHandle[0], regByte, streamdataBYTEP, 20000, 0)) :
+		sys.stdout.write("\tStream Data from Reg -> %X " %regByte)
+		return (streamdataBYTEP)
+	else :
+		sys.stdout.write("\tCould not stream from register -> %X\n" % regByte)
+		return (0)
+
+def pollRegforValue(USBHandle, debug):
+	Val = getByte(USBHandle, 0x0E, debug)
+	i = 1
+	sys.stdout.write("\tPolling Status Reg")
+	while(1):
+		if ((Val == 0xE0)):
+			sys.stdout.write("\n\t\tBoard Ready for sending data\n")
+			time.sleep(0.4)
+			break
+		else:
+			dots = ' #'*i
+			sys.stdout.write(dots)
+			i = i+1
+		if (i == 4):
+			i = 0
+			time.sleep(1)
+			Val = getByte(USBHandle, 0x0E, debug)
+
+      
     
+def readMainClockFreq(USBHandle, debug) :
+  mainclkfreq_hex = [0,0,0,0]
+  mainclkfreq_hex[0] = getByte(USBHandle, 0x01, debug)
+  mainclkfreq_hex[1] = getByte(USBHandle, 0x02, debug)
+  mainclkfreq_hex[2] = getByte(USBHandle, 0x03, debug)
+  mainclkfreq_hex[3] = getByte(USBHandle, 0x04, debug)
+  mainclkfreq_MHz = int(arrayToString(mainclkfreq_hex), 16)/1000000
+  #sys.stdout.write("\tMain Clock Frequency - %s \n" % arrayToString(clkfreq_hex))
+  sys.stdout.write("\tMain Clock Frequency - %d MHz\n" % mainclkfreq_MHz)
+
+def readDCMClockFreq(USBHandle, debug) :
+  dcmclkfreq_hex = [0,0,0,0]
+  dcmclkfreq_hex[0] = getByte(USBHandle, 0x05, debug)
+  dcmclkfreq_hex[1] = getByte(USBHandle, 0x06, debug)
+  dcmclkfreq_hex[2] = getByte(USBHandle, 0x07, debug)
+  dcmclkfreq_hex[3] = getByte(USBHandle, 0x08, debug)
+  dcmclkfreq_MHz = int(arrayToString(dcmclkfreq_hex), 16)/1000000
+  sys.stdout.write("\tDCM Clock Frequency - %d MHz\n" % dcmclkfreq_MHz)
+
+def readBrdClockFreq(USBHandle, debug) :
+  brdclkfreq_hex = [0,0,0,0]
+  brdclkfreq_hex[0] = getByte(USBHandle, 0x09, debug)
+  brdclkfreq_hex[1] = getByte(USBHandle, 0x0A, debug)
+  brdclkfreq_hex[2] = getByte(USBHandle, 0x0B, debug)
+  brdclkfreq_hex[3] = getByte(USBHandle, 0x0C, debug)
+  brdclkfreq_MHz = int(arrayToString(brdclkfreq_hex), 16)/1000000
+  sys.stdout.write("\tBoard (in-coming) Clock Frequency - %d MHz\n" % brdclkfreq_MHz)
+  
+  
 def terminate_usbcomm(USBHandle):
     usbcomm.DeppDisable(USBHandle[0])
-    usbcomm.DmgrClose(USBHandle[0])
+    status = usbcomm.DmgrClose(handle[0])
 
 
  
@@ -74,13 +148,29 @@ DeviceName = 'Nexys3'
 clear_screen()  
 
 #Printing Header
-
 print_header()
 
+#taps to be set here
+taps = 0x0A
+dbg = 0
 USBHandle = initialize_usbcomm()
-  
-status = getRegByte(USBHandle, 0x01)
-status = putRegByte(USBHandle, 0x00, 0xA0)
+sys.stdout.write("\tSending Global Reset to FPGA\n")
+status = putByte(USBHandle, 0x00, 0x07, dbg)
+#time.sleep(3)
+status = putByte(USBHandle, 0x00, 0x06, dbg)
+sys.stdout.write("\tSetting the Phase shift taps to %d\n" % taps)
+status = putByte(USBHandle, 0x01, taps, dbg)
+sys.stdout.write("\tStarting Phase shift routine\n")
+status = putByte(USBHandle, 0x00, 0x20, dbg)
+sys.stdout.write("\tStarting Clock Counters\n")
+status = putByte(USBHandle, 0x00, 0x00, dbg)
+pollRegforValue(USBHandle, dbg)
+readMainClockFreq(USBHandle, dbg)
+readDCMClockFreq(USBHandle, dbg)
+readBrdClockFreq(USBHandle, dbg)
+#dataflag = getByte(USBHandle, 0x01, dbg)
+#bytestream_LB = streamBytes(USBHandle, 0x04)
+#bytestream_UB = streamBytes(USBHandle, 0x05)
 terminate_usbcomm(USBHandle)
 
 
