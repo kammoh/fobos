@@ -34,15 +34,15 @@ def initialize_usbcomm():
       sys.stdout.write("Initializing USB - FPGA Communication... \n")
       status = usbcomm.DeppEnableEx(handle[0], 0)
       if (status == SUCCESS):
-	sys.stdout.write("\tDepp protocol enabled at Port 0\n")
-	usbcomm.DeppGetVersion(ResultString)
-	sys.stdout.write("\tDepp protocol version -> %s\n"% ResultString[0:10])
-	sys.stdout.write("-----------------------------------------------\n") 
-	return handle
+        sys.stdout.write("\tDepp protocol enabled at Port 0\n")
+        usbcomm.DeppGetVersion(ResultString)
+        sys.stdout.write("\tDepp protocol version -> %s\n"% ResultString[0:10])
+        sys.stdout.write("-----------------------------------------------\n")
+        return handle
       else:
-	sys.stdout.write("\tDepp protocol not enabled. Exiting Program\n")
-	status = usbcomm.DmgrClose(handle[0])
-	sys.exit(0)
+        sys.stdout.write("\tDepp protocol not enabled. Exiting Program\n")
+        status = usbcomm.DmgrClose(handle[0])
+        sys.exit(0)
     else:
       sys.stdout.write("\tUSB Communication Failure. Exiting Program \n")
       sys.exit(0)
@@ -66,8 +66,8 @@ def getByte(USBHandle, regByte, debug):
 def putByte(USBHandle, regByte, dataBYTE, debug):
     if (usbcomm.DeppPutReg(USBHandle[0], regByte, dataBYTE, 0)) :
       if (debug == 1):
-	sys.stdout.write("\tSending Data -> %X " %dataBYTE)
-	sys.stdout.write("to Reg -> %X\n" % regByte)
+        sys.stdout.write("\tSending Data -> %X " %dataBYTE)
+        sys.stdout.write("to Reg -> %X\n" % regByte)
 	#sys.stdout.write("\tPut Data -> %x to Reg -> %x\n" % dataBYTE % regByte)
       return (1)
     else :
