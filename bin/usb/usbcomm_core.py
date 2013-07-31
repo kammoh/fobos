@@ -17,7 +17,7 @@ def arrayToString(array):
     r += '%02X' % num
   return r
   
-def print_header():
+def print_header(DeviceName):
     sys.stdout.write("-----------------------------------------------\n")
     sys.stdout.write("Starting PC-FPGA Communication via USB\n")
     sys.stdout.write("\tControl Board -> %s\n" % DeviceName)
@@ -28,7 +28,7 @@ def print_OpenADCheader():
 	print_header()
 	sys.stdout.write("\tStarting FOBOS- OpenADC Communication Script\n")
 
-def initialize_usbcomm():
+def initialize_usbcomm(DeviceName):
     status = usbcomm.DmgrOpen(handle, DeviceName)
     if (status == SUCCESS):
       sys.stdout.write("Initializing USB - FPGA Communication... \n")
@@ -66,8 +66,8 @@ def getByte(USBHandle, regByte, debug):
 def putByte(USBHandle, regByte, dataBYTE, debug):
     if (usbcomm.DeppPutReg(USBHandle[0], regByte, dataBYTE, 0)) :
       if (debug == 1):
-        sys.stdout.write("\tSending Data -> %X " %dataBYTE)
-        sys.stdout.write("to Reg -> %X\n" % regByte)
+        sys.stdout.write("\tSending Data -> %02X " %dataBYTE)
+        sys.stdout.write("to Reg -> %02X\n" % regByte)
 	#sys.stdout.write("\tPut Data -> %x to Reg -> %x\n" % dataBYTE % regByte)
       return (1)
     else :

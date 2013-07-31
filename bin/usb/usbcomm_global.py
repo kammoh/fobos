@@ -10,7 +10,7 @@ elif (sys.platform == "win32" ):
     windll.LoadLibrary("dpcutil.dll")
     usbcomm = WinDLL("dpcutil.dll")
     
-VERSION = '0.1'
+VERSION = '0.2'
 SUCCESS = True
 # Defining types to ctypes
 
