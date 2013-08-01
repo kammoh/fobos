@@ -10,7 +10,7 @@ elif (sys.platform == "win32" ):
     windll.LoadLibrary("dpcutil.dll")
     usbcomm = WinDLL("dpcutil.dll")
     
-VERSION = '0.1'
+VERSION = '0.2'
 SUCCESS = True
 # Defining types to ctypes
 
@@ -44,17 +44,13 @@ DeviceName = cast(addressof(DSbuf), DSP)
 regBYTE = c_ubyte
 VOIDP = c_void_p
 
-dataBYTE = c_ubyte
-dataP = POINTER(dataBYTE)
-bufBYTE = c_ubyte(10)
-dataBYTEP = cast(addressof(bufBYTE), dataP)
-
 #DPC Call functions
 
 usbcomm.DmgrOpen.argtypes = [POINTER(c_uint), POINTER(c_char)]
 usbcomm.DmgrOpen.restypes = c_int
 
 usbcomm.DmgrClose.argtypes = [c_uint]
+usbcomm.DmgrClose.restypes = c_int
 
 usbcomm.DeppGetVersion.argtypes = [POINTER(c_char)]
 
@@ -64,4 +60,8 @@ usbcomm.DeppGetReg.argtypes = [c_uint, c_ubyte, POINTER(c_ubyte), c_int]
 usbcomm.DeppGetReg.restypes = c_int
 
 usbcomm.DeppPutReg.argtypes = [c_uint, c_ubyte, c_ubyte, c_int]
-usbcomm.DeppPutReg.restype = c_int
+usbcomm.DeppPutReg.restypes = c_int
+
+usbcomm.DeppGetRegRepeat.argtypes = [c_uint, c_ubyte, POINTER(c_ubyte), c_ulong, c_int]
+usbcomm.DeppGetRegRepeat.restypes = c_int
+
