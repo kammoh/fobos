@@ -6,9 +6,12 @@ import os
 if (sys.platform == "linux2" ):
     cdll.LoadLibrary("libdpcutil.so")
     usbcomm = CDLL("libdpcutil.so")
+	usbcommDMGR = usbcomm
 elif (sys.platform == "win32" ):
-    windll.LoadLibrary("dpcutil.dll")
-    usbcomm = WinDLL("dpcutil.dll")
+	windll.LoadLibrary("dpcutil.dll")
+	usbcomm = WinDLL("dpcutil.dll")
+	windll.LoadLibrary("dmgr.dll")
+	usbcommDMGR = WinDLL("dmgr.dll")	
     
 VERSION = '0.2'
 SUCCESS = True
@@ -46,11 +49,11 @@ VOIDP = c_void_p
 
 #DPC Call functions
 
-usbcomm.DmgrOpen.argtypes = [POINTER(c_uint), POINTER(c_char)]
-usbcomm.DmgrOpen.restypes = c_int
+usbcommDMGR.DmgrOpen.argtypes = [POINTER(c_uint), POINTER(c_char)]
+usbcommDMGR.DmgrOpen.restypes = c_int
 
-usbcomm.DmgrClose.argtypes = [c_uint]
-usbcomm.DmgrClose.restypes = c_int
+usbcommDMGR.DmgrClose.argtypes = [c_uint]
+usbcommDMGR.DmgrClose.restypes = c_int
 
 usbcomm.DeppGetVersion.argtypes = [POINTER(c_char)]
 
