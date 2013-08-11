@@ -10411,7 +10411,7 @@ By Peter Dorman - 2007</description>
 <part name="JP4" library="jumper" deviceset="JP1E" device="" value="TRIGGER_2D"/>
 <part name="X2" library="con-coax" deviceset="BU-SMA-V" device="" value="TRIGGER"/>
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
-<part name="FRAME1" library="frames" deviceset="LETTER_L" device=""/>
+<part name="FRAME1" library="frames" deviceset="LETTER_L" device="" value="FOBOS Bridge Connector"/>
 <part name="U$3" library="CERG" deviceset="CERG_LOGO" device=""/>
 <part name="DUT" library="hirose-fx2-100" deviceset="HIROSE-FX2-100S-1.27DS" device=""/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
