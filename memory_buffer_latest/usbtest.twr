@@ -1,0 +1,96 @@
+--------------------------------------------------------------------------------
+Release 14.1 Trace  (nt64)
+Copyright (c) 1995-2012 Xilinx, Inc.  All rights reserved.
+
+C:\Xilinx\14.1\ISE_DS\ISE\bin\nt64\unwrapped\trce.exe -intstyle ise -v 3 -s 2
+-n 3 -fastpaths -xml usbtest.twx usbtest.ncd -o usbtest.twr usbtest.pcf
+
+Design file:              usbtest.ncd
+Physical constraint file: usbtest.pcf
+Device,package,speed:     xc6slx16,csg324,C,-2 (PRODUCTION 1.21 2012-04-23)
+Report level:             verbose report
+
+Environment Variable      Effect 
+--------------------      ------ 
+NONE                      No environment variables were set
+--------------------------------------------------------------------------------
+
+INFO:Timing:2698 - No timing constraints found, doing default enumeration.
+INFO:Timing:3412 - To improve timing, see the Timing Closure User Guide (UG612).
+INFO:Timing:2752 - To get complete path coverage, use the unconstrained paths 
+   option. All paths that are not constrained will be reported in the 
+   unconstrained paths section(s) of the report.
+INFO:Timing:3339 - The clock-to-out numbers in this timing report are based on 
+   a 50 Ohm transmission line loading model.  For the details of this model, 
+   and for more information on accounting for different loading conditions, 
+   please see the device datasheet.
+
+
+
+Data Sheet report:
+-----------------
+All values displayed in nanoseconds (ns)
+
+Setup/Hold to clock PHY_CLKOUT
+----------------+------------+------------+------------+------------+------------------+--------+
+                |Max Setup to|  Process   |Max Hold to |  Process   |                  | Clock  |
+Source          | clk (edge) |   Corner   | clk (edge) |   Corner   |Internal Clock(s) | Phase  |
+----------------+------------+------------+------------+------------+------------------+--------+
+PHY_DATAIN<0>   |    1.479(R)|      SLOW  |   -0.424(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAIN<1>   |    1.505(R)|      SLOW  |   -0.513(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAIN<2>   |    1.141(R)|      SLOW  |   -0.241(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAIN<3>   |    0.954(R)|      SLOW  |    0.013(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAIN<4>   |    1.531(R)|      SLOW  |   -0.474(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAIN<5>   |    1.751(R)|      SLOW  |   -0.605(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAIN<6>   |    1.473(R)|      SLOW  |   -0.416(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAIN<7>   |    1.451(R)|      SLOW  |   -0.315(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_LINESTATE<0>|    2.369(R)|      SLOW  |    0.030(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_LINESTATE<1>|    2.146(R)|      SLOW  |    0.045(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_RXACTIVE    |    1.398(R)|      SLOW  |   -0.466(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_RXERROR     |    1.015(R)|      SLOW  |   -0.031(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_RXVALID     |    1.587(R)|      SLOW  |   -0.385(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_TXREADY     |    3.726(R)|      SLOW  |   -0.620(R)|      SLOW  |PHY_CLKOUT_BUFGP  |   0.000|
+----------------+------------+------------+------------+------------+------------------+--------+
+
+Clock PHY_CLKOUT to Pad
+--------------+-----------------+------------+-----------------+------------+------------------+--------+
+              |Max (slowest) clk|  Process   |Min (fastest) clk|  Process   |                  | Clock  |
+Destination   |  (edge) to PAD  |   Corner   |  (edge) to PAD  |   Corner   |Internal Clock(s) | Phase  |
+--------------+-----------------+------------+-----------------+------------+------------------+--------+
+LED           |        11.240(R)|      SLOW  |         4.075(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAOUT<0>|         9.049(R)|      SLOW  |         3.701(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAOUT<1>|         9.153(R)|      SLOW  |         3.777(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAOUT<2>|         8.843(R)|      SLOW  |         3.642(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAOUT<3>|         8.744(R)|      SLOW  |         3.565(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAOUT<4>|         8.599(R)|      SLOW  |         3.459(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAOUT<5>|         8.599(R)|      SLOW  |         3.459(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAOUT<6>|         8.618(R)|      SLOW  |         3.493(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_DATAOUT<7>|         8.885(R)|      SLOW  |         3.635(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_OPMODE<0> |         9.756(R)|      SLOW  |         4.077(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_OPMODE<1> |         8.746(R)|      SLOW  |         3.568(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_RESET     |         8.772(R)|      SLOW  |         3.579(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_TERMSELECT|         8.590(R)|      SLOW  |         3.485(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_TXVALID   |         8.767(R)|      SLOW  |         3.576(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+PHY_XCVRSELECT|         9.872(R)|      SLOW  |         4.180(R)|      FAST  |PHY_CLKOUT_BUFGP  |   0.000|
+--------------+-----------------+------------+-----------------+------------+------------------+--------+
+
+Clock to Setup on destination clock PHY_CLKOUT
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+PHY_CLKOUT     |    8.582|         |         |         |
+---------------+---------+---------+---------+---------+
+
+
+Analysis completed Sat Apr 27 21:01:01 2013 
+--------------------------------------------------------------------------------
+
+Trace Settings:
+-------------------------
+Trace Settings 
+
+Peak Memory Usage: 227 MB
+
+
+

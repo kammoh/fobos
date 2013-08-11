@@ -1,0 +1,7 @@
+vhdl work "usb_transact.vhdl"
+vhdl work "usb_pkg.vhdl"
+vhdl work "usb_packet.vhdl"
+vhdl work "usb_init.vhdl"
+vhdl work "usb_control.vhdl"
+vhdl work "usb_serial.vhdl"
+vhdl work "usbtest.vhdl"

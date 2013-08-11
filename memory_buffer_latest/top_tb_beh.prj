@@ -1,0 +1,4 @@
+vhdl work "ipcore_dir/FIFO214.vhd"
+vhdl work "ipcore_dir/DRAM211.vhd"
+vhdl work "TOP.vhd"
+vhdl work "top_tb.vhd"
