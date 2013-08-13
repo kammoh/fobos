@@ -6,13 +6,12 @@ import os
 if (sys.platform == "linux2" ):
     cdll.LoadLibrary("libdpcutil.so")
     usbcomm = CDLL("libdpcutil.so")
-    usbcommDMGR = usbcomm
+	usbcommDMGR = usbcomm
 elif (sys.platform == "win32" ):
-    windll.LoadLibrary("dpcutil.dll")
-    usbcomm = WinDLL("dpcutil.dll")
-    #usbcomm = WinDLL("test.dll")
-    windll.LoadLibrary("dmgr.dll")
-    usbcommDMGR = WinDLL("dmgr.dll")	
+	windll.LoadLibrary("dpcutil.dll")
+	usbcomm = WinDLL("dpcutil.dll")
+	windll.LoadLibrary("dmgr.dll")
+	usbcommDMGR = WinDLL("dmgr.dll")	
     
 VERSION = '0.2'
 SUCCESS = True

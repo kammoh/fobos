@@ -1,3 +1,0 @@
-vhdl work "ipcore_dir/FIFO214.vhd"
-vhdl work "ipcore_dir/dist_mem_gen_v7_1.vhd"
-vhdl work "TOP.vhd"
