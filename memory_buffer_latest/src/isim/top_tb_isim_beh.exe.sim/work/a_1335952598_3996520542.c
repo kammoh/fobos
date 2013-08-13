@@ -21,7 +21,7 @@
 #include <malloc.h>
 #define alloca _alloca
 #endif
-static const char *ng0 = "C:/Users/Jeremy/Documents/GitHub/memory_buffer_latest/TOP.vhd";
+static const char *ng0 = "C:/Users/Jeremy/Documents/GitHub/fobos clone/memory_buffer_latest/src/TOP.vhd";
 
 
 
