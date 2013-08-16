@@ -1,8 +1,0 @@
-INTSTYLE=ise
-INFILE=C:\Users\Jeremy\Documents\Xilinx_Projects\FINAL_ADCOUT\TOP.ncd
-OUTFILE=C:\Users\Jeremy\Documents\Xilinx_Projects\FINAL_ADCOUT\TOP.bit
-FAMILY=Spartan6
-PART=xc6slx16-2csg324
-WORKINGDIR=C:\Users\Jeremy\Documents\Xilinx_Projects\FINAL_ADCOUT
-LICENSE=WebPack
-USER_INFO=176339637_0_0_230

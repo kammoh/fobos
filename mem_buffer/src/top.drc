@@ -1,0 +1,8 @@
+Release 14.1 Drc P.15xf (nt64)
+Copyright (c) 1995-2012 Xilinx, Inc.  All rights reserved.
+
+Fri Aug 16 19:01:45 2013
+
+drc -z top.ncd top.pcf
+
+DRC detected 0 errors and 0 warnings.
