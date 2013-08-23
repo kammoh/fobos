@@ -11117,23 +11117,21 @@ By Peter Dorman - 2007</description>
 <pinref part="X2" gate="G$1" pin="1"/>
 <wire x1="58.42" y1="101.6" x2="58.42" y2="91.44" width="0.1524" layer="91"/>
 <wire x1="22.86" y1="91.44" x2="58.42" y2="91.44" width="0.1524" layer="91"/>
-<wire x1="22.86" y1="40.64" x2="22.86" y2="91.44" width="0.1524" layer="91"/>
-<wire x1="2.54" y1="40.64" x2="22.86" y2="40.64" width="0.1524" layer="91"/>
-<pinref part="U$2" gate="G$1" pin="CLK10_N"/>
+<wire x1="22.86" y1="27.94" x2="22.86" y2="91.44" width="0.1524" layer="91"/>
 <label x="40.64" y="91.44" size="1.778" layer="95"/>
 <pinref part="JP4" gate="A" pin="1"/>
 <wire x1="58.42" y1="91.44" x2="73.66" y2="91.44" width="0.1524" layer="91"/>
 <wire x1="73.66" y1="91.44" x2="73.66" y2="96.52" width="0.1524" layer="91"/>
 <junction x="58.42" y="91.44"/>
+<pinref part="U$2" gate="G$1" pin="CLK11_N"/>
+<wire x1="22.86" y1="27.94" x2="2.54" y2="27.94" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="RST" class="0">
 <segment>
-<wire x1="2.54" y1="27.94" x2="25.4" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="25.4" y1="27.94" x2="25.4" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="25.4" y1="88.9" x2="93.98" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="40.64" x2="20.32" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="88.9" x2="93.98" y2="88.9" width="0.1524" layer="91"/>
 <label x="58.42" y="88.9" size="1.778" layer="95"/>
-<pinref part="U$2" gate="G$1" pin="CLK11_N"/>
 <wire x1="93.98" y1="88.9" x2="93.98" y2="25.4" width="0.1524" layer="91"/>
 <pinref part="JP5" gate="A" pin="26"/>
 <wire x1="93.98" y1="25.4" x2="68.58" y2="25.4" width="0.1524" layer="91"/>
@@ -11142,6 +11140,8 @@ By Peter Dorman - 2007</description>
 <pinref part="DUT" gate="HIROSE100" pin="IO30"/>
 <wire x1="111.76" y1="73.66" x2="142.24" y2="73.66" width="0.1524" layer="91"/>
 <junction x="93.98" y="88.9"/>
+<pinref part="U$2" gate="G$1" pin="CLK10_N"/>
+<wire x1="20.32" y1="40.64" x2="2.54" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="CLKOUT_C" class="0">

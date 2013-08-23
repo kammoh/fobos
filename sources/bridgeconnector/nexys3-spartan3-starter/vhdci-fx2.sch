@@ -2291,6 +2291,7 @@ By Peter Dorman - 2007</description>
 <segment>
 <wire x1="124.46" y1="43.18" x2="114.3" y2="43.18" width="0.1524" layer="91"/>
 <pinref part="U$1" gate="HIROSE100" pin="IO16"/>
+<label x="116.84" y="43.18" size="1.778" layer="95"/>
 </segment>
 <segment>
 <pinref part="JP5" gate="A" pin="31"/>
@@ -2305,6 +2306,7 @@ By Peter Dorman - 2007</description>
 <segment>
 <wire x1="124.46" y1="45.72" x2="114.3" y2="45.72" width="0.1524" layer="91"/>
 <pinref part="U$1" gate="HIROSE100" pin="IO17"/>
+<label x="116.84" y="45.72" size="1.778" layer="95"/>
 </segment>
 <segment>
 <pinref part="JP5" gate="A" pin="28"/>
@@ -2515,6 +2517,7 @@ By Peter Dorman - 2007</description>
 <segment>
 <wire x1="124.46" y1="83.82" x2="114.3" y2="83.82" width="0.1524" layer="91"/>
 <pinref part="U$1" gate="HIROSE100" pin="IO32"/>
+<label x="114.3" y="83.82" size="1.778" layer="95"/>
 </segment>
 <segment>
 <wire x1="63.5" y1="45.72" x2="45.72" y2="45.72" width="0.1524" layer="91"/>
