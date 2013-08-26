@@ -10,9 +10,35 @@ from usbcomm_core import *
 import traceback
 import time
 
+COMMAND_REGISTER = 0x00
+PWM_REGISTER = 0x02
+
+def reset_OpenADCTest(debug):
+ sys.stdout.write("\tSending Reset Command ...")
+ putByteToReg(DeviceName,COMMAND_REGISTER, 0xC0, debug)
+ sys.stdout.write("..[DONE]\n")
+ sys.stdout.write("\tSending Start Command ...")
+ putByteToReg(DeviceName,COMMAND_REGISTER, 0xC0, debug)
+ sys.stdout.write("..[DONE]\n")		
+
+
+def setpwmValue(pwmValue, debug)
+ sys.stdout.write("\tSending PWM Register Value to %d ..." %pwmValue)
+ putByteToReg(DeviceName,PWM_REGISTER, pwmValue, debug)
+ sys.stdout.write("..[DONE]\n")
+
+def readDCMClockFreq(debug) :
+  dcmclkfreq_hex = [0,0,0,0]
+  dcmclkfreq_hex[0] = getByteFromReg(DeviceName, 0x07, debug)
+  dcmclkfreq_hex[1] = getByteFromReg(DeviceName, 0x08, debug)
+  dcmclkfreq_hex[2] = getByteFromReg(DeviceName, 0x09, debug)
+  dcmclkfreq_hex[3] = getByteFromReg(DeviceName, 0x0A, debug)
+  dcmclkfreq_MHz = int(arrayToString(dcmclkfreq_hex), 16)/1000000
+  sys.stdout.write("\tDCM Clock Frequency - %d MHz\n" % dcmclkfreq_MHz)
+  
 
 #Declare Control Board Here
-DeviceName = 'Nexys3'
+DeviceName = 'Nexys2'
 
 
 #Clearing Screen
@@ -25,30 +51,10 @@ getVersion()
 #Prints debug messages if dbug=1/0 does not
 dbg = 1
 
-#Getting USB Handle
-#USBHandle = initialize_usbcomm(DeviceName)
-#Send data - 0xA5 to register 0x00 -> which is connected to LEDs ..
-setTime(1000000, DeviceName)
-i = 0
-while (i<50):
-	sys.stdout.write("\t Test Id : %d " % i)
-	status = putByteToReg(DeviceName, 0x00, 0xA0, dbg)
-	time.sleep(0.1)
-	status = putByteToReg(DeviceName, 0x00, 0x5A, dbg)
-	time.sleep(0.1)
-	status = getByteFromReg(DeviceName, 0x01, dbg)
-	time.sleep(0.1)	
-	i = i+1
-	sys.stdout.write("\n")
-	
-#should read value 0x4B from register 0x01 (value is hardcoded into vhdl code
-#data = getByte(USBHandle, 0x01, dbg)
-
-
-#Terminate USB handle
-#terminate_usbcomm(USBHandle)
-
-
+#Main Program
+reset_OpenADCTest(dbg)
+setpwmValue(0x27, dbg)
+readDCMClockFreq(dbg)
 
 
 
