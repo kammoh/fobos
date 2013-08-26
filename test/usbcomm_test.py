@@ -49,7 +49,7 @@ print_header(DeviceName)
 getVersion()
 
 #Prints debug messages if dbug=1/0 does not
-dbg = 1
+dbg = 0
 
 #Main Program
 reset_OpenADCTest(dbg)
