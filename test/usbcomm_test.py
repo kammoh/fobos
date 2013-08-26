@@ -22,7 +22,7 @@ def reset_OpenADCTest(debug):
  sys.stdout.write("..[DONE]\n")		
 
 
-def setpwmValue(pwmValue, debug)
+def setpwmValue(pwmValue, debug):
  sys.stdout.write("\tSending PWM Register Value to %d ..." %pwmValue)
  putByteToReg(DeviceName,PWM_REGISTER, pwmValue, debug)
  sys.stdout.write("..[DONE]\n")
