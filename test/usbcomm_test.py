@@ -18,7 +18,7 @@ def reset_OpenADCTest(debug):
  putByteToReg(DeviceName,COMMAND_REGISTER, 0xC0, debug)
  sys.stdout.write("..[DONE]\n")
  sys.stdout.write("\tSending Start Command ...")
- putByteToReg(DeviceName,COMMAND_REGISTER, 0xC0, debug)
+ putByteToReg(DeviceName,COMMAND_REGISTER, 0x00, debug)
  sys.stdout.write("..[DONE]\n")		
 
 
@@ -29,10 +29,10 @@ def setpwmValue(pwmValue, debug):
 
 def readDCMClockFreq(debug) :
   dcmclkfreq_hex = [0,0,0,0]
-  dcmclkfreq_hex[0] = getByteFromReg(DeviceName, 0x07, debug)
-  dcmclkfreq_hex[1] = getByteFromReg(DeviceName, 0x08, debug)
-  dcmclkfreq_hex[2] = getByteFromReg(DeviceName, 0x09, debug)
-  dcmclkfreq_hex[3] = getByteFromReg(DeviceName, 0x0A, debug)
+  dcmclkfreq_hex[0] = getByteFromReg(DeviceName, 7, debug)
+  dcmclkfreq_hex[1] = getByteFromReg(DeviceName, 8, debug)
+  dcmclkfreq_hex[2] = getByteFromReg(DeviceName, 9, debug)
+  dcmclkfreq_hex[3] = getByteFromReg(DeviceName, 10, debug)
   dcmclkfreq_MHz = int(arrayToString(dcmclkfreq_hex), 16)/1000000
   sys.stdout.write("\tDCM Clock Frequency - %d MHz\n" % dcmclkfreq_MHz)
   
