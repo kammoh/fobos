@@ -35,6 +35,28 @@ def readDCMClockFreq(debug) :
   dcmclkfreq_hex[3] = getByteFromReg(DeviceName, 10, debug)
   dcmclkfreq_MHz = int(arrayToString(dcmclkfreq_hex), 16)/1000000
   sys.stdout.write("\tDCM Clock Frequency - %d MHz\n" % dcmclkfreq_MHz)
+ 
+def writeToFile(data, outfile):
+ f = open(outfile, "w+b")
+ pickle.dump(data, f)
+ f.close()
+		
+def getDataFromBRAMs(nosval, debug):
+ lowernibble = [0] * nosval
+ highernibble = [0] * nosval
+ adcHighnibble = 0b000000
+ dataArrayFile = "data_BRAM_binary.txt"
+ dataADCFile = "data_adc_voltages.txt" 
+ lowernibble = getDataStreamFromReg(DeviceName, 11, nosval, debug)
+ highernibble = getDataStreamFromReg(DeviceName, 12, nosval, debug)
+ i=0
+ while(i < len(lowernibble)):
+  dataArray[i] = (lowernibble[i] <<8) |  highernibble[i]
+  temp = (lowernibble[i] <<8) |  highernibble[i]
+  adcBinary[i] =  highernibble<<6 | temp[6:15]
+  adcVoltageValues[i] = int(arrayToString(adcBinary[i]), 2) *(3.3/1023)
+ writeToFile(adcBinary, dataArrayFile)
+ writeToFile(adcVoltageValues, dataADCFile)
   
 
 #Declare Control Board Here

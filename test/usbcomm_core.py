@@ -180,7 +180,7 @@ def getDataStreamFromReg(DeviceName, regByte, bytesNos, debug):
  initialize_usbcomm()
  dataStream = getDataStream(DeviceName, regByte, bytesNos, debug)
  terminate_usbcomm()
- return(dataSTREAM)
+ return(dataStream)
  
 def setTime(TimeOutValue, DeviceName):
  cdll.LoadLibrary("libdepp.so")
