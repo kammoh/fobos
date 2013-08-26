@@ -9,6 +9,7 @@ from usbcomm_global import *
 from usbcomm_core import *
 import traceback
 import time
+import pickle
 
 COMMAND_REGISTER = 0x00
 PWM_REGISTER = 0x02
