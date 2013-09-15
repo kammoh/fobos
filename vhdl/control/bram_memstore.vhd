@@ -32,7 +32,7 @@ architecture Behavioral of bram_adc_store is
 		end component;
 
 signal we_bram1 : std_logic;
-signal we_bram2 : std_logic;		
+signal we_bram2 : std_logic;
 signal we_bram3 : std_logic;
 signal we_bram4 : std_logic;
 signal we_bram5 : std_logic;
