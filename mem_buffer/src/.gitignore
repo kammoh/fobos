@@ -1,0 +1,12 @@
+*.xise*.gise*.cmd_log*.ngc*.lso*.ngr*.xrpt*.html.prj*.stx*.aux
+*.bbl
+*.toc
+*.dvi
+*.log
+*.blg
+*.swp
+*.backup
+*.out
+.directory
+.DS_Store
+__MACOSX
