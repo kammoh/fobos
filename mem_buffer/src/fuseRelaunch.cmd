@@ -1,1 +1,0 @@
--intstyle "ise" -incremental -lib "secureip" -o "C:/Users/Jeremy/Documents/GitHub/fobos clone/memory_buffer_latest/src/top_tb_isim_beh.exe" -prj "C:/Users/Jeremy/Documents/GitHub/fobos clone/memory_buffer_latest/src/top_tb_beh.prj" "work.top_tb" 

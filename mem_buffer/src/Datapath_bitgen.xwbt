@@ -1,8 +1,0 @@
-INTSTYLE=ise
-INFILE=C:\Users\Jeremy\Documents\GitHub\fobos clone\mem_buffer\src\Datapath.ncd
-OUTFILE=C:\Users\Jeremy\Documents\GitHub\fobos clone\mem_buffer\src\Datapath.bit
-FAMILY=Spartan6
-PART=xc6slx16-2csg324
-WORKINGDIR=C:\Users\Jeremy\Documents\GitHub\fobos clone\mem_buffer\src
-LICENSE=WebPack
-USER_INFO=176339637_0_0_230

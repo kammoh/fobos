@@ -1,6 +1,0 @@
-work	"COUNTER.vhd"
-work	"Datapath.vhd"
-work	"controller.vhd"
-work	"ipcore_dir/DRAM211.vhd"
-work	"ipcore_dir/FIFO214.vhd"
-work	"top.vhd"

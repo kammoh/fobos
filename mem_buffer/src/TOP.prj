@@ -1,6 +1,1 @@
-vhdl work "ipcore_dir/FIFO214.vhd"
-vhdl work "ipcore_dir/DRAM211.vhd"
-vhdl work "COUNTER.vhd"
-vhdl work "Datapath.vhd"
-vhdl work "controller.vhd"
 vhdl work "top.vhd"

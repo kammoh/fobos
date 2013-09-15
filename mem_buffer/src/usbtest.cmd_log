@@ -1,6 +1,0 @@
-xst -intstyle ise -ifn "C:/Users/Jeremy/Documents/Xilinx_Projects/FINAL_ADCOUT/usbtest.xst" -ofn "C:/Users/Jeremy/Documents/Xilinx_Projects/FINAL_ADCOUT/usbtest.syr" 
-ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx16-csg324-2 usbtest.ngc usbtest.ngd  
-map -intstyle ise -p xc6slx16-csg324-2 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o usbtest_map.ncd usbtest.ngd usbtest.pcf 
-par -w -intstyle ise -ol high -mt off usbtest_map.ncd usbtest.ncd usbtest.pcf 
-trce -intstyle ise -v 3 -s 2 -n 3 -fastpaths -xml usbtest.twx usbtest.ncd -o usbtest.twr usbtest.pcf 
-bitgen -intstyle ise -f usbtest.ut usbtest.ncd 

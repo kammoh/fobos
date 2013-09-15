@@ -1,2 +1,0 @@
-xst -intstyle ise -ifn "C:/Users/Jeremy/Documents/GitHub/memory_buffer_latest/test_module.xst" -ofn "C:/Users/Jeremy/Documents/GitHub/memory_buffer_latest/test_module.syr" 
-xst -intstyle ise -ifn "C:/Users/Jeremy/Documents/GitHub/memory_buffer_latest/test_module.xst" -ofn "C:/Users/Jeremy/Documents/GitHub/memory_buffer_latest/test_module.syr" 

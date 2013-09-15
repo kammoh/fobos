@@ -1,4 +1,0 @@
-vhdl isim_temp "ipcore_dir/FIFO214.vhd"
-vhdl isim_temp "ipcore_dir/DRAM211.vhd"
-vhdl isim_temp "TOP.vhd"
-vhdl isim_temp "top_tb.vhd"
