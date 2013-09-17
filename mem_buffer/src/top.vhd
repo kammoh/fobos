@@ -16,11 +16,17 @@ architecture top_arch of top is
 begin
 
 
-
---read in input 16 bits
---even cycle to external DRAM
---odd cycle to internal BRAM
---pass output to usb
+FIFO : ENTITY work.FIFO_16(FIFO_16_a)
+  PORT MAP(
+    clk=>Clock,
+    rst=>Reset,
+    din =>,
+    wr_en=>,
+    rd_en=>,
+    dout=>,
+    full=>,
+    empty=>
+  );
 
 
 

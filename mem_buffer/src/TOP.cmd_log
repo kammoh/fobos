@@ -1,1 +1,0 @@
-xst -intstyle ise -ifn "C:/Users/Jeremy/Documents/GitHub/fobos clone/mem_buffer/src/mem_buffer/top.xst" -ofn "C:/Users/Jeremy/Documents/GitHub/fobos clone/mem_buffer/src/mem_buffer/top.syr" 

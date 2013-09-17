@@ -1,1 +1,2 @@
-temp
+for organizational purposes, such that this is visible on git.
+place new schematics in this folder
