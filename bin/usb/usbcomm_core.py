@@ -6,7 +6,7 @@ import argparse
 from ctypes import *
 import os
 from usbcomm_global import * 
-import traceback
+#import traceback
 
 def clear_screen() :
     if (sys.platform == "linux2" ):
@@ -32,7 +32,8 @@ def print_OpenADCheader():
 	sys.stdout.write("\tStarting FOBOS- OpenADC Communication Script\n")
 
 def initialize_usbcomm(DeviceName):
-    status = usbcommDMGR.DmgrOpen(handle, DeviceName)
+    DN = (DeviceName)
+    status = usbcommdmgr.DmgrOpen(handle, DN)
     if (status == SUCCESS):
       sys.stdout.write("Initializing USB - FPGA Communication... \n")
       status = usbcomm.DeppEnableEx(handle[0], 0)
@@ -44,7 +45,7 @@ def initialize_usbcomm(DeviceName):
         return handle
       else:
         sys.stdout.write("\tDepp protocol not enabled. Exiting Program\n")
-        status = usbcommDMGR.DmgrClose(handle[0])
+        status = usbcommdmgr.DmgrClose(handle[0])
         sys.exit(0)
     else:
       sys.stdout.write("\tUSB Communication Failure. Exiting Program \n")
@@ -141,7 +142,7 @@ def readBrdClockFreq(USBHandle, debug) :
   
 def terminate_usbcomm(USBHandle):
     usbcomm.DeppDisable(USBHandle[0])
-    status = usbcommDMGR.DmgrClose(USBHandle[0])
+    status = usbcommdmgr.DmgrClose(USBHandle[0])
 
 
 
