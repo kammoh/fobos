@@ -215,6 +215,7 @@ end component;
 	
 	signal GND_BIT  :std_logic := '0';
 	signal HIGH_BIT :std_logic := '1';
+	signal command_code : std_logic_vector(7 downto 0);
 ------------------------------------------------------------------------
 -- Module Implementation
 ------------------------------------------------------------------------
@@ -261,7 +262,8 @@ begin
 					 "000000" & int_addGen(17 downto 16)    when regEppAdr = "00001101" else ---intAddress to BRAM
 					int_addGen (15 downto 8)    			when regEppAdr = "00001110" else ---intAddress to BRAM
 					int_addGen (7 downto 0)					when regEppAdr = "00001111" else ---intAddress to BRAM
-					trigger_cnt100M(31 downto 24) 			when regEppAdr = "00010000" else ---Trigger Check from 100MHz
+					--trigger_cnt100M(31 downto 24) 			when regEppAdr = "00010000" else ---Trigger Check from 100MHz
+					command_code                   			when regEppAdr = "00010000" else ---Trigger Check from 100MHz
 					trigger_cnt100M(23 downto 16) 			when regEppAdr = "00010001" else ---Trigger Check from 100MHz
 					trigger_cnt100M(15 downto 8)  			when regEppAdr = "00010010" else ---Trigger Check from 100MHz
 					trigger_cnt100M(7 downto 0)   			when regEppAdr = "00010011" else ---Trigger Check from 100MHz
@@ -535,18 +537,32 @@ begin
 			counter_out => delay_count);
 		delay_done <= '0' when delay_count >="0000010111011100" else '1';
 
-		RAM_address_Counter : bram_add_counter generic map (N => 18)
-		   port map (clk=> clock_100MHz_BUF, reset => victim_start, enable => delay_done,
-			we_enable => delay_done, counter_out => int_addGen);
+--		RAM_address_Counter : bram_add_counter generic map (N => 18)
+--		   port map (clk=> clock_100MHz_BUF, reset => system_reset, enable => '1',
+--			we_enable => '1', counter_out => int_addGen);
+--			
+		RAM_address_Counter : counter generic map (N => 18)
+		   port map (clk=> clock_100MHz, reset => system_reset, enable => cnt_en,
+			counter_out => int_addGen);		
 			                                 
 		Z1024 <= '1' when int_addGen >= "000100111000100000" else '0';
-		cnt_en <= '1' when Z1024 = '0' else '0';
+		cnt_en <= '0' when int_addGen >= "000100111000100000" else '1';
 						
 		add_gen_pc_counter : counter generic map (N => 16)
 		   port map (clk=> ctlEppDstb, reset => regData0(4), enable => regData0(5),
 			counter_out => addGen);
 				
 		data_address <= int_addGen(15 downto 0) when regData0(5) = '0' else addGen;
+		
+		command_code(0) <= Z1024;
+		command_code(1) <= cnt_en;
+		command_code(2) <= system_reset;
+		command_code(3) <= regData0(4);
+		command_code(4) <= regData0(5);
+		command_code(5) <= '0';
+		command_code(6) <= '0';
+		command_code(7) <= '0';
+		
 	-------------------------------------------------------------------------
     -- BRAM Pins Mapping
     -------------------------------------------------------------------------
@@ -558,7 +574,7 @@ begin
 --								 bram_we_en =>bram_wen);
 		
 		bram_data_store : bram_adc_store port map
-								(clock => clock_100MHz_BUF,
+								(clock => clock_100MHz,
 								 addr  => data_address(14 downto 0),
 								 wen   => cnt_en,
 								 en    => '1',
