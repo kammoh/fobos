@@ -9,50 +9,80 @@ from usbcomm_global import *
 from usbcomm_core import *
 import traceback
 import time
+from time import time
+import matplotlib.pyplot as plt
 
 
+def stressTest(USBHandle, stress_count, debug):
+  i = 0
+  pass_count = 0
+  while(i<stress_count):
+    if(debug == 1):
+     sys.stdout.write("\tTest ID : %d\n" % i)
+    status = getRegByte(USBHandle, 0x50, debug)
+    if (status == 0x4B):
+      status = putRegByte(USBHandle, 0x40, 0xAA, debug)
+      status = putRegByte(USBHandle, 0x40, 0x55, debug)
+      if (status == 1): 
+       pass_count = pass_count +1
+    i = i+1
+  if(pass_count == stress_count):
+    sys.stdout.write("\t\tCompleted Stress Test. Pass/Stressed = %d" % pass_count +
+    "/ %d\n" % stress_count)
+  else:
+    sys.stdout.write("\t\tSTRESS TEST FAILED!!\n")
+      
+    
 #Declare Control Board Here
 DeviceName = 'Nexys3'
-
+stressnos = 50
+streamBytesnos = 20000
+debug = 0
+dataStreamFile = 'dataStream.txt'
 
 #Clearing Screen
 clear_screen()  
 
 #Printing Header
 print_header(DeviceName)
-getVersion()
-
-#Prints debug messages if dbug=1/0 does not
-dbg = 0
 
 #Getting USB Handle
-#USBHandle = initialize_usbcomm(DeviceName)
-#Send data - 0xA5 to register 0x00 -> which is connected to LEDs ..
-#setTime(1000000, DeviceName)
-i = 0
-while (i<1):
-	sys.stdout.write("\t Test Id : %d " % i)
-	status = putByteToReg(DeviceName, 0x00, 0xA5, dbg)
-	sys.stdout.write("\t Status - %d\n" % status)
-	time.sleep(0.1)
-	status = putByteToReg(DeviceName, 0x00, 0x5A, dbg)
-	sys.stdout.write("\t Status - %d\n" % status)	
-	time.sleep(0.1)
-	status = getByteFromReg(DeviceName, 0x01, dbg)
-	sys.stdout.write("\t Data - %02X\n" % status)	
-	time.sleep(0.1)	
-	status = getByteFromReg(DeviceName, 0x02, dbg)
-	sys.stdout.write("\t Data - %02X\n" % status)	
-	time.sleep(0.1)	
-	i = i+1
-	sys.stdout.write("\n")
+USBHandle = initialize_usbcomm(DeviceName)
+sys.stdout.write("\tTesting Read Operation")
+status = getRegByte(USBHandle, 0x50, debug)
+if (status == 0):
+  sys.stdout.write("\tRead Operation Failure\n")
+else:
+  sys.stdout.write("..Pass.\n")
+  
+sys.stdout.write("\tTesting Write Operation")
+status = putRegByte(USBHandle, 0x40, 0xFF, debug)
+if (status == 0):
+  sys.stdout.write("\tWrite Operation Failure\n")
+else:
+  sys.stdout.write("..Pass.\n")
+  
+  
+sys.stdout.write("\tPerforming Stress Test..\n")
+stressTest(USBHandle, stressnos, debug)
+
+sys.stdout.write("\tPolling On-Board Frequency Counters\n")
+readMainClockFreq(USBHandle, DeviceName, debug)
+
+sys.stdout.write("\tTesting Data Streaming ..\n")
+startTime = time()
+sys.stdout.write("\t\tStreaming %d bytes\n" % streamBytesnos)
+dataFromFPGA = streamDataFromBRAM(USBHandle, streamBytesnos, dataStreamFile, debug)
+sys.stdout.write("\t\tWrote to %s\n " % dataStreamFile
++ "\t\t(Time Taken - %s) sec\n" % str(time() - startTime))
+
+plt.plot(dataFromFPGA)
+plt.ylabel('Data')
+plt.xlabel('# of traces')
+plt.show()
 	
-#should read value 0x4B from register 0x01 (value is hardcoded into vhdl code
-#data = getByte(USBHandle, 0x01, dbg)
-
-
 #Terminate USB handle
-#terminate_usbcomm(USBHandle)
+terminate_usbcomm(USBHandle)
 
 
 

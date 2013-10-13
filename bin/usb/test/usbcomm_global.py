@@ -4,12 +4,14 @@ import sys
 import os
 # Get DLL depending on OS
 if (sys.platform == "linux2" ):
- cdll.LoadLibrary("libdpcutil.so")
- usbcomm = CDLL("libdpcutil.so")
-
+ cdll.LoadLibrary("libdepp.so")
+ depp = CDLL("libdepp.so")
+ cdll.LoadLibrary("libdmgr.so")
+ dmgr = CDLL("libdmgr.so")
 elif (sys.platform == "win32" ):
- windll.LoadLibrary("dpcutil.dll")
- usbcomm = WinDLL("dpcutil.dll")
+ windll.LoadLibrary("dmgr.dll")
+ dmgr = WinDLL("dmgr.dll")
+ windll.LoadLibrary("depp.dll")
    
 VERSION = '0.2'
 SUCCESS = True
@@ -30,10 +32,10 @@ buf = c_int(128)
 ResultString = cast(addressof(buf), CHP)
 
 #Handle pointer definition
-#HIF = c_uint
-#HIFP = POINTER(HIF)
-#HIFbuf = c_uint(8)
-#handle = cast(addressof(HIFbuf), HIFP)
+HIF = c_uint
+HIFP = POINTER(HIF)
+HIFbuf = c_uint(8)
+handle = cast(addressof(HIFbuf), HIFP)
 
 
 #Device Name pointer Definition
@@ -46,31 +48,30 @@ DeviceName = cast(addressof(DSbuf), DSP)
 regBYTE = c_ubyte
 VOIDP = c_void_p
 
+dataBYTE = c_ubyte
+dataP = POINTER(dataBYTE)
+bufBYTE = c_ubyte(10)
+dataBYTEP = cast(addressof(bufBYTE), dataP)
+
 #DPC Call functions
 
-usbcomm.DpcInit.argtypes = [POINTER(c_int)]
-usbcomm.DpcInit.restype = c_int
+dmgr.DmgrOpen.argtypes = [POINTER(c_uint), POINTER(c_char)]
+dmgr.DmgrOpen.restypes = c_int
 
-usbcomm.DpcTerm.argtypes = [c_void_p]
-usbcomm.DpcTerm.restype = None
+dmgr.DmgrClose.argtypes = [c_uint]
 
-usbcomm.DpcGetDpcVersion.argtypes = [POINTER(c_char), POINTER(c_int)]
-usbcomm.DpcGetDpcVersion.restype = c_int
+depp.DeppGetVersion.argtypes = [POINTER(c_char)]
 
-usbcomm.DpcOpenData.argtypes = [POINTER(c_uint), POINTER(c_char), POINTER(c_int), POINTER(c_int)]
-usbcomm.DpcOpenData.restype = c_int
+depp.DeppEnableEx.argtypes = [c_uint, c_uint32]
 
-usbcomm.DpcCloseData.argtypes = [c_uint, POINTER(c_int)]
-usbcomm.DpcCloseData.restype = c_int
+depp.DeppGetReg.argtypes = [c_uint, c_ubyte, POINTER(c_ubyte), c_int]
+depp.DeppGetReg.restypes = c_int
 
-usbcomm.DpcGetReg.argtypes = [c_uint, c_ubyte, POINTER(c_ubyte), POINTER(c_int), POINTER(c_int)]
-usbcomm.DpcGetReg.restype = c_int
+depp.DeppPutReg.argtypes = [c_uint, c_ubyte, c_ubyte, c_int]
+depp.DeppPutReg.restype = c_int
 
-usbcomm.DpcPutReg.argtypes = [c_uint, c_ubyte, c_ubyte, POINTER(c_int), POINTER(c_int)]
-usbcomm.DpcPutReg.restype = c_int
-
-usbcomm.DpcGetRegRepeat.argtypes = [c_uint, c_ubyte, POINTER(c_ubyte), c_int, POINTER(c_int), POINTER(c_int)]
-usbcomm.DpcGetRegRepeat.restype = c_int
+depp.DeppGetRegRepeat.argtypes = [c_uint, c_ubyte, POINTER(c_ubyte), c_int, c_int]
+depp.DeppGetRegRepeat.restype = c_int
 
 
 
