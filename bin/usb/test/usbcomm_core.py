@@ -22,6 +22,12 @@ def getIntValue(val1, val2):
   Value = int(val1 << 8 | val2)
   return Value
   
+def printArray(array, num):
+  i = 0
+  while(i<num):
+    sys.stdout.write("%02X\n" % array[i])
+    i=i+1
+  
 def print_header(DeviceName):
     sys.stdout.write("-----------------------------------------------\n")
     sys.stdout.write("Starting PC-FPGA Communication via USB\n")
@@ -75,13 +81,11 @@ def putRegByte(USBHandle, regByte, dataBYTE, debug):
       return (0)
       
 def streamBytes(USBHandle, nosBytes, regByte, debug) :
-	streamdataBYTE = c_ubyte
-	streamdataP = POINTER(c_ubyte)
-	streambufBYTE = c_ubyte(nosBytes)
-	streamdataBYTEP = cast(addressof(streambufBYTE), streamdataP)
+	streambufBYTE = (c_ubyte*(nosBytes+10))()
+	streamdataBYTEP = cast(streambufBYTE, POINTER(c_ubyte))
 	nosBytesD = c_ulong
 	nosBytesD = nosBytes
-	if (depp.DeppGetRegRepeat(USBHandle[0], regByte, streamdataBYTEP, nosBytesD, 0)) :
+	if (depp.DeppGetRegRepeat(USBHandle[0], regByte, streamdataBYTEP, nosBytes, 0)) :
 	  if(debug == 1):
 	    sys.stdout.write("\tStream Data from Reg -> %X \n" %regByte)
 	  return (streamdataBYTEP)
@@ -101,15 +105,16 @@ def readMainClockFreq(USBHandle, DeviceName, debug) :
   
  
 def streamDataFromBRAM(USBHandle, nosBytes, logfile, debug):
-  status = putRegByte(USBHandle, 0x00, 0x80, debug)
-  status = putRegByte(USBHandle, 0x00, 0x40, debug)
+
   
-  lbyteValue = [0]*nosBytes
-  hbyteValue = [0]*nosBytes
-  streamdataV = [0]*nosBytes
+  lbyteValue = [0]*(nosBytes)
+  hbyteValue = [0]*(nosBytes)
+  streamdataV = [0]*(nosBytes)
   if(debug == 2):
     i = 0
     log = open(logfile, 'w')
+    status = putRegByte(USBHandle, 0x00, 0x80, debug)
+    status = putRegByte(USBHandle, 0x00, 0x40, debug)
     while(i<nosBytes):
       hbyteValue[i] = getRegByte(USBHandle, 0x10, debug)
       i = i+1
@@ -130,6 +135,8 @@ def streamDataFromBRAM(USBHandle, nosBytes, logfile, debug):
   if(debug == 3):
     i=0
     log = open(logfile, 'w')
+    status = putRegByte(USBHandle, 0x00, 0x80, debug)
+    status = putRegByte(USBHandle, 0x00, 0x40, debug)
     hbyteValue = streamBytes(USBHandle, nosBytes, 0x10, debug)
     status = putRegByte(USBHandle, 0x00, 0x80, debug)
     status = putRegByte(USBHandle, 0x00, 0x40, debug) 

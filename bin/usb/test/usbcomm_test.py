@@ -37,7 +37,7 @@ def stressTest(USBHandle, stress_count, debug):
 DeviceName = 'Nexys3'
 stressnos = 50
 streamBytesnos = 20000
-debug = 2
+debug = 3
 dataStreamFile = 'dataStream.txt'
 
 #Clearing Screen
@@ -71,10 +71,11 @@ readMainClockFreq(USBHandle, DeviceName, debug)
 
 sys.stdout.write("\tTesting Data Streaming ..\n")
 startTime = time()
-sys.stdout.write("\t\tStreaming %d bytes\n" % streamBytesnos)
+sys.stdout.write("\t\tStreaming %d values\n" % streamBytesnos)
 dataFromFPGA = streamDataFromBRAM(USBHandle, streamBytesnos, dataStreamFile, debug)
 sys.stdout.write("\t\tWrote to %s\n " % dataStreamFile
-+ "\t\t(Time Taken - %s) sec\n" % str(time() - startTime))
++ "\t\tTime Taken - %s sec\n" % str(time() - startTime) 
++ "\t\tSpeed - %s Mbytes/Sec\n" % str(int((streamBytesnos/1000)/(time() - startTime))))
 
 plt.plot(dataFromFPGA)
 plt.ylabel('Data')
