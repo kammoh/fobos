@@ -2,6 +2,7 @@
 import array
 import time
 import sys
+sys.path.insert(0, 'usb/')
 import argparse
 from ctypes import *
 import os
@@ -18,14 +19,14 @@ DeviceName = 'Nexys3'
 clear_screen()  
 
 #Printing Header
-print_OpenADCheader()
+print_OpenADCheader(DeviceName)
 
 dbg = 0 	#1 -> Prints Debug Messages
 
 gainval = 0 #Integer value from 0-256
 
 
-USBHandle = initialize_usbcomm()
+USBHandle = initialize_usbcomm(DeviceName)
 sys.stdout.write("\tSending Global Reset to FPGA\n")
 status = putByte(USBHandle, 0x00, 0xC0, dbg)
 #time.sleep(3)
@@ -37,8 +38,8 @@ sys.stdout.write("\tStarting Phase shift routine\n")
 status = putByte(USBHandle, 0x00, 0x20, dbg)
 sys.stdout.write("\tStarting Clock Counters\n")
 status = putByte(USBHandle, 0x00, 0x00, dbg)
-pollRegforValue(USBHandle, dbg)
-#readMainClockFreq(USBHandle, dbg)
+#pollRegforValue(USBHandle, dbg)
+readMainClockFreq(USBHandle, dbg)
 readDCMClockFreq(USBHandle, dbg)
 #readBrdClockFreq(USBHandle, dbg)
 #dataflag = getByte(USBHandle, 0x01, dbg)

@@ -79,8 +79,9 @@ def streamBytes(USBHandle, nosBytes, regByte, debug) :
 	streamdataP = POINTER(c_ubyte)
 	streambufBYTE = c_ubyte(nosBytes)
 	streamdataBYTEP = cast(addressof(streambufBYTE), streamdataP)
-  
-	if (depp.DeppGetRegRepeat(USBHandle[0], regByte, streamdataBYTEP, 10, 0)) :
+	nosBytesD = c_ulong
+	nosBytesD = nosBytes
+	if (depp.DeppGetRegRepeat(USBHandle[0], regByte, streamdataBYTEP, nosBytesD, 0)) :
 	  if(debug == 1):
 	    sys.stdout.write("\tStream Data from Reg -> %X \n" %regByte)
 	  return (streamdataBYTEP)
@@ -106,25 +107,40 @@ def streamDataFromBRAM(USBHandle, nosBytes, logfile, debug):
   lbyteValue = [0]*nosBytes
   hbyteValue = [0]*nosBytes
   streamdataV = [0]*nosBytes
-  i = 0
-  log = open(logfile, 'w')
-  while(i<nosBytes):
-    hbyteValue[i] = getRegByte(USBHandle, 0x10, debug)
-    i = i+1
-  status = putRegByte(USBHandle, 0x00, 0x80, debug)
-  status = putRegByte(USBHandle, 0x00, 0x40, debug)  
-  i =0
-  while(i<nosBytes):
-    lbyteValue[i] = getRegByte(USBHandle, 0x11, debug)
-    i = i+1
-  i=0 
-  while(i<nosBytes):
-    streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
-    log.write(str(streamdataV[i]))
-    log.write('\n')
-    i = i+1
-  log.close()  
-  
+  if(debug == 2):
+    i = 0
+    log = open(logfile, 'w')
+    while(i<nosBytes):
+      hbyteValue[i] = getRegByte(USBHandle, 0x10, debug)
+      i = i+1
+    status = putRegByte(USBHandle, 0x00, 0x80, debug)
+    status = putRegByte(USBHandle, 0x00, 0x40, debug)  
+    i =0
+    while(i<nosBytes):
+      lbyteValue[i] = getRegByte(USBHandle, 0x11, debug)
+      i = i+1
+    i=0 
+    while(i<nosBytes):
+      streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
+      log.write(str(streamdataV[i]))
+      log.write('\n')
+      i = i+1
+    log.close() 
+    
+  if(debug == 3):
+    i=0
+    log = open(logfile, 'w')
+    hbyteValue = streamBytes(USBHandle, nosBytes, 0x10, debug)
+    status = putRegByte(USBHandle, 0x00, 0x80, debug)
+    status = putRegByte(USBHandle, 0x00, 0x40, debug) 
+    lbyteValue = streamBytes(USBHandle, nosBytes, 0x11, debug)
+    while(i<nosBytes):
+      streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
+      log.write(str(streamdataV[i]))
+      log.write('\n')
+      i = i+1
+    log.close()
+    
   return streamdataV
 
   

@@ -37,7 +37,7 @@ def stressTest(USBHandle, stress_count, debug):
 DeviceName = 'Nexys3'
 stressnos = 50
 streamBytesnos = 20000
-debug = 0
+debug = 2
 dataStreamFile = 'dataStream.txt'
 
 #Clearing Screen

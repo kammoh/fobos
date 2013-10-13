@@ -183,13 +183,14 @@ end component;
 	signal	regEppAdr	: std_logic_vector(7 downto 0); -- change here 3 downto 0
 	signal	regData0	: std_logic_vector(7 downto 0);
 	signal	regData1	: std_logic_vector(7 downto 0);
-   signal   regData2	: std_logic_vector(7 downto 0);
-   signal   regData3	: std_logic_vector(7 downto 0);
-    -- signal  regData4	: std_logic_vector(7 downto 0);
+	signal   regData2	: std_logic_vector(7 downto 0);
+	signal   regData3	: std_logic_vector(7 downto 0);
+ --   signal  regData4	: std_logic_vector(7 downto 0);
 	-- signal	regData5	: std_logic_vector(7 downto 0);
 	-- signal	regData6	: std_logic_vector(7 downto 0);
 	-- signal	regData7	: std_logic_vector(7 downto 0);
 	-- signal	regLed		: std_logic_vector(7 downto 0);
+	signal status_register : std_logic_vector( 7 downto 0);
 
 	signal	cntr		: std_logic_vector(23 downto 0);
 	
@@ -197,8 +198,8 @@ end component;
     signal ref_cnt_load, Z1sec   : std_logic;
 	 signal to_store : std_logic_vector(4 downto 0);
     signal ref_clock_counter_out : std_logic_vector(31 downto 0);
-	signal DCM_clock_Check500KHz1, DCM_clock_Check100MHz1             : std_logic_vector(31 downto 0); 
-	signal DCM_clock_Check, DCM_clock_Check500KHz, DCM_clock_Check100MHz   : std_logic_vector(31 downto 0);
+	signal DCM_clock_Check500KHz1, Main_clock_Check100MHz1             : std_logic_vector(31 downto 0); 
+	signal DCM_clock_Check, DCM_clock_Check500KHz, Main_clock_Check100MHz   : std_logic_vector(31 downto 0);
 
     signal clock_100MHz_BUF, clock_500KHz_BUF, clock_100MHz, clock_500KHz, dcm500KHz_locked, dcm100MHz_locked: std_logic;
 	
@@ -245,28 +246,29 @@ begin
 
 
 	-- Decode the address register and select the appropriate data register
-	busEppData <=	regData0 								when regEppAdr = "00000000" else ---Control Register
-					DCM_clock_Check500KHz(31 downto 24) 	when regEppAdr = "00000001" else ---DCM Clock Check from 500KHz
-					DCM_clock_Check500KHz(23 downto 16) 	when regEppAdr = "00000010" else ---DCM Clock Check from 500KHz
-					DCM_clock_Check500KHz(15 downto 8)  	when regEppAdr = "00000011" else ---DCM Clock Check from 500KHz
-					DCM_clock_Check500KHz(7 downto 0)   	when regEppAdr = "00000100" else ---DCM Clock Check from 500KHz
-					data2pc						  			when regEppAdr = "00000101" else ---DCM Clock Check from 500KHz
-					regData1						  		when regEppAdr = "00000110" else ---Data from Victim
-					DCM_clock_Check100MHz(31 downto 24) 	when regEppAdr = "00000111" else ---Switch to ROM OF Victim
-					DCM_clock_Check100MHz(23 downto 16) 	when regEppAdr = "00001000" else ---DCM Clock Check from 100MHz
-					DCM_clock_Check100MHz(15 downto 8)  	when regEppAdr = "00001001" else ---DCM Clock Check from 100MHz
-					DCM_clock_Check100MHz(7 downto 0)   	when regEppAdr = "00001010" else ---DCM Clock Check from 100MHz
-					captured_data(15 downto 8)  			when regEppAdr = "00001011" else ---Data from ADC
-					captured_data(7 downto 0)   			when regEppAdr = "00001100" else ---Data from ADC
+	busEppData <=						    regData0    when regEppAdr = "00000000" else ---Control Register
+					Main_clock_Check100MHz(31 downto 24) 	when regEppAdr = "00000001" else ---MAIN Clock Check from 100MHz
+					Main_clock_Check100MHz(23 downto 16) 	when regEppAdr = "00000010" else ---MAIN Clock Check from 100MHz
+					Main_clock_Check100MHz(15 downto 8)  	when regEppAdr = "00000011" else ---MAIN Clock Check from 100MHz
+					Main_clock_Check100MHz(7 downto 0)   	when regEppAdr = "00000100" else ---MAIN Clock Check from 100MHz
+					data2pc				        when regEppAdr = "00000101" else ---Data form Victim
+					regData1				when regEppAdr = "00000110" else ---
+					DCM_clock_Check500KHz(31 downto 24) 	when regEppAdr = "00000111" else ---DCM Clock Check from 500KHz
+					DCM_clock_Check500KHz(23 downto 16) 	when regEppAdr = "00001000" else ---DCM Clock Check from 500KHz
+					DCM_clock_Check500KHz(15 downto 8)  	when regEppAdr = "00001001" else ---DCM Clock Check from 500KHz
+					DCM_clock_Check500KHz(7 downto 0)   	when regEppAdr = "00001010" else ---DCM Clock Check from 500KHz
+					captured_data(15 downto 8)  		when regEppAdr = "00001011" else ---Data from ADC
+					captured_data(7 downto 0)   		when regEppAdr = "00001100" else ---Data from ADC
 					 "000000" & int_addGen(17 downto 16)    when regEppAdr = "00001101" else ---intAddress to BRAM
-					int_addGen (15 downto 8)    			when regEppAdr = "00001110" else ---intAddress to BRAM
-					int_addGen (7 downto 0)					when regEppAdr = "00001111" else ---intAddress to BRAM
-					trigger_cnt100M(31 downto 24) 			when regEppAdr = "00010000" else ---Trigger Check from 100MHz
-					trigger_cnt100M(23 downto 16) 			when regEppAdr = "00010001" else ---Trigger Check from 100MHz
-					trigger_cnt100M(15 downto 8)  			when regEppAdr = "00010010" else ---Trigger Check from 100MHz
-					trigger_cnt100M(7 downto 0)   			when regEppAdr = "00010011" else ---Trigger Check from 100MHz
-					trigger_cnt500K(15 downto 8)  			when regEppAdr = "00010100" else ---Trigger Check from 500KHz
-					trigger_cnt500K(7 downto 0)   			when regEppAdr = "00010101" else ---Trigger Check from 500KHz
+					int_addGen (15 downto 8)    		when regEppAdr = "00001110" else ---intAddress to BRAM
+					int_addGen (7 downto 0)			when regEppAdr = "00001111" else ---intAddress to BRAM
+					trigger_cnt100M(31 downto 24) 		when regEppAdr = "00010000" else ---Trigger Check from 100MHz
+					trigger_cnt100M(23 downto 16) 		when regEppAdr = "00010001" else ---Trigger Check from 100MHz
+					trigger_cnt100M(15 downto 8)  		when regEppAdr = "00010010" else ---Trigger Check from 100MHz
+					trigger_cnt100M(7 downto 0)   		when regEppAdr = "00010011" else ---Trigger Check from 100MHz
+					trigger_cnt500K(15 downto 8)  		when regEppAdr = "00010100" else ---Trigger Check from 500KHz
+					trigger_cnt500K(7 downto 0)   		when regEppAdr = "00010101" else ---Trigger Check from 500KHz
+					status_register                         when regEppAdr = "00010110" else --- Status Register
 					"00000000";
 					
     ------------------------------------------------------------------------
@@ -395,7 +397,7 @@ begin
 		begin
 			if clkMain = '1' and clkMain'Event then
 				if ctlEppDwr = '1' and regEppAdr = "00000000" then
-					regData0 <= busEppIn;
+					regData0 <= busEppIn; -- Control Register
 				end if;
 			end if;
 		end process;
@@ -425,7 +427,7 @@ begin
 					regData3 <= busEppIn;
 				end if;
 			end if;
-		end process;		
+		end process;	
 
 	------------------------------------------------------------------------
     -- Heart-beat Counter for fancy LED blinking
@@ -446,21 +448,26 @@ begin
       port map (I=>clock_500KHz,
                 O=>clock_500KHz_BUF);	
 					 
-
-	-------------------------------------------------------------------------
-    -- DCM Core for 100MHz Clock Generation
-    -------------------------------------------------------------------------
-        DCM_inst1 : dcm_core_100MHz port map (CLKIN_IN => mclk,
-		RST_IN => regData0(7), CLK100MHz_OUT => clock_100MHz, 
-		LOCKED_OUT => dcm100MHz_locked);
-	
-	
-	-----------------------------------------------------------------------
-    -- DCM 100 MHz Frequency Checker
     -----------------------------------------------------------------------
-		system_reset <= regData0(7) and (not dcm100MHz_locked) and (not dcm500KHz_locked);
-		  
-		  -- Reference counter for both freq checks
+    -- Main Control Signals
+    -----------------------------------------------------------------------
+    system_reset <= regData0(0);
+    clock_counter_reset <= regData0(1);
+    -----------------------------------------------------------------------
+    -- Status Register Control Signals
+    -----------------------------------------------------------------------
+    status_register(0)<= dcm500KHz_locked; -- dcm locked
+    status_register(1)<= Z1sec;            -- Counters finished counting
+    status_register(2)<= '0';
+    status_register(3)<= '0';
+    status_register(4)<= '0';
+    status_register(5)<= '0';
+    status_register(6)<= '0';
+    status_register(7)<= '0';
+    -----------------------------------------------------------------------
+    -- Main 100 MHz Frequency Checker
+    -----------------------------------------------------------------------
+    -- Reference counter for both freq checks
 		  
         Ref_Clock_Counter : counter generic map (N=> 32)
 		   port map(clk=> mclk, reset => system_reset, enable => ref_cnt_load,
@@ -469,18 +476,18 @@ begin
 		   Z1sec <= '1' when (ref_clock_counter_out >= x"02FAF080") else '0';	--1sec + (1000)d for spartan3 at 50 MHz
 		   ref_cnt_load <= not Z1sec;
 			
-        DCM_Clock_Counter_100MHz : counter generic map (N => 32)
-		   port map (clk=> clock_100MHz, reset => system_reset, enable => ref_cnt_load,
-			counter_out => DCM_clock_Check100MHz1 );
+        Main_Clock_Counter_100MHz : counter generic map (N => 32)
+		   port map (clk=> mclk, reset => clock_counter_reset, enable => ref_cnt_load,
+			counter_out => Main_clock_Check100MHz1 );
         
-		DCM_Clock_Counter_Reg_100MHz : rege32 port map ( a  => DCM_clock_Check100MHz1, clk => mclk,
-		  reset => system_reset, en => Z1sec, b => DCM_clock_Check100MHz);
+	Main_Clock_Counter_Reg_100MHz : rege32 port map ( a  => DCM_clock_Check100MHz1, clk => mclk,
+		  reset => clock_counter_reset, en => Z1sec, b => Main_clock_Check100MHz);
 	
-	-------------------------------------------------------------------------
-    -- DCM Core for 500KHz Clock Generation
+    -------------------------------------------------------------------------
+    -- DCM Core for 500KHz Clock Generation - Victim Clocj
     -------------------------------------------------------------------------
         DCM_inst2 : dcm_core_500KHz port map (CLKIN_IN => mclk,
-		RST_IN => regData0(7), CLK500KHz_OUT => clock_500KHz, 
+		RST_IN => system_reset, CLK500KHz_OUT => clock_500KHz, 
 		LOCKED_OUT => dcm500KHz_locked);
 	
 	-----------------------------------------------------------------------
@@ -490,8 +497,8 @@ begin
 		   port map (clk=> clock_500KHz, reset => system_reset, enable => ref_cnt_load,
 			counter_out => DCM_clock_Check500KHz1 );
         
-		DCM_Clock_Counter_Reg_500KHz : rege32 port map ( a  => DCM_clock_Check500KHz1, clk => mclk,
-		  reset => system_reset, en => Z1sec, b => DCM_clock_Check500KHz);
+      DCM_Clock_Counter_Reg_500KHz : rege32 port map ( a  => DCM_clock_Check500KHz1, clk => mclk,
+		  reset => clock_counter_reset, en => Z1sec, b => DCM_clock_Check500KHz);
 		  
 	-------------------------------------------------------------------------
     -- ADC Control Signals & PWM Generator for Gain
