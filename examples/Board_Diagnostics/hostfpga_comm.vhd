@@ -13,7 +13,13 @@ port (
   EppDB  : inout std_logic_vector(7 downto 0); -- port data bus
   EppWait: out std_logic;       -- Port wait signal
   displayLED : out std_logic_vector(7 downto 0);
-  cergbanner : out std_logic_vector(11 downto 0)
+  cergbanner : out std_logic_vector(11 downto 0);
+  -- ADC PORTS
+  adc_clock : out std_logic;
+  amp_gain : out std_logic;
+  amp_hilo : out std_logic;
+  adc_data : in std_logic_vector(9 downto 0);
+  adc_or : in std_logic
 );
 end hostfpga_comm;
 
@@ -98,6 +104,9 @@ signal int_addressGen_BRAM, bram_address, addressGen_BRAM : std_logic_vector(15 
 signal z20k, int_addressGen_BRAM_enable, bram_extaddress_reset, bram_extaddress_enable: std_logic; 
 signal system_reset, frequency_counter_reset : std_logic;
 signal datatoBRAM  : std_logic_vector(15 downto 0);
+signal pwmAccumulator : std_logic_vector(8 downto 0);
+signal dataFromAdc : std_logic_vector(15 downto 0);
+signal counter_adc_select, bram_data_collect_start : std_logic;
 ------------------------------------------------------------------------
 -- Data Registers Declarations
 ------------------------------------------------------------------------
@@ -105,7 +114,8 @@ signal dataReg0 : std_logic_vector(7 downto 0); -- address 00
 signal dataReg1 : std_logic_vector(7 downto 0); -- address 01
 signal bram_output : std_logic_vector(15 downto 0); -- address 10, 11
 signal mainclockfrequency : std_logic_vector(31 downto 0); -- address 20,21,22,23
-
+signal adcGain : std_logic_vector(7 downto 0); -- address 60
+signal adcAmp : std_logic_vector(7 downto 0); -- address 61
 ------------------------------------------------------------------------
 -- Display (LED) Registers Declarations
 ------------------------------------------------------------------------
@@ -165,6 +175,10 @@ fpgatohost_data <=  dataReg0 when regEppAdrOut = x"00" else
 		    displayReg when regEppAdrOut = x"40" else
 		    ----------------------------------------
 		    programOK  when regEppAdrOut = x"50" else
+			----------------------------------------
+			adcGain when regEppAdrOut = x"60" else
+			adcAmp when regEppAdrOut = x"61" else
+			----------------------------------------
 		    x"00";
 	
 ------------------------------------------------------------------------
@@ -184,6 +198,24 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 	if clk = '1' and clk'Event then
 		if ctlEppDwrOut = '1' and regEppAdrOut = x"01" then
 			dataReg1 <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"60" then
+			adcGain <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"61" then
+			adcAmp <= hosttofpga_data;
 		end if;
 	end if;
 end process;
@@ -227,6 +259,8 @@ system_reset <= controlReg(0);
 frequency_counter_reset <= controlReg(1);
 bram_extaddress_reset <= dataReg0(7);
 bram_extaddress_enable <= dataReg0(6);
+counter_adc_select <= dataReg0(5);
+bram_data_collect_start <= dataReg0(0);
 ------------------------------------------------------------------------
 -- Frequency checkers
 ------------------------------------------------------------------------
@@ -234,12 +268,32 @@ mainclock : frequency_counter port map (refclk => clk,
 sampleclk => clk, reset => frequency_counter_reset,
 frequency_counter_out => mainclockfrequency);
 
-
+------------------------------------------------------------------------
+-- ADC Ports In/Out
+------------------------------------------------------------------------
+-- ADC Clock
+adc_clock <= clk;
+------------------------------------------------------------------------
+--ADC Gain
+process (clk, adcGain)
+	begin
+		if clk = '1' and clk'Event then
+			pwmAccumulator <= ("0" & pwmAccumulator(7 downto 0))
+									 + ("0" & adcGain);
+		end if;
+end process;
+amp_gain <= pwmAccumulator(8);
+------------------------------------------------------------------------
+-- ADC Amplifier Hi/Lo
+amp_hilo <= adcAmp(0);
+------------------------------------------------------------------------
+--ADC data in 10-bit + adc_or(1-bit)+"00000"
+dataFromAdc <= "00000" & adc_or & adc_data;
 ------------------------------------------------------------------------
 -- BRAM Declarations and Address counters
 ------------------------------------------------------------------------
 Internal_BRAM_Address_Generator : counter generic map (N => 16) port map(
-clk => clk, reset => system_reset, enable => int_addressGen_BRAM_enable,
+clk => clk, reset => bram_data_collect_start, enable => int_addressGen_BRAM_enable,
 counter_out => int_addressGen_BRAM);
 
 z20k <= '1' when int_addressGen_BRAM >= "000100111000100000" else '0';
@@ -251,7 +305,8 @@ clk=> EppDstb, reset =>bram_extaddress_reset, enable => bram_extaddress_enable, 
 bram_address <= int_addressGen_BRAM when bram_extaddress_enable = '0' else
 addressGen_BRAM;
 
-datatoBRAM <= "000000" & int_addressGen_BRAM(9 downto 0);
+datatoBRAM <= "000000" & int_addressGen_BRAM(9 downto 0) when counter_adc_select = '0' else dataFromAdc;
+
 bram_data_store : bram_adc_store port map
 (clock => clk, addr  => bram_address(14 downto 0), wen   => int_addressGen_BRAM_enable,
 en => active, din   => datatoBRAM, dout  => bram_output);
