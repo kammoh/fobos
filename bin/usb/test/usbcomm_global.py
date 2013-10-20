@@ -9,9 +9,10 @@ if (sys.platform == "linux2" ):
  cdll.LoadLibrary("libdmgr.so")
  dmgr = CDLL("libdmgr.so")
 elif (sys.platform == "win32" ):
- windll.LoadLibrary("dmgr.dll")
- dmgr = WinDLL("dmgr.dll")
- windll.LoadLibrary("depp.dll")
+ cdll.LoadLibrary("dmgr.dll")
+ dmgr = CDLL("dmgr.dll")
+ cdll.LoadLibrary("depp.dll")
+ depp = CDLL("depp.dll")
    
 VERSION = '0.2'
 SUCCESS = True

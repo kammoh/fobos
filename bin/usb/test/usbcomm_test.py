@@ -39,7 +39,7 @@ stressnos = 50
 streamBytesnos = 20000
 debug = 3
 dataStreamFile = 'dataStream.txt'
-dataToStream = OPENADC #COUNTER/OPENADC
+dataToStream = COUNTER #COUNTER/OPENADC
 
 #Clearing Screen
 clear_screen()  
