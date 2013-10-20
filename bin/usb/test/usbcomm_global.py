@@ -16,8 +16,8 @@ elif (sys.platform == "win32" ):
 VERSION = '0.2'
 SUCCESS = True
 FAILURE = False
-COUNTER = 0
-OPENADC = 1
+COUNTER = 'counter'
+OPENADC = 'openADC'
 # Defining types to ctypes
 
 #Error Pointer Definition

@@ -114,7 +114,7 @@ def streamDataFromBRAM(USBHandle, nosBytes, logfile, dataToStream, debug):
     i = 0
     log = open(logfile, 'w')
     status = putRegByte(USBHandle, 0x00, 0x01, debug) # Reset High
-	if (dataToStream == COUNTER):
+    if (dataToStream == COUNTER):
 		status = putRegByte(USBHandle, 0x00, 0x00, debug) # Reset Low|Counter input
 		status = putRegByte(USBHandle, 0x00, 0x80, debug)
 		status = putRegByte(USBHandle, 0x00, 0x40, debug)
@@ -133,7 +133,7 @@ def streamDataFromBRAM(USBHandle, nosBytes, logfile, dataToStream, debug):
 			log.write(str(streamdataV[i]))
 			log.write('\n')
 			i = i+1
-	if (dataToStream == OPENADC):
+    if (dataToStream == OPENADC):
 		status = putRegByte(USBHandle, 0x00, 0x20, debug) # Reset Low|Counter input
 		status = putRegByte(USBHandle, 0x00, 0xA0, debug)
 		status = putRegByte(USBHandle, 0x00, 0x60, debug)
@@ -158,7 +158,7 @@ def streamDataFromBRAM(USBHandle, nosBytes, logfile, dataToStream, debug):
     i=0
     log = open(logfile, 'w')
     status = putRegByte(USBHandle, 0x00, 0x01, debug) # Reset High
-	if (dataToStream == COUNTER):
+    if (dataToStream == COUNTER):
 		status = putRegByte(USBHandle, 0x00, 0x00, debug) # Reset Low|Counter input
 		time.sleep(1)
 		status = putRegByte(USBHandle, 0x00, 0x80, debug)
@@ -172,8 +172,8 @@ def streamDataFromBRAM(USBHandle, nosBytes, logfile, dataToStream, debug):
 			log.write(str(streamdataV[i]))
 			log.write('\n')
 			i = i+1
-			log.close()
-	elif(dataToStream == OPENADC):
+		log.close()
+    elif(dataToStream == OPENADC):
 		status = putRegByte(USBHandle, 0x00, 0x20, debug) # Reset Low|Counter input
 		time.sleep(1)
 		status = putRegByte(USBHandle, 0x00, 0xA0, debug)
@@ -187,7 +187,7 @@ def streamDataFromBRAM(USBHandle, nosBytes, logfile, dataToStream, debug):
 			log.write(str(streamdataV[i]))
 			log.write('\n')
 			i = i+1
-			log.close()    
+		log.close()    
   return streamdataV
 
   

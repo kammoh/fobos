@@ -39,7 +39,7 @@ stressnos = 50
 streamBytesnos = 20000
 debug = 3
 dataStreamFile = 'dataStream.txt'
-dataToStream = COUNTER #COUNTER/OPENADC
+dataToStream = OPENADC #COUNTER/OPENADC
 
 #Clearing Screen
 clear_screen()  
@@ -70,7 +70,7 @@ stressTest(USBHandle, stressnos, debug)
 sys.stdout.write("\tPolling On-Board Frequency Counters\n")
 readMainClockFreq(USBHandle, DeviceName, debug)
 
-sys.stdout.write("\tTesting Data Streaming ..\n")
+sys.stdout.write("\tTesting Data Streaming %s values..\n" % dataToStream)
 startTime = time()
 sys.stdout.write("\t\tStreaming %d values\n" % streamBytesnos)
 dataFromFPGA = streamDataFromBRAM(USBHandle, streamBytesnos, dataStreamFile, dataToStream, debug)
