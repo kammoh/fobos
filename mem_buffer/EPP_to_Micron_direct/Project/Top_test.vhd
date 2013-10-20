@@ -43,18 +43,13 @@ architecture top_test_arch of Top_test is
 
 BEGIN
 
---FIFO Module
---FIFO_16 : ENTITY work.FIFO_16(FIFO_16_a)
---  PORT MAP(
---    clk=> CLOCK,
---    rst=>,
---    din=>,
---    wr_en=>,
---    rd_en=>,
---    dout=>,
---    full=>,
---    empty=>
---  );
+--Controller
+--Controller : ENTITY work.Controller(cont_arch)
+--port map(
+
+
+--        );
+
 
 
 --memModule
@@ -85,9 +80,26 @@ Port map(
 			MemDB=> MemDB,
 			
 			FlashByte=> FlashByte,
-			MemCtrlEnabled=> MemCtrlEnabled);
+			MemCtrlEnabled=> MemCtrlEnabled
+			);
 			
 
+
+
+
+
+--FIFO Module
+--FIFO_16 : ENTITY work.FIFO_16(FIFO_16_a)
+--  PORT MAP(
+--    clk=> CLOCK,
+--    rst=>,
+--    din=>,
+--    wr_en=>,
+--    rd_en=>,
+--    dout=>,
+--    full=>,
+--    empty=>
+--  );
 
 
 end top_test_arch;

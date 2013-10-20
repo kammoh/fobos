@@ -276,9 +276,9 @@ begin
                          EppAstb = '0' and 
                          EppWr = '0' else 
                 '0';
-   ctlEppDwrOut <= '1' when (stEppCur = stEppRegTransf or 
-                             stEppCur = stEppSetProc) 
-                         and EppDstb = '0' 
+   ctlEppDwrOut <= '1' when (stEppCur = stEppRegTransf or
+                             stEppCur = stEppSetProc)
+                         and EppDstb = '0'
                          and EppWr = '0' else 
                    '0';
    ctlEppStartOut <= '1' when stEppCur = stEppLaunchProc else 
