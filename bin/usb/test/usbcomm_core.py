@@ -46,8 +46,8 @@ def initialize_usbcomm(DeviceName):
       status = depp.DeppEnableEx(handle[0], 0)
       if (status == SUCCESS):
 	sys.stdout.write("\tDepp protocol enabled at Port 0\n")
-	depp.DeppGetVersion(ResultString)
-	sys.stdout.write("\tDepp protocol version -> %s\n"% ResultString[0:10])
+#	depp.DeppGetVersion(ResultString)
+#	sys.stdout.write("\tDepp protocol version -> %s\n"% ResultString[0:10])
 	sys.stdout.write("-----------------------------------------------\n") 
 	return handle
       else:
@@ -193,7 +193,7 @@ def streamDataFromBRAM(USBHandle, nosBytes, logfile, dataToStream, debug):
   
 def terminate_usbcomm(USBHandle):
     depp.DeppDisable(USBHandle[0])
-    depp.DmgrClose(USBHandle[0])
+   # depp.DmgrClose(USBHandle[0])
 
 
 

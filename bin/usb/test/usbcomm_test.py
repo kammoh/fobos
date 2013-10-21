@@ -39,7 +39,7 @@ stressnos = 50
 streamBytesnos = 20000
 debug = 3
 dataStreamFile = 'dataStream.txt'
-dataToStream = COUNTER #COUNTER/OPENADC
+dataToStream = OPENADC #COUNTER/OPENADC
 
 #Clearing Screen
 clear_screen()  
@@ -80,7 +80,7 @@ sys.stdout.write("\t\tStreaming %d values\n" % streamBytesnos)
 dataFromFPGA = streamDataFromBRAM(USBHandle, streamBytesnos, dataStreamFile, dataToStream, debug)
 sys.stdout.write("\t\tWrote to %s\n " % dataStreamFile
 + "\t\tTime Taken - %s sec\n" % str(time() - startTime) 
-+ "\t\tSpeed - %s Mbytes/Sec\n" % str(int((streamBytesnos/1000)/(time() - startTime))))
++ "\t\tSpeed - XXMbytes/Sec\n" )
 
 plt.plot(dataFromFPGA)
 plt.ylabel('Data')
