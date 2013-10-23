@@ -5,7 +5,7 @@ import sys
 import argparse
 from ctypes import *
 import os
-from usbcomm_global import * 
+from usbcomm_global import *
 from usbcomm_core import *
 import traceback
 import time
