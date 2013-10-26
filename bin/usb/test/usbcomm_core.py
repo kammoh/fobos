@@ -45,15 +45,15 @@ def initialize_usbcomm(DeviceName):
       sys.stdout.write("Initializing USB - FPGA Communication... \n")
       status = depp.DeppEnableEx(handle[0], 0)
       if (status == SUCCESS):
-	sys.stdout.write("\tDepp protocol enabled at Port 0\n")
-	depp.DeppGetVersion(ResultString)
-	sys.stdout.write("\tDepp protocol version -> %s\n"% ResultString[0:10])
-	sys.stdout.write("-----------------------------------------------\n") 
-	return handle
+        sys.stdout.write("\tDepp protocol enabled at Port 0\n")
+        #depp.DeppGetVersion(ResultString)
+        #sys.stdout.write("\tDepp protocol version -> %s\n"% ResultString[0:10])
+        sys.stdout.write("-----------------------------------------------\n")
+        return handle
       else:
-	sys.stdout.write("\tDepp protocol not enabled. Exiting Program\n")
-	dmgr.DmgrClose(handle[0])
-	sys.exit(0)
+        sys.stdout.write("\tDepp protocol not enabled. Exiting Program\n")
+        dmgr.DmgrClose(handle[0])
+        sys.exit(0)
     else:
       sys.stdout.write("\tUSB Communication Failure. Exiting Program \n")
       sys.exit(0)
@@ -115,43 +115,43 @@ def streamDataFromBRAM(USBHandle, nosBytes, logfile, dataToStream, debug):
     log = open(logfile, 'w')
     status = putRegByte(USBHandle, 0x00, 0x01, debug) # Reset High
     if (dataToStream == COUNTER):
-		status = putRegByte(USBHandle, 0x00, 0x00, debug) # Reset Low|Counter input
-		status = putRegByte(USBHandle, 0x00, 0x80, debug)
-		status = putRegByte(USBHandle, 0x00, 0x40, debug)
-		while(i<nosBytes):
-			hbyteValue[i] = getRegByte(USBHandle, 0x10, debug)
-			i = i+1
-		status = putRegByte(USBHandle, 0x00, 0x80, debug)
-		status = putRegByte(USBHandle, 0x00, 0x40, debug)  
-		i =0
-		while(i<nosBytes):
-			lbyteValue[i] = getRegByte(USBHandle, 0x11, debug)
-			i = i+1
-		i=0 
-		while(i<nosBytes):
-			streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
-			log.write(str(streamdataV[i]))
-			log.write('\n')
-			i = i+1
+      status = putRegByte(USBHandle, 0x00, 0x00, debug) # Reset Low|Counter input
+      status = putRegByte(USBHandle, 0x00, 0x80, debug)
+      status = putRegByte(USBHandle, 0x00, 0x40, debug)
+      while(i<nosBytes):
+        hbyteValue[i] = getRegByte(USBHandle, 0x10, debug)
+        i = i+1
+      status = putRegByte(USBHandle, 0x00, 0x80, debug)
+      status = putRegByte(USBHandle, 0x00, 0x40, debug)
+      i =0
+      while(i<nosBytes):
+        lbyteValue[i] = getRegByte(USBHandle, 0x11, debug)
+        i = i+1
+      i=0
+      while(i<nosBytes):
+        streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
+        log.write(str(streamdataV[i]))
+        log.write('\n')
+        i = i+1
     if (dataToStream == OPENADC):
-		status = putRegByte(USBHandle, 0x00, 0x20, debug) # Reset Low|Counter input
-		status = putRegByte(USBHandle, 0x00, 0xA0, debug)
-		status = putRegByte(USBHandle, 0x00, 0x60, debug)
-		while(i<nosBytes):
-			hbyteValue[i] = getRegByte(USBHandle, 0x10, debug)
-			i = i+1
-		status = putRegByte(USBHandle, 0x00, 0xA0, debug)
-		status = putRegByte(USBHandle, 0x00, 0x60, debug)  
-		i =0
-		while(i<nosBytes):
-			lbyteValue[i] = getRegByte(USBHandle, 0x11, debug)
-			i = i+1
-		i=0 
-		while(i<nosBytes):
-			streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
-			log.write(str(streamdataV[i]))
-			log.write('\n')
-			i = i+1
+      status = putRegByte(USBHandle, 0x00, 0x20, debug) # Reset Low|Counter input
+      status = putRegByte(USBHandle, 0x00, 0xA0, debug)
+      status = putRegByte(USBHandle, 0x00, 0x60, debug)
+      while(i<nosBytes):
+        hbyteValue[i] = getRegByte(USBHandle, 0x10, debug)
+        i = i+1
+      status = putRegByte(USBHandle, 0x00, 0xA0, debug)
+      status = putRegByte(USBHandle, 0x00, 0x60, debug)  
+      i =0
+      while(i<nosBytes):
+        lbyteValue[i] = getRegByte(USBHandle, 0x11, debug)
+        i = i+1
+      i=0 
+      while(i<nosBytes):
+        streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
+        log.write(str(streamdataV[i]))
+        log.write('\n')
+        i = i+1
     log.close() 
     
   if(debug == 3):
@@ -159,41 +159,42 @@ def streamDataFromBRAM(USBHandle, nosBytes, logfile, dataToStream, debug):
     log = open(logfile, 'w')
     status = putRegByte(USBHandle, 0x00, 0x01, debug) # Reset High
     if (dataToStream == COUNTER):
-		status = putRegByte(USBHandle, 0x00, 0x00, debug) # Reset Low|Counter input
-		time.sleep(1)
-		status = putRegByte(USBHandle, 0x00, 0x80, debug)
-		status = putRegByte(USBHandle, 0x00, 0x40, debug)
-		hbyteValue = streamBytes(USBHandle, nosBytes, 0x10, debug)
-		status = putRegByte(USBHandle, 0x00, 0x80, debug)
-		status = putRegByte(USBHandle, 0x00, 0x40, debug) 
-		lbyteValue = streamBytes(USBHandle, nosBytes, 0x11, debug)
-		while(i<nosBytes):
-			streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
-			log.write(str(streamdataV[i]))
-			log.write('\n')
-			i = i+1
-		log.close()
+      status = putRegByte(USBHandle, 0x00, 0x00, debug) # Reset Low|Counter input
+      time.sleep(1)
+      status = putRegByte(USBHandle, 0x00, 0x80, debug)
+      status = putRegByte(USBHandle, 0x00, 0x40, debug)
+      hbyteValue = streamBytes(USBHandle, nosBytes, 0x10, debug)
+      status = putRegByte(USBHandle, 0x00, 0x80, debug)
+      status = putRegByte(USBHandle, 0x00, 0x40, debug)
+      lbyteValue = streamBytes(USBHandle, nosBytes, 0x11, debug)
+      while(i<nosBytes):
+        streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
+        log.write(str(streamdataV[i]))
+        log.write('\n')
+        i = i+1
+      log.close()
     elif(dataToStream == OPENADC):
-		status = putRegByte(USBHandle, 0x00, 0x20, debug) # Reset Low|Counter input
-		time.sleep(1)
-		status = putRegByte(USBHandle, 0x00, 0xA0, debug)
-		status = putRegByte(USBHandle, 0x00, 0x60, debug)
-		hbyteValue = streamBytes(USBHandle, nosBytes, 0x10, debug)
-		status = putRegByte(USBHandle, 0x00, 0xA0, debug)
-		status = putRegByte(USBHandle, 0x00, 0x60, debug) 
-		lbyteValue = streamBytes(USBHandle, nosBytes, 0x11, debug)
-		while(i<nosBytes):
-			streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
-			log.write(str(streamdataV[i]))
-			log.write('\n')
-			i = i+1
-		log.close()    
+      status = putRegByte(USBHandle, 0x00, 0x20, debug) # Reset Low|Counter input
+      time.sleep(1)
+      status = putRegByte(USBHandle, 0x00, 0xA0, debug)
+      status = putRegByte(USBHandle, 0x00, 0x60, debug)
+      hbyteValue = streamBytes(USBHandle, nosBytes, 0x10, debug)
+      status = putRegByte(USBHandle, 0x00, 0xA0, debug)
+      status = putRegByte(USBHandle, 0x00, 0x60, debug)
+      lbyteValue = streamBytes(USBHandle, nosBytes, 0x11, debug)
+      while(i<nosBytes):
+        streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
+        log.write(str(streamdataV[i]))
+        log.write('\n')
+        i = i+1
+      log.close()    
   return streamdataV
 
   
 def terminate_usbcomm(USBHandle):
     depp.DeppDisable(USBHandle[0])
-    depp.DmgrClose(USBHandle[0])
+    if (sys.platform == "linux2" ):
+      depp.DmgrClose(USBHandle[0])
 
 
 

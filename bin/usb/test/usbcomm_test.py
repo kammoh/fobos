@@ -5,7 +5,7 @@ import sys
 import argparse
 from ctypes import *
 import os
-from usbcomm_global import * 
+from usbcomm_global import *
 from usbcomm_core import *
 import traceback
 import time
@@ -80,7 +80,7 @@ sys.stdout.write("\t\tStreaming %d values\n" % streamBytesnos)
 dataFromFPGA = streamDataFromBRAM(USBHandle, streamBytesnos, dataStreamFile, dataToStream, debug)
 sys.stdout.write("\t\tWrote to %s\n " % dataStreamFile
 + "\t\tTime Taken - %s sec\n" % str(time() - startTime) 
-+ "\t\tSpeed - %s Mbytes/Sec\n" % str(int((streamBytesnos/1000)/(time() - startTime))))
++ "\t\tSpeed - XXMbytes/Sec\n" )
 
 plt.plot(dataFromFPGA)
 plt.ylabel('Data')
