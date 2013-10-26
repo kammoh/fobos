@@ -34,12 +34,12 @@ def stressTest(USBHandle, stress_count, debug):
       
     
 #Declare Control Board Here
-DeviceName = 'Nexys3'
+DeviceName = 'Nexys2'
 stressnos = 50
 streamBytesnos = 20000
 debug = 3
 dataStreamFile = 'dataStream.txt'
-dataToStream = OPENADC #COUNTER/OPENADC
+dataToStream = COUNTER #COUNTER/OPENADC
 
 #Clearing Screen
 clear_screen()  
