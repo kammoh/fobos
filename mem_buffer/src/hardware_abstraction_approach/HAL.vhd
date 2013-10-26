@@ -14,7 +14,7 @@ entity HAL is
 			clk_i : in  STD_LOGIC;
 			rst : in  STD_LOGIC;
 			-- Interface to rest of Sample Collection module
-			sample_din : in std_logic_vector(data_width-1 downto 0);
+			sample_din : in std_logic_vector(data_width-1 downto 0) := "1111111111111111";
 			sample_dout : out  STD_LOGIC_VECTOR (data_width-1 downto 0);
 			wr_en : in STD_LOGIC;
 			rd_en : in STD_LOGIC;
@@ -63,14 +63,13 @@ end no_mem;
 
 --#start_arch
 architecture slow_mem of HAL is
-	--This arch will write a unique number to address's 0 to 16k.  
-	--for each memory location 0 to 16k.  It will do one cycle of reading
-	--and then have 1/4 second of idle time.  Idle time is used to show what was read.
-	--it will repeat the reads when it reaches 16k.
+	--This arch will write a unique number to address's 16mb now
+	--It will do one cycle of reading and then have 1/4 second of idle time.
+	--Idle time is used to show what was read.
 	 constant init_time_const : integer := 16000;
 	 constant delay_write_time_const : integer := 9-1;
 	 constant hold_data_time_const : integer := (10**8)/4;
-	 constant max_cnt_const : integer := (2**14)-1;
+	 constant max_cnt_const : integer := (2**24)-1;
 	 type st is (init, do_writes,  delay_write ,do_read, hold_data_for_one_second);
 	 signal nextstate, state : st := init;
 	 type fsm_sig is record
@@ -84,7 +83,7 @@ architecture slow_mem of HAL is
 			signal cur : fsm_sig := ( '0', '0', ( others => '0'), ( others => '0'), 0, 0);
 begin
    addr_o(addr_width-1 downto 0) <= cur.addr_s; 
-   data_o(data_width-1 downto 0) <= "0000000000000000";--cur.data_s; 
+   data_o(data_width-1 downto 0) <= sample_din;--cur.data_s; 
 	we_o <= cur.we_s;
 	go_o <= cur.go_s;
 
@@ -94,10 +93,11 @@ begin
 			cur <= nxt;
 		end if;
 	end process sync_data;
+	
 	output_proc: process(state,  cur)begin
 		nxt <= cur;
 		
-		if state = init then 
+		if state = init then
 			nxt <= ( we_s => '0', go_s => '0', recycle => (cur.recycle + 1), cnt => 0,
 						addr_s => (others => '0'), data_s => (others => '0'));
 			if cur.recycle >= init_time_const then nxt.recycle <= 0; end if;
