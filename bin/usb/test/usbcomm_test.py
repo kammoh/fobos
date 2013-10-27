@@ -72,8 +72,11 @@ readMainClockFreq(USBHandle, DeviceName, debug)
 
 sys.stdout.write("\tTesting Data Streaming %s values..\n" % dataToStream)
 if(dataToStream == OPENADC):
+  status = putRegByte(USBHandle, 0x30, 0x01, debug)
+  status = putRegByte(USBHandle, 0x30, 0x00, debug)
   status = putRegByte(USBHandle, 0x61, 0x00, debug)
   status = putRegByte(USBHandle, 0x60, 0x00, debug)
+  
 
 startTime = time()
 sys.stdout.write("\t\tStreaming %d values\n" % streamBytesnos)
