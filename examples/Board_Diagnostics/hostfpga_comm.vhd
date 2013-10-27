@@ -44,6 +44,7 @@ signal datatoBRAM  : std_logic_vector(15 downto 0);
 signal pwmAccumulator : std_logic_vector(8 downto 0);
 signal dataFromAdc : std_logic_vector(15 downto 0);
 signal counter_adc_select, bram_data_collect_start : std_logic;
+signal ADC_DCM_OK : std_logic;
 ------------------------------------------------------------------------
 -- Data Registers Declarations
 ------------------------------------------------------------------------
@@ -177,14 +178,6 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 	end if;
 end process;
 
-process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
-	begin
-	if clk = '1' and clk'Event then
-		if ctlEppDwrOut = '1' and regEppAdrOut = x"31" then
-			statusReg <= hosttofpga_data;
-		end if;
-	end if;
-end process;
 ------------------------------------------------------------------------
 -- Display (LED) Register
 ------------------------------------------------------------------------
@@ -208,6 +201,17 @@ bram_extaddress_enable <= dataReg0(6);
 counter_adc_select <= dataReg0(5);
 bram_data_collect_start <= dataReg0(0);
 ------------------------------------------------------------------------
+-- Control Signals
+------------------------------------------------------------------------
+statusReg(0) <= ADC_DCM_OK;
+statusReg(1) <= '0';
+statusReg(2) <= '0';
+statusReg(3) <= '0';
+statusReg(4) <= '0';
+statusReg(5) <= '0';
+statusReg(6) <= '0';
+statusReg(7) <= '0';
+------------------------------------------------------------------------
 -- Frequency checkers
 ------------------------------------------------------------------------
 mainclock : frequency_counter port map (refclk => clk,
@@ -218,7 +222,9 @@ frequency_counter_out => mainclockfrequency);
 -- ADC Ports In/Out
 ------------------------------------------------------------------------
 -- ADC Clock
-adc_clock <= clk;
+
+ADC_ClockGen : DCM_ADC generic map (board => board) 
+port map ( clkin => clk, rst => system_reset, clkout => adc_clock, locked_out => ADC_DCM_OK);
 ------------------------------------------------------------------------
 --ADC Gain
 process (clk, adcGain)
