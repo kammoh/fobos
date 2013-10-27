@@ -5,7 +5,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.fobos_package.all;
 
 entity hostfpga_comm is 
-generic (board : integer := NEXYS3);
+generic (board : integer := NEXYS2);
 port (
   clk : in std_logic;           -- system clock
   EppAstb: in std_logic;        -- Address strobe
@@ -45,6 +45,7 @@ signal pwmAccumulator : std_logic_vector(8 downto 0);
 signal dataFromAdc : std_logic_vector(15 downto 0);
 signal counter_adc_select, bram_data_collect_start : std_logic;
 signal ADC_DCM_OK : std_logic;
+signal clktobram : std_logic;
 ------------------------------------------------------------------------
 -- Data Registers Declarations
 ------------------------------------------------------------------------
@@ -224,7 +225,8 @@ frequency_counter_out => mainclockfrequency);
 -- ADC Clock
 
 ADC_ClockGen : DCM_ADC generic map (board => board) 
-port map ( clkin => clk, rst => system_reset, clkout => adc_clock, locked_out => ADC_DCM_OK);
+port map ( clkin => clk, rst => system_reset, clktobramN2 => clktobram,
+clkout => adc_clock, locked_out => ADC_DCM_OK);
 ------------------------------------------------------------------------
 --ADC Gain
 process (clk, adcGain)
@@ -244,9 +246,16 @@ dataFromAdc <= "00000" & adc_or & adc_data;
 ------------------------------------------------------------------------
 -- BRAM Declarations and Address counters
 ------------------------------------------------------------------------
-Internal_BRAM_Address_Generator : counter generic map (N => 16) port map(
-clk => clk, reset => bram_data_collect_start, enable => int_addressGen_BRAM_enable,
+data_from_ADC_STORE_N2 : if (board = NEXYS2) generate
+Internal_BRAM_Address_Generator_N2 : counter generic map (N => 16) port map(
+clk => clktobram, reset => bram_data_collect_start, enable => int_addressGen_BRAM_enable,
 counter_out => int_addressGen_BRAM);
+
+bram_data_store_N2 : bram_adc_store port map
+(clock => clktobram, addr  => bram_address(14 downto 0), wen   => int_addressGen_BRAM_enable,
+en => active, din   => datatoBRAM, dout  => bram_output);
+
+end generate;
 
 z20k <= '1' when int_addressGen_BRAM >= "000100111000100000" else '0';
 int_addressGen_BRAM_enable <= '1' when z20k = '0' else '0';
@@ -259,9 +268,14 @@ addressGen_BRAM;
 
 datatoBRAM <= "000000" & int_addressGen_BRAM(9 downto 0) when counter_adc_select = '0' else dataFromAdc;
 
-bram_data_store : bram_adc_store port map
+data_from_ADC_STORE_N3 : if (board = NEXYS3) generate
+Internal_BRAM_Address_Generator_N3 : counter generic map (N => 16) port map(
+clk => clk, reset => bram_data_collect_start, enable => int_addressGen_BRAM_enable,
+counter_out => int_addressGen_BRAM);
+bram_data_store_N3 : bram_adc_store port map
 (clock => clk, addr  => bram_address(14 downto 0), wen   => int_addressGen_BRAM_enable,
 en => active, din   => datatoBRAM, dout  => bram_output);
+end generate;
 
 end Behavioral;
 
