@@ -2,8 +2,10 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use work.fobos_package.all;
 
 entity frequency_counter is
+generic (board : integer := NEXYS2);
 port (
 refclk : in std_logic;
 sampleclk : in std_logic;
@@ -34,8 +36,14 @@ signal refclk_counter_enable : std_logic;
 signal refclk_counter_out, sampleclk_counter_out : std_logic_vector(31 downto 0);
 
 begin
-                                                          
+
+CNTL_NEXYS2 : if(board = NEXYS2) generate                                                         
+refclk_counter_enable <= '0' when (refclk_counter_out>= x"02FAF080") else '1';
+end generate;
+
+CNTL_NEXYS3 : if(board = NEXYS3) generate                                                          
 refclk_counter_enable <= '0' when (refclk_counter_out>= x"05F5E100") else '1';
+end generate;
 
 refclk_counter : counter generic map (N => 32) port map (clk => refclk, reset => reset,
 enable => refclk_counter_enable, counter_out => refclk_counter_out);

@@ -36,3 +36,18 @@ NET "cergbanner<8>"         LOC = "F17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, 
 NET "cergbanner<9>"         LOC = "H17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L50P_M1UDQS,                    Sch name = AN1
 NET "cergbanner<10>"        LOC = "C18" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L49N_M1DQ11,                    Sch name = AN2
 NET "cergbanner<11>"        LOC = "F15" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L49P_M1DQ10,                    Sch name = AN3
+
+NET "adc_data<9>" LOC = "K12" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L11N_1/A9/RHCLK1, Type = RHCLK/DUAL, Sch name = JA2
+NET "adc_data<7>" LOC = "L17" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L10N_1/VREF_1, Type = VREF, Sch name = JA3
+NET "adc_data<5>" LOC = "M15" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L07P_1, Type = I/O, Sch name = JA4
+NET "adc_or" 	  LOC = "L16" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L09P_1/A12, Type = DUAL, Sch name = JA8
+NET "adc_data<8>" LOC = "M14" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L05P_1, Type = I/O, Sch name = JA9
+NET "adc_data<6>" LOC = "M16" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L07N_1, Type = I/O, Sch name = JA10
+NET "adc_data<3>" LOC = "M13" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L05N_1/VREF_1, Type = VREF, Sch name = JB1
+NET "adc_data<1>" LOC = "R18" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L02P_1/A14, Type = DUAL, Sch name = JB2
+NET "adc_clock"   LOC = "R15" |IOSTANDARD = LVCMOS33 | SLEW=FAST | DRIVE=12; # Bank = 1, Pin name = IO_L03P_1, Type = I/O, Sch name = JB3
+NET "amp_gain" 	  LOC = "T17" |IOSTANDARD = LVCMOS33 | SLEW=SLOW | DRIVE=2; # Bank = 1, Pin name = IO_L01N_1/A15, Type = DUAL, Sch name = JB4
+NET "adc_data<4>" LOC = "P17" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L06P_1, Type = I/O, Sch name = JB7
+NET "adc_data<2>" LOC = "R16" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L03N_1/VREF_1, Type = VREF, Sch name = JB8
+NET "adc_data<0>" LOC = "T18" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L02N_1/A13, Type = DUAL, Sch name = JB9
+NET "amp_hilo" 	  LOC = "U18" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L01P_1/A16, Type = DUAL, Sch name = JB10
