@@ -5,7 +5,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.fobos_package.all;
 
 entity hostfpga_comm is 
-generic (board : integer := NEXYS2);
+generic (board : integer := NEXYS3);
 port (
   clk : in std_logic;           -- system clock
   EppAstb: in std_logic;        -- Address strobe

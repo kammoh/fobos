@@ -50,3 +50,4 @@ NET "adc_data<4>" LOC = "J3" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L
 NET "adc_data<2>" LOC = "J1" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L03N_1/VREF_1, Type = VREF, Sch name = JB8
 NET "adc_data<0>" LOC = "K3" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L02N_1/A13, Type = DUAL, Sch name = JB9
 NET "amp_hilo" 	  LOC = "K5" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L01P_1/A16, Type = DUAL, Sch name = JB10
+PIN "ADC_ClockGen/CLK0_BUFG_INST.O" CLOCK_DEDICATED_ROUTE = FALSE; 
