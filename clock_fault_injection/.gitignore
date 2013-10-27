@@ -1,0 +1,30 @@
+# Ignore everything
+*
+# Don't ignore directories, so we can recurse into them
+!*/
+# Don't ignore .gitignore and *.foo files
+!.gitignore
+!*.java
+!*.txt
+!*.jpg
+!*.sym
+!*.vhd
+!*.pdf
+!*.png
+!*.docx
+!*.ucf
+!*.ppt
+!*.ngc
+!*.pptx
+!*.epf
+!*.s#1
+!*.s#2
+!*.s#3
+!*.s#4
+!*.s#5
+!*.s#6
+!*.s#7
+!*.sch
+!*DESCRIPTION
+
+
