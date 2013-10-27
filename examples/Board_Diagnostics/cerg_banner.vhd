@@ -4,6 +4,7 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity cerg_display is 
+generic (N : integer := 19);
 port (
     clk : in std_logic;
     cergbanner_segment : out std_logic_vector(11 downto 0)
@@ -15,7 +16,7 @@ architecture Behavioral of cerg_display is
 -- Constant and Signal Declarations
 ------------------------------------------------------------------------
 signal ancntr : std_logic_vector(1 downto 0);
-signal hbcntr : std_logic_vector(18 downto 0);
+signal hbcntr : std_logic_vector(N-1 downto 0);
 signal cerg_display_temp : std_logic_vector(7 downto 0);
 constant logic0 : std_logic := '0';
 constant logic1 : std_logic := '1';
@@ -37,7 +38,7 @@ process (clk)
 	end if;
 	end process;
 	
-	hb <= hbcntr(18);
+	hb <= hbcntr(N-1);
 	
 process (hb)
 	begin

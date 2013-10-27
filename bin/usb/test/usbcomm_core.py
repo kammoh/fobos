@@ -193,7 +193,8 @@ def streamDataFromBRAM(USBHandle, nosBytes, logfile, dataToStream, debug):
   
 def terminate_usbcomm(USBHandle):
     depp.DeppDisable(USBHandle[0])
-   # depp.DmgrClose(USBHandle[0])
+    if (sys.platform == "linux2" ):
+      depp.DmgrClose(USBHandle[0])
 
 
 

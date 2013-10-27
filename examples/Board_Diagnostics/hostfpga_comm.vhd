@@ -2,8 +2,10 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use work.fobos_package.all;
 
 entity hostfpga_comm is 
+generic (board : integer := NEXYS2);
 port (
   clk : in std_logic;           -- system clock
   EppAstb: in std_logic;        -- Address strobe
@@ -24,71 +26,6 @@ port (
 end hostfpga_comm;
 
 architecture Behavioral of hostfpga_comm is 
-
-------------------------------------------------------------------------
--- Component Declarations
-------------------------------------------------------------------------
-component cerg_display is 
-port (
-    clk : in std_logic;
-    cergbanner_segment : out std_logic_vector(11 downto 0)
-);
-end component;
-
-component frequency_counter is
-port (
-refclk : in std_logic;
-sampleclk : in std_logic;
-reset : in std_logic;
-frequency_counter_out : out std_logic_vector(31 downto 0));
-end component;
-
-component EppCtrl is
-    Port (
-
--- Epp-like bus signals
-      clk    : in std_logic;        -- system clock (50MHz)
-      EppAstb: in std_logic;        -- Address strobe
-      EppDstb: in std_logic;        -- Data strobe
-      EppWr  : in std_logic;        -- Port write signal
-      EppRst : in std_logic;        -- Port reset signal
-      EppDB  : inout std_logic_vector(7 downto 0); -- port data bus
-      EppWait: out std_logic;       -- Port wait signal
--- User signals
-      busEppOut: out std_logic_vector(7 downto 0); -- Data Output bus
-      busEppIn: in std_logic_vector(7 downto 0);   -- Data Input bus
-      ctlEppDwrOut: out std_logic;         -- Data Write pulse
-      ctlEppRdCycleOut: inout std_logic;   -- Indicates a READ Epp cycle
-      regEppAdrOut: inout std_logic_vector(7 downto 0) := "00000000"; 
-                                         -- Epp Address Register content
-      HandShakeReqIn: in std_logic;      -- User Handshake Request
-      ctlEppStartOut: out std_logic;     -- Automatic process Start   
-      ctlEppDoneIn: in std_logic         -- Automatic process Done 
-         );
-end component;
-
-component counter is
-	generic ( 
-	    N : integer := 32
-	);
-	port ( 	  
-		clk : in std_logic;
-		reset : in std_logic;
---	   load : in std_logic;
-	   enable : in std_logic; 
---		input  : in std_logic_vector(N-1 downto 0);
-      counter_out : out std_logic_vector(N-1 downto 0)
-	);
-end component;
-
-component bram_adc_store is
-    Port (clock : in std_logic;
-		  addr : in std_logic_vector(14 downto 0);
-		  wen : in std_logic;
-		  en : in std_logic;
-		  din : in std_logic_vector(15 downto 0);
-		  dout : out std_logic_vector(15 downto 0));
-end component;
 ------------------------------------------------------------------------
 -- Constant and Signal Declarations
 ------------------------------------------------------------------------
@@ -107,6 +44,7 @@ signal datatoBRAM  : std_logic_vector(15 downto 0);
 signal pwmAccumulator : std_logic_vector(8 downto 0);
 signal dataFromAdc : std_logic_vector(15 downto 0);
 signal counter_adc_select, bram_data_collect_start : std_logic;
+signal ADC_DCM_OK : std_logic;
 ------------------------------------------------------------------------
 -- Data Registers Declarations
 ------------------------------------------------------------------------
@@ -130,9 +68,18 @@ begin
 ------------------------------------------------------------------------
 -- CERG Banner Display
 ------------------------------------------------------------------------
-banner_dis: cerg_display port map (
-			clk => clk,
-			cergbanner_segment => cergbanner);
+
+sevensegdisplayN2_gen : if (board = NEXYS2) generate
+display: cerg_display 
+generic map (N => NEXYS2_7SEGRR)
+port map (clk => clk, cergbanner_segment => cergbanner);
+end generate;
+
+sevensegdisplayN3_gen : if (board = NEXYS3) generate
+display: cerg_display 
+generic map (N => NEXYS3_7SEGRR)
+port map (clk => clk, cergbanner_segment => cergbanner);
+end generate;
 
 ------------------------------------------------------------------------
 -- USB Controller
@@ -231,14 +178,6 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 	end if;
 end process;
 
-process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
-	begin
-	if clk = '1' and clk'Event then
-		if ctlEppDwrOut = '1' and regEppAdrOut = x"31" then
-			statusReg <= hosttofpga_data;
-		end if;
-	end if;
-end process;
 ------------------------------------------------------------------------
 -- Display (LED) Register
 ------------------------------------------------------------------------
@@ -262,6 +201,17 @@ bram_extaddress_enable <= dataReg0(6);
 counter_adc_select <= dataReg0(5);
 bram_data_collect_start <= dataReg0(0);
 ------------------------------------------------------------------------
+-- Control Signals
+------------------------------------------------------------------------
+statusReg(0) <= ADC_DCM_OK;
+statusReg(1) <= '0';
+statusReg(2) <= '0';
+statusReg(3) <= '0';
+statusReg(4) <= '0';
+statusReg(5) <= '0';
+statusReg(6) <= '0';
+statusReg(7) <= '0';
+------------------------------------------------------------------------
 -- Frequency checkers
 ------------------------------------------------------------------------
 mainclock : frequency_counter port map (refclk => clk,
@@ -272,7 +222,9 @@ frequency_counter_out => mainclockfrequency);
 -- ADC Ports In/Out
 ------------------------------------------------------------------------
 -- ADC Clock
-adc_clock <= clk;
+
+ADC_ClockGen : DCM_ADC generic map (board => board) 
+port map ( clkin => clk, rst => system_reset, clkout => adc_clock, locked_out => ADC_DCM_OK);
 ------------------------------------------------------------------------
 --ADC Gain
 process (clk, adcGain)

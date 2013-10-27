@@ -34,12 +34,12 @@ def stressTest(USBHandle, stress_count, debug):
       
     
 #Declare Control Board Here
-DeviceName = 'Nexys3'
+DeviceName = 'Nexys2'
 stressnos = 50
 streamBytesnos = 20000
 debug = 3
 dataStreamFile = 'dataStream.txt'
-dataToStream = OPENADC #COUNTER/OPENADC
+dataToStream = COUNTER #COUNTER/OPENADC
 
 #Clearing Screen
 clear_screen()  
@@ -72,8 +72,12 @@ readMainClockFreq(USBHandle, DeviceName, debug)
 
 sys.stdout.write("\tTesting Data Streaming %s values..\n" % dataToStream)
 if(dataToStream == OPENADC):
+  status = putRegByte(USBHandle, 0x30, 0x01, debug)
+  status = putRegByte(USBHandle, 0x30, 0x00, debug)
+  time.sleep(1)
   status = putRegByte(USBHandle, 0x61, 0x00, debug)
   status = putRegByte(USBHandle, 0x60, 0x00, debug)
+  
 
 startTime = time()
 sys.stdout.write("\t\tStreaming %d values\n" % streamBytesnos)
