@@ -76,7 +76,7 @@ if(dataToStream == OPENADC):
   status = putRegByte(USBHandle, 0x30, 0x00, debug)
   time.sleep(1)
   status = putRegByte(USBHandle, 0x61, 0x00, debug) ## Amp Hi ->01 Lo -> 00
-  status = putRegByte(USBHandle, 0x60, 0x00, debug) ## Gain Values - 0-255 
+  status = putRegByte(USBHandle, 0x60, 0x00, debug) ## Gain Values - 00 - FF (33% -> 55)
   
 
 startTime = time()
