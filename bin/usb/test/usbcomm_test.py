@@ -12,7 +12,27 @@ import time
 from time import time
 import matplotlib.pyplot as plt
 
+def readFile(logFile):
+	sys.stdout.write("->\tReading %s File\n" % logFile)
+	data = [list(map(int,line.rstrip('\n'))) for line in open(logFile, 'r')]
+	return data	
 
+def plotData(dataFile, figFile):
+	dataToPlot = readFile(dataFile)
+	sys.stdout.write("->\tGraphing %s Values\n" % dataToStream)
+	plt.hold(False)
+	for dataArray in dataToPlot:
+		#print dataArray
+		plt.plot(dataArray[::-1], linewidth=1.0, linestyle="-")
+	plt.yticks(np.linspace(0,1,2,endpoint=True))
+	plt.ylim(-0.005,2)
+	plt.ylabel(WAVECAP_YAXIS_LABEL)
+	plt.xlabel(WAVECAP_XAXIS_LABEL)
+	plt.title(WAVECAP_TITLE)
+	sys.stdout.write("->\tSaving %s fig file\n" % figFile)
+	plt.savefig(figFile,dpi=72)
+	plt.show()
+	
 def stressTest(USBHandle, stress_count, debug):
   i = 0
   pass_count = 0
@@ -36,9 +56,10 @@ def stressTest(USBHandle, stress_count, debug):
 #Declare Control Board Here
 DeviceName = 'Nexys2'
 stressnos = 50
-streamBytesnos = 20000
+streamBytesnos = 200
 debug = 3
 dataStreamFile = 'dataStream.txt'
+snapShotFile = 'snapShot.png'
 dataToStream = COUNTER #COUNTER/OPENADC
 
 #Clearing Screen
@@ -79,17 +100,17 @@ if(dataToStream == OPENADC):
   status = putRegByte(USBHandle, 0x60, 0x00, debug) ## Gain Values - 00 - 4D (4D -> 30.3% max duty cycle -> 2.5V at gain pin)
   
 
-startTime = time()
-sys.stdout.write("\t\tStreaming %d values\n" % streamBytesnos)
-dataFromFPGA = streamDataFromBRAM(USBHandle, streamBytesnos, dataStreamFile, dataToStream, debug)
-sys.stdout.write("\t\tWrote to %s\n " % dataStreamFile
-+ "\t\tTime Taken - %s sec\n" % str(time() - startTime) 
-+ "\t\tSpeed - XXMbytes/Sec\n" )
 
-plt.plot(dataFromFPGA)
-plt.ylabel('Data')
-plt.xlabel('# of traces')
-plt.show()
+sys.stdout.write("\t\tStreaming %d values\n" % streamBytesnos)
+startTime = time()
+dataFromFPGA = streamDataFromBRAM(USBHandle, streamBytesnos, dataStreamFile, dataToStream, debug)
+endTime = time()
+totalTime = endTime - startTime
+sys.stdout.write("\t\tWrote to %s\n " % dataStreamFile
++ "\t\tTime Taken - %.3f sec\n" % totalTime 
++ "\t\tSpeed - %.3f Mbytes/Sec\n" % ((streamBytesnos *0.002)/totalTime) )
+
+plotData(dataStreamFile, snapshotFile)
 	
 #Terminate USB handle
 terminate_usbcomm(USBHandle)
