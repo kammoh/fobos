@@ -11,8 +11,7 @@ import traceback
 import time
 from time import time
 import matplotlib.pyplot as plt
-
-
+	
 def stressTest(USBHandle, stress_count, debug):
   i = 0
   pass_count = 0
@@ -40,7 +39,7 @@ streamBytesnos = 200
 debug = 3
 dataStreamFile = 'dataStream.txt'
 snapShotFile = 'snapShot.png'
-dataToStream = COUNTER #COUNTER/OPENADC
+dataToStream = OPENADC #COUNTER/OPENADC
 
 #Clearing Screen
 clear_screen()  
@@ -75,7 +74,7 @@ sys.stdout.write("\tTesting Data Streaming %s values..\n" % dataToStream)
 if(dataToStream == OPENADC):
   status = putRegByte(USBHandle, 0x30, 0x01, debug)
   status = putRegByte(USBHandle, 0x30, 0x00, debug)
-  time.sleep(1)
+  goToSleep(1)
   status = putRegByte(USBHandle, 0x61, 0x00, debug) ## Amp Hi ->01 Lo -> 00
   status = putRegByte(USBHandle, 0x60, 0x00, debug) ## Gain Values - 00 - 4D (4D -> 30.3% max duty cycle -> 2.5V at gain pin)
   
@@ -93,6 +92,7 @@ sys.stdout.write("\t\tWrote to %s\n " % dataStreamFile
 plt.plot(dataFromFPGA)
 plt.ylabel('Data')
 plt.xlabel('# of traces')
+plt.savefig(snapShotFile,dpi=72)
 plt.show()
 	
 #Terminate USB handle
