@@ -12,27 +12,7 @@ import time
 from time import time
 import matplotlib.pyplot as plt
 
-def readFile(logFile):
-	sys.stdout.write("->\tReading %s File\n" % logFile)
-	data = [list(map(int,line.rstrip('\n'))) for line in open(logFile, 'r')]
-	return data	
 
-def plotData(dataFile, figFile):
-	dataToPlot = readFile(dataFile)
-	sys.stdout.write("->\tGraphing %s Values\n" % dataToStream)
-	plt.hold(False)
-	for dataArray in dataToPlot:
-		#print dataArray
-		plt.plot(dataArray[::-1], linewidth=1.0, linestyle="-")
-	plt.yticks(np.linspace(0,1,2,endpoint=True))
-	plt.ylim(-0.005,2)
-	plt.ylabel(WAVECAP_YAXIS_LABEL)
-	plt.xlabel(WAVECAP_XAXIS_LABEL)
-	plt.title(WAVECAP_TITLE)
-	sys.stdout.write("->\tSaving %s fig file\n" % figFile)
-	plt.savefig(figFile,dpi=72)
-	plt.show()
-	
 def stressTest(USBHandle, stress_count, debug):
   i = 0
   pass_count = 0
@@ -110,7 +90,10 @@ sys.stdout.write("\t\tWrote to %s\n " % dataStreamFile
 + "\t\tTime Taken - %.3f sec\n" % totalTime 
 + "\t\tSpeed - %.3f Mbytes/Sec\n" % ((streamBytesnos *0.002)/totalTime) )
 
-plotData(dataStreamFile, snapshotFile)
+plt.plot(dataFromFPGA)
+plt.ylabel('Data')
+plt.xlabel('# of traces')
+plt.show()
 	
 #Terminate USB handle
 terminate_usbcomm(USBHandle)
