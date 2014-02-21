@@ -8,6 +8,8 @@ import os
 from usbcomm_global import * 
 import traceback
 
+def goToSleep(value):
+	time.sleep(value)
     
 def clear_screen():
   os.system( [ 'clear', 'cls' ][ os.name == 'nt' ] )
