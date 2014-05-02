@@ -33,7 +33,7 @@ def stressTest(USBHandle, stress_count, debug):
       
     
 #Declare Control Board Here
-DeviceName = 'Nexys2'
+DeviceName = 'Nexys3'
 stressnos = 50
 streamBytesnos = 200
 debug = 3

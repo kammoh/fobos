@@ -79,6 +79,28 @@ component bram_adc_store is
 		  dout : out std_logic_vector(15 downto 0));
 end component;
 
+component dataCommunication is 
+	port(
+		 clock: in std_logic;
+		 reset: in std_logic; 
+		 bramaddress_clock : in std_logic;
+		 targetClock : in std_logic;
+		 controlCommand : in std_logic_vector(7 downto 0);
+		 pc_datain_data : in std_logic_vector(15 downto 0);
+		 pc_datain_key  : in std_logic_vector(15 downto 0);
+		 block_size : in std_logic_vector(7 downto 0);
+		 key_size : in std_logic_vector(7 downto 0); 
+		 stateMachineLeds : out std_logic_vector(7 downto 0);
+		 stateMachineLedsTarget : out std_logic_vector(7 downto 0);
+		 pc_dataout_ct : out std_logic_vector(15 downto 0));
+end component;
 
-
+component DCM_ADC is
+generic (board : integer := NEXYS2); 
+   port ( clkin        : in    std_logic;  
+          rst         : in    std_logic;
+          clkout : out   std_logic; 
+			 clktobramN2 : out std_logic;
+          locked_out      : out   std_logic);
+end component;
 end fobos_package;
