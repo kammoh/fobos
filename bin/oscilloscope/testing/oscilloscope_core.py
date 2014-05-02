@@ -165,7 +165,7 @@ def get_waveform_power(MyInstrument) :
 	wavedata = ""
 	count = 0
 	temp = MyInstrument.recv(tData)
-	while(len(temp) > 0 and count < 20):
+	while(len(temp) > 0 and count < 400):
 		wavedata = wavedata + temp
 		temp = MyInstrument.recv(tData)
 		count += 1
