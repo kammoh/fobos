@@ -1,0 +1,20 @@
+####################################################
+######## Data Process Module Parameters
+####################################################
+SAMPLE_WINDOW = 40
+WINDOW_START_POINT = 0
+CAPTURE_MODE = MULTI # MULTI|SINGLE
+TRIGGER_THRESHOLD = 1.8
+
+####################################################
+######## Compression Module Parameters
+####################################################
+COMPRESSION_LENGTH = 40
+COMPRESSION_TYPE = MAX # MAX|MIN|MEAN
+
+####################################################
+######## ANALYSIS FLOW
+####################################################
+PROCESS_DATA = YES # YES|NO
+COMPRESS_DATA = YES #YES|NO
+CORRELATION_PEARSONS = YES #YES|NO
