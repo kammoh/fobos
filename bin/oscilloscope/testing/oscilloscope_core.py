@@ -165,10 +165,15 @@ def get_waveform_power(MyInstrument) :
 	wavedata = ""
 	count = 0
 	temp = MyInstrument.recv(tData)
-	while(len(temp) > 0 and count < 400):
+	lowerBound = tData - len(temp)
+	rData = lowerBound
+	temp = temp[10:]
+	while(count < lowerBound):
+		print count,rData
 		wavedata = wavedata + temp
-		temp = MyInstrument.recv(tData)
-		count += 1
+		temp = MyInstrument.recv(rData)
+		count += len(temp)
+		rData = tData-count
 	print "No. of Bytes transferred per turn: " + str(len(temp))
 	print "\t\tWriting to file"
 	#print wavedata
@@ -197,11 +202,23 @@ def get_waveform_trigger(MyInstrument) :
 	
 def get_snapshot(MyInstrument):
 	print "Capturing Snapshot of the Scope"
-	MyInstrument.send(":DISPlay?\n")
-	disp_source = MyInstrument.recv(200)
 	#print "\t\t Display Source - " + disp_source
 	MyInstrument.send(":DISPlay:DATA? PNG, SCReen, COLor\n")
-	rawpic = MyInstrument.recv(30000)
+	rawpic = ""
+	count = 0
+	temp = MyInstrument.recv(30000)
+	tData = (int(temp[2:10]))
+	lowerBound = tData - len(temp)
+	temp = temp[10:]
+	rData = lowerBound
+	while(count < lowerBound):
+		print count,rData
+		rawpic = rawpic + temp
+		temp = MyInstrument.recv(rData)
+		count += len(temp)
+		rData = tData-count
+	rawpic = rawpic + MyInstrument.recv(10)	
+	print "No. of Bytes transferred per turn: " + str(len(temp))	
 	fsnapshot = open("channel1.png", "wb")
 	fsnapshot.write(rawpic)
 	fsnapshot.close()

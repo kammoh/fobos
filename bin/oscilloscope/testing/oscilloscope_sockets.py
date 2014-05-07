@@ -107,7 +107,7 @@ if inst_attrib['ACQUIRE_COMPLETE'] :
 MyInstrument.send(":DIGITIZE CHAN1" + '\n')
 ## Read Power consumption of the target
 
-get_waveform_power(MyInstrument)
+#get_waveform_power(MyInstrument)
 #get_snapshot(MyInstrument)
 
 ## Read Trigger information of the target
