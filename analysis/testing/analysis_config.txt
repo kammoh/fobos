@@ -1,13 +1,17 @@
 ####################################################
-######## Data Process Module Parameters
+######## Signal Alignment Module Parameters ########
 ####################################################
-SAMPLE_WINDOW = 1000
-WINDOW_START_POINT = 0
 CAPTURE_MODE = MULTI # MULTI|SINGLE
 TRIGGER_THRESHOLD = 1.8
 
 ####################################################
-######## Compression Module Parameters
+#### SAMPLE SPACE DISPOSTION Module Parameters #####
+####################################################
+SAMPLE_WINDOW = 1000
+WINDOW_START_POINT = 0
+
+####################################################
+######## Compression Module Parameters #############
 ####################################################
 COMPRESSION_LENGTH = 40
 COMPRESSION_TYPE = MAX # MAX|MIN|MEAN
@@ -15,8 +19,8 @@ COMPRESSION_TYPE = MAX # MAX|MIN|MEAN
 ####################################################
 ######## ANALYSIS FLOW
 ####################################################
-PROCESS_DATA = YES # YES|NO
-COMPRESS_DATA = YES #YES|NO
+SAMPLE_SPACE_DISPOSITION = NO # YES|NO
+COMPRESS_DATA = NO #YES|NO
 CORRELATION_PEARSONS = YES #YES|NO
 CORRELATION_SPEARMAN = YES #YES|NO
 COMPUTE_MEAN = YES #YES|NO

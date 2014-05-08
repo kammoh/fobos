@@ -49,9 +49,9 @@ def extractConfigAttributes():
 		if re.match('^COMPRESSION_TYPE', object) :
 			value = re.split("=", object)
 			cfg.analysisConfigAttributes['COMPRESSION_TYPE'] = value[1].strip(" ")
-		if re.match('^PROCESS_DATA', object) :
+		if re.match('^SAMPLE_SPACE_DISPOSITION', object) :
 			value = re.split("=", object)
-			cfg.analysisConfigAttributes['PROCESS_DATA'] = value[1].strip(" ")
+			cfg.analysisConfigAttributes['SAMPLE_SPACE_DISPOSITION'] = value[1].strip(" ")
 		if re.match('^COMPRESS_DATA', object) :
 			value = re.split("=", object)
 			cfg.analysisConfigAttributes['COMPRESS_DATA'] = value[1].strip(" ")
