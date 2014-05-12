@@ -34,6 +34,9 @@ def acquireDataValues(preambleFile, rawDataFile):
 	
 def acquireHypotheticalValues():
 	keyGuess = numpy.loadtxt(cfg.POWER_MODEL_FILE)
+	if (os.path.isfile(cfg.TRACE_EXPUNGE_DATA_FILE) == True):
+		kgExData = numpy.loadtxt(cfg.TRACE_EXPUNGE_DATA_FILE)
+		keyGuess = numpy.delete(keyGuess, kgExData, cfg.ROW)
 	keyGuess = keyGuess[:,:-1]
 	return(keyGuess)
 	
@@ -87,6 +90,7 @@ def computeAlignedData(measuredPowerData, measuredTriggerData):
 			elif(measuredTriggerData[sampleNo] < cfg.analysisConfigAttributes['TRIGGER_THRESHOLD']  and firstTriggerHigh == True):
 				firstTriggerSampleHigh = True
 				tempArray = numpy.append(tempArray, measuredPowerData[sampleNo])
+			print "\t\tProcessed - ",sampleNo,"/",len(measuredTriggerData),"\r",
 		alignedData = numpy.vstack((alignedData,adjustSampleSize(sampleLength,tempArray)))	
 		return (alignedData)		
 				

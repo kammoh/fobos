@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import cfg
+import cfg,re
 import os
 import os.path
 import sys
@@ -76,6 +76,40 @@ def compressData(measuredData, compressionLen, compressionType):
 	fid.close()	
 	return (dataResize)
 	
+def trace_expunge(measuredData): 
+	newMeasuredData = numpy.zeros(0)
+	teFlag = numpy.zeros(0)
+	thLimit = numpy.zeros(0)
+	val = re.split("-", cfg.analysisConfigAttributes['TRACE_EXPUNGE'])
+	traceCount = 0
+	temp = re.split(":", val[1])
+	thBelow = float(temp[0])
+	thAbove = float(temp[1])
+	sys.stdout.write("\tExpunge Criteria - %s\n" % val[0])
+	sys.stdout.write("\tThreshold Limits - %f(below)" % thBelow) 
+	sys.stdout.write("to %f(above) \n" % thAbove)
+	if(val[0] == 'VAR'):
+		thLimit = numpy.var(measuredData, cfg.ROW)
+	elif(val[0] == 'STD'):
+		thLimit = numpy.var(measuredData, cfg.ROW)
+	else:
+		sys.stdout.write("->\t\tIncorrect selection - %s. No traces expunged\n" % val[0])
+		return measuredData
+	while(traceCount < len(thLimit)):
+		if((thLimit[traceCount] > thBelow) and (thLimit[traceCount] < thAbove)):
+			if(traceCount == 0):
+				newMeasuredData = numpy.append(newMeasuredData, measuredData[traceCount,:])
+			else:
+				newMeasuredData = numpy.vstack((newMeasuredData, measuredData[traceCount,:]))
+			traceCount += 1
+			print "\t\tProcessed Trace - ", traceCount,"/",len(thLimit),"\r",
+		else:
+			print "\t\t->Expunged Trace - ", traceCount,"/",len(thLimit)
+			teFlag = numpy.append(teFlag, traceCount)
+			traceCount += 1
+		numpy.savetxt(cfg.TRACE_EXPUNGE_DATA_FILE, teFlag)
+	print "\n"
+	return newMeasuredData
 	
 def postProcessing(alignedData):
 	sys.stdout.write("Starting post processing routine\n")

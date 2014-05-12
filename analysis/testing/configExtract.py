@@ -26,7 +26,13 @@ def removeComments(data_list) :
 		if item :
 			newdata_list.append(item)
 	return(newdata_list)
-
+def print_header():
+	output = "#" * 79;
+	output += "#\n";
+	output += "\tStarting FOBOS - Flexible Opensource BOard for Sidechannel Analysis\n";
+	output += "#" * 79;
+	output += "#\n";
+	print output
 def extractConfigAttributes():
 	data_list = readFile(cfg.CONFIG_FILE)
 	data_list = removeComments(data_list)
@@ -58,4 +64,10 @@ def extractConfigAttributes():
 		if re.match('^CORRELATION_PEARSONS', object) :
 			value = re.split("=", object)
 			cfg.analysisConfigAttributes['CORRELATION_PEARSONS'] = value[1].strip(" ")
+		if re.match('^TRACE_EXPUNGE', object) :
+			value = re.split("=", object)
+			cfg.analysisConfigAttributes['TRACE_EXPUNGE'] = value[1].strip(" ")
+		if re.match('^COMPUTE_AUTOCORRELATION', object) :
+			value = re.split("=", object)
+			cfg.analysisConfigAttributes['COMPUTE_AUTOCORRELATION'] = value[1].strip(" ")
 		

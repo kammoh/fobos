@@ -5,10 +5,10 @@ CAPTURE_MODE = MULTI # MULTI|SINGLE
 TRIGGER_THRESHOLD = 1.8
 
 ####################################################
-#### SAMPLE SPACE DISPOSTION Module Parameters #####
+#### Sample Space Disposition Module Parameters ####
 ####################################################
-SAMPLE_WINDOW = 1000
-WINDOW_START_POINT = 0
+SAMPLE_WINDOW = 40
+WINDOW_START_POINT = 266
 
 ####################################################
 ######## Compression Module Parameters #############
@@ -17,12 +17,21 @@ COMPRESSION_LENGTH = 40
 COMPRESSION_TYPE = MAX # MAX|MIN|MEAN
 
 ####################################################
-######## ANALYSIS FLOW
+######## Post Processing Flow ######################
 ####################################################
-SAMPLE_SPACE_DISPOSITION = NO # YES|NO
-COMPRESS_DATA = NO #YES|NO
-CORRELATION_PEARSONS = YES #YES|NO
-CORRELATION_SPEARMAN = YES #YES|NO
+SAMPLE_SPACE_DISPOSITION = YES # 1-2|NO
+COMPRESS_DATA = YES #1-2|NO
+TRACE_EXPUNGE = VAR-0.0000025:0.0000030 #STD|VAR-BELOW:ABOVE|NO
+
+####################################################
+######## Signal Analysis ###########################
+####################################################
 COMPUTE_MEAN = YES #YES|NO
 COMPUTE_STD = YES #YES|NO
-COMPYTE_VAR = YES #YES|NO
+COMPUTE_VAR = YES #YES|NO
+COMPUTE_AUTOCORRELATION = YES #YES|NO
+####################################################
+######## Correlation Power Analysis Attacks ########
+####################################################
+CORRELATION_PEARSONS = YES #YES|NO
+CORRELATION_SPEARMAN = YES #YES|NO
