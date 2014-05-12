@@ -27,6 +27,7 @@ def main():
 	init()
 	extractConfigAttributes()
 	alignedData = signalAlignmentModule.getAlignedMeasuredPowerData()
+	# plotdata(alignedData, "1,6,10-14", overlay) #data, "sets", overlay|tile
 	alignedData = postProcessingModule.trace_expunge(alignedData)
 	postProcessedData = postProcessingModule.postProcessing(alignedData)
 	hypotheticalPowerData = signalAlignmentModule.acquireHypotheticalValues()
