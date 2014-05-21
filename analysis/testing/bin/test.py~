@@ -1,0 +1,41 @@
+#!/usr/bin/python
+import os
+import sys
+import numpy
+import matplotlib.pyplot as plt
+import cfg, globals
+import support
+import configExtract
+import signalAlignmentModule
+#import postProcessingModule
+#import plottingModule
+#import sca
+
+def init():
+	(cfg.ROOTDIR, temp) = os.path.split(os.getcwd())
+	cfg.BINDIR = os.path.join(cfg.ROOTDIR,globals.BIN_DIRNAME)
+	cfg.CONFIGDIR = os.path.join(cfg.ROOTDIR,globals.CONFIG_DIRNAME)
+	cfg.CONFIG_FILE = os.path.join(cfg.CONFIGDIR, globals.CONFIGFILENAME)
+	
+def main():	
+	support.clear_screen()
+	init()
+	configExtract.extractConfigAttributes(globals.CONFIGFILENAME)
+	configExtract.configureWorkspace()
+	support.printHeaderToScreenAndLog()
+	configExtract.extractConfigAttributes("signalAlignmentParams.txt")
+	alignedData = signalAlignmentModule.getAlignedMeasuredPowerData()
+	#postProcessedData = postProcessingModule.postProcessing(alignedData)
+	#hypotheticalPowerData = signalAlignmentModule.acquireHypotheticalValues()
+	#c = sca.correlation_pearson(postProcessedData, hypotheticalPowerData) 
+	#sp = sca.correlation_spearman(postProcessedData, hypotheticalPowerData)
+	#ac = sca.calculate_autocorrelation(postProcessedData)
+	#m = sca.calculate_mean(postProcessedData, cfg.ROW)
+	#s = sca.calculate_std(postProcessedData, cfg.ROW)
+	#v = sca.calculate_var(postProcessedData, cfg.ROW)
+	
+	
+if __name__ == "__main__":
+    main()		
+	
+	

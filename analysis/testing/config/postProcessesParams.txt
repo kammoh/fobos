@@ -1,0 +1,7 @@
+####################################################
+######## Post Processing Flow ######################
+####################################################
+SAMPLE_SPACE_DISPOSITION = 2 # 1-3|NO
+COMPRESS_DATA = 3 #1-3|NO
+TRACE_EXPUNGE = 1 #1-3|NO 
+TRACE_EXPUNGE_PARAMS = VAR-0.0000025:0.0000030 #STD|VAR-BELOW:ABOVE|NO
