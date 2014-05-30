@@ -105,22 +105,25 @@ def createDirectory(directory):
 		os.makedirs(directory)	
 
 def getProjectPath():
-	cfg.MEASUREMENT_PROJECT_PATH_FILE = os.path.join(cfg.CONFIGDIR, globals.PROJECTPATH_FILENAME)
+	cfg.MEASUREMENT_PROJECT_PATH_FILE = os.path.join(cfg.ANALYSISCONFIGDIR, globals.PROJECTPATH_FILENAME)
 	if os.path.isfile(cfg.MEASUREMENT_PROJECT_PATH_FILE) == False :
-		printToScreen("\tListing Project directories under Workspace folder @\n\t" + os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['MEASUREMENT_WORK_DIR']))		
-		directoryList = os.listdir(os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['MEASUREMENT_WORK_DIR']))
+		printFunctions.printToScreen("\tListing Project directories under Workspace folder @\n\t" +
+		os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME']))		
+		directoryList = os.listdir(os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME'])
 		directoryCount = 1
 		for item in directoryList:
-			printToScreen("\t"+ str(directoryCount)+": "+item)
+			printFunctions.printToScreen("\t"+ str(directoryCount)+": "+item)
 			directoryCount += 1
 		t = raw_input("\tPlease select the Project folder from the above list:")
-		projectPath = os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['MEASUREMENT_WORK_DIR'], directoryList[int(t)-1])
-		fileName = os.path.join(cfg.CONFIGDIR, "projectPath.txt")
+		projectPath = os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME'], directoryList[int(t)-1])
+		fileName = os.path.join(cfg.ANALYSISCONFIGDIR, "projectPath.txt")
 		fid = open(cfg.MEASUREMENT_PROJECT_PATH_FILE, "w")
 		fid.write(projectPath)
 		fid.close()
 	else:
 		temp = readFile(cfg.MEASUREMENT_PROJECT_PATH_FILE)
 		projectPath = temp[0]
-		printToScreenBold("\tNote: Current Analysis is scheduled to run on traces located @\n\t" + projectPath +"\n\tIf you want to change the trace set/project directory,  Please delete the file @\n\t"+ cfg.MEASUREMENT_PROJECT_PATH_FILE +"\n\tand re-run the FOBOS Analysis again\n")
+		printFunctions.printToScreenBold("\tNote: Current Analysis is scheduled to run on traces located @\n\t"
+		+ projectPath +"\n\tIf you want to change the trace set/project directory,  Please delete the file @\n\t"+
+		cfg.MEASUREMENT_PROJECT_PATH_FILE +"\n\tand re-run the FOBOS Analysis again\n")
 	return projectPath

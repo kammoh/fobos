@@ -49,7 +49,6 @@ TAG = counter
 
 VERBOSE = off # Default = off
 
-
 # =============================================
 # =============================================
 # Control Board Settings
@@ -69,5 +68,15 @@ OSC_CONFIG_FILE = oscilloscope_config.txt
 NUMBER_OF_ENCRYPTIONS = 1600
 BLOCK_SIZE = 16 # In Bytes
 KEY_SIZE = 16 # In Bytes
-
-   
+# =============================================
+# =============================================
+# Plot Generator Settings
+# =============================================
+# =============================================
+PLOT_LABELS_FONT_FAMILY = sans-serif
+PLOT_LABELS_FONT_WEIGHT = bold
+PLOT_LABELS_FONT_SIZE = 14
+PLOT_SIZE_LENGTH = 24.5 #In Inches
+PLOT_SIZE_BREADTH = 10.5 #In Inches
+GENERATE_EPS_PDF_GRAPHS = YES #YES|NO
+DISPLAY_THREE_SIGMAS = 1 # 1|2|3

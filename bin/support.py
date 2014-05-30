@@ -9,10 +9,32 @@ import cfg
 import dataGenerator
 import globals
 import printFunctions
+import matplotlib
+import matplotlib.pyplot as plt
 
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m' 
+   
+   
 def goToSleep(value):
 	time.sleep(value)
-    
+  
+def exitProgram():
+	print "Exiting FOBOS !!"
+	sys.exit(1)
+
+def wait():
+    raw_input("\tPlease type Enter to Continue")
+	
 def clear_screen():
   os.system( [ 'clear', 'cls' ][ os.name == 'nt' ] )
   
@@ -42,10 +64,20 @@ def currentDateTime():
 	return datetimeString
 	
 def readFile(file_name) :
-	#print "Reading File : %s" % file_name
-	file_pt = open(file_name, "r")
+	#temp = "Reading File : %s" % file_name
+	#support.printToLog(temp)
+	try:
+		file_pt = open(file_name, "r")
+	except IOError, (ErrorNumber, ErrorMessage):
+		if(ErrorNumber == 2):
+			printFunctions.printToScreen("\n\nWhoa! File -> " + file_name + "\n joined FOBOS Analysis invisible. As FOBOS Analysis does not have X-Ray Vision, Please make it visible (present) in the folder\n->"+ cfg.CONFIGDIR)
+			support.exitProgram()
+		else:
+			printFunctions.printToScreen("Hmmm!! You have managed to trigger -> " + str(ErrorNumber) +" Error Number")
+			printFunctions.printToScreen(ErrorMessage)
 	indata = file_pt.readlines()
-	#print "Number of Lines read : %d" % len(indata)
+	#temp =  "Number of Lines read : %d" % len(indata)
+	#support.printToLog(temp)
 	return (indata)
 
 def removeComments(data_list) :
@@ -59,6 +91,46 @@ def removeComments(data_list) :
 			newdata_list.append(item)
 	return(newdata_list)
 
+def getProjectPath():
+	cfg.MEASUREMENT_PROJECT_PATH_FILE = os.path.join(cfg.ANALYSISCONFIGDIR, globals.PROJECTPATH_FILENAME)
+	if os.path.isfile(cfg.MEASUREMENT_PROJECT_PATH_FILE) == False :
+		printFunctions.printToScreen("\tListing Project directories under Workspace folder @\n\t" +
+		os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME']))		
+		directoryList = os.listdir(os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME']))
+		directoryCount = 1
+		for item in directoryList:
+			printFunctions.printToScreen("\t"+ str(directoryCount)+": "+item)
+			directoryCount += 1
+		t = raw_input("\tPlease select the Project folder from the above list:")
+		projectPath = os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME'], directoryList[int(t)-1])
+		fileName = os.path.join(cfg.ANALYSISCONFIGDIR, "projectPath.txt")
+		fid = open(cfg.MEASUREMENT_PROJECT_PATH_FILE, "w")
+		fid.write(projectPath)
+		fid.close()
+	else:
+		temp = readFile(cfg.MEASUREMENT_PROJECT_PATH_FILE)
+		projectPath = temp[0]
+		printFunctions.printToScreenBold("\tNote: Current Analysis is scheduled to run on traces located @\n\t"
+		+ projectPath +"\n\tIf you want to change the trace set/project directory,  Please delete the file @\n\t"+
+		cfg.MEASUREMENT_PROJECT_PATH_FILE +"\n\tand re-run the FOBOS Analysis again\n")
+	return projectPath
+
+def shiftPathToGraphFolder(path):
+	(branch1, branch2) = os.path.split(path)
+	newPath = os.path.join(branch1, globals.GRAPHS_FOLDERNAME, branch2)
+	return newPath
+
+def setPlotAttributes():
+	font = {'family' : cfg.analysisConfigAttributes['PLOT_LABELS_FONT_FAMILY'],
+        'weight' :cfg.analysisConfigAttributes['PLOT_LABELS_FONT_WEIGHT'],
+        'size'   : cfg.analysisConfigAttributes['PLOT_LABELS_FONT_SIZE']}
+	matplotlib.rc('font', **font)
+	figs = plt.figure()	
+	figs.set_size_inches(cfg.analysisConfigAttributes['PLOT_SIZE_LENGTH'],cfg.analysisConfigAttributes['PLOT_SIZE_BREADTH']) 
+	
+	
+	
+	
 def getPlainText():
 	dataToEncrypt = []
 	if(cfg.config_attributes['PLAINTEXT_GENERATION'] == globals.RANDOM):

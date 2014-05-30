@@ -1,11 +1,20 @@
 #!/usr/bin/python
+import numpy
 
+##################################################
+##### GLOBAL SETTINGS ############################
+##################################################
 ROOTDIR = ''
 CONFIGDIR = ''
 BINDIR  = ''
 CONFIGFILE = ''
 OSC_CONFIGFILE = ''
+
+##################################################
+##### DATA CAPTURE SETTINGS ######################
+##################################################
 WORKSPACEDIR = ''
+PROJECTDIR = ''
 WORKSPACE = ''
 OUTPUT_FOLDER = ''
 MEASUREMENT_FOLDER = ''
@@ -25,3 +34,48 @@ config_attributes = {
  }
  
 osc_attributes = {}
+
+##################################################
+##### ANALYSIS SETTINGS ##########################
+##################################################
+CONFIG_FILE = ""
+LOCAL_CONFIGDIR = ""
+ROOTDIR = ""
+TESTDIR = ""
+BINDIR = ""
+ANALYSISCONFIGDIR = ""
+ALIGNED_DATA_FILE = ""
+RAW_UNALIGNED_POWER_FILE = ""
+RAW_UNALIGNED_TRIGGER_FILE = ""
+TRACE_EXPUNGE_DATA_FILE = ""
+COMPRESSED_DATA_FILE = ""
+SAMPLE_SPACE_DISP_DATA_FILE = ""
+ANALYSIS_WORKSPACE = ""
+ANALYSISDIR = ""
+FOBOS_ANALYSIS_LOG_FILE = ""
+POWERMODELDIR = ""
+SNAPSHOT_FILE = ""
+RAW_POWER_DATA = numpy.zeros(0)
+RAW_TRIGGER_DATA = numpy.zeros(0)
+MEASUREMENT_PROJECT_PATH_FILE = ""
+MEAN_OF_DATA_FILE = ""
+STD_OF_DATA_FILE = ""
+VAR_OF_DATA_FILE = ""
+
+PEARSON_GRAPH_FILE = ""
+SPEARMAN_GRAPH_FILE = ""
+AUTOCORR_GRAPH_FILE = ""
+
+CORR_PEARSON_RESULT_FILE = ""
+CORR_SPEARMAN_RESULT_FILE = ""
+
+
+analysisConfigAttributes = {
+'SAMPLE_WINDOW' : "", 'WINDOW_START_POINT' : "", 'CAPTURE_MODE' : "",
+'COMPRESSION_LENGTH' : "", 'COMPRESSION_TYPE' : "", 'TRIGGER_THRESHOLD': "",
+'SAMPLE_SPACE_DISPOSITION' : "", 'COMPRESS_DATA' : "", 'CORRELATION_PEARSONS' : "",
+'TRACE_EXPUNGE': "", 'COMPUTE_AUTOCORRELATION' : "", 'TRACE_EXPUNGE_PARAMS': "",
+'WORK_DIR' : "", 'PROJECT_NAME':"", 'PLOT_SIZE_LENGTH':"", 'PLOT_SIZE_BREADTH': "",
+'TAG':"", 'GENERATE_EPS_PDF_GRAPHS' :"", 'PLOT_LABELS_FONT_FAMILY':"",
+'PLOT_LABELS_FONT_WEIGHT': "", 'PLOT_LABELS_FONT_SIZE': "",
+}

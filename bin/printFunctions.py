@@ -35,7 +35,11 @@ def printHeaderToScreenAndLog():
 
 def printToLog(data):
 	with open(cfg.FOBOS_LOG_FILE, 'a') as file:
-		file.write(data)
+		file.write(data+"\n")
+
+def printToAnalysisLog(data):
+	with open(cfg.FOBOS_ANALYSIS_LOG_FILE, 'a') as file:
+		file.write(data+"\n")		
 
 def printToScreen(data):
 	print data
@@ -43,6 +47,36 @@ def printToScreen(data):
 def printToScreenAndLog(data):
 	print data
 	printToLog(data)
+	
+def printToScreenAndAnalysisLog(data):
+	print data
+	printToAnalysisLog(data)	
+
+def printToScreenBold(data):
+	if(sys.platform == 'linux2'):
+		print color.BOLD + data + color.END
+	else:
+		print data
+		
+def printAnalysisHeaderToScreen():
+	output = "#" * 79
+	output += "#\n"
+	output += "\tStarting -- FOBOS - Flexible Opensource BOard for Sidechannel Analysis\n"
+	output += "#" * 79
+	output += "#\n"
+	output += "\tData Analysis Module Initialized\n"
+	output += "\tConfiguring Workspace ..\n"
+	print output
+
+def printAnalysisHeaderToLog():
+	output = "#" * 79
+	output += "#\n"
+	output += "\tStarting -- FOBOS - Flexible Opensource BOard for Sidechannel Analysis\n"
+	output += "#" * 79
+	output += "#\n"
+	output += "\tData Analysis Module Initialized\n"
+	output += "\tConfiguring Workspace ..\n"
+	printToAnalysisLog(output)
 	
 def printToOutputFile(data, type):
 	output = ""
