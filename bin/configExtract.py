@@ -127,6 +127,9 @@ def extractConfigAttributes():
 		if re.match('^PLOT_LABELS_FONT_SIZE', object) :
 			value = re.split("=", object)
 			cfg.analysisConfigAttributes['PLOT_LABELS_FONT_SIZE'] = int(value[1].strip(" ")	)
+		if re.match('^DISPLAY_THREE_SIGMAS', object) :
+			value = re.split("=", object)
+			cfg.analysisConfigAttributes['DISPLAY_THREE_SIGMAS'] = int(value[1].strip(" ")	)			
 			
 def configureAnalysisWorkspace():
 	runNo = 1

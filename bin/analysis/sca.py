@@ -62,13 +62,37 @@ def calculate_mean(measuredData, axis):
 	measuredDataMean = numpy.mean(measuredData,axis)
 	dataToPlot = numpy.transpose(measuredDataMean)
 	plt.clf()
-	meanLine  = numpy.mean(measuredDataMean)
-	stdVal = numpy.std(measuredDataMean)
-	oneSigmaPLine = meanLine+stdVal
-	oneSigmaNline = meanLine-stdVal
 	plt.plot(dataToPlot)
-	plt.axhline(y=meanLine, color='r')
-	plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.2)
+	if(cfg.analysisConfigAttributes['DISPLAY_THREE_SIGMAS'] == 1):
+		meanLine  = numpy.mean(measuredDataMean)
+		stdVal = numpy.std(measuredDataMean)
+		oneSigmaPLine = meanLine+stdVal
+		oneSigmaNline = meanLine-stdVal
+		plt.axhline(y=meanLine, color='r')
+		plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.2)
+	if(cfg.analysisConfigAttributes['DISPLAY_THREE_SIGMAS'] == 2):
+		meanLine  = numpy.mean(measuredDataMean)
+		stdVal = numpy.std(measuredDataMean)
+		oneSigmaPLine = meanLine+stdVal
+		oneSigmaNline = meanLine-stdVal
+		twoSigmaPLine = meanLine+(2*stdVal)
+		twoSigmaNline = meanLine-(2*stdVal)
+		plt.axhline(y=meanLine, color='r')
+		plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.25)
+		plt.axhspan(twoSigmaNline, twoSigmaPLine, facecolor='g', alpha=0.2)
+	if(cfg.analysisConfigAttributes['DISPLAY_THREE_SIGMAS'] == 3):
+		meanLine  = numpy.mean(measuredDataMean)
+		stdVal = numpy.std(measuredDataMean)
+		oneSigmaPLine = meanLine+stdVal
+		oneSigmaNline = meanLine-stdVal
+		twoSigmaPLine = meanLine+(2*stdVal)
+		twoSigmaNline = meanLine-(2*stdVal)
+		threeSigmaPLine = meanLine+(3*stdVal)
+		threeSigmaNline = meanLine-(3*stdVal)
+		plt.axhline(y=meanLine, color='r')
+		plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.25)
+		plt.axhspan(twoSigmaNline, twoSigmaPLine, facecolor='g', alpha=0.2)		
+		plt.axhspan(threeSigmaNline, threeSigmaPLine, facecolor='g', alpha=0.15)		
 	plt.ylabel('Mean')
 	plt.xlabel('time')
 	plt.title('Mean of Measured Data (Maximum Likelyhood)')
@@ -101,13 +125,37 @@ def calculate_std(measuredData,axis):
 	measuredDataStd = numpy.std(measuredData,axis)
 	dataToPlot =  numpy.transpose(measuredDataStd)
 	plt.clf()
-	meanLine  = numpy.mean(measuredDataStd)
-	stdVal = numpy.std(measuredDataStd)
-	oneSigmaPLine = meanLine+stdVal
-	oneSigmaNline = meanLine-stdVal	
 	plt.plot(dataToPlot)
-	plt.axhline(y=meanLine, color='r')
-	plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.2)
+	if(cfg.analysisConfigAttributes['DISPLAY_THREE_SIGMAS'] == 1):
+		meanLine  = numpy.mean(measuredDataStd)
+		stdVal = numpy.std(measuredDataStd)
+		oneSigmaPLine = meanLine+stdVal
+		oneSigmaNline = meanLine-stdVal
+		plt.axhline(y=meanLine, color='r')
+		plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.2)
+	if(cfg.analysisConfigAttributes['DISPLAY_THREE_SIGMAS'] == 2):
+		meanLine  = numpy.mean(measuredDataStd)
+		stdVal = numpy.std(measuredDataStd)
+		oneSigmaPLine = meanLine+stdVal
+		oneSigmaNline = meanLine-stdVal
+		twoSigmaPLine = meanLine+(2*stdVal)
+		twoSigmaNline = meanLine-(2*stdVal)
+		plt.axhline(y=meanLine, color='r')
+		plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.25)
+		plt.axhspan(twoSigmaNline, twoSigmaPLine, facecolor='g', alpha=0.2)
+	if(cfg.analysisConfigAttributes['DISPLAY_THREE_SIGMAS'] == 3):
+		meanLine  = numpy.mean(measuredDataStd)
+		stdVal = numpy.std(measuredDataStd)
+		oneSigmaPLine = meanLine+stdVal
+		oneSigmaNline = meanLine-stdVal
+		twoSigmaPLine = meanLine+(2*stdVal)
+		twoSigmaNline = meanLine-(2*stdVal)
+		threeSigmaPLine = meanLine+(3*stdVal)
+		threeSigmaNline = meanLine-(3*stdVal)
+		plt.axhline(y=meanLine, color='r')
+		plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.25)
+		plt.axhspan(twoSigmaNline, twoSigmaPLine, facecolor='g', alpha=0.2)		
+		plt.axhspan(threeSigmaNline, threeSigmaPLine, facecolor='g', alpha=0.15)		
 	plt.ylabel('Standard Deviation')
 	plt.xlabel('time')
 	plt.title('Standard Deviation of Measured Data (Maximum Likelyhood)')
@@ -139,13 +187,37 @@ def calculate_var(measuredData,axis):
 	measuredDataVar = numpy.var(measuredData,axis)
 	dataToPlot = numpy.transpose(measuredDataVar)
 	plt.clf()
-	meanLine  = numpy.mean(measuredDataVar)
-	stdVal = numpy.std(measuredDataVar)
-	oneSigmaPLine = meanLine+stdVal
-	oneSigmaNline = meanLine-stdVal	
-	plt.plot(dataToPlot)
-	plt.axhline(y=meanLine, color='r')
-	plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.2)
+	plt.plot(dataToPlot)	
+	if(cfg.analysisConfigAttributes['DISPLAY_THREE_SIGMAS'] == 1):
+		meanLine  = numpy.mean(measuredDataVar)
+		stdVal = numpy.std(measuredDataVar)
+		oneSigmaPLine = meanLine+stdVal
+		oneSigmaNline = meanLine-stdVal
+		plt.axhline(y=meanLine, color='r')
+		plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.2)
+	if(cfg.analysisConfigAttributes['DISPLAY_THREE_SIGMAS'] == 2):
+		meanLine  = numpy.mean(measuredDataVar)
+		stdVal = numpy.std(measuredDataVar)
+		oneSigmaPLine = meanLine+stdVal
+		oneSigmaNline = meanLine-stdVal
+		twoSigmaPLine = meanLine+(2*stdVal)
+		twoSigmaNline = meanLine-(2*stdVal)
+		plt.axhline(y=meanLine, color='r')
+		plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.25)
+		plt.axhspan(twoSigmaNline, twoSigmaPLine, facecolor='g', alpha=0.2)
+	if(cfg.analysisConfigAttributes['DISPLAY_THREE_SIGMAS'] == 3):
+		meanLine  = numpy.mean(measuredDataVar)
+		stdVal = numpy.std(measuredDataVar)
+		oneSigmaPLine = meanLine+stdVal
+		oneSigmaNline = meanLine-stdVal
+		twoSigmaPLine = meanLine+(2*stdVal)
+		twoSigmaNline = meanLine-(2*stdVal)
+		threeSigmaPLine = meanLine+(3*stdVal)
+		threeSigmaNline = meanLine-(3*stdVal)
+		plt.axhline(y=meanLine, color='r')
+		plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.25)
+		plt.axhspan(twoSigmaNline, twoSigmaPLine, facecolor='g', alpha=0.2)		
+		plt.axhspan(threeSigmaNline, threeSigmaPLine, facecolor='g', alpha=0.15)		
 	plt.ylabel('Variance')
 	plt.xlabel('time')
 	plt.title('Variance of Measured Data (Maximum Likelyhood)')
