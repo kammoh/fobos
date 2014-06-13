@@ -5,6 +5,7 @@ import sys
 import os
 import traceback
 import cfg
+import support
 from globals import *
 
 def printArray(array, num):
@@ -54,7 +55,7 @@ def printToScreenAndAnalysisLog(data):
 
 def printToScreenBold(data):
 	if(sys.platform == 'linux2'):
-		print color.BOLD + data + color.END
+		print support.color.BOLD + data + support.color.END
 	else:
 		print data
 		

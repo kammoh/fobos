@@ -7,6 +7,7 @@
 *.swp
 *.backup
 *.out
+*.pyc
 .directory
 .DS_Store
 __MACOSX
