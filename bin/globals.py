@@ -164,6 +164,10 @@ AUTOCORR_GRAPH_FILE_NAME = "autocorrelationGraph.png"
 CORR_PEARSON_RESULT_FILE_NAME = "correlationPearsonResults.txt"
 CORR_SPEARMAN_RESULT_FILE_NAME = "correlationSpearmanResults.txt"
 
+POWER_CHANNEL_PREAMBLE_FILE_NAME = "channel1PreambleData.dat"
+TRIGGER_CHANNEL_PREAMBLE_FILE_NAME = "channel2PreambleData.dat"
+POWER_MEASUREMENT_FILE_NAME = "channel1Data.dat"
+TRIGGER_MEASUREMENT_FILE_NAME = "channel2Data.dat"
 
 TRACES = 0
 SAMPLE_MEAN = 1

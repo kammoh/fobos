@@ -23,7 +23,12 @@ FOBOS_LOG_FILE = ''
 PLAIN_TEXT_FILE = ''
 CIPHER_TEXT_FILE = ''
 KEY_FILE = ''
+Oscilloscope = ''
 
+POWER_MEASUREMENT_FILE = ''
+TRIGGER_MEASUREMENT_FILE = ''
+POWER_CHANNEL_PREAMBLE_FILE = ''
+TRIGGER_CHANNEL_PREAMBLE_FILE = ''
 config_attributes = {
  'WORK_DIR' : "",        'DATA_FILE' : "",     'VERBOSE' : "",       'TIMEOUT_VAL' : "",
  'SOURCE_DIR' : "",      'KEY_FILE' : "",      'TRIGGER_VAL' : "",   'CLK_FREQ' : "",
@@ -33,7 +38,16 @@ config_attributes = {
  'KEY_SIZE': ""
  }
  
-osc_attributes = {}
+osc_attributes = {
+ 'RESOURCE' : "",        'AUTOSCALE' : "",        'IMPEDANCE' : "",        'CHANNEL_RANGE1' : "",
+ 'CHANNEL_RANGE2' : "",   'CHANNEL_RANGE3' : "",   'CHANNEL_RANGE4' : "",   'CHANNEL1_DISPLAY' : "",
+ 'CHANNEL2_DISPLAY' : "", 'CHANNEL3_DISPLAY' : "", 'CHANNEL4_DISPLAY' : "", 'TIME_RANGE' : "",
+ 'TIMEBASE_REF' : "",     'TRIGGER_SOURCE' : "",   'TRIGGER_MODE' : "",     'TRIGGER_SWEEP' : "",
+ 'TRIGGER_LEVEL' : "",    'TRIGGER_SLOPE' : "",    'SAMPLE_INPUT' : "",     'ACQUIRE_TYPE' : "",
+ 'ACQUIRE_MODE' : "",     'ACQUIRE_COMPLETE' : "", 'WAVE_DATA_SIZE' : "",   'NUM_PWR_TRACE' : "",
+ 'SCREEN_CAP' : "",       'SCREEN_FORMAT' : "",    'SCREEN_NAME' : "",      'OUTPUT_DIR' : "",
+ 'OSCILLOSCOPE_IP' : "",  'OSCILLOSCOPE_PORT' : "",
+ }
 
 ##################################################
 ##### ANALYSIS SETTINGS ##########################
