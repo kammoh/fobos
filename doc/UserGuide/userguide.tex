@@ -1,1 +1,96 @@
+% This is LLNCS.DOC the documentation file of
+% the LaTeX2e class from Springer-Verlag
+% for Lecture Notes in Computer Science, version 2.4
+\documentclass{llncs}
+\usepackage{llncsdoc}
+\usepackage{setspace}
+\usepackage{cite,amsmath,amssymb,mathrsfs,amsxtra,stmaryrd} %% math symbols
+\usepackage{indentfirst}    %% This idents the new paragraphs automatically
+%\usepackage{harvard}        %% Harvard citation style.
+\usepackage[refpage]{nomencl} %% This allows to create a nomenclature page
+\usepackage{multirow, xcolor, colortbl}
+\usepackage{rotating}
+\usepackage{array}
+\usepackage{textcomp}
+\usepackage{epsfig,cite,amsfonts,subfigure,graphicx } % use this in with other package above in the title
+\usepackage{textcomp}
+\usepackage{eurosym}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\numberwithin{algorithm}{chapter}
+%
+\setlength{\arrayrulewidth}{0.5mm}
+%\setlength{\tabcolsep}{18pt}
+\renewcommand{\arraystretch}{1.5}
+\definecolor{grey}{rgb}{190,190,190}
+\begin{document}
+%
+\begin{flushleft}
+\LARGE\bfseries Flexible Opensource BOard for
+Sidechannel analysis 
+\end{flushleft}
+\rule{\textwidth}{1pt}
+\vspace{2pt}
+\begin{flushright}
+\Huge
+\begin{tabular}{@{}l}
+FOBOS
+{\Large Version 0.1}
+\end{tabular}
+\end{flushright}
+\rule{\textwidth}{1pt}
+\vfill
+%
+\newpage
+\tableofcontents
+\newpage
+\section{FOBOS - Capture Module}
+\section{FOBOS - Analysis Module}
+FOBOS's analysis module uses a set of python scripts to post process the raw 
+measurement data obtained from the oscilloscope and perform analysis on the obtained data
+Various functions implemented in the Analysis module is described below:\newline
+
+\begin{table}
+\caption{Config Extract Functions}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{configExtract.extractAnalysisConfigAttributes()}} \\
+ \hline
+ Usage & \texttt{\$configExtract.extractAnalysisConfigAttributes(filename)}\\ \hline
+ Description & Loads the configuration attributes required for various analysis sub-modules\\ \hline
+ Inputs & file-name \\ \hline
+ Outputs & None\\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}
+\caption{Signal Alignment Functions}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAlignmentModule.getAlignedMeasuredPowerData()}} \\
+ \hline
+ Usage & \texttt{\$signalAlignmentModule.getAlignedMeasuredPowerData()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs & An M x N numpy array matrix\\ \hline
+ Description & Aligns all the raw measured data obtained from the oscilloscope with respect to
+ trigger signal. This function returns a M x N numpy array matrix where there are M encryptions/decryptions 
+ and N oscilloscope sample points per measurement\\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}
+\caption{Signal Alignment Functions}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAlignmentModule.acquireHypotheticalValues()}} \\
+ \hline
+ Usage & \texttt{\$signalAlignmentModule.acquireHypotheticalValues(filename)}\\ \hline
+ Inputs & filename \\ \hline
+ Outputs & An M x N numpy array matrix\\ \hline
+ Description & Loads the hypothetical power model into an M x N numpy array where there are M 
+ secret key guesses and N encryptions. This file is to be placed in 
+ \verb|$fobos\powermodels| directory. \\ \hline
+\end{tabular}
+\end{table}
+\end{document}
  
