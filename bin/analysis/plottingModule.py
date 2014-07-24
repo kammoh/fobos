@@ -162,9 +162,32 @@ def plotTrace(dataToPlot, traceNos, plotType):
 		#plt.grid(b=True, which='Major', color = 'b', linestyle = '--')	
 	printFunctions.printToAnalysisLog("Saving " + cfg.SNAPSHOT_FILE)
 	plt.savefig(cfg.SNAPSHOT_FILE,dpi=100)
+	#plt.show()
 	if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 		plt.savefig(support.shiftPathToGraphFolder(cfg.SNAPSHOT_FILE.replace("png","pdf")),dpi=100)
 		plt.savefig(support.shiftPathToGraphFolder(cfg.SNAPSHOT_FILE.replace("png","eps")),dpi=100)
+
+def plotRawTrace(dataToPlot, traceLowerBound, traceUpperBound):
+	figs = plt.figure()	
+	figs.suptitle('Measured Traces', fontsize=14, fontweight='bold')
+	toPlot = numpy.zeros(0)
+	runNo = 1
+	cfg.SNAPSHOT_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.SNAPSHOT_FILE_NAME)
+	while os.path.exists(cfg.SNAPSHOT_FILE):
+		runNo += 1
+		cfg.SNAPSHOT_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.SNAPSHOT_FILE_NAME)	
+	toPlot = numpy.transpose(dataToPlot)
+	plt.hold(False)
+	plt.clf()
+	plt.plot(toPlot[traceLowerBound:traceUpperBound])
+	plt.ylabel('volts')
+	plt.xlabel('time')
+	plt.title('Processed Data')
+	plt.grid(b=True, which='Major', color = 'b', linestyle = '--')
+	printFunctions.printToAnalysisLog("Saving " + cfg.SNAPSHOT_FILE)
+	plt.savefig(cfg.SNAPSHOT_FILE,dpi=100)
+	
+	
 def main():
 	support.clear_screen()
 	#print "Checking values"

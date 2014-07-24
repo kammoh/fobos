@@ -1,5 +1,0 @@
-####################################################
-######## Compression Module Parameters #############
-####################################################
-COMPRESSION_LENGTH = 40
-COMPRESSION_TYPE = MAX # MAX|MIN|MEAN

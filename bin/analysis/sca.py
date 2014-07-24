@@ -75,7 +75,6 @@ def calculate_mean(measuredData, axis):
 		while os.path.exists(cfg.MEAN_OF_DATA_FILE):
 			runNo += 1
 			cfg.MEAN_OF_DATA_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-TraceWise-" +globals.MEAN_OF_DATA_FILE_NAME)
-	
 	measuredDataMean = numpy.mean(measuredData,axis)
 	dataToPlot = numpy.transpose(measuredDataMean)
 	plt.clf()
@@ -110,8 +109,12 @@ def calculate_mean(measuredData, axis):
 		plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.25)
 		plt.axhspan(twoSigmaNline, twoSigmaPLine, facecolor='g', alpha=0.2)		
 		plt.axhspan(threeSigmaNline, threeSigmaPLine, facecolor='g', alpha=0.15)		
-	plt.ylabel('Mean')
-	plt.xlabel('time')
+	if(axis == globals.SAMPLE_WISE):	
+		plt.ylabel('Mean')
+		plt.xlabel('Time')
+	elif(axis == globals.TRACE_WISE):	
+		plt.ylabel('Mean')
+		plt.xlabel('Traces')	
 	plt.title('Mean of Measured Data (Maximum Likelyhood)')
 	printFunctions.printToAnalysisLog("Saving Mean of measured Data PNG file to - " + cfg.MEAN_OF_DATA_FILE)
 	plt.savefig(cfg.MEAN_OF_DATA_FILE,dpi=100)
@@ -130,7 +133,6 @@ def calculate_std(measuredData,axis):
 		while os.path.exists(cfg.STD_OF_DATA_FILE):
 			runNo += 1
 			cfg.STD_OF_DATA_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-SampleWise-" +globals.STD_OF_DATA_FILE_NAME)
-
 	elif(axis == globals.TRACE_WISE):
 		printFunctions.printToScreenAndAnalysisLog("Calculating Standard Deviation of Measured Data - Trace Wise")
 		runNo = 1
@@ -138,7 +140,6 @@ def calculate_std(measuredData,axis):
 		while os.path.exists(cfg.STD_OF_DATA_FILE):
 			runNo += 1
 			cfg.STD_OF_DATA_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-TraceWise" +globals.STD_OF_DATA_FILE_NAME)
-	
 	measuredDataStd = numpy.std(measuredData,axis)
 	dataToPlot =  numpy.transpose(measuredDataStd)
 	plt.clf()
@@ -173,8 +174,12 @@ def calculate_std(measuredData,axis):
 		plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.25)
 		plt.axhspan(twoSigmaNline, twoSigmaPLine, facecolor='g', alpha=0.2)		
 		plt.axhspan(threeSigmaNline, threeSigmaPLine, facecolor='g', alpha=0.15)		
-	plt.ylabel('Standard Deviation')
-	plt.xlabel('time')
+	if(axis == globals.SAMPLE_WISE):	
+		plt.ylabel('Standard Deviation')
+		plt.xlabel('Time')
+	elif(axis == globals.TRACE_WISE):	
+		plt.ylabel('Standard Deviation')
+		plt.xlabel('Traces')	
 	plt.title('Standard Deviation of Measured Data (Maximum Likelyhood)')
 	printFunctions.printToAnalysisLog("Saving STD of measured Data PNG file to - " + cfg.STD_OF_DATA_FILE)
 	plt.savefig(cfg.STD_OF_DATA_FILE,dpi=100)
@@ -200,7 +205,7 @@ def calculate_var(measuredData,axis):
 		while os.path.exists(cfg.VAR_OF_DATA_FILE):
 			runNo += 1
 			cfg.VAR_OF_DATA_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-TraceWise-" +globals.VAR_OF_DATA_FILE_NAME)
-	
+
 	measuredDataVar = numpy.var(measuredData,axis)
 	dataToPlot = numpy.transpose(measuredDataVar)
 	plt.clf()
@@ -234,10 +239,14 @@ def calculate_var(measuredData,axis):
 		plt.axhline(y=meanLine, color='r')
 		plt.axhspan(oneSigmaNline, oneSigmaPLine, facecolor='g', alpha=0.25)
 		plt.axhspan(twoSigmaNline, twoSigmaPLine, facecolor='g', alpha=0.2)		
-		plt.axhspan(threeSigmaNline, threeSigmaPLine, facecolor='g', alpha=0.15)		
-	plt.ylabel('Variance')
-	plt.xlabel('time')
-	plt.title('Variance of Measured Data (Maximum Likelyhood)')
+		plt.axhspan(threeSigmaNline, threeSigmaPLine, facecolor='g', alpha=0.15)				
+	#if(axis == globals.SAMPLE_WISE):	
+		#plt.ylabel('Variance')
+		#plt.xlabel('Time')
+	#elif(axis == globals.TRACE_WISE):	
+		#plt.ylabel('Variance')
+		#plt.xlabel('Traces')
+	#plt.title('Variance of Measured Data (Maximum Likelyhood)')
 	printFunctions.printToAnalysisLog("Saving VAR of measured Data PNG file to - " + cfg.VAR_OF_DATA_FILE)
 	plt.savefig(cfg.VAR_OF_DATA_FILE,dpi=100)
 	if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):

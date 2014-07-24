@@ -26,6 +26,7 @@ CONFIGDIR = ''
 BINDIR  = ''
 CONFIGFILE = ''
 OSC_CONFIGFILE = ''
+PROGRAM_CALL = ''
 
 ##################################################
 ##### DATA CAPTURE SETTINGS ######################

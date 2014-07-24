@@ -1,3 +1,0 @@
-WORK_DIR = FOBOSAnalysis
-MEASUREMENT_WORK_DIR = FOBOSWorkspace
-TAG = counter
