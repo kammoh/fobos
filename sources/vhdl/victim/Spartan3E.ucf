@@ -1,0 +1,31 @@
+#####################################################
+### SPARTAN-3E STARTER KIT BOARD CONSTRAINTS FILE ###
+#####################################################
+
+# ==== FX2 Connector (FX2) ====
+
+# ===================== VICTIM INPUT  =================================== 
+NET "sw<0>" LOC = "B4"| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;   # B4 changed to C3
+NET "sw<1>" LOC = "A4"| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "sw<2>" LOC = "D5"| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "sw<3>" LOC = "C5"| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "sw<4>" LOC = "A6"| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "sw<5>" LOC = "B6"| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "sw<6>" LOC = "E7"| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "sw<7>" LOC = "F7"| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+# =====================VICTIM OUTPUT ======================================================= #
+NET "led<0>" LOC = "F11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "led<1>" LOC = "E11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "led<2>" LOC = "E12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "led<3>" LOC = "F12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "led<4>" LOC = "A13" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "led<5>" LOC = "B13" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "led<6>" LOC = "A14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "led<7>" LOC = "B14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "done" LOC = "C14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "trigger" LOC = "A16" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+# ===================== CONTROL SIGNALS ===================================================================
+NET "start" 	LOC = "A15" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+#NET "trigger" 	LOC = "D7" 	| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+# ======================== CLOCK SIGNAL ==================================================================
+NET "clock" LOC = "E10"; # Clock
