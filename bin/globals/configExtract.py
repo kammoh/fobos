@@ -25,7 +25,7 @@ import globals
 import printFunctions
 import cfg
 import shutil
-from  analysis import signalAlignmentModule
+from  analysis import signalAnalysisModule
 
 def configureWorkspace():
 	runNo = 1
@@ -185,7 +185,8 @@ def configureAnalysisWorkspace():
 	if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 		support.createDirectory(cfg.GRAPHS_FOLDER)
 	support.createDirectory(cfg.LOCAL_CONFIGDIR)
-	signalAlignmentModule.readRawTraces()
+	shutil.copy(cfg.ANALYSIS_SCRIPT_FILE, cfg.LOCAL_CONFIGDIR)
+	signalAnalysisModule.readRawTraces()
 
 def extractAnalysisConfigAttributes(CONFIG_FILE):
 	CONFIG_FILE = os.path.join(cfg.ANALYSISCONFIGDIR, CONFIG_FILE)

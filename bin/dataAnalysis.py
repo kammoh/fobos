@@ -1,27 +1,29 @@
 #!/usr/bin/python
-#############################################################################
-#                                                                           #
-#	Copyright 2014 CERG                                                     #
-#	                                                                        #
-#	Licensed under the Apache License, Version 2.0 (the "License");         #
-#	you may not use this file except in compliance with the License.        #
-#	You may obtain a copy of the License at                                 #
-#	                                                                        #
-#	    http://www.apache.org/licenses/LICENSE-2.0                          #
-#	                                                                        #
-#	Unless required by applicable law or agreed to in writing, software     #
-#	distributed under the License is distributed on an "AS IS" BASIS,       #
-#	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
-#	See the License for the specific language governing permissions and     #
-#	limitations under the License.                                          #
-#                                                                           #
-#############################################################################
+##################################################################################
+#                                                                           	 #
+#	Copyright 2014 Cryptographic Engineering Research Group (CERG)               #
+#	George Mason University														 #	
+#   http://cryptography.gmu.edu/fobos                                            #                            
+#									                                             #                             	 
+#	Licensed under the Apache License, Version 2.0 (the "License");         	 #
+#	you may not use this file except in compliance with the License.        	 #
+#	You may obtain a copy of the License at                                 	 #
+#	                                                                        	 #
+#	    http://www.apache.org/licenses/LICENSE-2.0                          	 #
+#	                                                                        	 #
+#	Unless required by applicable law or agreed to in writing, software     	 #
+#	distributed under the License is distributed on an "AS IS" BASIS,       	 #
+#	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.	 #
+#	See the License for the specific language governing permissions and     	 #
+#	limitations under the License.                                          	 #
+#                                                                           	 #
+##################################################################################
 import os
-import cfg, globals,support, printFunctions
-import configExtract
-from analysis import signalAlignmentModule
+from globals import cfg, globals,support, printFunctions, configExtract
+from analysis import signalAnalysisModule
 from analysis import postProcessingModule
 from analysis import plottingModule
+from analysis import statisticsModule
 from analysis import sca
 
 def init():
@@ -30,6 +32,7 @@ def init():
 	cfg.CONFIGDIR = os.path.join(cfg.ROOTDIR,globals.CONFIG_DIRNAME)
 	cfg.ANALYSISCONFIGDIR = os.path.join(cfg.ROOTDIR, globals.ANALYSIS_CONFIG_DIRNAME)
 	cfg.CONFIG_FILE = os.path.join(cfg.CONFIGDIR, globals.CONFIG_FILENAME)
+	cfg.ANALYSIS_SCRIPT_FILE = os.path.join(cfg.BINDIR, globals.ANALYSIS_SCRIPT_FILENAME)
 	cfg.PROGRAM_CALL = "ANALYSIS"
 	
 def main():	
@@ -49,7 +52,8 @@ def main():
 	#plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 200750, 204750)
 	#plottingModule.plotRawTrace(cfg.RAW_TRIGGER_DATA,200750, 204750)
 	configExtract.extractAnalysisConfigAttributes("signalAlignmentParams.txt")
-	alignedData = signalAlignmentModule.getAlignedMeasuredPowerData() # Aligned Power traces with respect to trigger
+	alignedData = signalAnalysisModule.getAlignedMeasuredPowerData() # Aligned Power traces with respect to trigger
+	#signalAnalysisModule.spectogram(cfg.RAW_POWER_DATA)
 	#plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')
 	#sampleVarTimeWise = sca.calculate_var(alignedData, globals.TRACE_WISE) 
 	# #support.wait()
@@ -62,19 +66,22 @@ def main():
 	configExtract.extractAnalysisConfigAttributes("compressionParams.txt")
 	compressedData = postProcessingModule.compressData(windowedData)
 	#plottingModule.plotTrace(compressedData, 'ALL', 'OVERLAY')
-	hypotheticalPowerData = signalAlignmentModule.acquireHypotheticalValues("key_guess.txt")
+	hypotheticalPowerData = signalAnalysisModule.acquireHypotheticalValues("key_guess.txt")
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	#plottingModule.plotCorr(correlationData, globals.PEARSON)
-	sp = sca.correlation_spearman(compressedData, hypotheticalPowerData)
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,22)
+	#sp = sca.correlation_spearman(compressedData, hypotheticalPowerData)
 	#plottingModule.plotCorr(sp, globals.SPEARMAN)
+	#an = sca.anova(compressedData, hypotheticalPowerData)
+	#plottingModule.plotCorr(an, globals.ANOVA)	
 	#ac = sca.calculate_autocorrelation(alignedData)
 	#plottingModule.plotCorr(ac, globals.AUTOCORR)
 	#m1 = sca.calculate_mean(alignedData, globals.SAMPLE_WISE)
 	#m2 = sca.calculate_mean(alignedData, globals.TRACE_WISE)
 	#s1 = sca.calculate_std(alignedData, globals.SAMPLE_WISE)
 	#s2 = sca.calculate_std(alignedData, globals.TRACE_WISE)
-	v1 = sca.calculate_var(alignedData, globals.SAMPLE_WISE)
-	v2 = sca.calculate_var(alignedData, globals.TRACE_WISE)
+	#v1 = sca.calculate_var(alignedData, globals.SAMPLE_WISE)
+	#v2 = sca.calculate_var(alignedData, globals.TRACE_WISE)
 
 	
 if __name__ == "__main__": 

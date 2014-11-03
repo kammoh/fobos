@@ -1,21 +1,23 @@
 #!/usr/bin/python
-#############################################################################
-#                                                                           #
-#	Copyright 2014 CERG                                                     #
-#	                                                                        #
-#	Licensed under the Apache License, Version 2.0 (the "License");         #
-#	you may not use this file except in compliance with the License.        #
-#	You may obtain a copy of the License at                                 #
-#	                                                                        #
-#	    http://www.apache.org/licenses/LICENSE-2.0                          #
-#	                                                                        #
-#	Unless required by applicable law or agreed to in writing, software     #
-#	distributed under the License is distributed on an "AS IS" BASIS,       #
-#	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
-#	See the License for the specific language governing permissions and     #
-#	limitations under the License.                                          #
-#                                                                           #
-#############################################################################
+##################################################################################
+#                                                                           	 #
+#	Copyright 2014 Cryptographic Engineering Research Group (CERG)               #
+#	George Mason University														 #	
+#   http://cryptography.gmu.edu/fobos                                            #                            
+#									                                             #                             	 
+#	Licensed under the Apache License, Version 2.0 (the "License");         	 #
+#	you may not use this file except in compliance with the License.        	 #
+#	You may obtain a copy of the License at                                 	 #
+#	                                                                        	 #
+#	    http://www.apache.org/licenses/LICENSE-2.0                          	 #
+#	                                                                        	 #
+#	Unless required by applicable law or agreed to in writing, software     	 #
+#	distributed under the License is distributed on an "AS IS" BASIS,       	 #
+#	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.	 #
+#	See the License for the specific language governing permissions and     	 #
+#	limitations under the License.                                          	 #
+#                                                                           	 #
+##################################################################################
 import numpy
 
 ##################################################
@@ -93,13 +95,16 @@ MEASUREMENT_PROJECT_PATH_FILE = ""
 MEAN_OF_DATA_FILE = ""
 STD_OF_DATA_FILE = ""
 VAR_OF_DATA_FILE = ""
-
+ANALYSIS_SCRIPT_FILE = ""
+SPECTOGRAM_FILE = ""
 PEARSON_GRAPH_FILE = ""
 SPEARMAN_GRAPH_FILE = ""
 AUTOCORR_GRAPH_FILE = ""
+ANOVA_GRAPH_FILE = ""
 
 CORR_PEARSON_RESULT_FILE = ""
 CORR_SPEARMAN_RESULT_FILE = ""
+ANOVA_RESULT_FILE = ""
 
 
 analysisConfigAttributes = {

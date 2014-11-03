@@ -19,11 +19,11 @@
 import os
 import sys
 import numpy
-import cfg,globals, printFunctions
+from globals import cfg,globals, printFunctions
 import re
-import configExtract
+from globals import configExtract
 import matplotlib.pyplot as plt
-import support
+from globals import support
 
 
 	
@@ -85,7 +85,25 @@ def plotCorr(corrMatrix, corrType):
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 			plt.savefig(support.shiftPathToGraphFolder(cfg.AUTOCORR_GRAPH_FILE.replace("png","pdf")),dpi=100)
 			plt.savefig(support.shiftPathToGraphFolder(cfg.AUTOCORR_GRAPH_FILE.replace("png","eps")),dpi=100)
-	
+
+	if(corrType == globals.ANOVA):
+		printFunctions.printToScreenAndAnalysisLog("Plotting 1-way ANOVA p values vs Key guess")
+		runNo = 1
+		cfg.ANOVA_GRAPH_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.ANOVA_GRAPH_FILE_NAME)
+		while os.path.exists(cfg.ANOVA_GRAPH_FILE):
+			runNo += 1
+			cfg.ANOVA_GRAPH_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.ANOVA_GRAPH_FILE_NAME)		
+		
+		printFunctions.printToAnalysisLog("Plotting 1-way ANOVA p values to PNG file - " + cfg.ANOVA_GRAPH_FILE) 
+		plt.plot(dataToPlot)
+		plt.xlim(0,255)
+		plt.ylabel('ANOVA p value')
+		plt.xlabel('Key Byte')
+		plt.title('ANOVA vs Key Guess (BYTE)')
+		plt.savefig(cfg.ANOVA_GRAPH_FILE,dpi=100)
+		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
+			plt.savefig(support.shiftPathToGraphFolder(cfg.ANOVA_GRAPH_FILE.replace("png", "pdf")),dpi=100)
+			plt.savefig(support.shiftPathToGraphFolder(cfg.ANOVA_GRAPH_FILE.replace("png", "eps")),dpi=100)			
 def traceNoStringParser(tString):
 	if(tString == "ALL"):
 		tracesToPrint = numpy.zeros(0)
@@ -186,7 +204,7 @@ def plotRawTrace(dataToPlot, traceLowerBound, traceUpperBound):
 	plt.grid(b=True, which='Major', color = 'b', linestyle = '--')
 	printFunctions.printToAnalysisLog("Saving " + cfg.SNAPSHOT_FILE)
 	plt.savefig(cfg.SNAPSHOT_FILE,dpi=100)
-	
+
 	
 def main():
 	support.clear_screen()

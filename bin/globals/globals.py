@@ -1,21 +1,23 @@
 #!/usr/bin/python
-#############################################################################
-#                                                                           #
-#	Copyright 2014 CERG                                                     #
-#	                                                                        #
-#	Licensed under the Apache License, Version 2.0 (the "License");         #
-#	you may not use this file except in compliance with the License.        #
-#	You may obtain a copy of the License at                                 #
-#	                                                                        #
-#	    http://www.apache.org/licenses/LICENSE-2.0                          #
-#	                                                                        #
-#	Unless required by applicable law or agreed to in writing, software     #
-#	distributed under the License is distributed on an "AS IS" BASIS,       #
-#	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
-#	See the License for the specific language governing permissions and     #
-#	limitations under the License.                                          #
-#                                                                           #
-#############################################################################
+##################################################################################
+#                                                                           	 #
+#	Copyright 2014 Cryptographic Engineering Research Group (CERG)               #
+#	George Mason University														 #	
+#   http://cryptography.gmu.edu/fobos                                            #                            
+#									                                             #                             	 
+#	Licensed under the Apache License, Version 2.0 (the "License");         	 #
+#	you may not use this file except in compliance with the License.        	 #
+#	You may obtain a copy of the License at                                 	 #
+#	                                                                        	 #
+#	    http://www.apache.org/licenses/LICENSE-2.0                          	 #
+#	                                                                        	 #
+#	Unless required by applicable law or agreed to in writing, software     	 #
+#	distributed under the License is distributed on an "AS IS" BASIS,       	 #
+#	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.	 #
+#	See the License for the specific language governing permissions and     	 #
+#	limitations under the License.                                          	 #
+#                                                                           	 #
+##################################################################################
 from ctypes import *
 import sys, cfg
 import os
@@ -84,7 +86,7 @@ OPENADC_TITLE = 'openADC Wave-Snapshot'
 
 BIN_DIRNAME = "bin"
 CONFIG_DIRNAME = "config"
-ANALYSIS_CONFIG_DIRNAME = "config-analysis"
+ANALYSIS_CONFIG_DIRNAME = "config"
 OUTPUT_FOLDERNAME = "outputs"
 MEASUREMENT_FOLDERNAME = "measurements"
 GRAPHS_FOLDERNAME = "graphs"
@@ -158,14 +160,14 @@ if(cfg.PROGRAM_CALL == "ACQUISITION"):
 #Analysis globals
 ANALYSIS_FOLDER_NAME = "analysis"
 TESTDIRNAME = "testing"
-POWERMODELS_DIRNAME = "powermodels"
+POWERMODELS_DIRNAME = "data"
 PROJECTPATH_FILENAME = "projectPath.txt"
 ALIGNED_DATA_FILE_NAME = "rawDataAligned.dat"
 RAW_UNALIGNED_POWER_FILE_NAME = "wave1.dat"
 RAW_UNALIGNED_TRIGGER_FILE_NAME = "wave2.dat"
 SNAPSHOT_FILE_NAME = "traces.png"
 FOBOS_ANALYSIS_LOG_FILE_NAME = "FOBOSAnalysisLog.txt"
-
+ANALYSIS_SCRIPT_FILENAME = "dataAnalysis.py"
 COMPRESSED_DATA_FILE_NAME = "compressedData.dat"
 SAMPLE_SPACE_DISP_FILE_NAME = "sampleSpaceDispData.dat"
 TRACE_EXPUNGE_DATA_FILE_NAME = "traceExpunge.dat"
@@ -175,13 +177,16 @@ TRACE_EXPUNGE_DATA_FILE_NAME = "traceExpunge.dat"
 MEAN_OF_DATA_FILE_NAME = "meanOfData.png"
 STD_OF_DATA_FILE_NAME = "stdOfData.png"
 VAR_OF_DATA_FILE_NAME = "varOfData.png"
+SPECTOGRAM_FILE_NAME = "spectogram.png"
 
 PEARSON_GRAPH_FILE_NAME = "pearsonsCorrelationGraph.png"
 SPEARMAN_GRAPH_FILE_NAME = "spearmanCorrelationGraph.png"
 AUTOCORR_GRAPH_FILE_NAME = "autocorrelationGraph.png"
+ANOVA_GRAPH_FILE_NAME = "oneWayANOVAGraph.png"
 
 CORR_PEARSON_RESULT_FILE_NAME = "correlationPearsonResults.txt"
 CORR_SPEARMAN_RESULT_FILE_NAME = "correlationSpearmanResults.txt"
+ANOVA_RESULT_FILE_NAME = "oneWayANOVAResults.txt"
 
 POWER_CHANNEL_PREAMBLE_FILE_NAME = "channel1PreambleData.dat"
 TRIGGER_CHANNEL_PREAMBLE_FILE_NAME = "channel2PreambleData.dat"
@@ -202,4 +207,5 @@ TRACE_WISE = 1
 
 PEARSON = 'PEARSON'
 SPEARMAN = 'SPEARMAN'
-AUTOCORR = "AUTOCORRELATION"
+AUTOCORR = 'AUTOCORRELATION'
+ANOVA = 'ANOVA'
