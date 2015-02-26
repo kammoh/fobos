@@ -56,7 +56,7 @@ OSC_CONFIG_FILE = oscilloscope_config.txt
 NUMBER_OF_ENCRYPTIONS = 1600
 BLOCK_SIZE = 16 # In Bytes
 KEY_SIZE = 16 # In Bytes
-
+CAPTURE_MODE = multi # single|multi
 # =============================================
 # =============================================
 # Plot Generator Settings
