@@ -123,6 +123,9 @@ def extractConfigAttributes():
 		if re.match('^KEY_SIZE', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['KEY_SIZE'] = int(value[1].strip(" "))				
+		if re.match('^CAPTURE_MODE', object) :
+			value = re.split("=", object)
+			cfg.config_attributes['CAPTURE_MODE'] = (value[1].strip(" "))
 		if re.match('^PLAINTEXT_GENERATION', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['PLAINTEXT_GENERATION'] = value[1].strip(" ")
@@ -182,7 +185,7 @@ def configureAnalysisWorkspace():
 	cfg.GRAPHS_FOLDER = os.path.join(cfg.ANALYSIS_WORKSPACE, globals.GRAPHS_FOLDERNAME)
 	cfg.LOCAL_CONFIGDIR = os.path.join(cfg.ANALYSIS_WORKSPACE, globals.ANALYSIS_CONFIG_DIRNAME)
 	if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
-		support.createDirectory(cfg.GRAPHS_FOLDER)
+		support.createDirectory(cfg.GRAPHS_FOLDER)	
 	support.createDirectory(cfg.LOCAL_CONFIGDIR)
 	shutil.copy(cfg.ANALYSIS_SCRIPT_FILE, cfg.LOCAL_CONFIGDIR)
 	signalAnalysisModule.readRawTraces()

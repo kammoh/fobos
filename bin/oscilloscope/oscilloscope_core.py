@@ -26,6 +26,7 @@ from oscilloscope_global import *
 #import visa
 import numpy
 from globals import support,cfg , printFunctions
+from analysis import signalAlignmentModule
 
 def get_attribs(data_list) :
     for object in data_list :
@@ -209,6 +210,10 @@ def get_waveform_power() :
   fpower = open(cfg.POWER_MEASUREMENT_FILE, "wb")
   fpower.write(str(wavedata))
   fpower.close()
+  measuredPowerData = signalAlignmentModule.acquireDataValues(cfg.POWER_CHANNEL_PREAMBLE_FILE, cfg.POWER_MEASUREMENT_FILE)
+  support.removeFile(cfg.POWER_CHANNEL_PREAMBLE_FILE)
+  support.removeFile(cfg.POWER_MEASUREMENT_FILE)
+  return (measuredPowerData)
 
 def get_waveform_trigger() :
   cfg.Oscilloscope.send(":WAVEFORM:FORMAT BYTE" + '\n')
@@ -245,6 +250,10 @@ def get_waveform_trigger() :
   fpower = open(cfg.TRIGGER_MEASUREMENT_FILE, "wb")
   fpower.write(str(wavedata))
   fpower.close()
+  measuredTriggerData = signalAlignmentModule.acquireDataValues(cfg.TRIGGER_CHANNEL_PREAMBLE_FILE, cfg.TRIGGER_MEASUREMENT_FILE)
+  support.removeFile(cfg.TRIGGER_CHANNEL_PREAMBLE_FILE)
+  support.removeFile(cfg.TRIGGER_MEASUREMENT_FILE)
+  return (measuredTriggerData)  
 
 def get_snapshot():
   print "Capturing Snapshot of the Scope"

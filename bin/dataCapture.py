@@ -19,14 +19,15 @@
 import os
 from globals import cfg, globals,support, printFunctions, configExtract
 from oscilloscope.oscilloscope_core import *
+import pickle
 
 	
 def init():
 	(cfg.ROOTDIR, temp) = os.path.split(os.getcwd())
-	cfg.BINDIR = os.path.join(cfg.ROOTDIR,BIN_DIRNAME)
-	cfg.CONFIGDIR = os.path.join(cfg.ROOTDIR,CONFIG_DIRNAME)
-	cfg.CONFIGFILE = os.path.join(cfg.CONFIGDIR, CONFIG_FILENAME)
-	cfg.OSC_CONFIGFILE = os.path.join(cfg.CONFIGDIR, OSC_CONFIGFILENAME)
+	cfg.BINDIR = os.path.join(cfg.ROOTDIR,globals.BIN_DIRNAME)
+	cfg.CONFIGDIR = os.path.join(cfg.ROOTDIR,globals.CONFIG_DIRNAME)
+	cfg.CONFIG_FILE = os.path.join(cfg.CONFIGDIR, globals.CONFIG_FILENAME)
+	cfg.OSC_CONFIGFILE = os.path.join(cfg.CONFIGDIR, globals.OSC_CONFIGFILENAME)
 
 #############################################
 ###### Version 0.1 of FOBOS Capture
@@ -37,7 +38,7 @@ def main():
 	init()
 	configExtract.extractConfigAttributes()
 	configExtract.configureWorkspace()	
-	printHeaderToScreenAndLog()
+	printFunctions.printHeaderToScreenAndLog()
 	extractOscilloscopeConfigAttributes()
 	#dataToEncrypt = getPlainText()
 	#keyToEncrypt = getKey()
@@ -45,9 +46,39 @@ def main():
 	#oscilloscopeCommunicationcheck()
 	openOscilloscopeConnection()
 	setOscilloscopeConfigAttributes()
-	armOscilloscope()
-	get_waveform_power()
-	get_waveform_trigger()
+	if(cfg.config_attributes['CAPTURE_MODE'] == globals.CAPTURE_MODE_MULTI):
+		armOscilloscope()
+		measuredPowerData =  numpy.zeros(0)
+		measuredTriggerData = numpy.zeros(0)
+		measuredPowerData = get_waveform_power()
+		meausredTriggerData = get_waveform_trigger()
+	elif(cfg.config_attributes['CAPTURE_MODE'] == globals.CAPTURE_MODE_SINGLE):
+		runCount = 0
+		measuredPowerData = numpy.zeros(0)
+		measuredTriggerData = numpy.zeros(0)
+		if(runCount < cfg.config_attributes['NUMBER_OF_ENCRYPTIONS']):
+			armOscilloscope()
+			tempMeasuredPower = get_waveform_power()
+			tempMeasuredTrigger = get_waveform_trigger()
+			if (runCount == 0):
+				measuredPowerData =  tempMeasuredPower
+				measuredTriggerData = tempMeasuredTrigger
+				tempMeasuredPower = numpy.zeros(0)
+				tempMeasuredTrigger = numpy.zeros(0)
+			else:
+				measuredPowerData = numpy.vstack((measuredPowerData, tempMeasuredPower))
+				measuredTriggerData = numpy.vstack((measuredTriggerData, tempMeasuredTrigger))
+				tempMeasuredPower = numpy.zeros(0)
+				tempMeasuredTrigger = numpy.zeros(0)				
+			runCount += 1
+	fileId = open(cfg.POWER_MEASUREMENT_FILE, "wb")
+	#pickle.dump(measuredPowerData, fileId)
+	fileId.write(str(measuredPowerData))
+	fileId.close()
+	fileId = open(cfg.TRIGGER_MEASUREMENT_FILE, "wb")
+	#pickle.dump(measuredTriggerData, fileId)
+	fileId.write(str(measuredTriggerData))
+	fileId.close()
 	closeOscilloscopeConnection()
 
 if __name__ == "__main__":

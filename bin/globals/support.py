@@ -96,7 +96,9 @@ def readFile(file_name) :
 	#temp =  "Number of Lines read : %d" % len(indata)
 	#support.printToLog(temp)
 	return (indata)
-
+def removeFile(fileName):
+	os.remove(fileName)
+	
 def removeComments(data_list) :
 	#print "Removing Comments from the Data list"
 	newdata_list = []
