@@ -17,13 +17,8 @@
 #                                                                           #
 #############################################################################
 import os
-import cfg
-from globals import *
-from printFunctions import *
-from support import *
-from configExtract import *
-import dataGenerator
-from oscilloscopeFunctions import *
+from globals import cfg, globals,support, printFunctions, configExtract
+from oscilloscope.oscilloscope_core import *
 
 	
 def init():
@@ -33,25 +28,28 @@ def init():
 	cfg.CONFIGFILE = os.path.join(cfg.CONFIGDIR, CONFIG_FILENAME)
 	cfg.OSC_CONFIGFILE = os.path.join(cfg.CONFIGDIR, OSC_CONFIGFILENAME)
 
-
+#############################################
+###### Version 0.1 of FOBOS Capture
+###### Only Oscilloscope comm is instantiated
+#############################################
 def main():	
-	clear_screen()
-	#init()
-	#extractConfigAttributes()
-	#configureWorkspace()	
-	#printHeaderToScreenAndLog()
-	#extractOscilloscopeConfigAttributes()
+	support.clear_screen()
+	init()
+	configExtract.extractConfigAttributes()
+	configExtract.configureWorkspace()	
+	printHeaderToScreenAndLog()
+	extractOscilloscopeConfigAttributes()
 	#dataToEncrypt = getPlainText()
 	#keyToEncrypt = getKey()
 	#controlboardCommunicationcheck()
 	#oscilloscopeCommunicationcheck()
-	(branch1, branch2) = os.path.split(os.getcwd())
-	path2 = os.path.join(branch1, "newpath", branch2)
-	print os.getcwd()
-	print branch1
-	print branch2
-	print path2
-	
+	openOscilloscopeConnection()
+	setOscilloscopeConfigAttributes()
+	armOscilloscope()
+	get_waveform_power()
+	get_waveform_trigger()
+	closeOscilloscopeConnection()
+
 if __name__ == "__main__":
     main()
 	
