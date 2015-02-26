@@ -55,10 +55,9 @@ def configureWorkspace():
 	cfg.POWER_MEASUREMENT_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.POWER_MEASUREMENT_FILE_NAME)
 	cfg.TRIGGER_MEASUREMENT_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.TRIGGER_MEASUREMENT_FILE_NAME)
 	cfg.POWER_CHANNEL_PREAMBLE_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals. POWER_CHANNEL_PREAMBLE_FILE_NAME)
-	cfg.TRIGGER_CHANNEL_PREAMBLE_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.TRIGGER_CHANNEL_PREAMBLE_FILE)
+	cfg.TRIGGER_CHANNEL_PREAMBLE_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.TRIGGER_CHANNEL_PREAMBLE_FILE_NAME)
 	support.createDirectory(cfg.OUTPUT_FOLDER)
 	support.createDirectory(cfg.MEASUREMENT_FOLDER)
-	support.createDirectory(cfg.GRAPH_FOLDER)
  
 def extractConfigAttributes():
 	data_list = support.readFile(cfg.CONFIG_FILE)

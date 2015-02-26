@@ -104,6 +104,27 @@ def plotCorr(corrMatrix, corrType):
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 			plt.savefig(support.shiftPathToGraphFolder(cfg.ANOVA_GRAPH_FILE.replace("png", "pdf")),dpi=100)
 			plt.savefig(support.shiftPathToGraphFolder(cfg.ANOVA_GRAPH_FILE.replace("png", "eps")),dpi=100)			
+	if(corrType == globals.MAXGUESSENTROPY):
+		printFunctions.printToScreenAndAnalysisLog("Plotting Maximum Guessing Entropy")
+		runNo = 1
+		cfg.MAXGUESSENT_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.MAXGUESSENT_FILE_NAME)
+		while os.path.exists(cfg.MAXGUESSENT_FILE):
+			runNo += 1
+			cfg.MAXGUESSENT_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.MAXGUESSENT_FILE_NAME)		
+		
+		printFunctions.printToAnalysisLog("Plotting Maximum Guessing Entropy to PNG file - " + cfg.MAXGUESSENT_FILE) 
+		plt.plot(dataToPlot)
+		plt.ylim(0,255)
+		plt.ylabel('Max Guessing Entropy')
+		plt.xlabel('Number of Encryptions')
+		plt.title('Maximum Guessing Entropy for Correct Key Guess')
+		plt.savefig(cfg.MAXGUESSENT_FILE,dpi=100)
+		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
+			plt.savefig(support.shiftPathToGraphFolder(cfg.MAXGUESSENT_FILE.replace("png", "pdf")),dpi=100)
+			plt.savefig(support.shiftPathToGraphFolder(cfg.MAXGUESSENT_FILE.replace("png", "eps")),dpi=100)
+			
+			
+			
 def traceNoStringParser(tString):
 	if(tString == "ALL"):
 		tracesToPrint = numpy.zeros(0)

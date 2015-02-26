@@ -183,6 +183,7 @@ PEARSON_GRAPH_FILE_NAME = "pearsonsCorrelationGraph.png"
 SPEARMAN_GRAPH_FILE_NAME = "spearmanCorrelationGraph.png"
 AUTOCORR_GRAPH_FILE_NAME = "autocorrelationGraph.png"
 ANOVA_GRAPH_FILE_NAME = "oneWayANOVAGraph.png"
+MAXGUESSENT_FILE_NAME = "maximumGuessingEntropy.png"
 
 CORR_PEARSON_RESULT_FILE_NAME = "correlationPearsonResults.txt"
 CORR_SPEARMAN_RESULT_FILE_NAME = "correlationSpearmanResults.txt"
@@ -209,3 +210,4 @@ PEARSON = 'PEARSON'
 SPEARMAN = 'SPEARMAN'
 AUTOCORR = 'AUTOCORRELATION'
 ANOVA = 'ANOVA'
+MAXGUESSENTROPY = "MAXGUESSENTROPY"

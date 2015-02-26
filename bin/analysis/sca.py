@@ -33,7 +33,7 @@ def findKeyByteLocation(keyByte,corrMatrix):
 	array = sorted(corrMatrix, reverse=True)
 	try:
 		index_element=array.index(keyValue)
-		print index_element
+		#print index_element
 		if (index_element == -1):
 			index_element = 255
 		return index_element
@@ -149,12 +149,11 @@ def findMinimumGuessingEntropy(measuredData, modeledData, correlationType, stepS
 		crrMat = cpaPearson(pwrData, hypData)
 		keyLoc = findKeyByteLocation(knownKey,crrMat)
 		if(firstRun == True):
-			print keyLoc
 			mgeArray = keyLoc
 			firstRun = False
 		else:
 			mgeArray = numpy.vstack((mgeArray, keyLoc))
-	print mgeArray
+	return mgeArray
 	
 def anova(measuredData, modeledData):
 	printFunctions.printToScreenAndAnalysisLog("Calculating ANOVA between Measured and Modelled Data")

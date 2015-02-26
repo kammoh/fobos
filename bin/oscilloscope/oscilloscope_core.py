@@ -24,23 +24,23 @@ import sys
 from oscilloscope_agilent import *
 from oscilloscope_global import *
 #import visa
-from numpy import *
- 
+import numpy
+from globals import support,cfg , printFunctions
 
 def get_attribs(data_list) :
     for object in data_list :
         if re.match('^OSCILLOSCOPE\W', object) :
-	value = re.split("=", object)
-	cfg.osc_attributes['OSCILLOSCOPE'] = value[1].strip(" ")
+            value = re.split("=", object)
+            cfg.osc_attributes['OSCILLOSCOPE'] = value[1].strip(" ")
         elif re.match('^OSCILLOSCOPE_IP\W', object) :
-	value = re.split("=", object)
-	cfg.osc_attributes['OSCILLOSCOPE_IP'] = value[1].strip(" ")
+            value = re.split("=", object)
+            cfg.osc_attributes['OSCILLOSCOPE_IP'] = str(value[1].strip(" "))
         elif re.match('^OSCILLOSCOPE_PORT\W', object) :
-	value = re.split("=", object)
-	cfg.osc_attributes['OSCILLOSCOPE_PORT'] = value[1].strip(" ")	  
+            value = re.split("=", object)
+            cfg.osc_attributes['OSCILLOSCOPE_PORT'] = int(value[1].strip(" "))	  
         elif re.match('^AUTOSCALE', object) :
-	value = re.split("=", object)
-	cfg.osc_attributes['AUTOSCALE'] = value[1].strip(" ")
+            value = re.split("=", object)
+            cfg.osc_attributes['AUTOSCALE'] = value[1].strip(" ")
         elif re.match('^IMPEDANCE', object) :
             value = re.split("=", object)
             cfg.osc_attributes['IMPEDANCE'] = value[1].strip(" ")
@@ -169,9 +169,9 @@ def setOscilloscopeConfigAttributes():
     cfg.Oscilloscope.send(cmd_string+'\n')
  
 def extractOscilloscopeConfigAttributes():
-  data_from_file = readFile(cfg.OSC_CONFIGFILE)
-  data_list = removeComments(data_from_file)
-  printToLog("Obtaining oscilloscope attributes")
+  data_from_file = support.readFile(cfg.OSC_CONFIGFILE)
+  data_list = support.removeComments(data_from_file)
+  printFunctions.printToLog("Obtaining oscilloscope attributes")
   get_attribs(data_list)
 	  
 def get_waveform_power() :
@@ -179,7 +179,7 @@ def get_waveform_power() :
   cfg.Oscilloscope.send(":WAVEFORM:SOURCE CHAN1" + '\n')
   cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE RAW" + '\n')
   cfg.Oscilloscope.send(":WAVEFORM:POINTS 8000000" + '\n')
-  print "\tReading Preamble of Power Source"
+  printFunctions.printToLog("\tReading Preamble of Power Source")
   cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')
   preamble = cfg.Oscilloscope.recv(200)
   fpowerpreamble = open(cfg.POWER_CHANNEL_PREAMBLE_FILE, "wb")
@@ -188,19 +188,23 @@ def get_waveform_power() :
   fid = open(cfg.POWER_CHANNEL_PREAMBLE_FILE, "rb")
   preamble = numpy.fromfile(fid, dtype= numpy.float64, count = 10, sep = ",")
   fid.close()
-  print "\tTotal Number of Points to Receive: " + str(int(preamble[2]))
-  print "\tReading Data of Power Source"
+  printFunctions.printToLog("\tTotal Number of Points to Receive: " + str(int(preamble[2])))
+  printFunctions.printToScreenAndLog("\tReading Data of Power Source")
   cfg.Oscilloscope.send(":WAVEFORM:DATA?" + '\n') 
   tData = int(preamble[2])
   wavedata = ""
   count = 0
   temp = cfg.Oscilloscope.recv(tData)
-  while(len(temp) > 0 and count < 20):
+  lowerBound = tData - len(temp)
+  rData = lowerBound
+  temp = temp[10:]
+  while(count < lowerBound):
     wavedata = wavedata + temp
-    temp = cfg.Oscilloscope.recv(tData)
-    count += 1
-  print "No. of Bytes transferred per turn: " + str(len(temp))
-  print "\t\tWriting to file"
+    temp = cfg.Oscilloscope.recv(rData)
+    count += len(temp)
+    rData = tData - count
+  printFunctions.printToLog("No. of Bytes transferred per turn: " + str(len(temp)))
+  printFunctions.printToLog("\t\tWriting to file -> " + cfg.POWER_MEASUREMENT_FILE)
   #print wavedata
   fpower = open(cfg.POWER_MEASUREMENT_FILE, "wb")
   fpower.write(str(wavedata))
@@ -211,30 +215,34 @@ def get_waveform_trigger() :
   cfg.Oscilloscope.send(":WAVEFORM:SOURCE CHAN2" + '\n')
   cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE RAW" + '\n')
   cfg.Oscilloscope.send(":WAVEFORM:POINTS 8000000" + '\n')
-  print "\tReading Preamble of Power Source"
+  printFunctions.printToScreenAndLog("\tReading Preamble of Trigger Source")
   cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')
   preamble = cfg.Oscilloscope.recv(200)
-  fpowerpreamble = open("preambleChannel2.dat", "wb")
+  fpowerpreamble = open(cfg.TRIGGER_CHANNEL_PREAMBLE_FILE, "wb")
   fpowerpreamble.write(preamble)
   fpowerpreamble.close()
-  fid = open("preambleChannel2.dat", "rb")
+  fid = open(cfg.TRIGGER_CHANNEL_PREAMBLE_FILE, "rb")
   preamble = numpy.fromfile(fid, dtype= numpy.float64, count = 10, sep = ",")
   fid.close()
-  print "\tTotal Number of Points to Receive: " + str(int(preamble[2]))
-  print "\tReading Data of Power Source"
+  printFunctions.printToLog("\tTotal Number of Points to Receive: " + str(int(preamble[2])))
+  printFunctions.printToScreenAndLog("\tReading Data of Trigger Source")
   cfg.Oscilloscope.send(":WAVEFORM:DATA?" + '\n') 
   tData = int(preamble[2])
   wavedata = ""
   count = 0
   temp = cfg.Oscilloscope.recv(tData)
-  while(len(temp) > 0 and count < 20):
+  lowerBound = tData - len(temp)
+  rData = lowerBound
+  temp = temp[10:]
+  while(count < lowerBound):
     wavedata = wavedata + temp
-    temp = cfg.Oscilloscope.recv(tData)
-    count += 1
-  print "No. of Bytes transferred per turn: " + str(len(temp))
-  print "\t\tWriting to file"
+    temp = cfg.Oscilloscope.recv(rData)
+    count += len(temp)
+    rData = tData - count
+  printFunctions.printToLog("No. of Bytes transferred per turn: " + str(len(temp)))
+  printFunctions.printToLog("\t\tWriting to file ->" + cfg.TRIGGER_MEASUREMENT_FILE )
   #print wavedata
-  fpower = open("channel2.dat", "wb")
+  fpower = open(cfg.TRIGGER_MEASUREMENT_FILE, "wb")
   fpower.write(str(wavedata))
   fpower.close()
 
@@ -254,7 +262,7 @@ def openOscilloscopeConnection():
   cfg.Oscilloscope.connect((cfg.osc_attributes['OSCILLOSCOPE_IP'], cfg.osc_attributes['OSCILLOSCOPE_PORT']))#have to put in error checks dummy
   cfg.Oscilloscope.send("*IDN?"+'\n')
   osc_id = cfg.Oscilloscope.recv(200)
-  printToScreenAndLog("\tConnected to Oscilloscope ID :"+ osc_id+'\n')
+  printFunctions.printToScreenAndLog("\tConnected to Oscilloscope ID :"+ osc_id+'\n')
 
 def armOscilloscope():
   cfg.Oscilloscope.send(":DIGITIZE CHAN1,CHAN2" + '\n')

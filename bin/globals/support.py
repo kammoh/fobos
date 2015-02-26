@@ -23,7 +23,7 @@ import os
 import traceback
 import re
 import cfg
-import dataGenerator
+#import dataGenerator
 import globals
 import printFunctions
 import matplotlib
