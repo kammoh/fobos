@@ -123,49 +123,49 @@ def get_attribs(data_list) :
 	
 def setOscilloscopeConfigAttributes():
   cfg.Oscilloscope.send("*RST" + '\n')
-  if osc_attributes['IMPEDANCE'] :
+  if cfg.osc_attributes['IMPEDANCE'] :
     cmd_string = ":CHANNEL1:IMPEDANCE "+osc_attributes['IMPEDANCE']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['CHANNEL_RANGE1'] :
+  if cfg.osc_attributes['CHANNEL_RANGE1'] :
     cmd_string = ":CHANNEL1:RANGE "+osc_attributes['CHANNEL_RANGE1']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['CHANNEL_RANGE2'] :
+  if cfg.osc_attributes['CHANNEL_RANGE2'] :
     cmd_string = ":CHANNEL2:RANGE "+osc_attributes['CHANNEL_RANGE2']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['CHANNEL_RANGE3'] :	
+  if cfg.osc_attributes['CHANNEL_RANGE3'] :	
     cmd_string = ":CHANNEL3:RANGE "+osc_attributes['CHANNEL_RANGE3']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['CHANNEL_RANGE4'] :
+  if cfg.osc_attributes['CHANNEL_RANGE4'] :
     cmd_string = ":CHANNEL4:RANGE "+osc_attributes['CHANNEL_RANGE4']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['TIME_RANGE'] :
+  if cfg.osc_attributes['TIME_RANGE'] :
     cmd_string = ":TIM:RANG "+osc_attributes['TIME_RANGE']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['TIMEBASE_REF'] :
+  if cfg.osc_attributes['TIMEBASE_REF'] :
     cmd_string = ":TIMEBASE:REFERENCE "+osc_attributes['TIMEBASE_REF']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['TRIGGER_SOURCE'] :
+  if cfg.osc_attributes['TRIGGER_SOURCE'] :
     cmd_string = ":TRIGger:EDGE:SOURce "+osc_attributes['TRIGGER_SOURCE']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['TRIGGER_MODE'] :
+  if cfg.osc_attributes['TRIGGER_MODE'] :
     cmd_string = ":TRIGGER:MODE "+osc_attributes['TRIGGER_MODE']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['TRIGGER_SWEEP'] :
+  if cfg.osc_attributes['TRIGGER_SWEEP'] :
     cmd_string = ":TRIGGER:SWEEP "+osc_attributes['TRIGGER_SWEEP']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['TRIGGER_LEVEL'] :
+  if cfg.osc_attributes['TRIGGER_LEVEL'] :
     cmd_string = ":TRIGGER:EDGE:LEVEL "+osc_attributes['TRIGGER_LEVEL']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['TRIGGER_SLOPE'] :
+  if cfg.osc_attributes['TRIGGER_SLOPE'] :
     cmd_string = ":TRIGGER:EDGE:SLOPE "+osc_attributes['TRIGGER_SLOPE']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['ACQUIRE_TYPE'] :
+  if cfg.osc_attributes['ACQUIRE_TYPE'] :
     cmd_string = ":ACQUIRE:TYPE "+osc_attributes['ACQUIRE_TYPE']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['ACQUIRE_MODE'] :
+  if cfg.osc_attributes['ACQUIRE_MODE'] :
     cmd_string = ":ACQUIRE:MODE "+osc_attributes['ACQUIRE_MODE']
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if osc_attributes['ACQUIRE_COMPLETE'] :
+  if cfg.osc_attributes['ACQUIRE_COMPLETE'] :
     cmd_string = ":ACQUIRE:COMPLETE "+osc_attributes['ACQUIRE_COMPLETE']
     cfg.Oscilloscope.send(cmd_string+'\n')
  
@@ -174,7 +174,8 @@ def extractOscilloscopeConfigAttributes():
   data_list = support.removeComments(data_from_file)
   printFunctions.printToLog("Obtaining oscilloscope attributes")
   get_attribs(data_list)
-	  
+
+  
 def get_waveform_power() :
   cfg.Oscilloscope.send(":WAVEFORM:FORMAT BYTE" + '\n')
   cfg.Oscilloscope.send(":WAVEFORM:SOURCE CHAN1" + '\n')
@@ -255,6 +256,55 @@ def get_waveform_trigger() :
   support.removeFile(cfg.TRIGGER_MEASUREMENT_FILE)
   return (measuredTriggerData)  
 
+def getDataFromOscilloscope(channelName) :
+  cfg.Oscilloscope.send(":WAVEFORM:FORMAT BYTE" + '\n')
+  cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE RAW" + '\n')
+  if(channelName == 'CHANNEL1'):
+	chanType = 'CHAN1'
+  if(channelName == 'CHANNEL2'):
+	chanType = 'CHAN2'
+  if(channelName == 'CHANNEL3'):
+	chanType = 'CHAN3'
+  if(channelName == 'CHANNEL4'):
+	chanType = 'CHAN4'	
+  cmdString = ":WAVEFORM:SOURCE " + chanType 
+  cfg.Oscilloscope.send(cmdString + '\n')
+  cmdString = ":WAVEFORM:POINTS " + cfg.osc_attributes['WAVE_DATA_SIZE']
+  cfg.Oscilloscope.send(cmdString + '\n')
+  printFunctions.printToScreenAndLog("\tReading Preamble of " + channelName)
+  cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')
+  preamble = cfg.Oscilloscope.recv(200)
+  fileId = open(cfg.TEMP_PREAMBLE_FILE, "wb")
+  fileId.write(preamble)
+  fileId.close()
+  fid = open(cfg.TEMP_PREAMBLE_FILE, "rb")
+  preamble = numpy.fromfile(fid, dtype= numpy.float64, count = 10, sep = ",")
+  fid.close()
+  printFunctions.printToLog("\tTotal Number of Points to Receive: " + str(int(preamble[2])))
+  printFunctions.printToScreenAndLog("\tReading Data of " + channelName)
+  cfg.Oscilloscope.send(":WAVEFORM:DATA?" + '\n') 
+  tData = int(preamble[2])
+  wavedata = ""
+  count = 0
+  temp = cfg.Oscilloscope.recv(tData)
+  lowerBound = tData - len(temp)
+  rData = lowerBound
+  temp = temp[10:]
+  while(count < lowerBound):
+    wavedata = wavedata + temp
+    temp = cfg.Oscilloscope.recv(rData)
+    count += len(temp)
+    rData = tData - count
+  printFunctions.printToLog("No. of Bytes transferred per turn: " + str(len(temp)))
+  #print wavedata
+  fileId = open(cfg.TEMP_MEASUREMENT_FILE, "wb")
+  fileId.write(str(wavedata))
+  fileId.close()
+  measuredChannelData = signalAlignmentModule.acquireDataValues(cfg.TEMP_PREAMBLE_FILE, cfg.TEMP_MEASUREMENT_FILE)
+  support.removeFile(cfg.TEMP_PREAMBLE_FILE)
+  support.removeFile(cfg.TEMP_MEASUREMENT_FILE)
+  return (measuredChannelData)
+  
 def get_snapshot():
   print "Capturing Snapshot of the Scope"
   cfg.Oscilloscope.send(":DISPlay?\n")
@@ -274,7 +324,45 @@ def openOscilloscopeConnection():
   printFunctions.printToScreenAndLog("\tConnected to Oscilloscope ID :"+ osc_id+'\n')
 
 def armOscilloscope():
-  cfg.Oscilloscope.send(":DIGITIZE CHAN1,CHAN2" + '\n')
+	channelsToDigitize = None
+	if (cfg.osc_attributes['CHANNEL_RANGE1'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] == 'OFF'):
+		channelsToDigitize = None
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF'):	
+		channelsToDigitize =	'CHAN4'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] == 'OFF'):	
+		channelsToDigitize ='CHAN3'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF'):	
+		channelsToDigitize ='CHAN3, CHAN4'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] == 'OFF'):	
+		channelsToDigitize ='CHAN2'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF'):
+		channelsToDigitize ='CHAN2, CHAN4'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] == 'OFF'):
+		channelsToDigitize ='CHAN2, CHAN3'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF'):
+		channelsToDigitize ='CHAN2, CHAN3, CHAN4'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] == 'OFF'):
+		channelsToDigitize ='CHAN1'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF'):
+		channelsToDigitize ='CHAN1, CHAN4'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] == 'OFF'):
+		channelsToDigitize ='CHAN1, CHAN3'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF'):
+		channelsToDigitize ='CHAN1, CHAN3, CHAN4'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] == 'OFF'):
+		channelsToDigitize ='CHAN1, CHAN2'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] == 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF'):
+		channelsToDigitize ='CHAN1, CHAN2, CHAN4'
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] == 'OFF'):
+		channelsToDigitize ='CHAN1, CHAN2, CHAN3' 
+	elif (cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF' and cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF'):						
+		channelsToDigitize ='CHAN1, CHAN2, CHAN3, CHAN4'
+	if(channelsToDigitize != None):
+		cmdString = ":DIGITIZE " + channelsToDigitize
+		cfg.Oscilloscope.send(cmdString+ '\n')
+	else:
+		printFunctions.printToScreenAndLog("\tNo Channels selected to Digitize.")
+	
 
 def closeOscilloscopeConnection():
-  cfg.Oscilloscope.close()  
+  cfg.Oscilloscope.close()

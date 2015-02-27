@@ -226,6 +226,19 @@ def plotRawTrace(dataToPlot, traceLowerBound, traceUpperBound):
 	printFunctions.printToAnalysisLog("Saving " + cfg.SNAPSHOT_FILE)
 	plt.savefig(cfg.SNAPSHOT_FILE,dpi=100)
 
+def showRawTrace(dataToPlot):
+	figs = plt.figure()	
+	figs.suptitle('Measured Traces', fontsize=14, fontweight='bold')
+	toPlot = numpy.zeros(0)
+	toPlot = numpy.transpose(dataToPlot)
+	plt.hold(False)
+	plt.clf()
+	plt.plot(toPlot)
+	plt.ylabel('volts')
+	plt.xlabel('time')
+	plt.title('Processed Data')
+	plt.grid(b=True, which='Major', color = 'b', linestyle = '--')
+	plt.show()
 	
 def main():
 	support.clear_screen()

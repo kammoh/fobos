@@ -45,10 +45,13 @@ CIPHER_TEXT_FILE = ''
 KEY_FILE = ''
 Oscilloscope = ''
 
-POWER_MEASUREMENT_FILE = ''
-TRIGGER_MEASUREMENT_FILE = ''
-POWER_CHANNEL_PREAMBLE_FILE = ''
-TRIGGER_CHANNEL_PREAMBLE_FILE = ''
+TEMP_PREAMBLE_FILE = ''
+TEMP_MEASUREMENT_FILE = ''
+CHANNEL1_MEASUREMENT_FILE = ''
+CHANNEL2_MEASUREMENT_FILE = ''
+CHANNEL3_MEASUREMENT_FILE = ''
+CHANNEL4_MEASUREMENT_FILE = ''
+
 config_attributes = {
  'WORK_DIR' : "",        'DATA_FILE' : "",     'VERBOSE' : "",       'TIMEOUT_VAL' : "",
  'SOURCE_DIR' : "",      'KEY_FILE' : "",      'TRIGGER_VAL' : "",   'CLK_FREQ' : "",
@@ -117,3 +120,20 @@ analysisConfigAttributes = {
 'TAG':"", 'GENERATE_EPS_PDF_GRAPHS' :"", 'PLOT_LABELS_FONT_FAMILY':"",
 'PLOT_LABELS_FONT_WEIGHT': "", 'PLOT_LABELS_FONT_SIZE': "",
 }
+
+	
+	
+	
+						 
+						 
+						 
+						 
+						 
+						 
+						 
+						 
+						 
+						 
+						 
+						
+						    

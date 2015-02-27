@@ -156,6 +156,16 @@ if(cfg.PROGRAM_CALL == "ACQUISITION"):
 	depp.DeppGetRegRepeat.argtypes = [c_uint, c_ubyte, POINTER(c_ubyte), c_int, c_int]
 	depp.DeppGetRegRepeat.restype = c_int
 
+#Capture Globals
+TEMP_PREAMBLE_FILE_NAME = "tempPreambleData.dat"
+TEMP_MEASUREMENT_FILE_NAME = "tempMeasurementData.dat"
+CHANNEL1_MEASUREMENT_FILE_NAME = "channel1Data.dat"
+CHANNEL2_MEASUREMENT_FILE_NAME = "channel2Data.dat"
+CHANNEL3_MEASUREMENT_FILE_NAME = "channel3Data.dat"
+CHANNEL4_MEASUREMENT_FILE_NAME = "channel4Data.dat"
+CAPTURE_MODE_SINGLE = "single"
+CAPTURE_MODE_MULTI = "multi"
+
 
 #Analysis globals
 ANALYSIS_FOLDER_NAME = "analysis"
@@ -188,13 +198,6 @@ MAXGUESSENT_FILE_NAME = "maximumGuessingEntropy.png"
 CORR_PEARSON_RESULT_FILE_NAME = "correlationPearsonResults.txt"
 CORR_SPEARMAN_RESULT_FILE_NAME = "correlationSpearmanResults.txt"
 ANOVA_RESULT_FILE_NAME = "oneWayANOVAResults.txt"
-
-POWER_CHANNEL_PREAMBLE_FILE_NAME = "channel1PreambleData.dat"
-TRIGGER_CHANNEL_PREAMBLE_FILE_NAME = "channel2PreambleData.dat"
-POWER_MEASUREMENT_FILE_NAME = "channel1Data.dat"
-TRIGGER_MEASUREMENT_FILE_NAME = "channel2Data.dat"
-CAPTURE_MODE_SINGLE = "single"
-CAPTURE_MODE_MULTI = "multi"
 
 TRACES = 0
 SAMPLE_MEAN = 1
