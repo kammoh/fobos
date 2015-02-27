@@ -84,7 +84,7 @@ def acquireDataValues(preambleFile, rawDataFile):
 	imgX1 = numpy.arange(1,int(preamble[2]))
 	numpy.transpose(imgX1)
 	imgX1 = (imgX1 - preamble[6]) * preamble[4] + preamble[5]
-	imgY1 = (img - preamble[9]) * preamble[7] + preamble[8]
+	imgY1 = (rawImg - preamble[9]) * preamble[7] + preamble[8]
 	measuredData = numpy.array(imgY1, dtype = numpy.float64)
 	return (measuredData)
 	
