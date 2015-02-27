@@ -26,7 +26,7 @@ from oscilloscope_global import *
 #import visa
 import numpy
 from globals import support,cfg , printFunctions
-from analysis import signalAlignmentModule
+from analysis import signalAnalysisModule
 
 def get_attribs(data_list) :
     for object in data_list :
@@ -300,7 +300,7 @@ def getDataFromOscilloscope(channelName) :
   fileId = open(cfg.TEMP_MEASUREMENT_FILE, "wb")
   fileId.write(str(wavedata))
   fileId.close()
-  measuredChannelData = signalAlignmentModule.acquireDataValues(cfg.TEMP_PREAMBLE_FILE, cfg.TEMP_MEASUREMENT_FILE)
+  measuredChannelData = signalAnalysisModule.acquireDataValues(cfg.TEMP_PREAMBLE_FILE, cfg.TEMP_MEASUREMENT_FILE)
   support.removeFile(cfg.TEMP_PREAMBLE_FILE)
   support.removeFile(cfg.TEMP_MEASUREMENT_FILE)
   return (measuredChannelData)
