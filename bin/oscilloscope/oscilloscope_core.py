@@ -23,7 +23,7 @@ from socket import *
 import sys
 from oscilloscope_agilent import *
 from oscilloscope_global import *
-#import visa
+import shutil
 import numpy
 from globals import support,cfg , printFunctions
 from analysis import signalAnalysisModule

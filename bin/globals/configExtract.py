@@ -33,6 +33,7 @@ def configureWorkspace():
 	dateString = support.currentDateTime()
 	cfg.WORKSPACEDIR = os.path.normpath(os.path.join(cfg.ROOTDIR,cfg.config_attributes['WORK_DIR']))
 	cfg.PROJECTDIR = os.path.join(cfg.WORKSPACEDIR, cfg.config_attributes['PROJECT_NAME'])
+	cfg.PLOT_SCRIPT = os.path.join(cfg.BINDIR, "oscilloscope", "viewPlots.py")
 	support.createDirectory(cfg.WORKSPACEDIR)
 	support.createDirectory(cfg.PROJECTDIR)
 	if(tag == 'date'):
@@ -54,6 +55,7 @@ def configureWorkspace():
 	cfg.config_attributes['KEY_FILE'] = os.path.join(cfg.ROOTDIR,cfg.config_attributes['SOURCE_DIR'],cfg.config_attributes['KEY_FILE'])
 	support.createDirectory(cfg.OUTPUT_FOLDER)
 	support.createDirectory(cfg.MEASUREMENT_FOLDER)
+	shutil.copy(cfg.PLOT_SCRIPT, cfg.MEASUREMENT_FOLDER)
  
 def extractConfigAttributes():
 	data_list = support.readFile(cfg.CONFIG_FILE)
