@@ -43,7 +43,12 @@ FOBOS_LOG_FILE = ''
 PLAIN_TEXT_FILE = ''
 CIPHER_TEXT_FILE = ''
 KEY_FILE = ''
+
 Oscilloscope = ''
+channel1Data = None
+channel2Data = None
+channel3Data = None
+channel4Data = None
 
 TEMP_PREAMBLE_FILE = ''
 TEMP_MEASUREMENT_FILE = ''
@@ -58,13 +63,12 @@ config_attributes = {
  'VICTIM_RESET' : "",    'INPUT_FORMAT' : "",  'OUTPUT_FORMAT' : "", 'MEASUREMENT_FORMAT' : "",
  'OSC_CONFIG_FILE' : "", 'PROJECT_NAME' : "",  'TAG' : "", 			 'CONTROL_BOARD' : "",
  'NUMBER_OF_ENCRYPTIONS' : 0, 'BLOCK_SIZE': 0, 'PLAINTEXT_GENERATION': "", 'KEY_GENERATION': "",
- 'KEY_SIZE': "", 'CAPTURE_MODE' : "",
+ 'KEY_SIZE': "", 'NUMBER_OF_TRACES' : "",
  }
  
 osc_attributes = {
  'RESOURCE' : "",        'AUTOSCALE' : "",        'IMPEDANCE' : "",        'CHANNEL_RANGE1' : "",
- 'CHANNEL_RANGE2' : "",   'CHANNEL_RANGE3' : "",   'CHANNEL_RANGE4' : "",   'CHANNEL1_DISPLAY' : "",
- 'CHANNEL2_DISPLAY' : "", 'CHANNEL3_DISPLAY' : "", 'CHANNEL4_DISPLAY' : "", 'TIME_RANGE' : "",
+ 'CHANNEL_RANGE2' : "",   'CHANNEL_RANGE3' : "",   'CHANNEL_RANGE4' : "",   'TIME_RANGE' : "",
  'TIMEBASE_REF' : "",     'TRIGGER_SOURCE' : "",   'TRIGGER_MODE' : "",     'TRIGGER_SWEEP' : "",
  'TRIGGER_LEVEL' : "",    'TRIGGER_SLOPE' : "",    'SAMPLE_INPUT' : "",     'ACQUIRE_TYPE' : "",
  'ACQUIRE_MODE' : "",     'ACQUIRE_COMPLETE' : "", 'WAVE_DATA_SIZE' : "",   'NUM_PWR_TRACE' : "",

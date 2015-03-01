@@ -52,12 +52,6 @@ def configureWorkspace():
 	cfg.KEY_FILE = os.path.join(cfg.OUTPUT_FOLDER,globals.KEY_FILE_NAME)
 	cfg.config_attributes['DATA_FILE'] = os.path.join(cfg.ROOTDIR,cfg.config_attributes['SOURCE_DIR'],cfg.config_attributes['DATA_FILE'])	
 	cfg.config_attributes['KEY_FILE'] = os.path.join(cfg.ROOTDIR,cfg.config_attributes['SOURCE_DIR'],cfg.config_attributes['KEY_FILE'])
-	cfg.CHANNEL1_MEASUREMENT_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL1_MEASUREMENT_FILE_NAME)
-	cfg.CHANNEL2_MEASUREMENT_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL2_MEASUREMENT_FILE_NAME)
-	cfg.CHANNEL3_MEASUREMENT_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL3_MEASUREMENT_FILE_NAME)
-	cfg.CHANNEL4_MEASUREMENT_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL4_MEASUREMENT_FILE_NAME)	
-	cfg.TEMP_PREAMBLE_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals. TEMP_PREAMBLE_FILE_NAME)
-	cfg.TEMP_MEASUREMENT_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.TEMP_MEASUREMENT_FILE_NAME)
 	support.createDirectory(cfg.OUTPUT_FOLDER)
 	support.createDirectory(cfg.MEASUREMENT_FOLDER)
  
@@ -125,9 +119,9 @@ def extractConfigAttributes():
 		if re.match('^KEY_SIZE', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['KEY_SIZE'] = int(value[1].strip(" "))				
-		if re.match('^CAPTURE_MODE', object) :
+		if re.match('^NUMBER_OF_TRACES', object) :
 			value = re.split("=", object)
-			cfg.config_attributes['CAPTURE_MODE'] = (value[1].strip(" "))
+			cfg.config_attributes['NUMBER_OF_TRACES'] = (value[1].strip(" "))
 		if re.match('^PLAINTEXT_GENERATION', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['PLAINTEXT_GENERATION'] = value[1].strip(" ")

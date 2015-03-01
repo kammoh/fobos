@@ -56,7 +56,15 @@ OSC_CONFIG_FILE = oscilloscope_config.txt
 NUMBER_OF_ENCRYPTIONS = 10
 BLOCK_SIZE = 16 # In Bytes
 KEY_SIZE = 16 # In Bytes
-CAPTURE_MODE = single # single|multi
+
+# =============================================
+# =============================================
+# FOBOS Capture Settings
+# =============================================
+# =============================================
+
+NUMBER_OF_TRACES = 10
+
 # =============================================
 # =============================================
 # Plot Generator Settings

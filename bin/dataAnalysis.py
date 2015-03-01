@@ -55,7 +55,7 @@ def main():
 	alignedData = signalAnalysisModule.getAlignedMeasuredPowerData() # Aligned Power traces with respect to trigger
 	#signalAnalysisModule.spectogram(cfg.RAW_POWER_DATA)
 	plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')
-	#sampleVarTimeWise = sca.calculate_var(alignedData, globals.TRACE_WISE) 
+	#sampleVarTimeWise = sca.calculate_var(alignedData, globals.TRACE_WISE) 	
 	# #support.wait()
 	configExtract.extractAnalysisConfigAttributes("traceExpungeParams.txt")
 	alignedData = postProcessingModule.traceExpunge(alignedData)
