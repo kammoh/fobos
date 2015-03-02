@@ -42,8 +42,9 @@ def clearScreen():
 
 
 def plotRawTrace(fileName, traceLowerBound, traceUpperBound):
-	if os.path.exits(fileName):
-		dataToPlot = numpy.load.txt(fileName)
+	if os.path.exists(fileName):
+		print "-> File Set - " + fileName
+		dataToPlot = numpy.loadtxt(fileName)
 		plotName = str(fileName)
 		figs = plt.figure()	
 		figs.suptitle(plotName, fontsize=14, fontweight='bold')
@@ -68,14 +69,14 @@ def main():
 	traceStartPoint = 300
 	traceEndPoint = 30000
 ##########################################################################
-	plotRawTrace(CHANNEL1_MEASUREMENT_FILE_NAME)
-	plotRawTrace(CHANNEL2_MEASUREMENT_FILE_NAME)
-	plotRawTrace(CHANNEL3_MEASUREMENT_FILE_NAME)
-	plotRawTrace(CHANNEL4_MEASUREMENT_FILE_NAME)
-	plotRawTrace(CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME)
-	plotRawTrace(CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME)
-	plotRawTrace(CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME)
-	plotRawTrace(CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME)
+	plotRawTrace(CHANNEL1_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
+	plotRawTrace(CHANNEL2_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
+	plotRawTrace(CHANNEL3_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
+	plotRawTrace(CHANNEL4_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
+	plotRawTrace(CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
+	plotRawTrace(CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
+	plotRawTrace(CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
+	plotRawTrace(CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
 
 if __name__ == "__main__":
     main()	

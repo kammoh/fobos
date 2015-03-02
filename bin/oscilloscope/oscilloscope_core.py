@@ -25,7 +25,7 @@ from oscilloscope_agilent import *
 from oscilloscope_global import *
 import shutil
 import numpy
-from globals import support,cfg , printFunctions
+from globals import support,cfg , printFunctions, globals
 from analysis import signalAnalysisModule
 
 def get_attribs(data_list) :
