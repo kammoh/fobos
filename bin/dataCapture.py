@@ -47,7 +47,7 @@ def main():
 	setOscilloscopeConfigAttributes()
 	initializeOscilloscopeDataStorage()
 	traceCount = 0
-	if(traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
+	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
 		armOscilloscope()
 		populateOscilloscopeDataStorage(traceCount)
 		traceCount += 1

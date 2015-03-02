@@ -259,7 +259,7 @@ def getDataFromOscilloscope(channelName) :
   cfg.Oscilloscope.send(cmdString + '\n')
   cmdString = ":WAVEFORM:POINTS " + cfg.osc_attributes['WAVE_DATA_SIZE']
   cfg.Oscilloscope.send(cmdString + '\n')
-  printFunctions.printToScreenAndLog("\tReading Preamble of " + channelName)
+  printFunctions.printToLog("\tReading Preamble of " + channelName)
   cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')
   preamble = cfg.Oscilloscope.recv(200)
   fileId = open(cfg.TEMP_PREAMBLE_FILE, "wb")
@@ -269,7 +269,7 @@ def getDataFromOscilloscope(channelName) :
   preamble = numpy.fromfile(fid, dtype= numpy.float64, count = 10, sep = ",")
   fid.close()
   printFunctions.printToLog("\tTotal Number of Points to Receive: " + str(int(preamble[2])))
-  printFunctions.printToScreenAndLog("\tReading Data of " + channelName)
+  printFunctions.printToLog("\tReading Data of " + channelName)
   cfg.Oscilloscope.send(":WAVEFORM:DATA?" + '\n') 
   tData = int(preamble[2])
   wavedata = ""
@@ -300,24 +300,26 @@ def initializeOscilloscopeDataStorage():
 	cfg.channel4Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF') else None
 
 def populateOscilloscopeDataStorage(traceCount):
+	sampleLength = 2000000
+	printFunctions.printToScreenAndLog("\tGetting data for Trace No ->" + str(traceCount+1))
 	tempChannel1Data = getDataFromOscilloscope('CHANNEL1') if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF') else None
 	tempChannel2Data = getDataFromOscilloscope('CHANNEL2') if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF') else None
 	tempChannel3Data = getDataFromOscilloscope('CHANNEL3') if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF') else None
 	tempChannel4Data = getDataFromOscilloscope('CHANNEL4') if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF') else None
 	if (traceCount == 0):
-		cfg.channel1Data =  tempChannel1Data  if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF') else None
-		cfg.channel2Data =  tempChannel2Data  if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF') else None
-		cfg.channel3Data =  tempChannel3Data  if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF') else None
-		cfg.channel4Data =  tempChannel4Data  if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF') else None
+		cfg.channel1Data =  signalAnalysisModule.adjustSampleSize(sampleLength, tempChannel1Data)  if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF') else None
+		cfg.channel2Data =  signalAnalysisModule.adjustSampleSize(sampleLength, tempChannel2Data)  if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF') else None
+		cfg.channel3Data =  signalAnalysisModule.adjustSampleSize(sampleLength, tempChannel3Data)  if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF') else None
+		cfg.channel4Data =  signalAnalysisModule.adjustSampleSize(sampleLength, tempChannel4Data)  if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF') else None
 		tempChannel1Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF') else None
 		tempChannel2Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF') else None
 		tempChannel3Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF') else None
 		tempChannel4Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF') else None								
 	else:
-		cfg.channel1Data = numpy.vstack((cfg.channel1Data, tempChannel1Data))  if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF') else None
-		cfg.channel2Data = numpy.vstack((cfg.channel2Data, tempChannel2Data))  if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF') else None
-		cfg.channel3Data = numpy.vstack((cfg.channel3Data, tempChannel3Data))  if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF') else None
-		cfg.channel4Data = numpy.vstack((cfg.channel4Data, tempChannel4Data))  if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF') else None
+		cfg.channel1Data = numpy.vstack((cfg.channel1Data, signalAnalysisModule.adjustSampleSize(sampleLength, tempChannel1Data)))  if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF') else None
+		cfg.channel2Data = numpy.vstack((cfg.channel2Data, signalAnalysisModule.adjustSampleSize(sampleLength, tempChannel2Data)))  if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF') else None
+		cfg.channel3Data = numpy.vstack((cfg.channel3Data, signalAnalysisModule.adjustSampleSize(sampleLength, tempChannel3Data)))  if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF') else None
+		cfg.channel4Data = numpy.vstack((cfg.channel4Data, signalAnalysisModule.adjustSampleSize(sampleLength, tempChannel4Data)))  if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF') else None
 		tempChannel1Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF') else None
 		tempChannel2Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF') else None
 		tempChannel3Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF') else None

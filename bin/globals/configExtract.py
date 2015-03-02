@@ -123,7 +123,7 @@ def extractConfigAttributes():
 			cfg.config_attributes['KEY_SIZE'] = int(value[1].strip(" "))				
 		if re.match('^NUMBER_OF_TRACES', object) :
 			value = re.split("=", object)
-			cfg.config_attributes['NUMBER_OF_TRACES'] = (value[1].strip(" "))
+			cfg.config_attributes['NUMBER_OF_TRACES'] = int(value[1].strip(" "))
 		if re.match('^PLAINTEXT_GENERATION', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['PLAINTEXT_GENERATION'] = value[1].strip(" ")
