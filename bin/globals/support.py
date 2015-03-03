@@ -88,7 +88,7 @@ def readFile(file_name) :
 	except IOError, (ErrorNumber, ErrorMessage):
 		if(ErrorNumber == 2):
 			printFunctions.printToScreen("\n\nWhoa! File -> " + file_name + "\n joined FOBOS Analysis invisible. As FOBOS Analysis does not have X-Ray Vision, Please make it visible (present) in the folder\n->"+ cfg.CONFIGDIR)
-			support.exitProgram()
+			exitProgram()
 		else:
 			printFunctions.printToScreen("Hmmm!! You have managed to trigger -> " + str(ErrorNumber) +" Error Number")
 			printFunctions.printToScreen(ErrorMessage)
