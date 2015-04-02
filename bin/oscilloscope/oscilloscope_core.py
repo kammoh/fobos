@@ -110,51 +110,67 @@ def get_attribs(data_list) :
             cfg.osc_attributes['OUTPUT_DIR'] = value[1].strip(" ")                        
 	
 def setOscilloscopeConfigAttributes():
-  cfg.Oscilloscope.send("*RST" + '\n')
+  printFunctions.printToLog("\tSetting Oscilloscope Attributes")  
+  #cfg.Oscilloscope.send("*RST" + '\n')
   if cfg.osc_attributes['IMPEDANCE'] :
-    cmd_string = ":CHANNEL1:IMPEDANCE "+osc_attributes['IMPEDANCE']
+    cmd_string = ":CHANNEL1:IMPEDANCE "+cfg.osc_attributes['IMPEDANCE']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['CHANNEL_RANGE1'] :
-    cmd_string = ":CHANNEL1:RANGE "+osc_attributes['CHANNEL_RANGE1']
+    cmd_string = ":CHANNEL1:RANGE "+cfg.osc_attributes['CHANNEL_RANGE1']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['CHANNEL_RANGE2'] :
-    cmd_string = ":CHANNEL2:RANGE "+osc_attributes['CHANNEL_RANGE2']
+    cmd_string = ":CHANNEL2:RANGE "+cfg.osc_attributes['CHANNEL_RANGE2']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['CHANNEL_RANGE3'] :	
-    cmd_string = ":CHANNEL3:RANGE "+osc_attributes['CHANNEL_RANGE3']
+    cmd_string = ":CHANNEL3:RANGE "+cfg.osc_attributes['CHANNEL_RANGE3']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['CHANNEL_RANGE4'] :
-    cmd_string = ":CHANNEL4:RANGE "+osc_attributes['CHANNEL_RANGE4']
+    cmd_string = ":CHANNEL4:RANGE "+cfg.osc_attributes['CHANNEL_RANGE4']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['TIME_RANGE'] :
-    cmd_string = ":TIM:RANG "+osc_attributes['TIME_RANGE']
+    cmd_string = ":TIM:RANG "+cfg.osc_attributes['TIME_RANGE']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['TIMEBASE_REF'] :
-    cmd_string = ":TIMEBASE:REFERENCE "+osc_attributes['TIMEBASE_REF']
+    cmd_string = ":TIMEBASE:REFERENCE "+cfg.osc_attributes['TIMEBASE_REF']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['TRIGGER_SOURCE'] :
-    cmd_string = ":TRIGger:EDGE:SOURce "+osc_attributes['TRIGGER_SOURCE']
+    cmd_string = ":TRIGger:EDGE:SOURce "+cfg.osc_attributes['TRIGGER_SOURCE']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['TRIGGER_MODE'] :
-    cmd_string = ":TRIGGER:MODE "+osc_attributes['TRIGGER_MODE']
+    cmd_string = ":TRIGGER:MODE "+cfg.osc_attributes['TRIGGER_MODE']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['TRIGGER_SWEEP'] :
-    cmd_string = ":TRIGGER:SWEEP "+osc_attributes['TRIGGER_SWEEP']
+    cmd_string = ":TRIGGER:SWEEP "+cfg.osc_attributes['TRIGGER_SWEEP']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['TRIGGER_LEVEL'] :
-    cmd_string = ":TRIGGER:EDGE:LEVEL "+osc_attributes['TRIGGER_LEVEL']
+    cmd_string = ":TRIGGER:EDGE:LEVEL "+cfg.osc_attributes['TRIGGER_LEVEL']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['TRIGGER_SLOPE'] :
-    cmd_string = ":TRIGGER:EDGE:SLOPE "+osc_attributes['TRIGGER_SLOPE']
+    cmd_string = ":TRIGGER:EDGE:SLOPE "+cfg.osc_attributes['TRIGGER_SLOPE']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['ACQUIRE_TYPE'] :
-    cmd_string = ":ACQUIRE:TYPE "+osc_attributes['ACQUIRE_TYPE']
+    cmd_string = ":ACQUIRE:TYPE "+cfg.osc_attributes['ACQUIRE_TYPE']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['ACQUIRE_MODE'] :
-    cmd_string = ":ACQUIRE:MODE "+osc_attributes['ACQUIRE_MODE']
+    cmd_string = ":ACQUIRE:MODE "+cfg.osc_attributes['ACQUIRE_MODE']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
   if cfg.osc_attributes['ACQUIRE_COMPLETE'] :
-    cmd_string = ":ACQUIRE:COMPLETE "+osc_attributes['ACQUIRE_COMPLETE']
+    cmd_string = ":ACQUIRE:COMPLETE "+cfg.osc_attributes['ACQUIRE_COMPLETE']
+    printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
  
 def extractOscilloscopeConfigAttributes():
@@ -179,6 +195,15 @@ def get_waveform_power() :
   preamble = numpy.fromfile(fid, dtype= numpy.float64, count = 10, sep = ",")
   fid.close()
   printFunctions.printToLog("\tTotal Number of Points to Receive: " + str(int(preamble[2])))
+  vdiv = 32 * preamble[7]
+  off = preamble[8]
+  sdiv = preamble[2] * preamble [4] / 10
+  delay = (preamble[2] / 2) * preamble[4] + preamble[5]
+  printFunctions.printToLog("Scope Settings for Channel 1:\n")
+  printFunctions.printToLog("Volts per Division = %f\n" % vdiv)
+  printFunctions.printToLog("Offset = %f\n" % off)
+  printFunctions.printToLog("Seconds per Division = %f\n" % sdiv)
+  printFunctions.printToLog("Delay = %f\n" % delay)
   printFunctions.printToScreenAndLog("\tReading Data of Power Source")
   cfg.Oscilloscope.send(":WAVEFORM:DATA?" + '\n') 
   tData = int(preamble[2])
@@ -269,6 +294,15 @@ def getDataFromOscilloscope(channelName) :
   preamble = numpy.fromfile(fid, dtype= numpy.float64, count = 10, sep = ",")
   fid.close()
   printFunctions.printToLog("\tTotal Number of Points to Receive: " + str(int(preamble[2])))
+  vdiv = 32 * preamble[7]
+  off = preamble[8]
+  sdiv = preamble[2] * preamble [4] / 10
+  delay = (preamble[2] / 2) * preamble[4] + preamble[5]
+  printFunctions.printToLog("\t\tScope Settings for -> " + channelName)
+  printFunctions.printToLog("\t\tVolts per Division = " + str(vdiv))
+  printFunctions.printToLog("\t\tOffset = " + str(off))
+  printFunctions.printToLog("\t\tSeconds per Division = " + str(sdiv))
+  printFunctions.printToLog("\t\tDelay = " + str(delay))  
   printFunctions.printToLog("\tReading Data of " + channelName)
   cfg.Oscilloscope.send(":WAVEFORM:DATA?" + '\n') 
   tData = int(preamble[2])
