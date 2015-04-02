@@ -45,9 +45,11 @@ def print_OpenADCheader(DeviceName):
 def printHeaderToScreenAndLog():
 	output = "#" * 79;
 	output += "#\n";
-	output += "\tStarting FOBOS - Flexible Opensource BOard for Sidechannel Analysis\n";
+	output += "\tStarting FOBOS - Flexible Opensource workBench fOr Sidechannel Analysis\n";
 	output += "#" * 79;
 	output += "#\n";
+	output += "\tData Acquisition Module Initialized\n"
+	output += "\tConfiguring Workspace ..\n"
 	print output
 	printToLog(output)
 
@@ -79,7 +81,7 @@ def printToScreenBold(data):
 def printAnalysisHeaderToScreen():
 	output = "#" * 79
 	output += "#\n"
-	output += "\tStarting -- FOBOS - Flexible Opensource BOard for Sidechannel Analysis\n"
+	output += "\tStarting -- FOBOS - Flexible Opensource workBench fOr Sidechannel Analysis\n"
 	output += "#" * 79
 	output += "#\n"
 	output += "\tData Analysis Module Initialized\n"

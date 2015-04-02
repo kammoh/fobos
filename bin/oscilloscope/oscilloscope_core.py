@@ -282,8 +282,8 @@ def getDataFromOscilloscope(channelName) :
 	chanType = 'CHAN4'	
   cmdString = ":WAVEFORM:SOURCE " + chanType 
   cfg.Oscilloscope.send(cmdString + '\n')
-  cmdString = ":WAVEFORM:POINTS " + str(cfg.osc_attributes['WAVE_DATA_SIZE'])
-  cfg.Oscilloscope.send(cmdString + '\n') 
+  #cmdString = ":WAVEFORM:POINTS " + str(cfg.osc_attributes['WAVE_DATA_SIZE'])
+  #cfg.Oscilloscope.send(cmdString + '\n') 
   printFunctions.printToLog("\t# of samples requested -> " + cmdString)    
   printFunctions.printToLog("\tReading Preamble of " + channelName)
   cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')

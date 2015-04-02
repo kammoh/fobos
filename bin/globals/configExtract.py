@@ -57,6 +57,7 @@ def configureWorkspace():
 	support.createDirectory(cfg.MEASUREMENT_FOLDER)
 	shutil.copy(cfg.PLOT_SCRIPT, cfg.MEASUREMENT_FOLDER)
 	shutil.copy(cfg.OSC_CONFIGFILE, cfg.MEASUREMENT_FOLDER)
+	shutil.copy(cfg.CONFIG_FILE, cfg.MEASUREMENT_FOLDER)
 	
 def extractConfigAttributes():
 	data_list = support.readFile(cfg.CONFIG_FILE)
@@ -69,12 +70,42 @@ def extractConfigAttributes():
 		if re.match('^SOURCE_DIR', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['SOURCE_DIR'] = value[1].strip(" ")
+		if re.match('^PROJECT_NAME', object) :
+			value = re.split("=", object)
+			cfg.config_attributes['PROJECT_NAME'] = value[1].strip(" ")
+			cfg.analysisConfigAttributes['PROJECT_NAME'] = value[1].strip(" ")
+		if re.match('^TAG', object) :
+			value = re.split("=", object)
+			cfg.config_attributes['TAG'] = value[1].strip(" ")
+			cfg.analysisConfigAttributes['TAG'] = value[1].strip(" ")
+		if re.match('^GENERATE_EPS_PDF_GRAPHS', object) :
+			value = re.split("=", object)
+			cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] = value[1].strip(" ")		
+		if re.match('^PLOT_SIZE_LENGTH', object) :
+			value = re.split("=", object)
+			cfg.analysisConfigAttributes['PLOT_SIZE_LENGTH'] = float(value[1].strip(" "))	
+		if re.match('^PLOT_SIZE_BREADTH', object) :
+			value = re.split("=", object)
+			cfg.analysisConfigAttributes['PLOT_SIZE_BREADTH'] = float(value[1].strip(" "))	
+		if re.match('^PLOT_LABELS_FONT_FAMILY', object) :
+			value = re.split("=", object)
+			cfg.analysisConfigAttributes['PLOT_LABELS_FONT_FAMILY'] = value[1].strip(" ")	
+		if re.match('^PLOT_LABELS_FONT_WEIGHT', object) :
+			value = re.split("=", object)
+			cfg.analysisConfigAttributes['PLOT_LABELS_FONT_WEIGHT'] = value[1].strip(" ")
+		if re.match('^PLOT_LABELS_FONT_SIZE', object) :
+			value = re.split("=", object)
+			cfg.analysisConfigAttributes['PLOT_LABELS_FONT_SIZE'] = int(value[1].strip(" ")	)
+		if re.match('^DISPLAY_THREE_SIGMAS', object) :
+			value = re.split("=", object)
+			cfg.analysisConfigAttributes['DISPLAY_THREE_SIGMAS'] = int(value[1].strip(" ")	)			
+
+	data_list = support.readFile(cfg.OSC_CONFIGFILE)
+	data_list = support.removeComments(data_list)
+	for object in data_list:
 		if re.match('^VICTIM_RESET', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['VICTIM_RESET'] = value[1].strip(" ")
-		if re.match('^OSC_CONFIG_FILE', object) :
-			value = re.split("=", object)
-			cfg.config_attributes['OSC_CONFIG_FILE'] = value[1].strip(" ")
 		if re.match('^DATA_FILE', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['DATA_FILE'] = value[1].strip(" ")
@@ -84,23 +115,12 @@ def extractConfigAttributes():
 		if re.match('^INPUT_FORMAT', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['INPUT_FORMAT'] = value[1].strip(" ")
-		if re.match('^PROJECT_NAME', object) :
-			value = re.split("=", object)
-			cfg.config_attributes['PROJECT_NAME'] = value[1].strip(" ")
-			cfg.analysisConfigAttributes['PROJECT_NAME'] = value[1].strip(" ")
-		if re.match('^VERBOSE', object) :
-			value = re.split("=", object)
-			cfg.config_attributes['VERBOSE'] = value[1].strip(" ")
 		if re.match('^TRIGGER_VAL', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['TRIGGER_VAL'] = value[1].strip(" ")
 		if re.match('^OUTPUT_FORMAT', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['OUTPUT_FORMAT'] = value[1].strip(" ")
-		if re.match('^TAG', object) :
-			value = re.split("=", object)
-			cfg.config_attributes['TAG'] = value[1].strip(" ")
-			cfg.analysisConfigAttributes['TAG'] = value[1].strip(" ")
 		if re.match('^TIMEOUT_VAL', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['TIMEOUT_VAL'] = value[1].strip(" ")
@@ -131,27 +151,6 @@ def extractConfigAttributes():
 		if re.match('^KEY_GENERATION', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['KEY_GENERATION'] = value[1].strip(" ")			
-		if re.match('^GENERATE_EPS_PDF_GRAPHS', object) :
-			value = re.split("=", object)
-			cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] = value[1].strip(" ")		
-		if re.match('^PLOT_SIZE_LENGTH', object) :
-			value = re.split("=", object)
-			cfg.analysisConfigAttributes['PLOT_SIZE_LENGTH'] = float(value[1].strip(" "))	
-		if re.match('^PLOT_SIZE_BREADTH', object) :
-			value = re.split("=", object)
-			cfg.analysisConfigAttributes['PLOT_SIZE_BREADTH'] = float(value[1].strip(" "))	
-		if re.match('^PLOT_LABELS_FONT_FAMILY', object) :
-			value = re.split("=", object)
-			cfg.analysisConfigAttributes['PLOT_LABELS_FONT_FAMILY'] = value[1].strip(" ")	
-		if re.match('^PLOT_LABELS_FONT_WEIGHT', object) :
-			value = re.split("=", object)
-			cfg.analysisConfigAttributes['PLOT_LABELS_FONT_WEIGHT'] = value[1].strip(" ")
-		if re.match('^PLOT_LABELS_FONT_SIZE', object) :
-			value = re.split("=", object)
-			cfg.analysisConfigAttributes['PLOT_LABELS_FONT_SIZE'] = int(value[1].strip(" ")	)
-		if re.match('^DISPLAY_THREE_SIGMAS', object) :
-			value = re.split("=", object)
-			cfg.analysisConfigAttributes['DISPLAY_THREE_SIGMAS'] = int(value[1].strip(" ")	)			
 			
 def configureAnalysisWorkspace():
 	runNo = 1
