@@ -50,6 +50,7 @@ channel2Data = None
 channel3Data = None
 channel4Data = None
 
+SAMPLE_LENGTH_FROM_OSC = None
 TEMP_PREAMBLE_FILE = ''
 TEMP_MEASUREMENT_FILE = ''
 CHANNEL1_MEASUREMENT_FILE = ''
