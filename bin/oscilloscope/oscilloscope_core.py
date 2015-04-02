@@ -39,9 +39,9 @@ def get_attribs(data_list) :
         elif re.match('^OSCILLOSCOPE_PORT\W', object) :
             value = re.split("=", object)
             cfg.osc_attributes['OSCILLOSCOPE_PORT'] = int(value[1].strip(" "))	  
-        elif re.match('^AUTOSCALE', object) :
-            value = re.split("=", object)
-            cfg.osc_attributes['AUTOSCALE'] = value[1].strip(" ")
+        #elif re.match('^AUTOSCALE', object) :
+            #value = re.split("=", object)
+            #cfg.osc_attributes['AUTOSCALE'] = value[1].strip(" ")
         elif re.match('^IMPEDANCE', object) :
             value = re.split("=", object)
             cfg.osc_attributes['IMPEDANCE'] = value[1].strip(" ")
