@@ -56,7 +56,8 @@ def configureWorkspace():
 	support.createDirectory(cfg.OUTPUT_FOLDER)
 	support.createDirectory(cfg.MEASUREMENT_FOLDER)
 	shutil.copy(cfg.PLOT_SCRIPT, cfg.MEASUREMENT_FOLDER)
- 
+	shutil.copy(cfg.OSC_CONFIGFILE, cfg.MEASUREMENT_FOLDER)
+	
 def extractConfigAttributes():
 	data_list = support.readFile(cfg.CONFIG_FILE)
 	data_list = support.removeComments(data_list)
