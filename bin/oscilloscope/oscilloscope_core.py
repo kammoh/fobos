@@ -47,19 +47,19 @@ def get_attribs(data_list) :
             cfg.osc_attributes['IMPEDANCE'] = value[1].strip(" ")
         elif re.match('^CHANNEL_RANGE1', object) :
             value = re.split("=", object)
-            cfg.osc_attributes['CHANNEL_RANGE1'] = float(value[1].strip(" "))
+            cfg.osc_attributes['CHANNEL_RANGE1'] = value[1].strip(" ")
         elif re.match('^CHANNEL_RANGE2', object) :
             value = re.split("=", object)
-            cfg.osc_attributes['CHANNEL_RANGE2'] = float(value[1].strip(" "))
+            cfg.osc_attributes['CHANNEL_RANGE2'] = value[1].strip(" ")
         elif re.match('^CHANNEL_RANGE3', object) :
             value = re.split("=", object)
-            cfg.osc_attributes['CHANNEL_RANGE3'] = float(value[1].strip(" "))
+            cfg.osc_attributes['CHANNEL_RANGE3'] = value[1].strip(" ")
         elif re.match('^CHANNEL_RANGE4', object) :
             value = re.split("=", object)
-            cfg.osc_attributes['CHANNEL_RANGE4'] = float(value[1].strip(" "))
+            cfg.osc_attributes['CHANNEL_RANGE4'] = value[1].strip(" ")
         elif re.match('^TIME_RANGE', object) :
             value = re.split("=", object)
-            cfg.osc_attributes['TIME_RANGE'] = float(value[1].strip(" "))
+            cfg.osc_attributes['TIME_RANGE'] = value[1].strip(" ")
         elif re.match('^TIMEBASE_REF', object) :
             value = re.split("=", object)
             cfg.osc_attributes['TIMEBASE_REF'] = value[1].strip(" ")
