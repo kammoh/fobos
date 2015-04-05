@@ -44,6 +44,8 @@ PLAIN_TEXT_FILE = ''
 CIPHER_TEXT_FILE = ''
 KEY_FILE = ''
 
+USB_HANDLE = ''
+
 Oscilloscope = ''
 channel1Data = None
 channel2Data = None

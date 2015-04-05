@@ -36,7 +36,7 @@ VERBOSE = off # Default = off
 # =============================================
 # =============================================
 
-CONTROL_BOARD = Nexys3
+CONTROL_BOARD = Nexys2
 CLK_FREQ = 500KHz
 VICTIM_RESET = 11
 TIME_OUT = 50000

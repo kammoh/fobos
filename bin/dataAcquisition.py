@@ -21,6 +21,7 @@ from globals import cfg, globals,support, printFunctions, configExtract
 from oscilloscope.oscilloscope_core import *
 from analysis import plottingModule
 import pickle
+from usb.usbcomm_core import *
 
 	
 def init():
@@ -31,7 +32,7 @@ def init():
 	cfg.OSC_CONFIGFILE = os.path.join(cfg.CONFIGDIR, globals.OSC_CONFIGFILENAME)
 
 #############################################
-###### Version 0.1 of FOBOS Capture
+###### Version 0.2 of FOBOS Capture
 ###### Only Oscilloscope comm is instantiated
 #############################################
 def main():	
@@ -40,19 +41,23 @@ def main():
 	configExtract.extractConfigAttributes()
 	configExtract.configureWorkspace()	
 	printFunctions.printHeaderToScreenAndLog()
-	extractOscilloscopeConfigAttributes()
+	#extractOscilloscopeConfigAttributes()
 	#dataToEncrypt = getPlainText()
 	#keyToEncrypt = getKey()
-	openOscilloscopeConnection()
-	setOscilloscopeConfigAttributes()
-	initializeOscilloscopeDataStorage()
+	#openOscilloscopeConnection()
+	#setOscilloscopeConfigAttributes()
+	#initializeOscilloscopeDataStorage()
+	openControlBoardConnection()
+	sendTraceCountToControlBoard()
 	traceCount = 0
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
-		armOscilloscope()
-		populateOscilloscopeDataStorage(traceCount)
+		#armOscilloscope()
+		runDummyEncrytionOncControlBoard(traceCount)
+		#populateOscilloscopeDataStorage(traceCount)
 		traceCount += 1
-	saveOscilloscopeDataStorage()	
-	closeOscilloscopeConnection()
+	#saveOscilloscopeDataStorage()	
+	#closeOscilloscopeConnection()
+	closeControlBoardConnection()
 #############################################################################
 ########### Show Plots for Power and Trigger
 ##############################################################################

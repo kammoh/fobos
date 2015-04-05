@@ -35,7 +35,7 @@ if(cfg.PROGRAM_CALL == "ACQUISITION"):
 		cdll.LoadLibrary("depp.dll")
 		depp = CDLL("depp.dll")
  
-VERSION = '0.1'
+VERSION = '0.2'
 SUCCESS = True
 FAILURE = False
 

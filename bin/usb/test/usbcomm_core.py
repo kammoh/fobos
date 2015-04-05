@@ -16,6 +16,8 @@
 #	limitations under the License.                                          #
 #                                                                           #
 #############################################################################
+from __future__ import division
+
 import array
 import time
 import sys
@@ -24,6 +26,7 @@ from ctypes import *
 import os
 from usbcomm_global import * 
 import traceback
+import struct
 
 def goToSleep(value):
 	time.sleep(value)
@@ -114,6 +117,9 @@ def streamBytes(USBHandle, nosBytes, regByte, debug) :
 
 def readMainClockFreq(USBHandle, DeviceName, debug) :
   mainclkfreq_hex = [0,0,0,0]
+  status = putRegByte(USBHandle, 0x30, 0x02, debug)
+  status = putRegByte(USBHandle, 0x30, 0x00, debug)
+  goToSleep(1)
   mainclkfreq_hex[0] = getRegByte(USBHandle, 0x20, debug)
   mainclkfreq_hex[1] = getRegByte(USBHandle, 0x21, debug)
   mainclkfreq_hex[2] = getRegByte(USBHandle, 0x22, debug)
@@ -121,8 +127,33 @@ def readMainClockFreq(USBHandle, DeviceName, debug) :
   mainclkfreq_MHz = int(arrayToString(mainclkfreq_hex), 16)/1000000
   #sys.stdout.write("\tMain Clock Frequency - %s \n" % arrayToString(clkfreq_hex))
   sys.stdout.write("\t\t%s - Main Clock Frequency" % DeviceName + " - %d MHz\n" % mainclkfreq_MHz)
-  
+
+def readVictimClockFreq(USBHandle, DeviceName, debug) :
+  victimclkfreq_hex = [0,0,0,0]
+  status = putRegByte(USBHandle, 0x30, 0x02, debug)
+  status = putRegByte(USBHandle, 0x30, 0x00, debug)
+  goToSleep(1)
+  victimclkfreq_hex[0] = getRegByte(USBHandle, 0x24, debug)
+  victimclkfreq_hex[1] = getRegByte(USBHandle, 0x25, debug)
+  victimclkfreq_hex[2] = getRegByte(USBHandle, 0x26, debug)
+  victimclkfreq_hex[3] = getRegByte(USBHandle, 0x27, debug)
+  victimclkfreq_MHz = struct.unpack('f', struct.pack('i', (int(arrayToString(victimclkfreq_hex), 16)/1000000)))
+  sys.stdout.write("\t\t%s - Victim Clock Frequency" % DeviceName + " - %f MHz\n" % float(int(arrayToString(victimclkfreq_hex), 16)/1000000))  
  
+def sendEncryptionCycles(USBHandle, noOfTraces, debug):
+  noOfTracesArray = [(noOfTraces >> i & 0xFF) for i in (24, 16, 8, 0)]
+  status = putRegByte(USBHandle, 0x80, noOfTracesArray[0], debug)
+  status = putRegByte(USBHandle, 0x81, noOfTracesArray[1], debug)
+  status = putRegByte(USBHandle, 0x82, noOfTracesArray[2], debug)
+  status = putRegByte(USBHandle, 0x83, noOfTracesArray[3], debug)
+  return status
+ 
+def runDummyencrytion (USBHandle, debug):
+	status = putRegByte(USBHandle, 0x01, 0x04, debug)
+	goToSleep(0.5)
+	status = putRegByte(USBHandle, 0x01, 0x08, debug)
+	return status
+  
 def streamDataFromBRAM(USBHandle, nosBytes, logfile, dataToStream, debug):
 
   
@@ -209,7 +240,10 @@ def streamDataFromBRAM(USBHandle, nosBytes, logfile, dataToStream, debug):
       log.close()    
   return streamdataV
 
-  
+def controlBoardReset(USBHandle, debug):
+	status = putRegByte(USBHandle, 0x30, 0x01, debug)
+	status = putRegByte(USBHandle, 0x30, 0x00, debug)
+	
 def terminate_usbcomm(USBHandle):
     depp.DeppDisable(USBHandle[0])
     if (sys.platform == "linux2" ):

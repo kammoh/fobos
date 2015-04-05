@@ -21,9 +21,7 @@ import time
 import sys
 import os
 import traceback
-import cfg
-import support
-from globals import *
+import cfg , globals, support
 
 def printArray(array, num):
   i = 0
@@ -31,12 +29,12 @@ def printArray(array, num):
     sys.stdout.write("%02X\n" % array[i])
     i=i+1
 
-def print_header(DeviceName):
-    sys.stdout.write("-----------------------------------------------\n")
-    sys.stdout.write("Starting PC-FPGA Communication via USB\n")
-    sys.stdout.write("\tControl Board -> %s\n" % DeviceName)
-    sys.stdout.write("\tVersion -> %s\n" % VERSION)
-    sys.stdout.write("-----------------------------------------------\n") 
+def printControlBoardHeaderToScreenAndLog():
+    output = "\tStarting PC-FPGA Communication via USB\n";
+    output += "\tControl Board -> " +  cfg.config_attributes['CONTROL_BOARD'] + "\n";
+    output += "\tVersion -> " + globals.VERSION + "\n"
+    print output
+    printToLog(output)
     
 def print_OpenADCheader(DeviceName):
 	print_header(DeviceName)

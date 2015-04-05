@@ -16,20 +16,18 @@
 #	limitations under the License.                                          #
 #                                                                           #
 #############################################################################
+from __future__ import division
 import array
 import time
 import sys
 import argparse
 from ctypes import *
 import os
-from usbcomm_global import * 
+from usbcomm_global import *
+from globals import support,cfg , printFunctions, globals
+import struct
 #import traceback
 
-def clear_screen() :
-    if (sys.platform == "linux2" ):
-      os.system('clear')
-    elif (sys.platform == "win32" ):
-      os.system('cls')
 
 def arrayToString(array):
   r = ''
@@ -37,134 +35,191 @@ def arrayToString(array):
     r += '%02X' % num
   return r
   
-def print_header(DeviceName):
-    sys.stdout.write("-----------------------------------------------\n")
-    sys.stdout.write("Starting PC-FPGA Communication via USB\n")
-    sys.stdout.write("\tControl Board -> %s\n" % DeviceName)
-    sys.stdout.write("\tVersion -> %s\n" % VERSION)
-    sys.stdout.write("-----------------------------------------------\n") 
-	
-def print_OpenADCheader():
-	print_header()
-	sys.stdout.write("\tStarting FOBOS- OpenADC Communication Script\n")
 
-def initialize_usbcomm(DeviceName):
-    DN = (DeviceName)
-    status = usbcommdmgr.DmgrOpen(handle, DN)
+def initializeControlBoardConnection():
+    status = dmgr.DmgrOpen(cfg.USB_HANDLE, cfg.config_attributes['CONTROL_BOARD'])
     if (status == SUCCESS):
-      sys.stdout.write("Initializing USB - FPGA Communication... \n")
-      status = usbcomm.DeppEnableEx(handle[0], 0)
+      printFunctions.printToScreenAndLog("\tInitializing USB - FPGA Communication...")
+      status = depp.DeppEnableEx(cfg.USB_HANDLE[0], 0)
       if (status == SUCCESS):
-        sys.stdout.write("\tDepp protocol enabled at Port 0\n")
-        usbcomm.DeppGetVersion(ResultString)
-        sys.stdout.write("\tDepp protocol version -> %s\n"% ResultString[0:10])
-        sys.stdout.write("-----------------------------------------------\n")
-        return handle
+        printFunctions.printToScreenAndLog("\t\tDepp protocol enabled at Port 0")
       else:
-        sys.stdout.write("\tDepp protocol not enabled. Exiting Program\n")
-        status = usbcommdmgr.DmgrClose(handle[0])
+        printFunctions.printToScreenAndLog("\tDepp protocol not enabled. Exiting Program")
+        dmgr.DmgrClose(cfg.USB_HANDLE[0])
         sys.exit(0)
     else:
-      sys.stdout.write("\tUSB Communication Failure. Exiting Program \n")
+      printFunctions.printToScreenAndLog("\tUSB Communication Failure. Exiting Program")
       sys.exit(0)
 
       
-def getByte(USBHandle, regByte, debug):
-  dataBYTE = c_ubyte
-  dataP = POINTER(dataBYTE)
-  bufBYTE = c_ubyte(10)
-  dataBYTEP = cast(addressof(bufBYTE), dataP)
-  if (usbcomm.DeppGetReg(USBHandle[0], regByte, dataBYTEP, 0)) :
-    if (debug == 1):
-      sys.stdout.write("\tReading from Reg -> %02X " %regByte)
-      sys.stdout.write(": Data -> %02X\n" % dataBYTEP[0])
-    dataVAL = dataBYTEP[0]
-    return (dataVAL)
+def getRegByte(regByte):
+  if (depp.DeppGetReg(cfg.USB_HANDLE[0], regByte, dataBYTEP, 0)) :
+    printFunctions.printToLog("\tRead Data from Reg ->  " + str(regByte) )
+    printFunctions.printToLog("Data -> " + str(dataBYTEP[0]) + "\n")
+    return (dataBYTEP[0])
   else :
-    sys.stdout.write("\tCould not read register -> %X\n" % regByte)
+    printFunctins.printToScreenAndLog("\tCould not read register -> " + regByte)
     return (0)
     
-def putByte(USBHandle, regByte, dataBYTE, debug):
-    if (usbcomm.DeppPutReg(USBHandle[0], regByte, dataBYTE, 0)) :
-      if (debug == 1):
-        sys.stdout.write("\tSending Data -> %02X " %dataBYTE)
-        sys.stdout.write("to Reg -> %02X\n" % regByte)
-	#sys.stdout.write("\tPut Data -> %x to Reg -> %x\n" % dataBYTE % regByte)
+def putRegByte(regByte, dataBYTE):
+    if (depp.DeppPutReg(cfg.USB_HANDLE[0], regByte, dataBYTE, 0)) :
+      printFunctions.printToLog("\tSending Data to Reg ->  " + str(regByte) + "Data -> " + str(dataBYTE))
       return (1)
     else :
-      sys.stdout.write("\tCould not write to register -> %X\n" % regByte)
+      printFunctions.printToScreenAndLog("\tCould not write to register -> " + str(regByte))
       return (0)
-  
-def streamBytes(USBHandle, regByte) :
-	streamdataBYTE = c_ubyte
-	streamdataP = POINTER(c_ubyte)
-	streambufBYTE = c_ubyte(20000)
-	streamdataBYTEP = cast(addressof(streambufBYTE), streamdataP)
-  
-	if (usbcomm.DeppGetRegRepeat(USBHandle[0], regByte, streamdataBYTEP, 20000, 0)) :
-		sys.stdout.write("\tStream Data from Reg -> %X " %regByte)
-		return (streamdataBYTEP)
-	else :
-		sys.stdout.write("\tCould not stream from register -> %X\n" % regByte)
-		return (0)
-
-def pollRegforValue(USBHandle, debug):
-	Val = getByte(USBHandle, 0x0E, debug)
-	i = 1
-	sys.stdout.write("\tPolling Status Reg")
-	while(1):
-		if ((Val == 0xE0)):
-			sys.stdout.write("\n\t\tBoard Ready for sending data\n")
-			time.sleep(0.4)
-			break
-		else:
-			dots = ' #'*i
-			sys.stdout.write(dots)
-			i = i+1
-		if (i == 4):
-			i = 0
-			time.sleep(1)
-			Val = getByte(USBHandle, 0x0E, debug)
-
       
-    
-def readMainClockFreq(USBHandle, debug) :
+def streamBytes(nosBytes, regByte) :
+	streambufBYTE = (c_ubyte*(nosBytes+10))()
+	streamdataBYTEP = cast(streambufBYTE, POINTER(c_ubyte))
+	nosBytesD = c_ulong
+	nosBytesD = nosBytes
+	if (depp.DeppGetRegRepeat(cfg.USB_HANDLE[0], regByte, streamdataBYTEP, nosBytes, 0)) :
+	  printFunctions.printToLog("\tStream Data from Reg -> " + str(regByte))
+	  return (streamdataBYTEP)
+	else :
+	  printFunctions.printToLog("\tCould not stream from register -> " + str(regByte))
+	  return (0)  
+
+def readMainClockFreq() :
   mainclkfreq_hex = [0,0,0,0]
-  mainclkfreq_hex[0] = getByte(USBHandle, 0x01, debug)
-  mainclkfreq_hex[1] = getByte(USBHandle, 0x02, debug)
-  mainclkfreq_hex[2] = getByte(USBHandle, 0x03, debug)
-  mainclkfreq_hex[3] = getByte(USBHandle, 0x04, debug)
+  status = putRegByte(0x30, 0x02)
+  status = putRegByte(0x30, 0x00)
+  support.goToSleep(1)
+  mainclkfreq_hex[0] = getRegByte(0x20)
+  mainclkfreq_hex[1] = getRegByte(0x21)
+  mainclkfreq_hex[2] = getRegByte(0x22)
+  mainclkfreq_hex[3] = getRegByte(0x23)
   mainclkfreq_MHz = int(arrayToString(mainclkfreq_hex), 16)/1000000
-  #sys.stdout.write("\tMain Clock Frequency - %s \n" % arrayToString(clkfreq_hex))
-  sys.stdout.write("\tMain Clock Frequency - %d MHz\n" % mainclkfreq_MHz)
+  printFunctions.printToScreenAndLog("\t\t" + cfg.config_attributes['CONTROL_BOARD'] + " - Main Clock Frequency ->" + str(mainclkfreq_MHz) + " - MHz")
 
-def readDCMClockFreq(USBHandle, debug) :
-  dcmclkfreq_hex = [0,0,0,0]
-  dcmclkfreq_hex[0] = getByte(USBHandle, 0x07, debug)
-  dcmclkfreq_hex[1] = getByte(USBHandle, 0x08, debug)
-  dcmclkfreq_hex[2] = getByte(USBHandle, 0x09, debug)
-  dcmclkfreq_hex[3] = getByte(USBHandle, 0x0A, debug)
-  dcmclkfreq_MHz = int(arrayToString(dcmclkfreq_hex), 16)/1000000
-  sys.stdout.write("\tDCM Clock Frequency - %d MHz\n" % dcmclkfreq_MHz)
-
-def readBrdClockFreq(USBHandle, debug) :
-  brdclkfreq_hex = [0,0,0,0]
-  brdclkfreq_hex[0] = getByte(USBHandle, 0x09, debug)
-  brdclkfreq_hex[1] = getByte(USBHandle, 0x0A, debug)
-  brdclkfreq_hex[2] = getByte(USBHandle, 0x0B, debug)
-  brdclkfreq_hex[3] = getByte(USBHandle, 0x0C, debug)
-  brdclkfreq_MHz = int(arrayToString(brdclkfreq_hex), 16)/1000000
-  sys.stdout.write("\tBoard (in-coming) Clock Frequency - %d MHz\n" % brdclkfreq_MHz)
+def readVictimClockFreq() :
+  victimclkfreq_hex = [0,0,0,0]
+  status = putRegByte(0x30, 0x02)
+  status = putRegByte(0x30, 0x00)
+  support.goToSleep(1)
+  victimclkfreq_hex[0] = getRegByte(0x24)
+  victimclkfreq_hex[1] = getRegByte(0x25)
+  victimclkfreq_hex[2] = getRegByte(0x26)
+  victimclkfreq_hex[3] = getRegByte(0x27)
+  victimclkfreq_MHz = struct.unpack('f', struct.pack('i', (int(arrayToString(victimclkfreq_hex), 16)/1000000)))
+  printFunctions.printToScreenAndLog("\t\t" + cfg.config_attributes['CONTROL_BOARD'] + " - Victim Clock Frequency ->" + str(float(int(arrayToString(victimclkfreq_hex), 16)/1000000)) + " - MHz" )  
+ 
+def sendTraceCountToControlBoard():
+  noOfTracesArray = [(cfg.config_attributes['NUMBER_OF_TRACES'] >> i & 0xFF) for i in (24, 16, 8, 0)]
+  status = putRegByte(0x80, noOfTracesArray[0])
+  status = putRegByte(0x81, noOfTracesArray[1])
+  status = putRegByte(0x82, noOfTracesArray[2])
+  status = putRegByte(0x83, noOfTracesArray[3])
+  return status
+ 
+def runDummyEncrytionOncControlBoard (traceCount):
+	printFunctions.printToScreenAndLog("\tRunning Dummy Encryption - " + str(traceCount))
+	status = putRegByte(0x01, 0x04)
+	support.goToSleep(0.5)
+	status = putRegByte(0x01, 0x08)
+	status = putRegByte(0x01, 0x00)
+	return status
   
+# def streamDataFromBRAM(cfg.USB_HANDLE, nosBytes, logfile, dataToStream, debug):
+
   
-def terminate_usbcomm(USBHandle):
-    usbcomm.DeppDisable(USBHandle[0])
-    status = usbcommdmgr.DmgrClose(USBHandle[0])
+  # lbyteValue = [0]*(nosBytes)
+  # hbyteValue = [0]*(nosBytes)
+  # streamdataV = [0]*(nosBytes)
+  # if(debug == 2):
+    # i = 0
+    # log = open(logfile, 'w')
+    # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x01, debug) # Reset High
+    # if (dataToStream == COUNTER):
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x00, debug) # Reset Low|Counter input
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x80, debug)
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x40, debug)
+      # while(i<nosBytes):
+        # hbyteValue[i] = getRegByte(cfg.USB_HANDLE, 0x10, debug)
+        # i = i+1
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x80, debug)
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x40, debug)
+      # i =0
+      # while(i<nosBytes):
+        # lbyteValue[i] = getRegByte(cfg.USB_HANDLE, 0x11, debug)
+        # i = i+1
+      # i=0
+      # while(i<nosBytes):
+        # streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
+        # log.write(str(streamdataV[i]))
+        # log.write('\n')
+        # i = i+1
+    # if (dataToStream == OPENADC):
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x20, debug) # Reset Low|Counter input
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0xA0, debug)
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x60, debug)
+      # while(i<nosBytes):
+        # hbyteValue[i] = getRegByte(cfg.USB_HANDLE, 0x10, debug)
+        # i = i+1
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0xA0, debug)
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x60, debug)  
+      # i =0
+      # while(i<nosBytes):
+        # lbyteValue[i] = getRegByte(cfg.USB_HANDLE, 0x11, debug)
+        # i = i+1
+      # i=0 
+      # while(i<nosBytes):
+        # streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
+        # log.write(str(streamdataV[i]))
+        # log.write('\n')
+        # i = i+1
+    # log.close() 
+    
+  # if(debug == 3):
+    # i=0
+    # log = open(logfile, 'w')
+    # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x01, debug) # Reset High
+    # if (dataToStream == COUNTER):
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x00, debug) # Reset Low|Counter input
+      # time.sleep(1)
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x80, debug)
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x40, debug)
+      # hbyteValue = streamBytes(cfg.USB_HANDLE, nosBytes, 0x10, debug)
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x80, debug)
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x40, debug)
+      # lbyteValue = streamBytes(cfg.USB_HANDLE, nosBytes, 0x11, debug)
+      # while(i<nosBytes):
+        # streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
+        # log.write(str(streamdataV[i]))
+        # log.write('\n')
+        # i = i+1
+      # log.close()
+    # elif(dataToStream == OPENADC):
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x20, debug) # Reset Low|Counter input
+      # time.sleep(1)
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0xA0, debug)
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x60, debug)
+      # hbyteValue = streamBytes(cfg.USB_HANDLE, nosBytes, 0x10, debug)
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0xA0, debug)
+      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x60, debug)
+      # lbyteValue = streamBytes(cfg.USB_HANDLE, nosBytes, 0x11, debug)
+      # while(i<nosBytes):
+        # streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
+        # log.write(str(streamdataV[i]))
+        # log.write('\n')
+        # i = i+1
+      # log.close()    
+  # return streamdataV
 
+def resetControlBoard():
+	status = putRegByte(0x30, 0x01)
+	status = putRegByte(0x30, 0x00)
 
-
-
-
-
-
-
+def openControlBoardConnection():
+	printFunctions.printControlBoardHeaderToScreenAndLog()
+	initializeControlBoardConnection()
+	resetControlBoard()
+	readMainClockFreq()
+	readVictimClockFreq()
+	
+def closeControlBoardConnection():
+    depp.DeppDisable(cfg.USB_HANDLE[0])
+    if (sys.platform == "linux2" ):
+      depp.DmgrClose(cfg.USB_HANDLE[0])
+	  
