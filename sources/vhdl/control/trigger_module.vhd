@@ -2,6 +2,8 @@ library ieee;
 use ieee.std_logic_1164.all; 
 use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
+use work.fobos_package.all;
+
 
 entity trigger_module is
 port (
@@ -27,12 +29,11 @@ component counter is
 end component;
 
 signal cnt_trig_en, cnt_trig_ld, triggerOutBuffer : std_logic;
-signal cnt_1000_out : std_logic_vector(9 downto 0);
-signal cnt_trig_out : std_logic_vector(3 downto 0);
+signal cnt_trig_out : std_logic_vector(31 downto 0);
 
 signal Z1000, Zop : std_logic;
 
-type STATE is (load, st0, st1, st2); 
+type STATE is (load, st0, st1, st2, st3); 
 signal pr_state,nx_state:state;
 
 begin
@@ -75,8 +76,8 @@ next_state_function: process(clock,reset,Z1000, Zop, pr_state)
 		 if (Zop = '1') then
 			nx_state <= st3;
 		else
-			nx_state <= st0;
-		  
+			nx_state <= load;
+		 end if; 
 		  when others=>
 			  nx_state<=st3; 		
 		     
@@ -85,11 +86,10 @@ end process;
 
 output_function: process(pr_state)
  begin	 
-	triggerOutBuffer <= '0';
-		
+	triggerOutBuffer <= '0';		
 	case pr_state is 
 		 when load =>
-			cnt_trig_en <= '0', cnt_trig_ld <= '1'; triggerOutBuffer <= '0';
+			cnt_trig_en <= '0'; cnt_trig_ld <= '1'; triggerOutBuffer <= '0';
 		 when st0 => 
 			cnt_trig_en <= '0';  cnt_trig_ld <= '0';triggerOutBuffer <= '0';
 		 when st1 => 

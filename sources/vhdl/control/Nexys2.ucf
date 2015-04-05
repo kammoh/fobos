@@ -1,92 +1,55 @@
-#####################################################################################
-## EPP, CLOCK, DEBUG SIGNAL PINS -- DO NOT MODIFY
-#####################################################################################
-NET "astb"  LOC = "V14"  ;
-NET "dstb"  LOC = "U14"  ;
-NET "mclk"  LOC = "B8"  ;
-NET "pwait"  LOC = "N9"  ;
-NET "pwr"  LOC = "V16"  ;
-NET "pdb<0>" LOC= "R14"; # Bank = 2 , Pin name = IO_L24N_2/A20 , Type = DUAL , Sch name = U-FD0
-NET "pdb<1>" LOC= "R13"; # Bank = 2 , Pin name = IO_L22N_2/A22 , Type = DUAL , Sch name = U-FD1
-NET "pdb<2>" LOC= "P13"; # Bank = 2 , Pin name = IO_L22P_2/A23 , Type = DUAL , Sch name = U-FD2
-NET "pdb<3>" LOC= "T12"; # Bank = 2 , Pin name = IO_L20P_2 , Type = I/O , Sch name = U-FD3
-NET "pdb<4>" LOC= "N11"; # Bank = 2 , Pin name = IO_L18N_2 , Type = I/O , Sch name = U-FD4
-NET "pdb<5>" LOC= "R11"; # Bank = 2 , Pin name = IO , Type = I/O , Sch name = U-FD5
-NET "pdb<6>" LOC= "P10"; # Bank = 2 , Pin name = IO_L15N_2/D1/GCLK3 , Type = DUAL/GCLK , Sch name = U-FD6
-NET "pdb<7>" LOC= "R10"; # Bank = 2 , Pin name = IO_L15P_2/D2/GCLK2 , Type = DUAL/GCLK , Sch name = U-FD7
-#NET "signal_check" LOC= "C7"; # Bank = 2 , Pin name = IO_L15P_2/D2/GCLK2 , Type = DUAL/GCLK , Sch name = U-FD7
-NET "hbLed" 	LOC= "R4"; # Bank = 1 , Pin name = IO_L14N_1/A3/RHCLK7 , Type = RHCLK/DUAL , Sch name = JD10/LD0
-#NET "aes_done" 	LOC= "F4"; # Bank = 1 , Pin name = IO_L14P_1/A4/RHCLK6 , Type = RHCLK/DUAL , Sch name = JD9/LD1
-NET "hbLed_off" LOC= "R17"; # Bank = 1 , Pin name = IP , Type = INPUT , Sch name = rgSwt0 
-PIN "DCM_inst1/DCM_SP_INST.CLKIN" CLOCK_DEDICATED_ROUTE = FALSE;
-NET "dstb" CLOCK_DEDICATED_ROUTE = FALSE;
-PIN "DCM_inst2/DCM_SP_INST.CLKIN" CLOCK_DEDICATED_ROUTE = FALSE;
-NET "mclk" CLOCK_DEDICATED_ROUTE = FALSE;
+NET "clk" LOC = "B8" ;#| IOSTANDARD = "LVCMOS33"; #Bank = 2, pin name = IO_L30N_GCLK0_USERCCLK, Sch name = GCLK
+NET "EppAstb" LOC = "V14" ;#| IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L41N_GCLK26_M3DQ5, Sch name = U-FLAGA
+NET "EppDstb" LOC = "U14" ;#| IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L42P_GCLK25_TRDY2_M3UDM, Sch name = U-FLAGB
+NET "EppWrite" LOC = "V16" ;#| IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L55N_M3A14, Sch name = U-FLAGC
+NET "EppWait" LOC = "N9" ;#| IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L83P, Sch name = U-SLRD
+#NET "EppReset" LOC = "T10" | IOSTANDARD = "LVCMOS33";   #Bank = 2, Pin name = IO_L29N_GCLK2, Sch name = SW0
+NET "EppDstb" CLOCK_DEDICATED_ROUTE = FALSE;
 
-#all EPP pins should be done
-#####################################################################################
-## OpenADC PINS -- DO NOT MODIFY
-#####################################################################################
-NET "adc_data<9>" LOC = "K12" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L11N_1/A9/RHCLK1, Type = RHCLK/DUAL, Sch name = JA2
-NET "adc_data<7>" LOC = "L17" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L10N_1/VREF_1, Type = VREF, Sch name = JA3
-NET "adc_data<5>" LOC = "M15" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L07P_1, Type = I/O, Sch name = JA4
-NET "adc_or" 		LOC = "L16" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L09P_1/A12, Type = DUAL, Sch name = JA8
-NET "adc_data<8>" LOC = "M14" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L05P_1, Type = I/O, Sch name = JA9
-NET "adc_data<6>" LOC = "M16" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L07N_1, Type = I/O, Sch name = JA10
-NET "adc_data<3>" LOC = "M13" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L05N_1/VREF_1, Type = VREF, Sch name = JB1
-NET "adc_data<1>" LOC = "R18" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L02P_1/A14, Type = DUAL, Sch name = JB2
-NET "adc_clock" 		LOC = "R15" |IOSTANDARD = LVCMOS33 | SLEW=FAST | DRIVE=12; # Bank = 1, Pin name = IO_L03P_1, Type = I/O, Sch name = JB3
-NET "amp_gain" 	LOC = "T17" |IOSTANDARD = LVCMOS33 | SLEW=SLOW | DRIVE=2; # Bank = 1, Pin name = IO_L01N_1/A15, Type = DUAL, Sch name = JB4
-NET "adc_data<4>" LOC = "P17" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L06P_1, Type = I/O, Sch name = JB7
-NET "adc_data<2>" LOC = "R16" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L03N_1/VREF_1, Type = VREF, Sch name = JB8
-NET "adc_data<0>" LOC = "T18" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L02N_1/A13, Type = DUAL, Sch name = JB9
-NET "amp_hilo" 	LOC = "U18" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L01P_1/A16, Type = DUAL, Sch name = JB10
-#all ADC pins should be done
-#####################################################################################
-## BRIDGE CONNECTOR PINS -- MODIFY AS PER REQ
-#####################################################################################
-NET "clock2victim" 		LOC = "D9"; # Clock     --- B8
-NET "start2victim"   		LOC = "C4" ; # rst | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE =  8 ;
-NET "cntrl_send_ready" 		LOC = "B6" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "cntrl_read_ready" 		LOC = "D5" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "victim_read" 		LOC = "C5" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "victim_write" 		LOC = "F7" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "trigger_osc"               LOC = "A4" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-#
-NET "datafromvictim<15>" LOC = "E7" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "datafromvictim<14>" LOC = "A6" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "datafromvictim<13>" LOC = "C7" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "datafromvictim<12>" LOC = "F8" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "datafromvictim<11>" LOC = "D7" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "datafromvictim<10>" LOC = "E8" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "datafromvictim<9>" LOC = "E9" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "datafromvictim<8>" LOC = "C9" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "datafromvictim<7>" LOC = "A8" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "datafromvictim<6>" LOC = "G9" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "datafromvictim<5>" LOC = "F9" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "datafromvictim<4>" LOC = "D10" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "datafromvictim<3>" LOC = "A10" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "datafromvictim<2>" LOC = "B10" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "datafromvictim<1>" LOC = "A11" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "datafromvictim<0>" LOC = "D11" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-#
-NET "data2victim<15>" LOC = "E10" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "data2victim<14>" LOC = "B11" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "data2victim<13>" LOC = "C11" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "data2victim<12>" LOC = "E11" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
-NET "data2victim<11>" LOC = "F11" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
-NET "data2victim<10>" LOC = "E12" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "data2victim<9>" LOC = "F12" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
-NET "data2victim<8>" LOC = "A13" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
-NET "data2victim<7>" LOC = "B13" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
-NET "data2victim<6>" LOC = "E13" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
-NET "data2victim<5>" LOC = "A14" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "data2victim<4>" LOC = "C14" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "data2victim<3>" LOC = "D14" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "data2victim<2>" LOC = "B14" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
-NET "data2victim<1>" LOC = "A16" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
-NET "data2victim<0>" LOC = "B16" ; #| IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-#all Victim pins should be done
-#####################################################################################
-#all RAM&FLASH pins should be done
-#####################################################################################
+NET "EppDB<0>" LOC = "R14" ;# | IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L50N_M3BA2, Sch name = U-FD0
+NET "EppDB<1>" LOC = "R13" ;# | IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L51P_M3A10, Sch name = U-FD1
+NET "EppDB<2>" LOC = "P13" ;# | IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L51N_M3A4, Sch name = U-FD2
+NET "EppDB<3>" LOC = "T12" ;# | IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L52P_M3A8, Sch name = U-FD3
+NET "EppDB<4>" LOC = "N11" ;# | IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L52N_M3A9, Sch name = U-FD4
+NET "EppDB<5>" LOC = "R11" ;# | IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L53P_M3CKE, Sch name = U-FD5
+NET "EppDB<6>" LOC = "P10" ;# | IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L53N_M3A12, Sch name = U-FD6
+NET "EppDB<7>" LOC = "R10" ;#| IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L54P_M3RESET, Sch name = U-FD7
+
+NET "displayLED<0>" LOC = "J14" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L2P_CMPCLK, Sch name = LD0
+NET "displayLED<1>" LOC = "J15" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L2N_CMPMOSI, Sch name = LD1
+NET "displayLED<2>" LOC = "K15" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L5P, Sch name = LD2
+NET "displayLED<3>" LOC = "K14" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L5N, Sch name = LD3
+NET "displayLED<4>" LOC = "E17" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L15P, Sch name = LD4
+NET "displayLED<5>" LOC = "P15" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L15N, Sch name = LD5
+NET "displayLED<6>" LOC = "F4"  | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L16P, Sch name = LD6
+NET "displayLED<7>" LOC = "R4"  | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L16N_VREF, Sch name = LD7
+
+NET "cergbanner<0>"         LOC = "L18" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L51P_M1DQ12,                    Sch name = CA
+NET "cergbanner<1>"         LOC = "F18" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L51N_M1DQ13,                    Sch name = CB
+NET "cergbanner<2>"         LOC = "D17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L52P_M1DQ14,                    Sch name = CC
+NET "cergbanner<3>"         LOC = "D16" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L52N_M1DQ15,                    Sch name = CD
+NET "cergbanner<4>"         LOC = "G14" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L53P,                           Sch name = CE
+NET "cergbanner<5>"         LOC = "J17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L53N_VREF,                      Sch name = CF
+NET "cergbanner<6>"         LOC = "H14" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L61P,                           Sch name = CG
+NET "cergbanner<7>"         LOC = "C17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L61N,                           Sch name = DP
+NET "cergbanner<8>"         LOC = "F17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L50N_M1UDQSN,                   Sch name = AN0
+NET "cergbanner<9>"         LOC = "H17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L50P_M1UDQS,                    Sch name = AN1
+NET "cergbanner<10>"        LOC = "C18" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L49N_M1DQ11,                    Sch name = AN2
+NET "cergbanner<11>"        LOC = "F15" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L49P_M1DQ10,                    Sch name = AN3
+NET "trigger" LOC = "K12" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L11N_1/A9/RHCLK1, Type = RHCLK/DUAL, Sch name = JA2
+
+
+#NET "adc_data<9>" LOC = "K12" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L11N_1/A9/RHCLK1, Type = RHCLK/DUAL, Sch name = JA2
+#NET "adc_data<7>" LOC = "L17" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L10N_1/VREF_1, Type = VREF, Sch name = JA3
+#NET "adc_data<5>" LOC = "M15" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L07P_1, Type = I/O, Sch name = JA4
+#NET "adc_or" 	  LOC = "L16" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L09P_1/A12, Type = DUAL, Sch name = JA8
+#NET "adc_data<8>" LOC = "M14" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L05P_1, Type = I/O, Sch name = JA9
+#NET "adc_data<6>" LOC = "M16" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L07N_1, Type = I/O, Sch name = JA10
+#NET "adc_data<3>" LOC = "M13" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L05N_1/VREF_1, Type = VREF, Sch name = JB1
+#NET "adc_data<1>" LOC = "R18" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L02P_1/A14, Type = DUAL, Sch name = JB2
+#NET "adc_clock"   LOC = "R15" |IOSTANDARD = LVCMOS33 | SLEW=FAST | DRIVE=12; # Bank = 1, Pin name = IO_L03P_1, Type = I/O, Sch name = JB3
+#NET "amp_gain" 	  LOC = "T17" |IOSTANDARD = LVCMOS33 | SLEW=SLOW | DRIVE=2; # Bank = 1, Pin name = IO_L01N_1/A15, Type = DUAL, Sch name = JB4
+#NET "adc_data<4>" LOC = "P17" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L06P_1, Type = I/O, Sch name = JB7
+#NET "adc_data<2>" LOC = "R16" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L03N_1/VREF_1, Type = VREF, Sch name = JB8
+#NET "adc_data<0>" LOC = "T18" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L02N_1/A13, Type = DUAL, Sch name = JB9
+#NET "amp_hilo" 	  LOC = "U18" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L01P_1/A16, Type = DUAL, Sch name = JB10
