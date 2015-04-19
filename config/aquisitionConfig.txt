@@ -21,12 +21,6 @@
 # =============================================
 # =============================================
 
-PLAINTEXT_GENERATION = USER
-DATA_FILE     = plaintexts.txt
-KEY_GENERATION = USER
-KEY_FILE      = keys.txt
-INPUT_FORMAT  = hex # Default => hex
-OUTPUT_FORMAT = hex # Default => hex
 MEASUREMENT_FORMAT = dat # Default => dat
 VERBOSE = off # Default = off
 
@@ -47,6 +41,12 @@ TRIGGER_VAL = 2
 # =============================================
 # =============================================
 
+PLAINTEXT_GENERATION = USER
+DATA_FILE     = plaintexts.txt
+KEY_GENERATION = USER
+KEY_FILE      = keys.txt
+INPUT_FORMAT  = hex # Default => hex
+OUTPUT_FORMAT = hex # Default => hex
 NUMBER_OF_ENCRYPTIONS = 10
 BLOCK_SIZE = 136 # In Bytes
 KEY_SIZE = 16 # In Bytes
