@@ -32,6 +32,7 @@ def init():
 	cfg.CONFIGDIR = os.path.join(cfg.ROOTDIR,globals.CONFIG_DIRNAME)
 	cfg.ANALYSISCONFIGDIR = os.path.join(cfg.ROOTDIR, globals.ANALYSIS_CONFIG_DIRNAME)
 	cfg.CONFIG_FILE = os.path.join(cfg.CONFIGDIR, globals.CONFIG_FILENAME)
+	cfg.OSC_CONFIGFILE = os.path.join(cfg.CONFIGDIR, globals.OSC_CONFIGFILENAME)
 	cfg.ANALYSIS_SCRIPT_FILE = os.path.join(cfg.BINDIR, globals.ANALYSIS_SCRIPT_FILENAME)
 	cfg.PROGRAM_CALL = "ANALYSIS"
 	
@@ -76,12 +77,12 @@ def main():
 	#plottingModule.plotCorr(an, globals.ANOVA)	
 	#ac = sca.calculate_autocorrelation(alignedData)
 	#plottingModule.plotCorr(ac, globals.AUTOCORR)
-	m1 = sca.calculate_mean(alignedData, globals.SAMPLE_WISE)
-	m2 = sca.calculate_mean(alignedData, globals.TRACE_WISE)
-	s1 = sca.calculate_std(alignedData, globals.SAMPLE_WISE)
-	s2 = sca.calculate_std(alignedData, globals.TRACE_WISE)
-	v1 = sca.calculate_var(alignedData, globals.SAMPLE_WISE)
-	v2 = sca.calculate_var(alignedData, globals.TRACE_WISE)
+	m1 = statisticsModule.calculate_mean(alignedData, globals.SAMPLE_WISE)
+	m2 = statisticsModule.calculate_mean(alignedData, globals.TRACE_WISE)
+	s1 = statisticsModule.calculate_std(alignedData, globals.SAMPLE_WISE)
+	s2 = statisticsModule.calculate_std(alignedData, globals.TRACE_WISE)
+	v1 = statisticsModule.calculate_var(alignedData, globals.SAMPLE_WISE)
+	v2 = statisticsModule.calculate_var(alignedData, globals.TRACE_WISE)
 
 	
 if __name__ == "__main__": 

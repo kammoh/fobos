@@ -41,22 +41,23 @@ def main():
 	configExtract.extractConfigAttributes()
 	configExtract.configureWorkspace()	
 	printFunctions.printHeaderToScreenAndLog()
-	#extractOscilloscopeConfigAttributes()
+	extractOscilloscopeConfigAttributes()
 	#dataToEncrypt = getPlainText()
 	#keyToEncrypt = getKey()
-	#openOscilloscopeConnection()
-	#setOscilloscopeConfigAttributes()
-	#initializeOscilloscopeDataStorage()
+	openOscilloscopeConnection()
+	setOscilloscopeConfigAttributes()
+	initializeOscilloscopeDataStorage()
 	openControlBoardConnection()
 	sendTraceCountToControlBoard()
 	traceCount = 0
+	displayReg(0x0C)
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
-		#armOscilloscope()
+		armOscilloscope()
 		runDummyEncrytionOncControlBoard(traceCount)
-		#populateOscilloscopeDataStorage(traceCount)
+		populateOscilloscopeDataStorage(traceCount)
 		traceCount += 1
-	#saveOscilloscopeDataStorage()	
-	#closeOscilloscopeConnection()
+	saveOscilloscopeDataStorage()	
+	closeOscilloscopeConnection()
 	closeControlBoardConnection()
 #############################################################################
 ########### Show Plots for Power and Trigger

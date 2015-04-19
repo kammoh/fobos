@@ -37,11 +37,9 @@ VERBOSE = off # Default = off
 # =============================================
 
 CONTROL_BOARD = Nexys2
-CLK_FREQ = 500KHz
 VICTIM_RESET = 11
 TIME_OUT = 50000
 TRIGGER_VAL = 2
-OSC_CONFIG_FILE = oscilloscope_config.txt
 
 # =============================================
 # =============================================
@@ -50,7 +48,7 @@ OSC_CONFIG_FILE = oscilloscope_config.txt
 # =============================================
 
 NUMBER_OF_ENCRYPTIONS = 10
-BLOCK_SIZE = 16 # In Bytes
+BLOCK_SIZE = 136 # In Bytes
 KEY_SIZE = 16 # In Bytes
 
 # =============================================
@@ -59,7 +57,7 @@ KEY_SIZE = 16 # In Bytes
 # =============================================
 # =============================================
 
-NUMBER_OF_TRACES = 2
+NUMBER_OF_TRACES = 1
 
 # =============================================
 # =============================================
@@ -75,17 +73,17 @@ OSCILLOSCOPE_PORT = 5025
 AUTOSCALE = NO   # YES|NO    
 IMPEDANCE = ONEMEG #FIFTY|ONEMEG
 # VOLTAGE AND TIME RANGE OPTIONS        
-CHANNEL_RANGE1 = 2V
-CHANNEL_RANGE2 = 8V
+CHANNEL_RANGE1 = 16V
+CHANNEL_RANGE2 = 16V
 CHANNEL_RANGE3 = OFF
 CHANNEL_RANGE4 = OFF
-TIME_RANGE = 0.00005
+TIME_RANGE = 0.01
 TIMEBASE_REF = LEFT    
 # TRIGGER OPTIONS
 TRIGGER_SOURCE =  CHANNEL2
 TRIGGER_MODE =  EDGE   
 TRIGGER_SWEEP = NORM
-TRIGGER_LEVEL = 0.00623   
+TRIGGER_LEVEL = 1.8 
 TRIGGER_SLOPE = POSITIVE
 # ACQUIRE OPTIONS
 ACQUIRE_TYPE = NORMAL

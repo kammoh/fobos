@@ -54,8 +54,7 @@ def initializeControlBoardConnection():
       
 def getRegByte(regByte):
   if (depp.DeppGetReg(cfg.USB_HANDLE[0], regByte, dataBYTEP, 0)) :
-    printFunctions.printToLog("\tRead Data from Reg ->  " + str(regByte) )
-    printFunctions.printToLog("Data -> " + str(dataBYTEP[0]) + "\n")
+    printFunctions.printToLog("\tRead Data from Reg ->  " + str(regByte) + "Data -> " + str(dataBYTEP[0]))
     return (dataBYTEP[0])
   else :
     printFunctins.printToScreenAndLog("\tCould not read register -> " + regByte)
@@ -106,7 +105,7 @@ def readVictimClockFreq() :
   printFunctions.printToScreenAndLog("\t\t" + cfg.config_attributes['CONTROL_BOARD'] + " - Victim Clock Frequency ->" + str(float(int(arrayToString(victimclkfreq_hex), 16)/1000000)) + " - MHz" )  
  
 def sendTraceCountToControlBoard():
-  noOfTracesArray = [(cfg.config_attributes['NUMBER_OF_TRACES'] >> i & 0xFF) for i in (24, 16, 8, 0)]
+  noOfTracesArray = [((cfg.config_attributes['NUMBER_OF_TRACES'] - 1) >> i & 0xFF) for i in (24, 16, 8, 0)]
   status = putRegByte(0x80, noOfTracesArray[0])
   status = putRegByte(0x81, noOfTracesArray[1])
   status = putRegByte(0x82, noOfTracesArray[2])
@@ -120,7 +119,10 @@ def runDummyEncrytionOncControlBoard (traceCount):
 	status = putRegByte(0x01, 0x08)
 	status = putRegByte(0x01, 0x00)
 	return status
-  
+
+def displayReg(regByte):
+	status = putRegByte(0x40, 0x0C)
+	return status
 # def streamDataFromBRAM(cfg.USB_HANDLE, nosBytes, logfile, dataToStream, debug):
 
   
