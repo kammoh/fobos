@@ -119,8 +119,10 @@ def getProjectPath():
 		directoryCount = 1
 		for item in directoryList:
 			printFunctions.printToScreen("\t"+ str(directoryCount)+": "+item)
-			directoryCount += 1
+			directoryCount += 1	
 		t = raw_input("\tPlease select the Project folder from the above list:")
+		while (int(t.strip()) >= directoryCount):
+			t= raw_input("\tPlease select the correct Project folder from the above list:")
 		projectPath = os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME'], directoryList[int(t)-1])
 		fileName = os.path.join(cfg.ANALYSISCONFIGDIR, "projectPath.txt")
 		fid = open(cfg.MEASUREMENT_PROJECT_PATH_FILE, "w")
