@@ -110,6 +110,7 @@ def removeComments(data_list) :
 			newdata_list.append(item)
 	return(newdata_list)
 
+	
 def getProjectPath():
 	cfg.MEASUREMENT_PROJECT_PATH_FILE = os.path.join(cfg.ANALYSISCONFIGDIR, globals.PROJECTPATH_FILENAME)
 	if os.path.isfile(cfg.MEASUREMENT_PROJECT_PATH_FILE) == False :
@@ -120,10 +121,19 @@ def getProjectPath():
 		for item in directoryList:
 			printFunctions.printToScreen("\t"+ str(directoryCount)+": "+item)
 			directoryCount += 1	
-		t = raw_input("\tPlease select the Project folder from the above list:")
-		while (int(t.strip()) >= directoryCount):
-			t= raw_input("\tPlease select the correct Project folder from the above list:")
-		projectPath = os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME'], directoryList[int(t)-1])
+		while True:
+			try:
+				t = int(input("\tPlease select the Project folder from the above list by entering correspond directory number:"))
+			except ValueError:
+				printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount))
+				continue
+			if (t >= len(directoryList)-1):
+				printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount))
+				continue				
+			else:
+				break
+			
+		projectPath = os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME'], directoryList[t-1])
 		fileName = os.path.join(cfg.ANALYSISCONFIGDIR, "projectPath.txt")
 		fid = open(cfg.MEASUREMENT_PROJECT_PATH_FILE, "w")
 		fid.write(projectPath)

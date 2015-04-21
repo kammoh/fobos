@@ -150,7 +150,30 @@ def extractConfigAttributes():
 		if re.match('^KEY_GENERATION', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['KEY_GENERATION'] = value[1].strip(" ")			
-			
+
+def updatePowerAndTriggerFileNames():
+	if (os.path.isfile(globals.CHANNEL1_MEASUREMENT_FILE_NAME)):
+		cfg.RAW_UNALIGHNED_POWER_FILE_NAME = globals.CHANNEL1_MEASUREMENT_FILE_NAME
+	elif (os.path.isfile(globals.CHANNEL2_MEASUREMENT_FILE_NAME)):
+		cfg.RAW_UNALIGHNED_POWER_FILE_NAME = globals.CHANNEL2_MEASUREMENT_FILE_NAME
+	elif (os.path.isfile(globals.CHANNEL3_MEASUREMENT_FILE_NAME)):
+		cfg.RAW_UNALIGHNED_POWER_FILE_NAME = globals.CHANNEL3_MEASUREMENT_FILE_NAME
+	elif (os.path.isfile(globals.CHANNEL4_MEASUREMENT_FILE_NAME)):
+		cfg.RAW_UNALIGHNED_POWER_FILE_NAME = globals.CHANNEL4_MEASUREMENT_FILE_NAME
+		
+	if (os.path.isfile(globals.CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME)):
+		cfg.RAW_UNALIGHNED_TRIGGER_FILE_NAME = globals.CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME
+	elif (os.path.isfile(globals.CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME)):
+		cfg.RAW_UNALIGHNED_TRIGGER_FILE_NAME = globals.CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME
+	elif (os.path.isfile(globals.CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME)):
+		cfg.RAW_UNALIGHNED_TRIGGER_FILE_NAME = globals.CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME
+	elif (os.path.isfile(globals.CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME)):
+		cfg.RAW_UNALIGHNED_TRIGGER_FILE_NAME = globals.CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME
+		
+
+
+
+		
 def configureAnalysisWorkspace():
 	runNo = 1
 	tag = cfg.analysisConfigAttributes['TAG']
@@ -175,8 +198,9 @@ def configureAnalysisWorkspace():
 		printFunctions.printToScreenBold("\tMeasurement Directory @\n\t"+cfg.MEASUREMENT_FOLDER+"\n\tdoes not exits. Please re-run the FOBOS Analysis again\n")
 		support.exitProgram()
 	cfg.ALIGNED_DATA_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.ALIGNED_DATA_FILE_NAME)
-	cfg.RAW_UNALIGNED_POWER_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.RAW_UNALIGNED_POWER_FILE_NAME)
-	cfg.RAW_UNALIGNED_TRIGGER_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.RAW_UNALIGNED_TRIGGER_FILE_NAME)
+	updatePowerAndTriggerFileNames()
+	cfg.RAW_UNALIGNED_POWER_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, cfg.RAW_UNALIGNED_POWER_FILE_NAME)
+	cfg.RAW_UNALIGNED_TRIGGER_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME)
 	cfg.POWERMODELDIR = os.path.join(cfg.ROOTDIR, globals.POWERMODELS_DIRNAME)
 	cfg.FOBOS_ANALYSIS_LOG_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, globals.FOBOS_ANALYSIS_LOG_FILE_NAME)
 	cfg.GRAPHS_FOLDER = os.path.join(cfg.ANALYSIS_WORKSPACE, globals.GRAPHS_FOLDERNAME)
