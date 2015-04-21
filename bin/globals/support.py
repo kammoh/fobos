@@ -123,12 +123,12 @@ def getProjectPath():
 			directoryCount += 1	
 		while True:
 			try:
-				t = int(input("\tPlease select the Project folder from the above list by entering correspond directory number:"))
+				t = int(raw_input("\tPlease select the Project folder from the above list by entering correspond directory number:"))
 			except ValueError:
-				printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount))
+				printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount-1))
 				continue
-			if (t >= len(directoryList)-1):
-				printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount))
+			if (t > (directoryCount-1)):
+				printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount-1))
 				continue				
 			else:
 				break

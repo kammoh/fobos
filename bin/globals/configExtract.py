@@ -152,26 +152,38 @@ def extractConfigAttributes():
 			cfg.config_attributes['KEY_GENERATION'] = value[1].strip(" ")			
 
 def updatePowerAndTriggerFileNames():
-	if (os.path.isfile(globals.CHANNEL1_MEASUREMENT_FILE_NAME)):
-		cfg.RAW_UNALIGHNED_POWER_FILE_NAME = globals.CHANNEL1_MEASUREMENT_FILE_NAME
-	elif (os.path.isfile(globals.CHANNEL2_MEASUREMENT_FILE_NAME)):
-		cfg.RAW_UNALIGHNED_POWER_FILE_NAME = globals.CHANNEL2_MEASUREMENT_FILE_NAME
-	elif (os.path.isfile(globals.CHANNEL3_MEASUREMENT_FILE_NAME)):
-		cfg.RAW_UNALIGHNED_POWER_FILE_NAME = globals.CHANNEL3_MEASUREMENT_FILE_NAME
-	elif (os.path.isfile(globals.CHANNEL4_MEASUREMENT_FILE_NAME)):
-		cfg.RAW_UNALIGHNED_POWER_FILE_NAME = globals.CHANNEL4_MEASUREMENT_FILE_NAME
+	powerFileExistsFlag = False
+	triggerFileExistsFlag = False
+	if (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL1_MEASUREMENT_FILE_NAME))):
+		cfg.RAW_UNALIGNED_POWER_FILE_NAME = globals.CHANNEL1_MEASUREMENT_FILE_NAME
+		powerFileExistsFlag = True
+	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL2_MEASUREMENT_FILE_NAME))):
+		cfg.RAW_UNALIGNED_POWER_FILE_NAME = globals.CHANNEL2_MEASUREMENT_FILE_NAME
+		powerFileExistsFlag = True
+	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL3_MEASUREMENT_FILE_NAME))):
+		cfg.RAW_UNALIGNED_POWER_FILE_NAME = globals.CHANNEL3_MEASUREMENT_FILE_NAME
+		powerFileExistsFlag = True
+	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL4_MEASUREMENT_FILE_NAME))):
+		cfg.RAW_UNALIGNED_POWER_FILE_NAME = globals.CHANNEL4_MEASUREMENT_FILE_NAME
+		powerFileExistsFlag = True
 		
-	if (os.path.isfile(globals.CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME)):
-		cfg.RAW_UNALIGHNED_TRIGGER_FILE_NAME = globals.CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME
-	elif (os.path.isfile(globals.CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME)):
-		cfg.RAW_UNALIGHNED_TRIGGER_FILE_NAME = globals.CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME
-	elif (os.path.isfile(globals.CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME)):
-		cfg.RAW_UNALIGHNED_TRIGGER_FILE_NAME = globals.CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME
-	elif (os.path.isfile(globals.CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME)):
-		cfg.RAW_UNALIGHNED_TRIGGER_FILE_NAME = globals.CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME
+	if (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME))):
+		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME
+		triggerFileExistsFlag = True
+	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME))):
+		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME
+		triggerFileExistsFlag = True
+	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME))):
+		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME
+		triggerFileExistsFlag = True
+	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME))):
+		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME
+		triggerFileExistsFlag = True
+	if (powerFileExistsFlag == False or triggerFileExitsFlag == False):
+		os.remove(cfg.MEASUREMENT_PROJECT_PATH_FILE)
+		printFunctions.printToScreenBold("\tMeasurement Directory @\n\t"+cfg.MEASUREMENT_FOLDER+"\n\tdoes not contain Power/Trigger trace files. Please re-run the FOBOS Analysis again\n")
+		support.exitProgram()
 		
-
-
 
 		
 def configureAnalysisWorkspace():
@@ -193,6 +205,7 @@ def configureAnalysisWorkspace():
 			cfg.ANALYSIS_WORKSPACE = os.path.join(cfg.ANALYSISDIR,str(runNo)+'-'+cfg.analysisConfigAttributes['PROJECT_NAME'])		
 	support.createDirectory(cfg.ANALYSIS_WORKSPACE)
 	cfg.MEASUREMENT_FOLDER = os.path.join(tempFolderName, globals.MEASUREMENT_FOLDERNAME)
+	print cfg.MEASUREMENT_FOLDER
 	if (os.path.isdir(cfg.MEASUREMENT_FOLDER) == False):
 		os.remove(cfg.MEASUREMENT_PROJECT_PATH_FILE)
 		printFunctions.printToScreenBold("\tMeasurement Directory @\n\t"+cfg.MEASUREMENT_FOLDER+"\n\tdoes not exits. Please re-run the FOBOS Analysis again\n")
