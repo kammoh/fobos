@@ -129,6 +129,9 @@ def getProjectPath():
 				continue
 			if (t > (directoryCount-1)):
 				printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount-1))
+				continue
+			if (t == 0):
+				printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount-1))
 				continue				
 			else:
 				break

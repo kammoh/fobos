@@ -179,7 +179,7 @@ def updatePowerAndTriggerFileNames():
 	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME))):
 		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME
 		triggerFileExistsFlag = True
-	if (powerFileExistsFlag == False or triggerFileExitsFlag == False):
+	if (powerFileExistsFlag == False or triggerFileExistsFlag == False):
 		os.remove(cfg.MEASUREMENT_PROJECT_PATH_FILE)
 		printFunctions.printToScreenBold("\tMeasurement Directory @\n\t"+cfg.MEASUREMENT_FOLDER+"\n\tdoes not contain Power/Trigger trace files. Please re-run the FOBOS Analysis again\n")
 		support.exitProgram()
