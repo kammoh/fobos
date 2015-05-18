@@ -204,8 +204,9 @@ def configureAnalysisWorkspace():
 			runNo += 1
 			cfg.ANALYSIS_WORKSPACE = os.path.join(cfg.ANALYSISDIR,str(runNo)+'-'+cfg.analysisConfigAttributes['PROJECT_NAME'])		
 	support.createDirectory(cfg.ANALYSIS_WORKSPACE)
+	printFunctions.printToScreen("This Analysis will be located @ - " + cfg.ANALYSIS_WORKSPACE)
 	cfg.MEASUREMENT_FOLDER = os.path.join(tempFolderName, globals.MEASUREMENT_FOLDERNAME)
-	print cfg.MEASUREMENT_FOLDER
+	printFunctions.printToScreen("This Analysis uses data from - " + cfg.MEASUREMENT_FOLDER)
 	if (os.path.isdir(cfg.MEASUREMENT_FOLDER) == False):
 		os.remove(cfg.MEASUREMENT_PROJECT_PATH_FILE)
 		printFunctions.printToScreenBold("\tMeasurement Directory @\n\t"+cfg.MEASUREMENT_FOLDER+"\n\tdoes not exits. Please re-run the FOBOS Analysis again\n")
