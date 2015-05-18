@@ -1,5 +1,5 @@
 ####################################################
 ######## Signal Alignment Module Parameters ########
 ####################################################
-CAPTURE_MODE = MULTI # MULTI|SINGLE
+CAPTURE_MODE = SINGLE # MULTI|SINGLE
 TRIGGER_THRESHOLD = 1.8
