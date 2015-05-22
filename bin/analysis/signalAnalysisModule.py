@@ -100,7 +100,7 @@ def acquireHypotheticalValues(POWER_MODEL_FILE):
 	return(keyGuess)
 	
 def adjustSampleSize(sampleLength, dataArray):
-		printFunctions.printToAnalysisLog("\tAdjusting Sample Size to ->" + str(sampleLength))
+		printFunctions.printToLog("\tAdjusting Sample Size to ->" + str(sampleLength))
 		temp = dataArray.shape
 		newDataArray = dataArray
 		arrLen = temp[0]
