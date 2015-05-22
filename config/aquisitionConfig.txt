@@ -57,7 +57,7 @@ KEY_SIZE = 16 # In Bytes
 # =============================================
 # =============================================
 
-NUMBER_OF_TRACES = 1
+NUMBER_OF_TRACES = 3
 
 # =============================================
 # =============================================
@@ -83,7 +83,7 @@ TIMEBASE_REF = LEFT
 TRIGGER_SOURCE =  CHANNEL2
 TRIGGER_MODE =  EDGE   
 TRIGGER_SWEEP = NORM
-TRIGGER_LEVEL = 1.8 
+TRIGGER_LEVEL = 1 
 TRIGGER_SLOPE = POSITIVE
 # ACQUIRE OPTIONS
 ACQUIRE_TYPE = NORMAL
