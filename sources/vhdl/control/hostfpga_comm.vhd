@@ -23,7 +23,8 @@ port (
 --  adc_data : in std_logic_vector(9 downto 0);
 --  adc_or : in std_logic
 	-- VICTIM PORTS
-	trigger : out std_logic
+	trigger : out std_logic;
+	victimClock : out std_logic
 
 );
 end hostfpga_comm;
@@ -50,7 +51,12 @@ signal counter_adc_select, bram_data_collect_start : std_logic;
 signal ADC_DCM_OK : std_logic;
 signal clktobram, targetModuleReset : std_logic;
 signal victimClk, victimDCMLocked : std_logic;
-signal encStart, encEnd : std_logic;
+signal encStart, encEnd, triggerCheck : std_logic;
+signal dlEnb, dlRst, drRst, drEnb : std_logic;
+signal vlEnb, vlRst, vrRst, vrEnb : std_logic;
+signal dataToCtrlBrd : std_logic_vector(1087 downto 0);
+signal dataFromCtrlBrd : std_logic_vector(255 downto 0);
+signal dataFromPc, dataToPc : std_logic_vector(7 downto 0);
 ------------------------------------------------------------------------
 -- Data Registers Declarations
 ------------------------------------------------------------------------
@@ -279,6 +285,23 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 	end if;
 end process;
 
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"7A" then
+			dataToPc <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"7B" then
+			dataFromPc <= hosttofpga_data;
+		end if;
+	end if;
+end process;
 
 ------------------------------------------------------------------------
 -- Trigger signal registers
@@ -330,10 +353,16 @@ end process;
 system_reset <= '1' when controlReg = x"01" else '0';
 frequency_counter_reset <= '1' when controlReg = x"02" else '0';
 targetModuleReset <= '1' when controlReg = x"03" else '0';
+dlRst <= '1' when controlReg = x"04" else '0';
+drRst <= '1' when controlReg = x"05" else '0';
+dlEnb <= '1' when controlReg = x"06" else '0';
+drEnb <= '1' when controlReg = x"07" else '0';
+
 bram_extaddress_reset <= dataReg0(7);
 bram_extaddress_enable <= dataReg0(6);
 counter_adc_select <= dataReg0(5);
 bram_data_collect_start <= dataReg0(0);
+
 ------------------------------------------------------------------------
 -- Control Signals
 ------------------------------------------------------------------------
@@ -348,11 +377,11 @@ statusReg(7) <= '0';
 ------------------------------------------------------------------------
 -- Frequency checkers
 ------------------------------------------------------------------------
-mainclock : frequency_counter generic map (board => board) port map (refclk => clk,
+mainclockFreqChecker : frequency_counter generic map (board => board) port map (refclk => clk,
 sampleclk => clk, reset => frequency_counter_reset,
 frequency_counter_out => mainclockfrequency);
 
-victimclock : frequency_counter generic map (board => board) port map (refclk => clk,
+victimclockFreqChecker : frequency_counter generic map (board => board) port map (refclk => clk,
 sampleclk => victimClk, reset => frequency_counter_reset,
 frequency_counter_out => victimClockFrequency);
 
@@ -409,7 +438,7 @@ frequency_counter_out => victimClockFrequency);
 ------------------------------------------------------------------------
 -- Victim Clock Generation
 ------------------------------------------------------------------------
-vcCLockGen : victimDCM  generic map (board => board)
+victimClockGeneration : victimDCM  generic map (board => board)
    port map ( clkin => clk,   rst => system_reset, clkout => victimClk,
           locked_out  => victimDCMLocked);
 			 
@@ -421,22 +450,39 @@ encEnd <= '1' when dataReg1 = x"08" else '0';
 		 
 triggerGen : trigger_module port map (clock => clk, reset => system_reset,
 startOfEncryption => encStart, endOfEncryption => encEnd, noOfTraces => noOfTraces,
-trigger_out => trigger); 
+trigger_out => triggerCheck); 
 
--- target : dataCommunication port map(
-		 -- clock => clk,
-		 -- reset => targetModuleReset,
-		 -- bramaddress_clock => EppDstb,
-		 -- targetClock => clk,
-		 -- controlCommand => commandToTargetControl,
-		 -- pc_datain_data => plainTextForTarget,
-		 -- pc_datain_key => secretKeyForTarget,
-		 -- block_size => dataBlockSize,
-		 -- key_size => keySize,
-		 -- stateMachineLeds => stateMachineLeds,
-		 -- stateMachineLedsTarget => stateMachineLedsTarget,
-		 -- pc_dataout_ct => dataFromTarget);
-		 
+--------------------------------------------------------------------------
+----- SHIFT REGISTERS FOR PC TO CONTROL BOARD AND CONTROL BOARD TO PC
+--------------------------------------------------------------------------
+
+--
+--pcToControlBoardShiftReg : shiftreg8x1088 (clock => EppDstb, reset =>dlRst,
+--sr_e => dlEnb, sr_input => dataFromPc, sr_output => dataToCtrlBrd);
+--
+--controlBoardToPCShiftReg : shiftreg256x8 (clock => EppDstb, reset =>drRst,
+--sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc); 
+--
+--
+----------------------------------------------------------------------------
+-------- SHIFT REGISTERS FOR CONTROL BOARD TO VICTIM BOARD AND VICE-VERSA
+----------------------------------------------------------------------------
+--
+--controlBoardToVictimShiftreg : shiftreg1088x16 (clock => victimClk, reset =>vlRst,
+--sr_e => vlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+--
+--victimToControlBoardShiftReg : shiftreg16x256 (clock => victimClk, reset =>vlRst,
+--sr_e => vlEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
+
+
+
+
+
+
+
+----------------------------------------------------------------------------
+------- DISPLAY LEDs for Debugging
+----------------------------------------------------------------------------
 displayLED <= dataBlockSize when displayReg = x"01" else
 			  keySize when displayReg = x"02" else
 			  stateMachineLeds when displayReg = x"03" else
@@ -448,6 +494,8 @@ displayLED <= dataBlockSize when displayReg = x"01" else
 			  dataFromTarget(7 downto 0) when displayReg = x"09" else
 			  commandToTargetControl when displayReg = x"0A" else
 			  stateMachineLedsTarget when displayReg = x"0B" else
+			  "00000" & encStart & encEnd & triggerCheck when displayReg = x"0C" else
 			  displayReg;
+trigger <= '1' when dataReg1 = x"04" else '0';			  
 end Behavioral;
 
