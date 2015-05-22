@@ -53,7 +53,7 @@ def main():
 	displayReg(0x0C)
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
 		armOscilloscope()
-		support.goToSleep(1)
+		support.goToSleep(0.005)
 		runDummyEncrytionOncControlBoard(traceCount)
 		populateOscilloscopeDataStorage(traceCount)
 		traceCount += 1

@@ -113,10 +113,10 @@ def sendTraceCountToControlBoard():
   return status
  
 def runDummyEncrytionOncControlBoard (traceCount):
-	printFunctions.printToScreenAndLog("\tRunning Dummy Encryption - " + str(traceCount))
+	printFunctions.printToScreenAndLog("\tRunning Dummy Encryption - " + str(traceCount+1))
 	status = putRegByte(0x01, 0x00)
 	status = putRegByte(0x01, 0x04)
-	support.goToSleep(2)
+	support.goToSleep(0.00002)
 	status = putRegByte(0x01, 0x00)
 	status = putRegByte(0x01, 0x00)
 	return status
