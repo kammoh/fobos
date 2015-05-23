@@ -118,8 +118,8 @@ port (
 		clock : in std_logic;
 		reset : in std_logic;
 		startOfEncryption : in std_logic;
-		endOfEncryption : in std_logic;
-		noOfTraces : in std_logic_vector(31 downto 0);
+		triggerLength : in std_logic_vector(31 downto 0);
+		noOfTriggerWaitCycles : in std_logic_vector(31 downto 0);
 		trigger_out : out std_logic);
 
 end component;

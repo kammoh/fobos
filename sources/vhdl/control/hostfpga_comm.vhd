@@ -73,7 +73,7 @@ signal dataFromTarget : std_logic_vector(15 downto 0); -- address 71,72
 signal commandToTargetControl, stateMachineLeds,stateMachineLedsTarget : std_logic_vector(7 downto 0); -- address 77
 signal dataBlockSize : std_logic_vector(7 downto 0); -- address 78
 signal keySize : std_logic_vector(7 downto 0); -- address 79
-signal noOfTraces : std_logic_vector( 31 downto 0); -- address 80,81,82,83
+signal noOfTriggerWaitCycles, triggerLength : std_logic_vector( 31 downto 0); -- address 80,81,82,83,84,85,86,87
 ------------------------------------------------------------------------
 -- Display (LED) Registers Declarations
 ------------------------------------------------------------------------
@@ -312,7 +312,7 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 	begin
 	if clk = '1' and clk'Event then
 		if ctlEppDwrOut = '1' and regEppAdrOut = x"80" then
-			noOfTraces(31 downto 24) <= hosttofpga_data;
+			noOfTriggerWaitCycles(31 downto 24) <= hosttofpga_data;
 		end if;
 	end if;
 end process;
@@ -321,7 +321,7 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 	begin
 	if clk = '1' and clk'Event then
 		if ctlEppDwrOut = '1' and regEppAdrOut = x"81" then
-			noOfTraces(23 downto 16) <= hosttofpga_data;
+			noOfTriggerWaitCycles(23 downto 16) <= hosttofpga_data;
 		end if;
 	end if;
 end process;
@@ -330,7 +330,7 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 	begin
 	if clk = '1' and clk'Event then
 		if ctlEppDwrOut = '1' and regEppAdrOut = x"82" then
-			noOfTraces(15 downto 8) <= hosttofpga_data;
+			noOfTriggerWaitCycles(15 downto 8) <= hosttofpga_data;
 		end if;
 	end if;
 end process;
@@ -339,11 +339,46 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 	begin
 	if clk = '1' and clk'Event then
 		if ctlEppDwrOut = '1' and regEppAdrOut = x"83" then
-			noOfTraces(7 downto 0) <= hosttofpga_data;
+			noOfTriggerWaitCycles(7 downto 0) <= hosttofpga_data;
 		end if;
 	end if;
 end process;
 
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"84" then
+			triggerLength(31 downto 24) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"85" then
+			triggerLength(23 downto 16) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"86" then
+			triggerLength(15 downto 8) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"87" then
+			triggerLength(7 downto 0) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
 
 ------------------------------------------------------------------------
 -- Control Signals
@@ -357,6 +392,7 @@ dlRst <= '1' when controlReg = x"04" else '0';
 drRst <= '1' when controlReg = x"05" else '0';
 dlEnb <= '1' when controlReg = x"06" else '0';
 drEnb <= '1' when controlReg = x"07" else '0';
+encStart <= '1' when dataReg1 = x"04" else '0';
 
 bram_extaddress_reset <= dataReg0(7);
 bram_extaddress_enable <= dataReg0(6);
@@ -366,7 +402,7 @@ bram_data_collect_start <= dataReg0(0);
 ------------------------------------------------------------------------
 -- Control Signals
 ------------------------------------------------------------------------
-statusReg(0) <= ADC_DCM_OK;
+statusReg(0) <= victimDCMLocked;
 statusReg(1) <= '0';
 statusReg(2) <= '0';
 statusReg(3) <= '0';
@@ -444,13 +480,9 @@ victimClockGeneration : victimDCM  generic map (board => board)
 			 
 ------------------------------------------------------------------------
 -- Trigger Generation for Oscilloscope
-------------------------------------------------------------------------	
-encStart <= '1' when dataReg1 = x"04" else '0';
-encEnd <= '1' when dataReg1 = x"08" else '0';
-		 
-triggerGen : trigger_module port map (clock => clk, reset => system_reset,
-startOfEncryption => encStart, endOfEncryption => encEnd, noOfTraces => noOfTraces,
-trigger_out => triggerCheck); 
+------------------------------------------------------------------------			 
+triggerGen : trigger_module port map (clock => clk, reset => system_reset, startOfEncryption => encStart, 
+triggerLength => triggerLength, noOfTriggerWaitCycles => noOfTriggerWaitCycles, trigger_out => triggerCheck); 
 
 --------------------------------------------------------------------------
 ----- SHIFT REGISTERS FOR PC TO CONTROL BOARD AND CONTROL BOARD TO PC
@@ -496,6 +528,8 @@ displayLED <= dataBlockSize when displayReg = x"01" else
 			  stateMachineLedsTarget when displayReg = x"0B" else
 			  "00000" & encStart & encEnd & triggerCheck when displayReg = x"0C" else
 			  displayReg;
-trigger <= '1' when dataReg1 = x"04" else '0';			  
+
+trigger <= triggerCheck;			  
+
 end Behavioral;
 

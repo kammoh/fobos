@@ -48,7 +48,7 @@ def main():
 	setOscilloscopeConfigAttributes()
 	initializeOscilloscopeDataStorage()
 	openControlBoardConnection()
-	sendTraceCountToControlBoard()
+	setControlBoardConfigAttributes()
 	traceCount = 0
 	displayReg(0x0C)
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):

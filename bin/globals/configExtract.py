@@ -114,9 +114,12 @@ def extractConfigAttributes():
 		if re.match('^INPUT_FORMAT', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['INPUT_FORMAT'] = value[1].strip(" ")
-		if re.match('^TRIGGER_VAL', object) :
+		if re.match('^TRIGGER_WAIT_CYCLES', object) :
 			value = re.split("=", object)
-			cfg.config_attributes['TRIGGER_VAL'] = value[1].strip(" ")
+			cfg.config_attributes['TRIGGER_WAIT_CYCLES'] = int(value[1].strip(" "))
+		if re.match('^TRIGGER_LENGTH_CYCLES', object) :
+			value = re.split("=", object)
+			cfg.config_attributes['TRIGGER_LENGTH_CYCLES'] = int(value[1].strip(" "))
 		if re.match('^OUTPUT_FORMAT', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['OUTPUT_FORMAT'] = value[1].strip(" ")

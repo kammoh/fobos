@@ -104,21 +104,23 @@ def readVictimClockFreq() :
   victimclkfreq_MHz = struct.unpack('f', struct.pack('i', (int(arrayToString(victimclkfreq_hex), 16)/1000000)))
   printFunctions.printToScreenAndLog("\t\t" + cfg.config_attributes['CONTROL_BOARD'] + " - Victim Clock Frequency ->" + str(float(int(arrayToString(victimclkfreq_hex), 16)/1000000)) + " - MHz" )  
  
-def sendTraceCountToControlBoard():
-  noOfTracesArray = [((cfg.config_attributes['NUMBER_OF_TRACES'] - 1) >> i & 0xFF) for i in (24, 16, 8, 0)]
-  status = putRegByte(0x80, noOfTracesArray[0])
-  status = putRegByte(0x81, noOfTracesArray[1])
-  status = putRegByte(0x82, noOfTracesArray[2])
-  status = putRegByte(0x83, noOfTracesArray[3])
+def sendTriggerParamsToControlBoard():
+  noOfTriggerWaitCycles = [((cfg.config_attributes['TRIGGER_WAIT_CYCLES'] - 1) >> i & 0xFF) for i in (24, 16, 8, 0)]
+  noOfTriggerLengthCycles = [((cfg.config_attributes['TRIGGER_LENGTH_CYCLES'] - 1) >> i & 0xFF) for i in (24, 16, 8, 0)]  
+  status = putRegByte(0x80, noOfTriggerWaitCycles[0])
+  status = putRegByte(0x81, noOfTriggerWaitCycles[1])
+  status = putRegByte(0x82, noOfTriggerWaitCycles[2])
+  status = putRegByte(0x83, noOfTriggerWaitCycles[3])
+  status = putRegByte(0x84, noOfTriggerLengthCycles[0])
+  status = putRegByte(0x85, noOfTriggerLengthCycles[1])
+  status = putRegByte(0x86, noOfTriggerLengthCycles[2])
+  status = putRegByte(0x87, noOfTriggerLengthCycles[3])
   return status
- 
+ 	
 def runDummyEncrytionOncControlBoard (traceCount):
 	printFunctions.printToScreenAndLog("\tRunning Dummy Encryption - " + str(traceCount+1))
 	status = putRegByte(0x01, 0x00)
 	status = putRegByte(0x01, 0x04)
-	support.goToSleep(0.00002)
-	status = putRegByte(0x01, 0x00)
-	status = putRegByte(0x01, 0x00)
 	return status
 
 def displayReg(regByte):
@@ -214,6 +216,10 @@ def resetControlBoard():
 	status = putRegByte(0x30, 0x01)
 	status = putRegByte(0x30, 0x00)
 
+def setControlBoardConfigAttributes():
+	status = sendTriggerParamsToControlBoard()
+	return status
+	
 def openControlBoardConnection():
 	printFunctions.printControlBoardHeaderToScreenAndLog()
 	initializeControlBoardConnection()

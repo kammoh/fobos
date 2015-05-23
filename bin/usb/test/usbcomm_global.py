@@ -19,7 +19,6 @@
 from ctypes import *
 import sys
 import os
-from globals import cfg
 # Get DLL depending on OS
 if (sys.platform == "linux2" ):
  cdll.LoadLibrary("libdepp.so")
@@ -63,7 +62,7 @@ handle = cast(addressof(HIFbuf), HIFP)
 DS = c_char
 DSP = POINTER(RS)
 DSbuf = c_int(128)
-cfg.config_attributes['CONTROL_BOARD'] = cast(addressof(DSbuf), DSP)
+#cfg.config_attributes['CONTROL_BOARD'] = cast(addressof(DSbuf), DSP)
 
 #General Definitions
 regBYTE = c_ubyte
