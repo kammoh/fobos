@@ -41,7 +41,7 @@ TRIGGER_LENGTH_CYCLES = 20 #@VICTIM CLOCK
 # =============================================
 # =============================================
 
-PLAINTEXT_GENERATION = USER
+PLAINTEXT_GENERATION = RANDOM
 DATA_FILE     = plaintexts.txt
 KEY_GENERATION = RANDOM
 KEY_FILE      = keys.txt
@@ -56,7 +56,7 @@ KEY_SIZE = 16 # In Bytes
 # FOBOS Capture Settings
 # =============================================
 # =============================================
-DUMMY_RUN = TRUE #TRUE/FALSE
+DUMMY_RUN = YES #YES/NO
 NUMBER_OF_TRACES = 10
 
 # =============================================

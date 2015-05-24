@@ -168,10 +168,10 @@ def setOscilloscopeConfigAttributes():
     cmd_string = ":ACQUIRE:MODE "+cfg.osc_attributes['ACQUIRE_MODE']
     printFunctions.printToLog("\t"+ cmd_string)
     cfg.Oscilloscope.send(cmd_string+'\n')
-  if cfg.osc_attributes['ACQUIRE_COMPLETE'] :
-    cmd_string = ":ACQUIRE:COMPLETE "+cfg.osc_attributes['ACQUIRE_COMPLETE']
-    printFunctions.printToLog("\t"+ cmd_string)
-    cfg.Oscilloscope.send(cmd_string+'\n')
+	
+  cmd_string = ":ACQUIRE:COMPLETE 100"
+  printFunctions.printToLog("\t"+ cmd_string)
+  cfg.Oscilloscope.send(cmd_string+'\n')
  
 def extractOscilloscopeConfigAttributes():
   data_from_file = support.readFile(cfg.OSC_CONFIGFILE)
@@ -339,7 +339,7 @@ def initializeOscilloscopeDataStorage():
 
 def populateOscilloscopeDataStorage(traceCount):
 	#sampleLength = 2000000
-	printFunctions.printToScreenAndLog("\tGetting data from Oscilloscope for Trace No ->" + str(traceCount+1))
+	printFunctions.printToLog("\tGetting data from Oscilloscope for Trace No ->" + str(traceCount+1))
 	tempChannel1Data = getDataFromOscilloscope('CHANNEL1') if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF') else None
 	tempChannel2Data = getDataFromOscilloscope('CHANNEL2') if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF') else None
 	tempChannel3Data = getDataFromOscilloscope('CHANNEL3') if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF') else None

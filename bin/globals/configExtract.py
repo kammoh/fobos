@@ -153,7 +153,10 @@ def extractConfigAttributes():
 		if re.match('^KEY_GENERATION', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['KEY_GENERATION'] = value[1].strip(" ")			
-
+		if re.match('^DUMMY_RUN', object) :
+			value = re.split("=", object)
+			cfg.config_attributes['DUMMY_RUN'] = value[1].strip(" ")
+			
 def updatePowerAndTriggerFileNames():
 	powerFileExistsFlag = False
 	triggerFileExistsFlag = False

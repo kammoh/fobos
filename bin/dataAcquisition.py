@@ -54,7 +54,7 @@ def main():
 	displayReg(0x0C)
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
 		armOscilloscope()
-		runDummyEncrytionOnControlBoard(traceCount)
+		runEncrytionOnControlBoard(traceCount)
 		populateOscilloscopeDataStorage(traceCount)
 		populateControlBoardOutputDataStorage(traceCount)
 		traceCount += 1
