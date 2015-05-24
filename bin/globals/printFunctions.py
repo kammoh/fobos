@@ -98,7 +98,7 @@ def printAnalysisHeaderToLog():
 	
 def printToOutputFile(data, type):
 	output = ""
-	if(type == DATA):
+	if(type == globals.DATA):
 		TOTAL_DATA = cfg.config_attributes['NUMBER_OF_ENCRYPTIONS'] * cfg.config_attributes['BLOCK_SIZE']
 		for count in range (0, TOTAL_DATA):
 			
@@ -108,8 +108,8 @@ def printToOutputFile(data, type):
 		with open(cfg.PLAIN_TEXT_FILE, 'a') as file:
 			file.write(output)
 	
-	if(type == CIPHERTEXT):
-		TOTAL_DATA = cfg.config_attributes['NUMBER_OF_ENCRYPTIONS'] * cfg.config_attributes['BLOCK_SIZE']
+	if(type == globals.CIPHERTEXT):
+		TOTAL_DATA = cfg.config_attributes['NUMBER_OF_TRACES'] * cfg.config_attributes['BLOCK_SIZE']
 		for count in range (0, TOTAL_DATA):
 			output += str(data[count]) + " "
 			if ((count+1) % cfg.config_attributes['BLOCK_SIZE']  == 0):
@@ -117,7 +117,7 @@ def printToOutputFile(data, type):
 		with open(cfg.CIPHER_TEXT_FILE, 'a') as file:
 			file.write(output)
 			
-	if(type == KEY):
+	if(type == globals.KEY):
 		TOTAL_DATA = cfg.config_attributes['KEY_SIZE']-1
 		for count in range (0, TOTAL_DATA):
 			output += str(data[count]) + " "

@@ -303,7 +303,7 @@ begin
          end if;
       end process;
 
-   process (stEppCur)
+   process (stEppCur, EppAstb, EppDstb, HandShakeReqIn, ctlEppDoneIn)
       begin
          case stEppCur is
             -- Idle state waiting for the beginning of an EPP cycle

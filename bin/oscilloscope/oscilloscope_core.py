@@ -339,7 +339,7 @@ def initializeOscilloscopeDataStorage():
 
 def populateOscilloscopeDataStorage(traceCount):
 	#sampleLength = 2000000
-	printFunctions.printToScreenAndLog("\tGetting data for Trace No ->" + str(traceCount+1))
+	printFunctions.printToScreenAndLog("\tGetting data from Oscilloscope for Trace No ->" + str(traceCount+1))
 	tempChannel1Data = getDataFromOscilloscope('CHANNEL1') if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF') else None
 	tempChannel2Data = getDataFromOscilloscope('CHANNEL2') if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF') else None
 	tempChannel3Data = getDataFromOscilloscope('CHANNEL3') if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF') else None
@@ -452,6 +452,7 @@ def armOscilloscope():
 		cmdString = ":DIGITIZE " + channelsToDigitize
 		cfg.Oscilloscope.send(cmdString+ '\n')
 		printFunctions.printToLog("Channels to Digitize -> " + channelsToDigitize)
+		support.goToSleep(1)
 	else:
 		printFunctions.printToScreenAndLog("\tNo Channels selected to Digitize.")
 	

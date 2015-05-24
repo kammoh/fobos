@@ -161,38 +161,3 @@ def setPlotAttributes():
 	matplotlib.rc('font', **font)
 	figs = plt.figure()	
 	figs.set_size_inches(cfg.analysisConfigAttributes['PLOT_SIZE_LENGTH'],cfg.analysisConfigAttributes['PLOT_SIZE_BREADTH']) 
-	
-	
-	
-	
-def getPlainText():
-	dataToEncrypt = []
-	if(cfg.config_attributes['PLAINTEXT_GENERATION'] == globals.RANDOM):
-		dataToEncrypt = dataGenerator.generateRandomData()
-	elif(cfg.config_attributes['PLAINTEXT_GENERATION'] == globals.USER):
-		printFunctions.printToScreenAndLog("Number of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS']))
-		printFunctions.printToScreenAndLog("Block Size: " + str(cfg.config_attributes['BLOCK_SIZE']))
-		rawData = readFile(cfg.config_attributes['DATA_FILE'])
-		for count in range(0, len(rawData)):
-			temp = convertToByteArray(rawData[count])
-			for x in temp: 
-				if (x!='\n'): 
-					dataToEncrypt.append(x)
-		TOTAL_DATA = 	cfg.config_attributes['NUMBER_OF_ENCRYPTIONS'] * cfg.config_attributes['BLOCK_SIZE']
-		printFunctions.printToScreenAndLog("Reading " + str(TOTAL_DATA) + " bytes from "+ cfg.config_attributes['DATA_FILE'] +" file")
-		printFunctions.printToOutputFile(dataToEncrypt, globals.DATA)
-	return dataToEncrypt	
-		
-def getKey():		
-	keyToEncrypt = []
-	if(cfg.config_attributes['KEY_GENERATION'] == globals.USER):
-		printFunctions.printToScreenAndLog("Key Size :" + str(cfg.config_attributes['KEY_SIZE']))
-		printFunctions.printToScreenAndLog("Reading Key from "+ cfg.config_attributes['KEY_FILE'] +" file")
-		rawData = readFile(cfg.config_attributes['KEY_FILE'])
-		for count in range(0, len(rawData)):
-			temp = convertToByteArray(rawData[count])
-			for x in temp: keyToEncrypt.append(x)
-		printFunctions.printToOutputFile(keyToEncrypt, globals.KEY)	
-	elif(cfg.config_attributes['KEY_GENERATION'] == globals.RANDOM):
-		keyToEncrypt = dataGenerator.generateRandomKey()
-	return keyToEncrypt	

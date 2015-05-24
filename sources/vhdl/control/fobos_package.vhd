@@ -123,4 +123,29 @@ port (
 		trigger_out : out std_logic);
 
 end component;
+
+component shiftreg_8x128 IS
+port
+(
+clock: in std_logic;
+reset: in std_logic;
+sr_e : in std_logic;
+sr_input : in std_logic_vector (7 downto 0);
+sr_output: out std_logic_vector (127 downto 0)
+
+) ;
+end component;
+
+component shiftreg_128x8 IS
+port
+(
+clock: in std_logic;
+reset: in std_logic; 
+sr_e : in std_logic;
+sr_input : in std_logic_vector (127 downto 0);
+sr_output: out std_logic_vector (7 downto 0)
+
+) ;
+end component;
+
 end fobos_package;

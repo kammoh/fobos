@@ -66,8 +66,8 @@ def main():
 ##########################################################################
 ##########  USER DEFINED VARIABLES. EDIT ONLY THESE VARIABLES ############
 ##########################################################################
-	traceStartPoint = 300
-	traceEndPoint = 30000
+	traceStartPoint = 0
+	traceEndPoint = 2000000
 ##########################################################################
 	plotRawTrace(CHANNEL1_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
 	plotRawTrace(CHANNEL2_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)

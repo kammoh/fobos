@@ -33,8 +33,8 @@ VERBOSE = off # Default = off
 CONTROL_BOARD = Nexys2
 VICTIM_RESET = 11
 TIME_OUT = 50000
-TRIGGER_WAIT_CYCLES = 2 #@VICTIM CLOCK
-TRIGGER_LENGTH_CYCLES = 3 #@VICTIM CLOCK
+TRIGGER_WAIT_CYCLES = 10 #@VICTIM CLOCK
+TRIGGER_LENGTH_CYCLES = 20 #@VICTIM CLOCK
 # =============================================
 # =============================================
 # Test Data Generation Settings
@@ -43,12 +43,12 @@ TRIGGER_LENGTH_CYCLES = 3 #@VICTIM CLOCK
 
 PLAINTEXT_GENERATION = USER
 DATA_FILE     = plaintexts.txt
-KEY_GENERATION = USER
+KEY_GENERATION = RANDOM
 KEY_FILE      = keys.txt
 INPUT_FORMAT  = hex # Default => hex
 OUTPUT_FORMAT = hex # Default => hex
 NUMBER_OF_ENCRYPTIONS = 10
-BLOCK_SIZE = 136 # In Bytes
+BLOCK_SIZE = 16 # In Bytes
 KEY_SIZE = 16 # In Bytes
 
 # =============================================
@@ -57,7 +57,7 @@ KEY_SIZE = 16 # In Bytes
 # =============================================
 # =============================================
 DUMMY_RUN = TRUE #TRUE/FALSE
-NUMBER_OF_TRACES = 3
+NUMBER_OF_TRACES = 10
 
 # =============================================
 # =============================================

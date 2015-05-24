@@ -24,7 +24,7 @@ import argparse
 from ctypes import *
 import os
 from usbcomm_global import *
-from globals import support,cfg , printFunctions, globals
+from globals import support,cfg , printFunctions, globals, dataGenerator
 import struct
 #import traceback
 
@@ -116,12 +116,56 @@ def sendTriggerParamsToControlBoard():
   status = putRegByte(0x86, noOfTriggerLengthCycles[2])
   status = putRegByte(0x87, noOfTriggerLengthCycles[3])
   return status
- 	
-def runDummyEncrytionOncControlBoard (traceCount):
-	printFunctions.printToScreenAndLog("\tRunning Dummy Encryption - " + str(traceCount+1))
-	status = putRegByte(0x01, 0x00)
-	status = putRegByte(0x01, 0x04)
+
+def sendBlockOfDataToControlBoard(traceCount):
+	status = putRegByte(0x30, 0x00)
+	status = putRegByte(0x30, 0x04)
+	status = putRegByte(0x30, 0x06)
+	for count in range(cfg.dataToCtrlBrdByteNum, ((traceCount+1)*cfg.config_attributes['BLOCK_SIZE'])):
+		status = putRegByte(0x7A, int(cfg.dataToControlBoard[cfg.dataToCtrlBrdByteNum], 16))
+		cfg.dataToCtrlBrdByteNum += 1
+	status = putRegByte(0x30, 0x00)
 	return status
+	
+def sendKeyToControlBoard():
+	status = putRegByte(0x30, 0x00)
+	status = putRegByte(0x30, 0x08)
+	status = putRegByte(0x30, 0x09)
+	for count in range(0, cfg.config_attributes['KEY_SIZE']):
+		status = putRegByte(0x7A, int(cfg.keyToControlBoard[count], 16))
+	status = putRegByte(0x30, 0x00)
+	return status
+	
+def populateControlBoardOutputDataStorage(traceCount):
+	printFunctions.printToLog("\tGetting data from Control Board for Trace No ->" + str(traceCount+1))
+	status = putRegByte(0x30, 0x00)
+	status = putRegByte(0x30, 0x05)
+	status = putRegByte(0x30, 0x07)
+	tempArray = [0] * cfg.config_attributes['BLOCK_SIZE']
+	for count in range(0, cfg.config_attributes['BLOCK_SIZE']):
+		tempArray[count] = "%02X" % getRegByte(0x71)
+	status = putRegByte(0x30, 0x00)
+	if (traceCount == 0):
+		cfg.dataFromControlBoard = tempArray
+	else:
+		for x in tempArray:
+			cfg.dataFromControlBoard.append(x)
+	return status
+	
+def runDummyEncrytionOnControlBoard (traceCount):
+	printFunctions.printToScreenAndLog("\tRunning Dummy Encryption - " + str(traceCount+1))
+	if (traceCount == 0):
+		printFunctions.printToScreenAndLog("\t\tFirst Run - Setting the key for Encryption")
+		sendKeyToControlBoard()
+	status = putRegByte(0x01, 0x00) # Initialize
+	sendBlockOfDataToControlBoard(traceCount)
+	status = putRegByte(0x01, 0x04) # Run
+	return status
+
+def saveControlBoardOutputDataStorage():
+	printFunctions.printToScreenAndLog("\tSaving the data from Control Board")
+	printFunctions.printToOutputFile(cfg.dataFromControlBoard, globals.CIPHERTEXT)
+	return True
 
 def displayReg(regByte):
 	status = putRegByte(0x40, 0x0C)
@@ -214,10 +258,12 @@ def displayReg(regByte):
 
 def resetControlBoard():
 	status = putRegByte(0x30, 0x01)
+	support.goToSleep(0.001)
 	status = putRegByte(0x30, 0x00)
 
 def setControlBoardConfigAttributes():
 	status = sendTriggerParamsToControlBoard()
+	cfg.dataToCtrlBrdByteNum = 0
 	return status
 	
 def openControlBoardConnection():

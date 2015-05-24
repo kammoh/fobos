@@ -22,6 +22,7 @@ from oscilloscope.oscilloscope_core import *
 from analysis import plottingModule
 import pickle
 from usb.usbcomm_core import *
+from globals.dataGenerator import *
 
 	
 def init():
@@ -42,8 +43,8 @@ def main():
 	configExtract.configureWorkspace()	
 	printFunctions.printHeaderToScreenAndLog()
 	extractOscilloscopeConfigAttributes()
-	#dataToEncrypt = getPlainText()
-	#keyToEncrypt = getKey()
+	cfg.dataToControlBoard = getPlainText()
+	cfg.keyToControlBoard = getKey()
 	openOscilloscopeConnection()
 	setOscilloscopeConfigAttributes()
 	initializeOscilloscopeDataStorage()
@@ -53,11 +54,12 @@ def main():
 	displayReg(0x0C)
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
 		armOscilloscope()
-		support.goToSleep(0.005)
-		runDummyEncrytionOncControlBoard(traceCount)
+		runDummyEncrytionOnControlBoard(traceCount)
 		populateOscilloscopeDataStorage(traceCount)
+		populateControlBoardOutputDataStorage(traceCount)
 		traceCount += 1
 	saveOscilloscopeDataStorage()	
+	saveControlBoardOutputDataStorage()
 	closeOscilloscopeConnection()
 	closeControlBoardConnection()
 #############################################################################

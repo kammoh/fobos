@@ -51,6 +51,11 @@ channel1Data = None
 channel2Data = None
 channel3Data = None
 channel4Data = None
+dataToControlBoard = None
+keyToControlBoard = None
+dataFromControlBoard = None
+dataToCtrlBrdByteNum = None
+dataFromCtrlBrdNum = None
 
 SAMPLE_LENGTH_FROM_OSC = None
 TEMP_PREAMBLE_FILE = ''
