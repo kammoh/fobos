@@ -364,6 +364,7 @@ def populateOscilloscopeDataStorage(traceCount):
 		tempChannel4Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF') else None				
 
 def saveOscilloscopeDataStorage():
+	printFunctions.printToScreenAndLog("\tSaving the data from Oscilloscope")
 	if (cfg.channel1Data != None):		
 		numpy.savetxt(cfg.CHANNEL1_MEASUREMENT_FILE, cfg.channel1Data, fmt = '%5.4g')
 	if (cfg.channel2Data != None):		
@@ -452,7 +453,7 @@ def armOscilloscope():
 		cmdString = ":DIGITIZE " + channelsToDigitize
 		cfg.Oscilloscope.send(cmdString+ '\n')
 		printFunctions.printToLog("Channels to Digitize -> " + channelsToDigitize)
-		support.goToSleep(1)
+		support.goToSleep(2)
 	else:
 		printFunctions.printToScreenAndLog("\tNo Channels selected to Digitize.")
 	

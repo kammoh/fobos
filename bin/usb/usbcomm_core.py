@@ -90,6 +90,9 @@ def readMainClockFreq() :
   mainclkfreq_hex[2] = getRegByte(0x22)
   mainclkfreq_hex[3] = getRegByte(0x23)
   mainclkfreq_MHz = int(arrayToString(mainclkfreq_hex), 16)/1000000
+  if (mainclkfreq_MHz == 0):
+	printFunctions.printToScreenAndLog("\t\t Error!! Could not read main clock frequency of the board. Please reprogram FPGA")
+	sys.exit(0)
   printFunctions.printToScreenAndLog("\t\t" + cfg.config_attributes['CONTROL_BOARD'] + " - Main Clock Frequency ->" + str(mainclkfreq_MHz) + " - MHz")
 
 def readVictimClockFreq() :
@@ -102,8 +105,13 @@ def readVictimClockFreq() :
   victimclkfreq_hex[2] = getRegByte(0x26)
   victimclkfreq_hex[3] = getRegByte(0x27)
   victimclkfreq_MHz = struct.unpack('f', struct.pack('i', (int(arrayToString(victimclkfreq_hex), 16)/1000000)))
+  if (victimclkfreq_MHz == 0):
+	status = getRegByte(0x31)
+	if(status == 0):
+		printFunctions.printToScreenAndLog("\t\t Error!! Victim Clock Generation DCM is not Locked. PLease re-start FOBOS. Problem persists please re-program FPGA")
   printFunctions.printToScreenAndLog("\t\t" + cfg.config_attributes['CONTROL_BOARD'] + " - Victim Clock Frequency ->" + str(float(int(arrayToString(victimclkfreq_hex), 16)/1000000)) + " - MHz" )  
- 
+
+	
 def sendTriggerParamsToControlBoard():
   noOfTriggerWaitCycles = [((cfg.config_attributes['TRIGGER_WAIT_CYCLES'] - 1) >> i & 0xFF) for i in (24, 16, 8, 0)]
   noOfTriggerLengthCycles = [((cfg.config_attributes['TRIGGER_LENGTH_CYCLES'] - 1) >> i & 0xFF) for i in (24, 16, 8, 0)]  
@@ -155,12 +163,12 @@ def populateControlBoardOutputDataStorage(traceCount):
 def runEncrytionOnControlBoard (traceCount):
 	if (cfg.config_attributes['DUMMY_RUN'] == 'YES'):
 		printFunctions.printToScreenAndLog("\tRunning Dummy Encryption - " + str(traceCount+1))
+		status = putRegByte(0x30, 0x00) # Initialize	
 		if (traceCount == 0):
 			printFunctions.printToScreenAndLog("\t\tFirst Run - Setting the key for Encryption")
 			sendKeyToControlBoard()
-		status = putRegByte(0x01, 0x00) # Initialize
 		sendBlockOfDataToControlBoard(traceCount)
-		status = putRegByte(0x01, 0x04) # Run
+		status = putRegByte(0x30, 0xFF) # Run
 		return status
 
 def saveControlBoardOutputDataStorage():

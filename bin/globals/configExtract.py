@@ -26,6 +26,7 @@ import printFunctions
 import cfg
 import shutil
 from  analysis import signalAnalysisModule
+import logging
 
 def configureWorkspace():
 	runNo = 1
@@ -77,6 +78,15 @@ def extractConfigAttributes():
 			value = re.split("=", object)
 			cfg.config_attributes['TAG'] = value[1].strip(" ")
 			cfg.analysisConfigAttributes['TAG'] = value[1].strip(" ")
+		if re.match('^LOGGING', object) :
+			value = re.split("=", object)
+			loggingValue = value[1].strip(" ")
+			if(loggingValue == 'INFO'):
+				cfg.config_attributes['LOGGING'] = logging.INFO
+				cfg.analysisConfigAttributes['LOGGING'] = logging.INFO
+			elif(loggingValue == 'DEBUG'):
+				cfg.config_attributes['LOGGING'] = logging.DEBUG
+				cfg.analysisConfigAttributes['LOGGING'] = logging.DEBUG			
 		if re.match('^GENERATE_EPS_PDF_GRAPHS', object) :
 			value = re.split("=", object)
 			cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] = value[1].strip(" ")		

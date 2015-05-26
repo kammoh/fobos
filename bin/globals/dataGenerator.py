@@ -36,19 +36,19 @@ def convertToHex(hexString):
 	
 def generateRandomData( ):
 	randomBytes = []
-	printFunctions.printToScreenAndLog("Number of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS']))
-	printFunctions.printToScreenAndLog("Block Size: " + str(cfg.config_attributes['BLOCK_SIZE']))	
+	printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS']))
+	printFunctions.printToScreenAndLog("\tBlock Size: " + str(cfg.config_attributes['BLOCK_SIZE']))	
 	TOTAL_DATA = cfg.config_attributes['NUMBER_OF_ENCRYPTIONS'] * cfg.config_attributes['BLOCK_SIZE']
-	printFunctions.printToScreenAndLog("Generating " + str(TOTAL_DATA) + " bytes of random data")
+	printFunctions.printToScreenAndLog("\tGenerating " + str(TOTAL_DATA) + " bytes of random data")
 	randomBytes = convertToHex(Random.get_random_bytes(TOTAL_DATA))
 	printFunctions.printToOutputFile(randomBytes, globals.DATA)
 	return randomBytes
 	
 def generateRandomKey( ):
 	randomKeyBytes = []
-	printFunctions.printToScreenAndLog("Key Size: " + str(cfg.config_attributes['KEY_SIZE']))	
+	printFunctions.printToScreenAndLog("\tKey Size: " + str(cfg.config_attributes['KEY_SIZE']))	
 	TOTAL_DATA = cfg.config_attributes['KEY_SIZE']
-	printFunctions.printToScreenAndLog("Generating " + str(TOTAL_DATA) + " bytes of random key")
+	printFunctions.printToScreenAndLog("\tGenerating " + str(TOTAL_DATA) + " bytes of random key")
 	randomKeyBytes = convertToHex(Random.get_random_bytes(TOTAL_DATA))
 	printFunctions.printToOutputFile(randomKeyBytes, globals.KEY)
 	return randomKeyBytes	
@@ -58,8 +58,8 @@ def getPlainText():
 	if(cfg.config_attributes['PLAINTEXT_GENERATION'] == globals.RANDOM):
 		dataToEncrypt = generateRandomData()
 	elif(cfg.config_attributes['PLAINTEXT_GENERATION'] == globals.USER):
-		printFunctions.printToScreenAndLog("Number of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS']))
-		printFunctions.printToScreenAndLog("Block Size: " + str(cfg.config_attributes['BLOCK_SIZE']))
+		printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS']))
+		printFunctions.printToScreenAndLog("\tBlock Size: " + str(cfg.config_attributes['BLOCK_SIZE']))
 		rawData = support.readFile(cfg.config_attributes['DATA_FILE'])
 		for count in range(0, len(rawData)):
 			temp = support.convertToByteArray(rawData[count])
@@ -67,15 +67,15 @@ def getPlainText():
 				if (x!='\n'): 
 					dataToEncrypt.append(x)
 		TOTAL_DATA = 	cfg.config_attributes['NUMBER_OF_ENCRYPTIONS'] * cfg.config_attributes['BLOCK_SIZE']
-		printFunctions.printToScreenAndLog("Reading " + str(TOTAL_DATA) + " bytes from "+ cfg.config_attributes['DATA_FILE'] +" file")
+		printFunctions.printToScreenAndLog("\tReading " + str(TOTAL_DATA) + " bytes from "+ cfg.config_attributes['DATA_FILE'] +" file")
 		printFunctions.printToOutputFile(dataToEncrypt, globals.DATA)
 	return dataToEncrypt	
 		
 def getKey():		
 	keyToEncrypt = []
 	if(cfg.config_attributes['KEY_GENERATION'] == globals.USER):
-		printFunctions.printToScreenAndLog("Key Size :" + str(cfg.config_attributes['KEY_SIZE']))
-		printFunctions.printToScreenAndLog("Reading Key from "+ cfg.config_attributes['KEY_FILE'] +" file")
+		printFunctions.printToScreenAndLog("\tKey Size :" + str(cfg.config_attributes['KEY_SIZE']))
+		printFunctions.printToScreenAndLog("\tReading Key from "+ cfg.config_attributes['KEY_FILE'] +" file")
 		rawData = support.readFile(cfg.config_attributes['KEY_FILE'])
 		for count in range(0, len(rawData)):
 			temp = support.convertToByteArray(rawData[count])
@@ -87,7 +87,6 @@ def getKey():
 
 	
 def main():
-	cipherText = aesEncrypt(plainText, secretKey)
 	print plainText
 	print secretKey
 	print cipherText

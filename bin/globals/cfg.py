@@ -71,7 +71,7 @@ config_attributes = {
  'VICTIM_RESET' : "",    'INPUT_FORMAT' : "",  'OUTPUT_FORMAT' : "", 'MEASUREMENT_FORMAT' : "",
  'OSC_CONFIG_FILE' : "", 'PROJECT_NAME' : "",  'TAG' : "", 			 'CONTROL_BOARD' : "",
  'NUMBER_OF_ENCRYPTIONS' : 0, 'BLOCK_SIZE': 0, 'PLAINTEXT_GENERATION': "", 'KEY_GENERATION': "",
- 'KEY_SIZE': "", 'NUMBER_OF_TRACES' : "", 'TRIGGER_LENGTH_CYCLES' : "", 'DUMMY_RUN' : "",
+ 'KEY_SIZE': "", 'NUMBER_OF_TRACES' : "", 'TRIGGER_LENGTH_CYCLES' : "", 'DUMMY_RUN' : "", 'LOGGING': "",
  }
  
 osc_attributes = {
