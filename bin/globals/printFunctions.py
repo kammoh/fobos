@@ -22,6 +22,7 @@ import sys
 import os
 import traceback
 import cfg , globals, support
+import logging
 
 def printArray(array, num):
   i = 0

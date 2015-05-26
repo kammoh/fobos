@@ -32,7 +32,6 @@ def init():
 	cfg.CONFIGDIR = os.path.join(cfg.ROOTDIR,globals.CONFIG_DIRNAME)
 	cfg.CONFIG_FILE = os.path.join(cfg.CONFIGDIR, globals.CONFIG_FILENAME)
 	cfg.OSC_CONFIGFILE = os.path.join(cfg.CONFIGDIR, globals.OSC_CONFIGFILENAME)
-	#logging.basicConfig(filename=cfg.FOBOS_LOG_FILE, format = 'FOBOS - %(levelname)s:%(message)s', level=cfg.config_attributes['LOGGING'])
 
 
 #############################################
@@ -45,25 +44,25 @@ def main():
 	configExtract.extractConfigAttributes()
 	configExtract.configureWorkspace()	
 	printFunctions.printHeaderToScreenAndLog()
-	extractOscilloscopeConfigAttributes()
+	#extractOscilloscopeConfigAttributes()
 	cfg.dataToControlBoard = getPlainText()
 	cfg.keyToControlBoard = getKey()
-	openOscilloscopeConnection()
-	setOscilloscopeConfigAttributes()
-	initializeOscilloscopeDataStorage()
+	#openOscilloscopeConnection()
+	#setOscilloscopeConfigAttributes()
+	#initializeOscilloscopeDataStorage()
 	openControlBoardConnection()
 	setControlBoardConfigAttributes()
 	traceCount = 0
 	displayReg(0x0C)
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
-		armOscilloscope()
+		#armOscilloscope()
 		runEncrytionOnControlBoard(traceCount)
-		populateOscilloscopeDataStorage(traceCount)
+		#populateOscilloscopeDataStorage(traceCount)
 		populateControlBoardOutputDataStorage(traceCount)
 		traceCount += 1
-	saveOscilloscopeDataStorage()	
+	#saveOscilloscopeDataStorage()	
 	saveControlBoardOutputDataStorage()
-	closeOscilloscopeConnection()
+	#closeOscilloscopeConnection()
 	closeControlBoardConnection()
 #############################################################################
 ########### Show Plots for Power and Trigger

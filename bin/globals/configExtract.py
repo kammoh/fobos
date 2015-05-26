@@ -81,12 +81,17 @@ def extractConfigAttributes():
 		if re.match('^LOGGING', object) :
 			value = re.split("=", object)
 			loggingValue = value[1].strip(" ")
+			print loggingValue
 			if(loggingValue == 'INFO'):
 				cfg.config_attributes['LOGGING'] = logging.INFO
 				cfg.analysisConfigAttributes['LOGGING'] = logging.INFO
+				logging.basicConfig(filename=cfg.FOBOS_LOG_FILE, format = 'FOBOS - %(levelname)s:%(message)s', level=cfg.config_attributes['LOGGING'])
+				logging.basicConfig(filename=cfg.FOBOS_ANALYSIS_LOG_FILE, format = 'FOBOS - %(levelname)s:%(message)s', level=cfg.config_attributes['LOGGING'])
 			elif(loggingValue == 'DEBUG'):
 				cfg.config_attributes['LOGGING'] = logging.DEBUG
-				cfg.analysisConfigAttributes['LOGGING'] = logging.DEBUG			
+				cfg.analysisConfigAttributes['LOGGING'] = logging.DEBUG
+				logging.basicConfig(filename=cfg.FOBOS_LOG_FILE, format = 'FOBOS - %(levelname)s:%(message)s', level=cfg.config_attributes['LOGGING'])
+				logging.basicConfig(filename=cfg.FOBOS_ANALYSIS_LOG_FILE, format = 'FOBOS - %(levelname)s:%(message)s', level=cfg.config_attributes['LOGGING'])
 		if re.match('^GENERATE_EPS_PDF_GRAPHS', object) :
 			value = re.split("=", object)
 			cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] = value[1].strip(" ")		
