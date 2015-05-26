@@ -351,7 +351,7 @@ drEnb <= '1' when controlReg = x"07" else '0';
 klRst <= '1' when controlReg = x"08" else '0';
 klEnb <= '1' when controlReg = x"09" else '0';
 
-encStart <= '1' when controlReg = x"FF" else '0';
+encStart <= '1' when dataReg1 = x"FF" else '0';
 
 --bram_extaddress_reset <= dataReg0(7);
 --bram_extaddress_enable <= dataReg0(6);
@@ -462,18 +462,20 @@ sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc);
 -------- SHIFT REGISTERS FOR CONTROL BOARD TO VICTIM BOARD AND VICE-VERSA
 ----------------------------------------------------------------------------
 --
---dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
---
--- controlBoardToVictimDataShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vdlRst,
--- sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
--- --
--- controlBoardToVictimKeyShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vklRst,
--- sr_e => vklEnb, sr_input => keyToCtrlBrd, sr_output => dataout);
+dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
 
--- --
--- victimToControlBoardShiftReg : shiftreg_16x128 (clock => victimClk, reset =>vrRst,
--- sr_e => vrEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
--- --
+--controlBoardToVictimShiftreg : shiftreg1088x16 (clock => victimClk, reset =>vlRst,
+--sr_e => vlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+--
+--victimToControlBoardShiftReg : shiftreg16x256 (clock => victimClk, reset =>vlRst,
+--sr_e => vlEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
+
+
+
+
+
+
+
 ----------------------------------------------------------------------------
 ------- DISPLAY LEDs for Debugging
 ----------------------------------------------------------------------------
@@ -488,7 +490,7 @@ displayLED <= dataBlockSize when displayReg = x"01" else
 			  dataFromTarget(7 downto 0) when displayReg = x"09" else
 			  commandToTargetControl when displayReg = x"0A" else
 			  stateMachineLedsTarget when displayReg = x"0B" else
-			  dataToPc when displayReg = x"0C" else
+			  "0000000" & encStart when displayReg = x"0C" else
 			  displayReg;
 
 trigger <= triggerCheck;			  
