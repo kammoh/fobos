@@ -453,7 +453,7 @@ def armOscilloscope():
 		cmdString = ":DIGITIZE " + channelsToDigitize
 		cfg.Oscilloscope.send(cmdString+ '\n')
 		printFunctions.printToLog("Channels to Digitize -> " + channelsToDigitize)
-		support.goToSleep(2)
+		support.goToSleep(1)
 	else:
 		printFunctions.printToScreenAndLog("\tNo Channels selected to Digitize.")
 	
