@@ -163,12 +163,12 @@ def populateControlBoardOutputDataStorage(traceCount):
 def runEncrytionOnControlBoard (traceCount):
 	if (cfg.config_attributes['DUMMY_RUN'] == 'YES'):
 		printFunctions.printToScreenAndLog("\tRunning Dummy Encryption - " + str(traceCount+1))
-		status = putRegByte(0x30, 0x00) # Initialize	
+		status = putRegByte(0x01, 0x00) # Initialize	
 		if (traceCount == 0):
 			printFunctions.printToScreenAndLog("\t\tFirst Run - Setting the key for Encryption")
 			sendKeyToControlBoard()
 		sendBlockOfDataToControlBoard(traceCount)
-		status = putRegByte(0x30, 0xFF) # Run
+		status = putRegByte(0x01, 0xFF) # Run
 		return status
 
 def saveControlBoardOutputDataStorage():

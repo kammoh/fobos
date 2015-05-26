@@ -47,7 +47,7 @@ KEY_GENERATION = RANDOM
 KEY_FILE      = keys.txt
 INPUT_FORMAT  = hex # Default => hex
 OUTPUT_FORMAT = hex # Default => hex
-NUMBER_OF_ENCRYPTIONS = 10
+NUMBER_OF_ENCRYPTIONS = 1
 BLOCK_SIZE = 16 # In Bytes
 KEY_SIZE = 16 # In Bytes
 
@@ -57,7 +57,7 @@ KEY_SIZE = 16 # In Bytes
 # =============================================
 # =============================================
 DUMMY_RUN = YES #YES/NO
-NUMBER_OF_TRACES = 10
+NUMBER_OF_TRACES = 1
 
 # =============================================
 # =============================================

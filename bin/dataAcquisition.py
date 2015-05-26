@@ -54,6 +54,7 @@ def main():
 	openControlBoardConnection()
 	setControlBoardConfigAttributes()
 	traceCount = 0
+	displayReg(0x0C)
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
 		armOscilloscope()
 		runEncrytionOnControlBoard(traceCount)
