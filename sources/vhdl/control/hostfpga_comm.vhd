@@ -153,6 +153,7 @@ fpgatohost_data <=  dataReg0 when regEppAdrOut = x"00" else
 			--dataFromTarget(15 downto 8) when regEppAdrOut = x"71" else
 			--dataFromTarget(7 downto 0) when regEppAdrOut = x"72" else
 			dataToPc when regEppAdrOut = x"71" else
+			
 			----------------------------------------
 		    x"00";
 	
@@ -339,8 +340,7 @@ end process;
 ------------------------------------------------------------------------
 -- Control Signals
 ------------------------------------------------------------------------
---system_reset <= controlReg(0);
---frequency_counter_reset <= controlReg(1);
+
 system_reset <= '1' when controlReg = x"01" else '0';
 frequency_counter_reset <= '1' when controlReg = x"02" else '0';
 targetModuleReset <= '1' when controlReg = x"03" else '0';
@@ -350,12 +350,13 @@ dlEnb <= '1' when controlReg = x"06" else '0';
 drEnb <= '1' when controlReg = x"07" else '0';
 klRst <= '1' when controlReg = x"08" else '0';
 klEnb <= '1' when controlReg = x"09" else '0';
-encStart <= '1' when dataReg1 = x"04" else '0';
 
-bram_extaddress_reset <= dataReg0(7);
-bram_extaddress_enable <= dataReg0(6);
-counter_adc_select <= dataReg0(5);
-bram_data_collect_start <= dataReg0(0);
+encStart <= '1' when controlReg = x"FF" else '0';
+
+--bram_extaddress_reset <= dataReg0(7);
+--bram_extaddress_enable <= dataReg0(6);
+--counter_adc_select <= dataReg0(5);
+--bram_data_collect_start <= dataReg0(0);
 
 ------------------------------------------------------------------------
 -- Control Signals
@@ -461,20 +462,18 @@ sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc);
 -------- SHIFT REGISTERS FOR CONTROL BOARD TO VICTIM BOARD AND VICE-VERSA
 ----------------------------------------------------------------------------
 --
-dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
-
---controlBoardToVictimShiftreg : shiftreg1088x16 (clock => victimClk, reset =>vlRst,
---sr_e => vlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+--dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
 --
---victimToControlBoardShiftReg : shiftreg16x256 (clock => victimClk, reset =>vlRst,
---sr_e => vlEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
+-- controlBoardToVictimDataShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vdlRst,
+-- sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+-- --
+-- controlBoardToVictimKeyShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vklRst,
+-- sr_e => vklEnb, sr_input => keyToCtrlBrd, sr_output => dataout);
 
-
-
-
-
-
-
+-- --
+-- victimToControlBoardShiftReg : shiftreg_16x128 (clock => victimClk, reset =>vrRst,
+-- sr_e => vrEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
+-- --
 ----------------------------------------------------------------------------
 ------- DISPLAY LEDs for Debugging
 ----------------------------------------------------------------------------

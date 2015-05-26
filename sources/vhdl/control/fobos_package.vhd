@@ -148,4 +148,30 @@ sr_output: out std_logic_vector (7 downto 0)
 ) ;
 end component;
 
+component shiftreg_128x16 IS
+port
+(
+clock: in std_logic;
+reset: in std_logic; 
+sr_e : in std_logic;
+sr_input : in std_logic_vector (127 downto 0);
+sr_output: out std_logic_vector (15 downto 0)
+
+) ;
+
+end component;
+
+component shiftreg_16x128 IS
+port
+(
+clock: in std_logic;
+reset: in std_logic;
+sr_e : in std_logic;
+sr_input : in std_logic_vector (15 downto 0);
+sr_output: out std_logic_vector (127 downto 0)
+
+) ;
+
+end component;
+
 end fobos_package;
