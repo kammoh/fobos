@@ -366,13 +366,13 @@ def populateOscilloscopeDataStorage(traceCount):
 def saveOscilloscopeDataStorage():
 	printFunctions.printToScreenAndLog("\tSaving the data from Oscilloscope")
 	if (cfg.channel1Data != None):		
-		numpy.savetxt(cfg.CHANNEL1_MEASUREMENT_FILE, cfg.channel1Data, fmt = '%5.4g')
+		numpy.save(cfg.CHANNEL1_MEASUREMENT_FILE, cfg.channel1Data)#, fmt = '%5.4g')
 	if (cfg.channel2Data != None):		
-		numpy.savetxt(cfg.CHANNEL2_MEASUREMENT_FILE, cfg.channel2Data, fmt = '%5.4g')
+		numpy.save(cfg.CHANNEL2_MEASUREMENT_FILE, cfg.channel2Data)#, fmt = '%5.4g')
 	if (cfg.channel3Data != None):		
-		numpy.savetxt(cfg.CHANNEL3_MEASUREMENT_FILE, cfg.channel3Data, fmt = '%5.4g')
+		numpy.save(cfg.CHANNEL3_MEASUREMENT_FILE, cfg.channel3Data)#, fmt = '%5.4g')
 	if (cfg.channel4Data != None):		
-		numpy.savetxt(cfg.CHANNEL4_MEASUREMENT_FILE, cfg.channel4Data, fmt = '%5.4g')
+		numpy.save(cfg.CHANNEL4_MEASUREMENT_FILE, cfg.channel4Data)#, fmt = '%5.4g')
  
 def get_snapshot():
   print "Capturing Snapshot of the Scope"
@@ -453,7 +453,7 @@ def armOscilloscope():
 		cmdString = ":DIGITIZE " + channelsToDigitize
 		cfg.Oscilloscope.send(cmdString+ '\n')
 		printFunctions.printToLog("Channels to Digitize -> " + channelsToDigitize)
-		support.goToSleep(1)
+		support.goToSleep(0.1)
 	else:
 		printFunctions.printToScreenAndLog("\tNo Channels selected to Digitize.")
 	

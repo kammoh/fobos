@@ -38,7 +38,7 @@ def generateRandomData( ):
 	randomBytes = []
 	printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS']))
 	printFunctions.printToScreenAndLog("\tBlock Size: " + str(cfg.config_attributes['BLOCK_SIZE']))	
-	TOTAL_DATA = cfg.config_attributes['NUMBER_OF_ENCRYPTIONS'] * cfg.config_attributes['BLOCK_SIZE']
+	TOTAL_DATA = cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['BLOCK_SIZE'] * cfg.config_attributes['NUMBER_OF_TRACES']
 	printFunctions.printToScreenAndLog("\tGenerating " + str(TOTAL_DATA) + " bytes of random data")
 	randomBytes = convertToHex(Random.get_random_bytes(TOTAL_DATA))
 	printFunctions.printToOutputFile(randomBytes, globals.DATA)
@@ -58,7 +58,7 @@ def getPlainText():
 	if(cfg.config_attributes['PLAINTEXT_GENERATION'] == globals.RANDOM):
 		dataToEncrypt = generateRandomData()
 	elif(cfg.config_attributes['PLAINTEXT_GENERATION'] == globals.USER):
-		printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS']))
+		printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['NUMBER_OF_TRACES']))
 		printFunctions.printToScreenAndLog("\tBlock Size: " + str(cfg.config_attributes['BLOCK_SIZE']))
 		rawData = support.readFile(cfg.config_attributes['DATA_FILE'])
 		for count in range(0, len(rawData)):
@@ -66,7 +66,7 @@ def getPlainText():
 			for x in temp: 
 				if (x!='\n'): 
 					dataToEncrypt.append(x)
-		TOTAL_DATA = 	cfg.config_attributes['NUMBER_OF_ENCRYPTIONS'] * cfg.config_attributes['BLOCK_SIZE']
+		TOTAL_DATA = 	cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['BLOCK_SIZE'] * cfg.config_attributes['NUMBER_OF_TRACES']
 		printFunctions.printToScreenAndLog("\tReading " + str(TOTAL_DATA) + " bytes from "+ cfg.config_attributes['DATA_FILE'] +" file")
 		printFunctions.printToOutputFile(dataToEncrypt, globals.DATA)
 	return dataToEncrypt	

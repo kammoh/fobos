@@ -100,7 +100,10 @@ def acquireHypotheticalValues(POWER_MODEL_FILE):
 	return(keyGuess)
 	
 def adjustSampleSize(sampleLength, dataArray):
-		printFunctions.printToLog("\tAdjusting Sample Size to ->" + str(sampleLength))
+		if(cfg.PROGRAM_CALL == "ANALYSIS"):
+			printFunctions.printToAnalysisLog("\tAdjusting Sample Size to ->" + str(sampleLength))
+		else:
+			printFunctions.printToLog("\tAdjusting Sample Size to ->" + str(sampleLength))
 		temp = dataArray.shape
 		newDataArray = dataArray
 		arrLen = temp[0]
@@ -214,8 +217,8 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 		
 
 def readRawTraces():
-	cfg.RAW_POWER_DATA = numpy.loadtxt(cfg.RAW_UNALIGNED_POWER_FILE)
-	cfg.RAW_TRIGGER_DATA = numpy.loadtxt(cfg.RAW_UNALIGNED_TRIGGER_FILE)
+	cfg.RAW_POWER_DATA = numpy.load(cfg.RAW_UNALIGNED_POWER_FILE)
+	cfg.RAW_TRIGGER_DATA = numpy.load(cfg.RAW_UNALIGNED_TRIGGER_FILE)
 	
 		
 	
@@ -224,12 +227,12 @@ def getAlignedMeasuredPowerData():
 	if (os.path.isfile(cfg.ALIGNED_DATA_FILE) == True):
 		printFunctions.printToScreenAndAnalysisLog("\tFound aligned power signal data set. Loading the data set")
 		printFunctions.printToAnalysisLog("\tDataSet - " +cfg.ALIGNED_DATA_FILE)
-		alignedData = numpy.loadtxt(cfg.ALIGNED_DATA_FILE)
+		alignedData = numpy.load(cfg.ALIGNED_DATA_FILE)
 		return (alignedData)
 	else:
 		printFunctions.printToScreenAndAnalysisLog("\tNo aligned power signal data set found. Commencing power signal alignment process")
 		alignedData = computeAlignedData(cfg.RAW_POWER_DATA, cfg.RAW_TRIGGER_DATA)
-		numpy.savetxt(cfg.ALIGNED_DATA_FILE, alignedData)
+		numpy.save(cfg.ALIGNED_DATA_FILE, alignedData)
 		return(alignedData)
 
 def spectogram(dataToPlot):

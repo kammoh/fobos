@@ -39,7 +39,7 @@ def sampleSpaceDisp(alignedData):
 	printFunctions.printToAnalysisLog("\tWindow Start Point - " + str(cfg.analysisConfigAttributes['WINDOW_START_POINT']))
 	printFunctions.printToAnalysisLog("\tSample Window Size - " +str(cfg.analysisConfigAttributes['SAMPLE_WINDOW']))
 	processedData = alignedData[:,cfg.analysisConfigAttributes['WINDOW_START_POINT'] : cfg.analysisConfigAttributes['WINDOW_START_POINT']+cfg.analysisConfigAttributes['SAMPLE_WINDOW']] 
-	numpy.savetxt(cfg.SAMPLE_SPACE_DISP_FILE, processedData)
+	numpy.save(cfg.SAMPLE_SPACE_DISP_FILE, processedData)
 	return (processedData)
 	
 def compress(a, compressionLen, compressionType):
@@ -111,7 +111,7 @@ def compressData(measuredData):
 	printFunctions.printToAnalysisLog("\tCompression Length - " + str(cfg.analysisConfigAttributes['COMPRESSION_LENGTH']))
 	printFunctions.printToAnalysisLog("\tCompression Type - " + str(cfg.analysisConfigAttributes['COMPRESSION_TYPE']))
 	dataResize =  numpy.apply_along_axis(compress, 1, measuredData,cfg.analysisConfigAttributes['COMPRESSION_LENGTH'],cfg.analysisConfigAttributes['COMPRESSION_TYPE'])
-	numpy.savetxt(cfg.COMPRESSED_DATA_FILE, dataResize)
+	numpy.save(cfg.COMPRESSED_DATA_FILE, dataResize)
 	return (dataResize)
 	
 def traceExpunge(measuredData): 
@@ -151,7 +151,7 @@ def traceExpunge(measuredData):
 			printFunctions.printToAnalysisLog("Expunged Trace - " + str(traceCount) +"/"+str(len(thLimit)))
 			teFlag = numpy.append(teFlag, traceCount)
 			traceCount += 1
-		numpy.savetxt(cfg.TRACE_EXPUNGE_DATA_FILE, teFlag)
+		numpy.save(cfg.TRACE_EXPUNGE_DATA_FILE, teFlag)
 	return newMeasuredData
 
 	

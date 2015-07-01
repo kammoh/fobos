@@ -24,6 +24,12 @@ import traceback
 import cfg , globals, support
 import logging
 
+			
+# def initLogging():
+	# logger = logging.getLogger('FOBOS')
+	# if(cfg.config_attributes['LOGGING'] = 'DEBUG' or cfg.analysisConfigAttributes['LOGGING'] = 'DEBUG'):
+		# logger = logging.setLevel(logging.DEBUG)
+	
 def printArray(array, num):
   i = 0
   while(i<num):
@@ -100,7 +106,7 @@ def printAnalysisHeaderToLog():
 def printToOutputFile(data, type):
 	output = ""
 	if(type == globals.DATA):
-		TOTAL_DATA = cfg.config_attributes['NUMBER_OF_ENCRYPTIONS'] * cfg.config_attributes['BLOCK_SIZE']
+		TOTAL_DATA = cfg.config_attributes['NUMBER_OF_ENCRYPTIONS'] * cfg.config_attributes['BLOCK_SIZE'] * cfg.config_attributes['NUMBER_OF_TRACES']
 		for count in range (0, TOTAL_DATA):
 			
 			output += str(data[count]) + " "
@@ -110,7 +116,7 @@ def printToOutputFile(data, type):
 			file.write(output)
 	
 	if(type == globals.CIPHERTEXT):
-		TOTAL_DATA = cfg.config_attributes['NUMBER_OF_TRACES'] * cfg.config_attributes['BLOCK_SIZE']
+		TOTAL_DATA = cfg.config_attributes['NUMBER_OF_TRACES'] * cfg.config_attributes['BLOCK_SIZE'] * cfg.config_attributes['NUMBER_OF_TRACES']
 		for count in range (0, TOTAL_DATA):
 			output += str(data[count]) + " "
 			if ((count+1) % cfg.config_attributes['BLOCK_SIZE']  == 0):

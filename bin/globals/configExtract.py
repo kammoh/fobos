@@ -80,18 +80,8 @@ def extractConfigAttributes():
 			cfg.analysisConfigAttributes['TAG'] = value[1].strip(" ")
 		if re.match('^LOGGING', object) :
 			value = re.split("=", object)
-			loggingValue = value[1].strip(" ")
-			print loggingValue
-			if(loggingValue == 'INFO'):
-				cfg.config_attributes['LOGGING'] = logging.INFO
-				cfg.analysisConfigAttributes['LOGGING'] = logging.INFO
-				logging.basicConfig(filename=cfg.FOBOS_LOG_FILE, format = 'FOBOS - %(levelname)s:%(message)s', level=cfg.config_attributes['LOGGING'])
-				logging.basicConfig(filename=cfg.FOBOS_ANALYSIS_LOG_FILE, format = 'FOBOS - %(levelname)s:%(message)s', level=cfg.config_attributes['LOGGING'])
-			elif(loggingValue == 'DEBUG'):
-				cfg.config_attributes['LOGGING'] = logging.DEBUG
-				cfg.analysisConfigAttributes['LOGGING'] = logging.DEBUG
-				logging.basicConfig(filename=cfg.FOBOS_LOG_FILE, format = 'FOBOS - %(levelname)s:%(message)s', level=cfg.config_attributes['LOGGING'])
-				logging.basicConfig(filename=cfg.FOBOS_ANALYSIS_LOG_FILE, format = 'FOBOS - %(levelname)s:%(message)s', level=cfg.config_attributes['LOGGING'])
+			cfg.config_attributes['LOGGING'] = value[1].strip(" ")
+			cfg.analysisConfigAttributes['LOGGING'] = value[1].strip(" ")
 		if re.match('^GENERATE_EPS_PDF_GRAPHS', object) :
 			value = re.split("=", object)
 			cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] = value[1].strip(" ")		
@@ -150,9 +140,9 @@ def extractConfigAttributes():
 		if re.match('^CONTROL_BOARD', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['CONTROL_BOARD'] = value[1].strip(" ")
-		if re.match('^NUMBER_OF_ENCRYPTIONS', object) :
+		if re.match('^NUMBER_OF_ENCRYPTIONS_PER_TRACE', object) :
 			value = re.split("=", object)
-			cfg.config_attributes['NUMBER_OF_ENCRYPTIONS'] = int(value[1].strip(" "))
+			cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] = int(value[1].strip(" "))
 		if re.match('^BLOCK_SIZE', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['BLOCK_SIZE'] = int(value[1].strip(" "))	
@@ -175,30 +165,31 @@ def extractConfigAttributes():
 def updatePowerAndTriggerFileNames():
 	powerFileExistsFlag = False
 	triggerFileExistsFlag = False
+	print os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL1_MEASUREMENT_FILE_NAME)
 	if (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL1_MEASUREMENT_FILE_NAME))):
-		cfg.RAW_UNALIGNED_POWER_FILE_NAME = globals.CHANNEL1_MEASUREMENT_FILE_NAME
+		cfg.RAW_UNALIGNED_POWER_FILE_NAME = globals.ANALYSIS_CHANNEL1_MEASUREMENT_FILE_NAME
 		powerFileExistsFlag = True
 	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL2_MEASUREMENT_FILE_NAME))):
-		cfg.RAW_UNALIGNED_POWER_FILE_NAME = globals.CHANNEL2_MEASUREMENT_FILE_NAME
+		cfg.RAW_UNALIGNED_POWER_FILE_NAME = globals.ANALYSIS_CHANNEL2_MEASUREMENT_FILE_NAME
 		powerFileExistsFlag = True
 	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL3_MEASUREMENT_FILE_NAME))):
-		cfg.RAW_UNALIGNED_POWER_FILE_NAME = globals.CHANNEL3_MEASUREMENT_FILE_NAME
+		cfg.RAW_UNALIGNED_POWER_FILE_NAME = globals.ANALYSIS_CHANNEL3_MEASUREMENT_FILE_NAME
 		powerFileExistsFlag = True
 	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL4_MEASUREMENT_FILE_NAME))):
-		cfg.RAW_UNALIGNED_POWER_FILE_NAME = globals.CHANNEL4_MEASUREMENT_FILE_NAME
+		cfg.RAW_UNALIGNED_POWER_FILE_NAME = globals.ANALYSIS_CHANNEL4_MEASUREMENT_FILE_NAME
 		powerFileExistsFlag = True
 		
 	if (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME))):
-		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME
+		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.ANALYSIS_CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME
 		triggerFileExistsFlag = True
 	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME))):
-		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME
+		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.ANALYSIS_CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME
 		triggerFileExistsFlag = True
 	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME))):
-		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME
+		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.ANALYSIS_CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME
 		triggerFileExistsFlag = True
 	elif (os.path.isfile(os.path.join(cfg.MEASUREMENT_FOLDER, globals.CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME))):
-		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME
+		cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME = globals.ANALYSIS_CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME
 		triggerFileExistsFlag = True
 	if (powerFileExistsFlag == False or triggerFileExistsFlag == False):
 		os.remove(cfg.MEASUREMENT_PROJECT_PATH_FILE)

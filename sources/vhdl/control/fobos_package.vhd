@@ -174,4 +174,25 @@ sr_output: out std_logic_vector (127 downto 0)
 
 end component;
 
+component victimComm is 
+	port(
+	     clock: in std_logic;
+		 start : in std_logic;
+		 reset: in std_logic;	 
+		 targetClock : in std_logic;
+		 src_read  : in std_logic;
+		 dst_write : in std_logic;
+		 block_size : in std_logic_vector(7 downto 0);
+		 key_size : in std_logic_vector(7 downto 0);
+		 vdlRst : out std_logic;
+		 vdlEnb : out std_logic;
+		 vklRst : out std_logic;
+		 vklEnb : out std_logic;		 
+		 vrRst : out std_logic;
+		 vrEnb : out std_logic;
+		 src_ready : out std_logic;
+		 dst_ready : out std_logic		 
+		 );
+end component;
+
 end fobos_package;
