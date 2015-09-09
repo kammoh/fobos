@@ -52,3 +52,4 @@ NET "cergbanner<11>"        LOC = "P17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, 
 ##NET "amp_hilo" 	  LOC = "K5" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L01P_1/A16, Type = DUAL, Sch name = JB10
 #PIN "clk_BUFGP/BUFG.O" CLOCK_DEDICATED_ROUTE = FALSE; 
 NET "clk" CLOCK_DEDICATED_ROUTE = FALSE;
+PIN "victimClock_BUFG.O" CLOCK_DEDICATED_ROUTE = FALSE;
