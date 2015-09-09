@@ -185,10 +185,10 @@ def plotTrace(dataToPlot, traceNos, plotType):
 		plt.tight_layout()
 
 		if (len(tracesToPrint) == 1):
-			axes.plot(toPlot)
+			axes.plot(toPlot, linestyle='.')
 		else:	
 			for traceNo in range(0, len(tracesToPrint)):
-				axes[tiledPlotCounter].plot(toPlot[:,int(traceNo)])
+				axes[tiledPlotCounter].plot(toPlot[:,int(traceNo)], linestyle='.')
 				plt.setp(axes[tiledPlotCounter].get_xticklabels(), visible=False)
 				plt.setp(axes[tiledPlotCounter].get_yticklabels(), visible=False)				
 				tiledPlotCounter += 1
@@ -218,7 +218,7 @@ def plotRawTrace(dataToPlot, traceLowerBound, traceUpperBound):
 	toPlot = numpy.transpose(dataToPlot)
 	plt.hold(False)
 	plt.clf()
-	plt.plot(toPlot[traceLowerBound:traceUpperBound])
+	plt.plot(toPlot[traceLowerBound:traceUpperBound], linestyle='.')
 	plt.ylabel('volts')
 	plt.xlabel('time')
 	plt.title('Processed Data')
@@ -233,7 +233,7 @@ def showRawTrace(dataToPlot):
 	toPlot = numpy.transpose(dataToPlot)
 	plt.hold(False)
 	plt.clf()
-	plt.plot(toPlot)
+	plt.plot(toPlot, linestyle='.')
 	plt.ylabel('volts')
 	plt.xlabel('time')
 	plt.title('Processed Data')
