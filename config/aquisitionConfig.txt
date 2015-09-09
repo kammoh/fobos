@@ -30,7 +30,7 @@ LOGGING = INFO # INFO|DEBUG
 # =============================================
 # =============================================
 
-CONTROL_BOARD = Nexys2
+CONTROL_BOARD = Nexys3
 VICTIM_RESET = 11
 TIME_OUT = 50000
 TRIGGER_WAIT_CYCLES = 10 #@VICTIM CLOCK

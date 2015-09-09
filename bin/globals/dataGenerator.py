@@ -36,7 +36,7 @@ def convertToHex(hexString):
 	
 def generateRandomData( ):
 	randomBytes = []
-	printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS']))
+	printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE']* cfg.config_attributes['NUMBER_OF_TRACES']))
 	printFunctions.printToScreenAndLog("\tBlock Size: " + str(cfg.config_attributes['BLOCK_SIZE']))	
 	TOTAL_DATA = cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['BLOCK_SIZE'] * cfg.config_attributes['NUMBER_OF_TRACES']
 	printFunctions.printToScreenAndLog("\tGenerating " + str(TOTAL_DATA) + " bytes of random data")

@@ -5,7 +5,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.fobos_package.all;
 
 entity hostfpga_comm is 
-generic (board : integer := NEXYS2);
+generic (board : integer := NEXYS3);
 port (
   clk : in std_logic;           -- system clock
   EppAstb: in std_logic;        -- Address strobe
@@ -53,10 +53,12 @@ signal clktobram, targetModuleReset : std_logic;
 signal victimClk, victimDCMLocked : std_logic;
 signal encStart, encEnd, triggerCheck : std_logic;
 signal dlEnb, dlRst, drRst, drEnb, klRst, klEnb : std_logic;
-signal vlEnb, vlRst, vrRst, vrEnb : std_logic;
+signal vdlEnb, vdlRst, vklEnb, vklRst, vrRst, vrEnb : std_logic;
 signal dataToCtrlBrd, keyToCtrlBrd : std_logic_vector(127 downto 0);
 signal dataFromCtrlBrd : std_logic_vector(127 downto 0);
 signal dataFromPc, dataToPc : std_logic_vector(7 downto 0);
+signal src_read, src_ready, dst_ready, dst_write : std_logic;
+signal datain, dataout : std_logic_vector(15 downto 0);
 ------------------------------------------------------------------------
 -- Data Registers Declarations
 ------------------------------------------------------------------------
@@ -464,14 +466,26 @@ sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc);
 --
 dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
 
---controlBoardToVictimShiftreg : shiftreg1088x16 (clock => victimClk, reset =>vlRst,
---sr_e => vlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+ControlVictimCommunication: victimComm port map(
+clock => victimClk, start => encStart, reset => system_reset, targetClock => victimCLk,
+src_read  => src_read, dst_write => dst_write, block_size => dataBlockSize,
+key_size => key_size, vdlRst => vdlRst, vdlEnb => cdlEnb, vklRst => cklRst,
+vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready);
+
+controlBoardToVictimDataShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vdlRst,
+sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
 --
---victimToControlBoardShiftReg : shiftreg16x256 (clock => victimClk, reset =>vlRst,
---sr_e => vlEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
+controlBoardToVictimKeyShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vklRst,
+sr_e => vklEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+--
+victimToControlBoardShiftReg : shiftreg16x128 (clock => victimClk, reset =>vrRst,
+sr_e => vrEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
 
 
 
+--------------------------------------------------------------------------
+----- FOR TESTING PURPOSE VICTIM IS IMPLEMENTED HERE -- PLEASE DELETE IT
+--------------------------------------------------------------------------
 
 
 
