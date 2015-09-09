@@ -466,20 +466,20 @@ sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc);
 --
 dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
 
-ControlVictimCommunication: victimComm port map(
-clock => victimClk, start => encStart, reset => system_reset, targetClock => victimCLk,
-src_read  => src_read, dst_write => dst_write, block_size => dataBlockSize,
-key_size => key_size, vdlRst => vdlRst, vdlEnb => cdlEnb, vklRst => cklRst,
-vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready);
-
-controlBoardToVictimDataShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vdlRst,
-sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+--ControlVictimCommunication: victimComm port map(
+--clock => victimClk, start => encStart, reset => system_reset, targetClock => victimCLk,
+--src_read  => src_read, dst_write => dst_write, block_size => dataBlockSize,
+--key_size => keySize, vdlRst => vdlRst, vdlEnb => cdlEnb, vklRst => cklRst,
+--vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready);
 --
-controlBoardToVictimKeyShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vklRst,
-sr_e => vklEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
---
-victimToControlBoardShiftReg : shiftreg16x128 (clock => victimClk, reset =>vrRst,
-sr_e => vrEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
+--controlBoardToVictimDataShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vdlRst,
+--sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+----
+--controlBoardToVictimKeyShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vklRst,
+--sr_e => vklEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+----
+--victimToControlBoardShiftReg : shiftreg16x128 (clock => victimClk, reset =>vrRst,
+--sr_e => vrEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
 
 
 
