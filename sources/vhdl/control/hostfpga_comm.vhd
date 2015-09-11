@@ -22,9 +22,19 @@ port (
 --  amp_hilo : out std_logic;
 --  adc_data : in std_logic_vector(9 downto 0);
 --  adc_or : in std_logic
-	-- VICTIM PORTS
+
+   -- Oscilloscope Ports
 	trigger : out std_logic;
-	victimClock : out std_logic
+
+	-- DUT Ports
+	victimClock : out std_logic;
+	reset: out std_logic;
+	src_ready: out std_logic;
+	dst_ready: out std_logic;
+	datain: out std_logic_vector(3 downto 0);
+	src_read: in std_logic;
+	dst_write: in std_logic;
+	dataout: in std_logic_vector(3 downto 0)
 
 );
 end hostfpga_comm;
@@ -57,8 +67,8 @@ signal vdlEnb, vdlRst, vklEnb, vklRst, vrRst, vrEnb : std_logic;
 signal dataToCtrlBrd, keyToCtrlBrd : std_logic_vector(127 downto 0);
 signal dataFromCtrlBrd : std_logic_vector(127 downto 0);
 signal dataFromPc, dataToPc : std_logic_vector(7 downto 0);
-signal src_read, src_ready, dst_ready, dst_write : std_logic;
-signal datain, dataout : std_logic_vector(15 downto 0);
+--signal src_read, src_ready, dst_ready, dst_write : std_logic;
+--signal datain, dataout : std_logic_vector(15 downto 0);
 ------------------------------------------------------------------------
 -- Data Registers Declarations
 ------------------------------------------------------------------------
@@ -466,20 +476,20 @@ sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc);
 --
 dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
 
---ControlVictimCommunication: victimComm port map(
---clock => victimClk, start => encStart, reset => system_reset, targetClock => victimCLk,
---src_read  => src_read, dst_write => dst_write, block_size => dataBlockSize,
---key_size => keySize, vdlRst => vdlRst, vdlEnb => cdlEnb, vklRst => cklRst,
---vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready);
+ControlVictimCommunication: victimComm port map(
+clock => victimClk, start => encStart, reset => system_reset, targetClock => victimCLk,
+src_read  => src_read, dst_write => dst_write, block_size => dataBlockSize,
+key_size => keySize, vdlRst => vdlRst, vdlEnb => cdlEnb, vklRst => cklRst,
+vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready);
+
+controlBoardToVictimDataShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vdlRst,
+sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
 --
---controlBoardToVictimDataShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vdlRst,
---sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
-----
---controlBoardToVictimKeyShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vklRst,
---sr_e => vklEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
-----
---victimToControlBoardShiftReg : shiftreg16x128 (clock => victimClk, reset =>vrRst,
---sr_e => vrEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
+controlBoardToVictimKeyShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vklRst,
+sr_e => vklEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+--
+victimToControlBoardShiftReg : shiftreg16x128 (clock => victimClk, reset =>vrRst,
+sr_e => vrEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
 
 
 
