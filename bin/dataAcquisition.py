@@ -60,7 +60,7 @@ def main():
 		populateOscilloscopeDataStorage(traceCount)
 		populateControlBoardOutputDataStorage(traceCount)
 		traceCount += 1
-	saveOscilloscopeDataStorage()	
+	#saveOscilloscopeDataStorage()	
 	saveControlBoardOutputDataStorage()
 	closeOscilloscopeConnection()
 	closeControlBoardConnection()

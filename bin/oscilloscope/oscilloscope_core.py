@@ -345,6 +345,23 @@ def initializeOscilloscopeDataStorage():
 def populateOscilloscopeDataStorage(traceCount):
 	#sampleLength = 2000000
 	printFunctions.printToLog("\tGetting data from Oscilloscope for Trace No ->" + str(traceCount+1))
+	if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF'):
+		numpy.save(cfg.CHANNEL1_MEASUREMENT_FILE, signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, getDataFromOscilloscope('CHANNEL1')))
+		
+	if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF'):
+		numpy.save(cfg.CHANNEL1_MEASUREMENT_FILE, signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, getDataFromOscilloscope('CHANNEL2')))
+
+	if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF'):
+		numpy.save(cfg.CHANNEL1_MEASUREMENT_FILE, signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, getDataFromOscilloscope('CHANNEL3')))
+
+	if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF'):
+		numpy.save(cfg.CHANNEL1_MEASUREMENT_FILE, signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, getDataFromOscilloscope('CHANNEL4')))
+
+				
+
+def oldpopulateOscilloscopeDataStorage(traceCount):
+	#sampleLength = 2000000
+	printFunctions.printToLog("\tGetting data from Oscilloscope for Trace No ->" + str(traceCount+1))		
 	tempChannel1Data = getDataFromOscilloscope('CHANNEL1') if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF') else None
 	tempChannel2Data = getDataFromOscilloscope('CHANNEL2') if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF') else None
 	tempChannel3Data = getDataFromOscilloscope('CHANNEL3') if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF') else None
@@ -366,8 +383,7 @@ def populateOscilloscopeDataStorage(traceCount):
 		tempChannel1Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF') else None
 		tempChannel2Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF') else None
 		tempChannel3Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF') else None
-		tempChannel4Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF') else None				
-
+		tempChannel4Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF') else None
 def saveOscilloscopeDataStorage():
 	printFunctions.printToScreenAndLog("\tSaving the data from Oscilloscope")
 	if (cfg.channel1Data != None):		
