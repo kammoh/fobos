@@ -5,7 +5,6 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.fobos_package.all;
 
 entity hostfpga_comm is 
-generic (board : integer := NEXYS3);
 port (
   clk : in std_logic;           -- system clock
   EppAstb: in std_logic;        -- Address strobe
@@ -24,17 +23,17 @@ port (
 --  adc_or : in std_logic
 
    -- Oscilloscope Ports
-	trigger : out std_logic;
+	trigger : out std_logic
 
 	-- DUT Ports
-	victimClock : out std_logic;
-	reset: out std_logic;
-	src_ready: out std_logic;
-	dst_ready: out std_logic;
-	datain: out std_logic_vector(3 downto 0);
-	src_read: in std_logic;
-	dst_write: in std_logic;
-	dataout: in std_logic_vector(3 downto 0)
+--	victimClock : out std_logic;
+--	reset: out std_logic;
+--	src_ready: out std_logic;
+--	dst_ready: out std_logic;
+--	datain: out std_logic_vector(interfaceWidth-1 downto 0);
+--	src_read: in std_logic;
+--	dst_write: in std_logic;
+--	dataout: in std_logic_vector(interfaceWidth-1 downto 0)
 
 );
 end hostfpga_comm;
@@ -63,12 +62,13 @@ signal clktobram, targetModuleReset : std_logic;
 signal victimClk, victimDCMLocked : std_logic;
 signal encStart, encEnd, triggerCheck : std_logic;
 signal dlEnb, dlRst, drRst, drEnb, klRst, klEnb : std_logic;
-signal vdlEnb, vdlRst, vklEnb, vklRst, vrRst, vrEnb : std_logic;
-signal dataToCtrlBrd, keyToCtrlBrd : std_logic_vector(127 downto 0);
-signal dataFromCtrlBrd : std_logic_vector(127 downto 0);
+signal vdlEnb, vdlRst, vklEnb, vklRst, vrRst, vrEnb, cdlEnb, cklEnb, cklRst : std_logic;
+signal dataToCtrlBrd : std_logic_vector(maxBlockSize-1 downto 0);
+signal keyToCtrlBrd : std_logic_vector(maxKeySize-1 downto 0);
+signal dataFromCtrlBrd : std_logic_vector(maxBlockSize-1 downto 0);
 signal dataFromPc, dataToPc : std_logic_vector(7 downto 0);
---signal src_read, src_ready, dst_ready, dst_write : std_logic;
---signal datain, dataout : std_logic_vector(15 downto 0);
+signal src_read, src_ready, dst_ready, dst_write : std_logic;
+signal datain, dataout : std_logic_vector(interfaceWidth-1 downto 0);
 ------------------------------------------------------------------------
 -- Data Registers Declarations
 ------------------------------------------------------------------------
@@ -460,13 +460,13 @@ triggerLength => triggerLength, noOfTriggerWaitCycles => noOfTriggerWaitCycles, 
 --------------------------------------------------------------------------
 
 --
-pcToControlBoardDataShiftReg : shiftreg_8x128 port map (clock => EppDstb, reset =>dlRst,
+pcToControlBoardDataShiftReg : shiftregDataFromPC generic map (dataSize => maxBlockSize) port map (clock => EppDstb, reset =>dlRst,
 sr_e => dlEnb, sr_input => dataFromPc, sr_output => dataToCtrlBrd);
 --
-pcToControlBoardKeyShiftReg : shiftreg_8x128 port map (clock => EppDstb, reset =>klRst,
+pcToControlBoardKeyShiftReg : shiftregDataFromPC generic map (dataSize => maxKeySize)port map (clock => EppDstb, reset =>klRst,
 sr_e => klEnb, sr_input => dataFromPc, sr_output => keyToCtrlBrd);
 --
-controlBoardToPCShiftReg : shiftreg_128x8 port map (clock => EppDstb, reset =>drRst,
+controlBoardToPCShiftReg : shiftregDataToPC generic map (dataSize => maxBlockSize)port map (clock => EppDstb, load =>drRst,
 sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc); 
 --
 --
@@ -474,22 +474,25 @@ sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc);
 -------- SHIFT REGISTERS FOR CONTROL BOARD TO VICTIM BOARD AND VICE-VERSA
 ----------------------------------------------------------------------------
 --
-dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
+--dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
 
-ControlVictimCommunication: victimComm port map(
-clock => victimClk, start => encStart, reset => system_reset, targetClock => victimCLk,
-src_read  => src_read, dst_write => dst_write, block_size => dataBlockSize,
-key_size => keySize, vdlRst => vdlRst, vdlEnb => cdlEnb, vklRst => cklRst,
-vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready);
-
-controlBoardToVictimDataShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vdlRst,
-sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+--ControlVictimCommunication: victimComm port map(
+--clock => victimClk, start => encStart, reset => system_reset, targetClock => victimCLk,
+--src_read  => src_read, dst_write => dst_write, block_size => dataBlockSize,
+--key_size => keySize, vdlRst => vdlRst, vdlEnb => cdlEnb, vklRst => cklRst,
+--vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready);
 --
-controlBoardToVictimKeyShiftreg : shiftreg_128x16 (clock => victimClk, reset =>vklRst,
-sr_e => vklEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
---
-victimToControlBoardShiftReg : shiftreg16x128 (clock => victimClk, reset =>vrRst,
-sr_e => vrEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
+--controlBoardToVictimDataShiftreg : shiftregDataToVictim generic map( interfaceSize => interfaceWidth,
+--		dataSize => maxBlockSize) port map (clock => victimClk, reset =>vdlRst,
+--sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+----
+--controlBoardToVictimKeyShiftreg : shiftregDataToVictim generic map( interfaceSize => interfaceWidth,
+--		dataSize => maxBlockSize) port map(clock => victimClk, reset =>vklRst,
+--sr_e => vklEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
+----
+--victimToControlBoardShiftReg : shiftregDataFromVictim generic map( interfaceSize => interfaceWidth,
+--		dataSize => maxBlockSize) port map(clock => victimClk, reset =>vrRst,
+--sr_e => vrEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
 
 
 
@@ -518,6 +521,6 @@ displayLED <= dataBlockSize when displayReg = x"01" else
 			  displayReg;
 
 trigger <= triggerCheck;			  
-victimClock <= victimClk;
+--victimClock <= victimClk;
 end Behavioral;
 

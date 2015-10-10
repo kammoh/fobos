@@ -4,6 +4,13 @@ use ieee.std_logic_1164.all;
 package fobos_package is
 
 ------------------------------------------------------------------------
+-- USER CONTROLLED VAIRABLES
+------------------------------------------------------------------------
+constant board : integer := 1;
+constant interfaceWidth : integer := 4;
+constant maxBlockSize : integer := 128;
+constant maxKeySize : integer := 128;
+------------------------------------------------------------------------
 -- Different Control Board Versions
 ------------------------------------------------------------------------
 
@@ -32,6 +39,15 @@ sampleclk : in std_logic;
 reset : in std_logic;
 frequency_counter_out : out std_logic_vector(31 downto 0));
 end component;
+
+component errorCodes is
+port (
+		victimDCMLocked : in std_logic;
+		dataReadyToPickup : in std_logic;
+		statusCode : out std_logic_vector(7 downto 0));
+
+end component;
+
 
 component EppCtrl is
     Port (
@@ -124,54 +140,58 @@ port (
 
 end component;
 
-component shiftreg_8x128 IS
+component shiftregDataFromPC IS
+generic (dataSize : integer := 128);
 port
 (
 clock: in std_logic;
 reset: in std_logic;
 sr_e : in std_logic;
 sr_input : in std_logic_vector (7 downto 0);
-sr_output: out std_logic_vector (127 downto 0)
+sr_output: out std_logic_vector (dataSize-1 downto 0)
 
 ) ;
 end component;
 
-component shiftreg_128x8 IS
+component shiftregDataToPC IS
+generic (dataSize: integer := 128);
 port
 (
 clock: in std_logic;
-reset: in std_logic; 
+load: in std_logic; 
 sr_e : in std_logic;
-sr_input : in std_logic_vector (127 downto 0);
+sr_input : in std_logic_vector (dataSize-1 downto 0);
 sr_output: out std_logic_vector (7 downto 0)
 
 ) ;
 end component;
 
-component shiftreg_128x16 IS
+component shiftregDataToVictim IS
+generic( interfaceSize : integer := 4;
+		dataSize: integer:= 128);
 port
 (
 clock: in std_logic;
-reset: in std_logic; 
+enable: in std_logic; 
 sr_e : in std_logic;
-sr_input : in std_logic_vector (127 downto 0);
-sr_output: out std_logic_vector (15 downto 0)
+sr_input : in std_logic_vector (dataSize-1 downto 0);
+sr_output: out std_logic_vector (interfaceSize-1 downto 0)
 
 ) ;
-
 end component;
 
-component shiftreg_16x128 IS
+component shiftregDataFromVictim IS
+generic( interfaceSize : integer := 4;
+		dataSize: integer:= 128);
 port
 (
 clock: in std_logic;
-reset: in std_logic;
+enable: in std_logic;
 sr_e : in std_logic;
-sr_input : in std_logic_vector (15 downto 0);
-sr_output: out std_logic_vector (127 downto 0)
+sr_input : in std_logic_vector (interfaceSize-1 downto 0);
+sr_output: out std_logic_vector (dataSize-1 downto 0)
 
 ) ;
-
 end component;
 
 component victimComm is 
