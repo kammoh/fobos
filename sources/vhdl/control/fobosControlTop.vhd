@@ -4,7 +4,7 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.fobos_package.all;
 
-entity hostfpga_comm is 
+entity fobosControlTop is 
 port (
   clk : in std_logic;           -- system clock
   EppAstb: in std_logic;        -- Address strobe
@@ -36,9 +36,9 @@ port (
 --	dataout: in std_logic_vector(interfaceWidth-1 downto 0)
 
 );
-end hostfpga_comm;
+end fobosControlTop;
 
-architecture Behavioral of hostfpga_comm is 
+architecture Behavioral of fobosControlTop is 
 ------------------------------------------------------------------------
 -- Constant and Signal Declarations
 ------------------------------------------------------------------------
@@ -474,7 +474,7 @@ sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc);
 -------- SHIFT REGISTERS FOR CONTROL BOARD TO VICTIM BOARD AND VICE-VERSA
 ----------------------------------------------------------------------------
 --
---dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
+dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
 
 --ControlVictimCommunication: victimComm port map(
 --clock => victimClk, start => encStart, reset => system_reset, targetClock => victimCLk,

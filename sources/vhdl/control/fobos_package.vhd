@@ -6,7 +6,7 @@ package fobos_package is
 ------------------------------------------------------------------------
 -- USER CONTROLLED VAIRABLES
 ------------------------------------------------------------------------
-constant board : integer := 1;
+constant board : integer := 2;
 constant interfaceWidth : integer := 4;
 constant maxBlockSize : integer := 128;
 constant maxKeySize : integer := 128;
