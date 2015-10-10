@@ -295,6 +295,7 @@ def getDataFromOscilloscope(channelName) :
   fid = open(cfg.TEMP_PREAMBLE_FILE, "rb")
   preamble = numpy.fromfile(fid, dtype= numpy.float64, count = 10, sep = ",")
   fid.close()
+  print preamble
   printFunctions.printToLog("\tTotal Number of Points to Receive: " + str(int(preamble[2])))
   cfg.SAMPLE_LENGTH_FROM_OSC = int(preamble[2])
   vdiv = 32 * preamble[7]
