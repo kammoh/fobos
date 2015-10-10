@@ -209,7 +209,7 @@ def get_waveform_power() :
   tData = int(preamble[2])
   wavedata = ""
   count = 0
-  temp = cfg.Oscilloscope.recv(tData)
+  temp = cfg.Oscilloscope.recv(tData, socket.MSG_WAITALL)
   lowerBound = tData - len(temp)
   rData = lowerBound
   temp = temp[10:]
