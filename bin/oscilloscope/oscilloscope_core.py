@@ -344,7 +344,7 @@ def initializeOscilloscopeDataStorage():
 
 def populateOscilloscopeDataStorage(traceCount):
 	#sampleLength = 2000000
-	print cfg.SAMPLE_LENGTH_FROM_OSC
+	cfg.SAMPLE_LENGTH_FROM_OSC = 1000
 	printFunctions.printToLog("\tGetting data from Oscilloscope for Trace No ->" + str(traceCount+1))
 	if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF'):
 		numpy.save(cfg.CHANNEL1_MEASUREMENT_FILE, signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, getDataFromOscilloscope('CHANNEL1')))
