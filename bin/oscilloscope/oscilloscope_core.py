@@ -288,6 +288,7 @@ def getDataFromOscilloscope(channelName) :
   printFunctions.printToLog("\tReading Preamble of " + channelName)
   cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')
   preamble = cfg.Oscilloscope.recv(200)
+  print "first"
   print preamble
   fileId = open(cfg.TEMP_PREAMBLE_FILE, "wb")
   fileId.write(preamble)
@@ -295,12 +296,14 @@ def getDataFromOscilloscope(channelName) :
   fid = open(cfg.TEMP_PREAMBLE_FILE, "rb")
   preamble = numpy.fromfile(fid, dtype= numpy.float64, count = 10, sep = ",")
   fid.close()
+  print "second"
   print preamble
+  print str(int(preamble[2]))
   printFunctions.printToLog("\tTotal Number of Points to Receive: " + str(int(preamble[2])))
   cfg.SAMPLE_LENGTH_FROM_OSC = int(preamble[2])
   vdiv = 32 * preamble[7]
   off = preamble[8]
-  sdiv = preamble[2] * preamble [4] / 10
+  sdiv = preamble[2] * preamble[4] / 10
   delay = (preamble[2] / 2) * preamble[4] + preamble[5]
   printFunctions.printToLog("\t\tScope Settings for -> " + channelName)
   printFunctions.printToLog("\t\tVolts per Division = " + str(vdiv))
@@ -323,7 +326,7 @@ def getDataFromOscilloscope(channelName) :
     temp = cfg.Oscilloscope.recv(rData)
     count += len(temp)
     rData = tData - count
-  #print wavedata
+  print wavedata
   printFunctions.printToLog("Got the entire data. Moving on..!")
   fileId = open(cfg.TEMP_MEASUREMENT_FILE, "wb")
   fileId.write(str(wavedata))
