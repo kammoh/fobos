@@ -287,7 +287,8 @@ def getDataFromOscilloscope(channelName) :
   printFunctions.printToLog("\t# of samples requested -> " + cmdString)    
   printFunctions.printToLog("\tReading Preamble of " + channelName)
   cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')
-  preamble = cfg.Oscilloscope.recv(400)
+  preamble = cfg.Oscilloscope.recv(200)
+  print preamble
   fileId = open(cfg.TEMP_PREAMBLE_FILE, "wb")
   fileId.write(preamble)
   fileId.close()
