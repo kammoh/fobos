@@ -1,5 +1,0 @@
-################################################################################
-	Starting FOBOS - Flexible Opensource BOard for Sidechannel Analysis
-################################################################################
-Obtaining oscilloscope attributesNumber of Encryption: 1600Block Size: 16Reading 25600 bytes from C:\Users\Rajesh Velegalati\Dropbox\FOBOS\test\sources\plaintexts.txt fileKey Size :16Reading Key from C:\Users\Rajesh Velegalati\Dropbox\FOBOS\test\sources\keys.txt fileInitializing USB - FPGA Communication...	Depp protocol enabled at Port 0
------------------------------------------------		Nexys2 - Main Clock Frequency - 50 MHz

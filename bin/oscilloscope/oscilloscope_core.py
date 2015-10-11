@@ -172,7 +172,9 @@ def setOscilloscopeConfigAttributes():
   cmd_string = ":ACQUIRE:COMPLETE 100"
   printFunctions.printToLog("\t"+ cmd_string)
   cfg.Oscilloscope.send(cmd_string+'\n')
- 
+  cfg.Oscilloscope.send(":WAVEFORM:FORMAT BYTE" + '\n')
+  cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE RAW" + '\n') 
+
 def extractOscilloscopeConfigAttributes():
   data_from_file = support.readFile(cfg.OSC_CONFIGFILE)
   data_list = support.removeComments(data_from_file)
@@ -270,8 +272,9 @@ def get_waveform_trigger() :
   return (measuredTriggerData)  
 
 def getDataFromOscilloscope(channelName) :
-  cfg.Oscilloscope.send(":WAVEFORM:FORMAT BYTE" + '\n')
-  cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE RAW" + '\n')
+  #cfg.Oscilloscope.send("*OPC")
+  #cfg.Oscilloscope.send(":WAVEFORM:FORMAT BYTE" + '\n')
+  #cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE RAW" + '\n')
   if(channelName == 'CHANNEL1'):
 	chanType = 'CHAN1'
   if(channelName == 'CHANNEL2'):
@@ -281,24 +284,31 @@ def getDataFromOscilloscope(channelName) :
   if(channelName == 'CHANNEL4'):
 	chanType = 'CHAN4'	
   cmdString = ":WAVEFORM:SOURCE " + chanType 
+  #print cmdString
   cfg.Oscilloscope.send(cmdString + '\n')
+  cfg.Oscilloscope.send(":WAVEFORM:SOURCE?" + '\n')
+  #print cfg.Oscilloscope.recv(1000)
+  cmdString = ":WAVEFORM:POINTS?"
+  cfg.Oscilloscope.send(cmdString + '\n')
+  ponts =   cfg.Oscilloscope.recv(100)
+  #print "No of points in waveform " + str(ponts)
   #cmdString = ":WAVEFORM:POINTS " + str(cfg.osc_attributes['WAVE_DATA_SIZE'])
   #cfg.Oscilloscope.send(cmdString + '\n') 
   printFunctions.printToLog("\t# of samples requested -> " + cmdString)    
   printFunctions.printToLog("\tReading Preamble of " + channelName)
   cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')
-  preamble = cfg.Oscilloscope.recv(200)
-  print "first"
-  print preamble
+  preamble = cfg.Oscilloscope.recv(400)
+  #print "first"
+  #print preamble
   fileId = open(cfg.TEMP_PREAMBLE_FILE, "wb")
   fileId.write(preamble)
   fileId.close()
   fid = open(cfg.TEMP_PREAMBLE_FILE, "rb")
   preamble = numpy.fromfile(fid, dtype= numpy.float64, count = 10, sep = ",")
   fid.close()
-  print "second"
-  print preamble
-  print str(int(preamble[2]))
+  #print "second"
+  #print preamble
+  #print str(int(preamble[2]))
   printFunctions.printToLog("\tTotal Number of Points to Receive: " + str(int(preamble[2])))
   cfg.SAMPLE_LENGTH_FROM_OSC = int(preamble[2])
   vdiv = 32 * preamble[7]
@@ -314,19 +324,24 @@ def getDataFromOscilloscope(channelName) :
   cfg.Oscilloscope.send(":WAVEFORM:DATA?" + '\n') 
   tData = int(preamble[2])
   wavedata = ""
-  count = 0
   temp = cfg.Oscilloscope.recv(tData)
-  lowerBound = tData - len(temp)
-  rData = lowerBound
-  temp = temp[10:]
-  while(count < lowerBound):
-    printFunctions.printToLog("\tNo. of Bytes transferred : " + str(count))
-    printFunctions.printToLog("\tNo. of Bytes to be transferred : " + str(rData))	
-    wavedata = wavedata + temp
-    temp = cfg.Oscilloscope.recv(rData)
-    count += len(temp)
-    rData = tData - count
-  print wavedata
+  wavedata = wavedata+temp
+  #support.goToSleep(2)
+  while (len(wavedata) < tData):
+  	temp = cfg.Oscilloscope.recv(tData)
+        wavedata = wavedata + temp
+  #print "Length of obtained data - " + str(len(wavedata))
+  #lowerBound = tData - len(temp)
+  #rData = lowerBound
+  #temp = temp[10:]
+  #while(count < lowerBound):
+    #printFunctions.printToLog("\tNo. of Bytes transferred : " + str(count))
+    #printFunctions.printToLog("\tNo. of Bytes to be transferred : " + str(rData))	
+    #wavedata = wavedata + temp
+    #temp = cfg.Oscilloscope.recv(rData)
+    #count += len(temp)
+    #rData = tData - count
+  #print wavedata
   printFunctions.printToLog("Got the entire data. Moving on..!")
   fileId = open(cfg.TEMP_MEASUREMENT_FILE, "wb")
   fileId.write(str(wavedata))
