@@ -206,7 +206,7 @@ def get_waveform_trigger(MyInstrument) :
 	print "\tReading Preamble of Power Source"
 	MyInstrument.send(":WAVEFORM:PREAMBLE?" + '\n')
 	preamble = MyInstrument.recv(200)
-	fpowerpreamble = open("preambleChannel1.dat", "wb")
+	fpowerpreamble = open("preambleChannel2.dat", "wb")
 	fpowerpreamble.write(preamble)
 	fpowerpreamble.close()
 	fid = open("preambleChannel2.dat", "rb")
