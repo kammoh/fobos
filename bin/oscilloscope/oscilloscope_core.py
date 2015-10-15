@@ -272,9 +272,6 @@ def get_waveform_trigger() :
   return (measuredTriggerData)  
 
 def getDataFromOscilloscope(channelName) :
-  #cfg.Oscilloscope.send("*OPC")
-  #cfg.Oscilloscope.send(":WAVEFORM:FORMAT BYTE" + '\n')
-  #cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE RAW" + '\n')
   if(channelName == 'CHANNEL1'):
 	chanType = 'CHAN1'
   if(channelName == 'CHANNEL2'):
@@ -283,23 +280,16 @@ def getDataFromOscilloscope(channelName) :
 	chanType = 'CHAN3'
   if(channelName == 'CHANNEL4'):
 	chanType = 'CHAN4'	
-  cmdString = ":WAVEFORM:SOURCE " + chanType 
-  print cmdString
   cfg.Oscilloscope.send(":WAVEFORM:SOURCE " + chanType + '\n')
-  cfg.Oscilloscope.send(":WAVEFORM:SOURCE?" + '\n')
-  print "Requested Sample source.. Oscilloscope says" + cfg.Oscilloscope.recv(100)
-  cmdString = ":WAVEFORM:POINTS?"
-  cfg.Oscilloscope.send(cmdString + '\n')
-  ponts =   cfg.Oscilloscope.recv(100)
-  print "No of points in waveform " + str(ponts)
-  #cmdString = ":WAVEFORM:POINTS " + str(cfg.osc_attributes['WAVE_DATA_SIZE'])
-  #cfg.Oscilloscope.send(cmdString + '\n') 
+  #cfg.Oscilloscope.send(":WAVEFORM:POINTS 8000000" + '\n')  
+  cmdString = ":WAVEFORM:POINTS " + str(cfg.osc_attributes['WAVE_DATA_SIZE'])
+  cfg.Oscilloscope.send(cmdString + '\n') 
   printFunctions.printToLog("\t# of samples requested -> " + cmdString)    
   printFunctions.printToLog("\tReading Preamble of " + channelName)
   cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')
   preamble = cfg.Oscilloscope.recv(400)
   #print "first"
-  print "preamble as per oscilloscope - " + preamble
+  #print "preamble as per oscilloscope - " + preamble
   fileId = open(cfg.TEMP_PREAMBLE_FILE, "wb")
   fileId.write(preamble)
   fileId.close()
