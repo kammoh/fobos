@@ -284,14 +284,14 @@ def getDataFromOscilloscope(channelName) :
   if(channelName == 'CHANNEL4'):
 	chanType = 'CHAN4'	
   cmdString = ":WAVEFORM:SOURCE " + chanType 
-  #print cmdString
+  print cmdString
   cfg.Oscilloscope.send(cmdString + '\n')
   cfg.Oscilloscope.send(":WAVEFORM:SOURCE?" + '\n')
-  #print cfg.Oscilloscope.recv(1000)
+  print "Requested Sample source.. Oscilloscope says" + cfg.Oscilloscope.recv(1000)
   cmdString = ":WAVEFORM:POINTS?"
   cfg.Oscilloscope.send(cmdString + '\n')
   ponts =   cfg.Oscilloscope.recv(100)
-  #print "No of points in waveform " + str(ponts)
+  print "No of points in waveform " + str(ponts)
   #cmdString = ":WAVEFORM:POINTS " + str(cfg.osc_attributes['WAVE_DATA_SIZE'])
   #cfg.Oscilloscope.send(cmdString + '\n') 
   printFunctions.printToLog("\t# of samples requested -> " + cmdString)    
@@ -299,7 +299,7 @@ def getDataFromOscilloscope(channelName) :
   cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')
   preamble = cfg.Oscilloscope.recv(400)
   #print "first"
-  #print preamble
+  print "preamble as per oscilloscope - " + preamble
   fileId = open(cfg.TEMP_PREAMBLE_FILE, "wb")
   fileId.write(preamble)
   fileId.close()
