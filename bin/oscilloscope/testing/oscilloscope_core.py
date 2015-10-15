@@ -203,18 +203,37 @@ def get_waveform_trigger(MyInstrument) :
 	MyInstrument.send(cmd_string + '\n')
 	MyInstrument.send(":WAVEFORM:POINTS:MODE BYTE" + '\n')
 	MyInstrument.send(":WAVEFORM:POINTS 8000000" + '\n')
-	print "Reading Preamble of Trigger Source"
+	print "\tReading Preamble of Power Source"
 	MyInstrument.send(":WAVEFORM:PREAMBLE?" + '\n')
 	preamble = MyInstrument.recv(200)
-	print "Total Number of Data to Receive: "+ preamble
-	print "Reading Data of Trigger Source"
+	fpowerpreamble = open("preambleChannel1.dat", "wb")
+	fpowerpreamble.write(preamble)
+	fpowerpreamble.close()
+	fid = open("preambleChannel2.dat", "rb")
+	preamble = numpy.fromfile(fid, dtype= numpy.float64, count = 10, sep = ",")
+	fid.close()
+	print "\tTotal Number of Points to Receive: " + str(int(preamble[2]))
+	print "\tReading Data of Power Source"
 	MyInstrument.send(":WAVEFORM:DATA?" + '\n') 
-	wavedata = MyInstrument.recv(8000000)
+	tData = int(preamble[2])
+	wavedata = ""
+	count = 0
+	temp = MyInstrument.recv(tData)
+	lowerBound = tData - len(temp)
+	rData = lowerBound
+	temp = temp[10:]
+	while(count < lowerBound):
+		print count,rData
+		wavedata = wavedata + temp
+		temp = MyInstrument.recv(rData)
+		count += len(temp)
+		rData = tData-count
+	print "No. of Bytes transferred per turn: " + str(len(temp))
 	print "\t\tWriting to file"
-	totaltrigger = preamble +wavedata
-	ftrigger = open("trigger.dat", "w")
-	ftrigger.writelines(totaltrigger)
-	ftrigger.close()
+	#print wavedata
+	fpower = open("channel2.dat", "wb")
+	fpower.write(str(wavedata))
+	fpower.close()
 	
 def get_snapshot(MyInstrument):
 	print "Capturing Snapshot of the Scope"
