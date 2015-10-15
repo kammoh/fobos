@@ -201,12 +201,12 @@ def get_waveform_trigger(MyInstrument) :
 	MyInstrument.send(":WAVEFORM:FORMAT BYTE" + '\n')
 	cmd_string = ":WAVEFORM:SOURCE CHAN2"
 	MyInstrument.send(cmd_string + '\n')
-	MyInstrument.send(":WAVEFORM:POINTS:MODE RAW" + '\n')
+	MyInstrument.send(":WAVEFORM:POINTS:MODE BYTE" + '\n')
 	MyInstrument.send(":WAVEFORM:POINTS 8000000" + '\n')
 	print "Reading Preamble of Trigger Source"
 	MyInstrument.send(":WAVEFORM:PREAMBLE?" + '\n')
-	preamble = MyInstrument.recv(5)
-	print "Total Number of Data to Receive: "+ str(int(preamble[2]))
+	preamble = MyInstrument.recv(200)
+	print "Total Number of Data to Receive: "+ preamble
 	print "Reading Data of Trigger Source"
 	MyInstrument.send(":WAVEFORM:DATA?" + '\n') 
 	wavedata = MyInstrument.recv(8000000)
