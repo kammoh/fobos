@@ -363,7 +363,7 @@ def populateOscilloscopeDataStorage(traceCount):
 	#sampleLength = 2000000
 	#cfg.SAMPLE_LENGTH_FROM_OSC = 1000
 	printFunctions.printToScreenAndLog("\tGetting data from Oscilloscope for Trace No ->" + str(traceCount+1))
-	print "Total array length " + len (cfg.SAMPLE_LENGTH_FROM_OSC)
+	#print "Total array length " + len (cfg.SAMPLE_LENGTH_FROM_OSC)
 	if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF'):
 		dataFromOscilloscope = getDataFromOscilloscope('CHANNEL1')
 		adjustedData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, dataFromOscilloscope)
