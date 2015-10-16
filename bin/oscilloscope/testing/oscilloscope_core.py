@@ -185,7 +185,7 @@ def get_waveform_power(MyInstrument) :
 	rData = lowerBound
 	temp = temp[10:]
 	while(count < lowerBound):
-		print count,rData
+	#	print count,rData
 		wavedata = wavedata + temp
 		temp = MyInstrument.recv(rData)
 		count += len(temp)
@@ -223,7 +223,7 @@ def get_waveform_trigger(MyInstrument) :
 	rData = lowerBound
 	temp = temp[10:]
 	while(count < lowerBound):
-		print count,rData
+		#print count,rData
 		wavedata = wavedata + temp
 		temp = MyInstrument.recv(rData)
 		count += len(temp)

@@ -119,16 +119,17 @@ if inst_attrib['ACQUIRE_COMPLETE'] :
 	MyInstrument.send(cmd_string+'\n')	
 
 ## Digitize
-
-MyInstrument.send(":DIGITIZE CHAN1,CHAN2" + '\n')
-## Read Power consumption of the target
-
-get_waveform_power(MyInstrument)
+i = 0
+while (i < 1000):
+	print "run No" + str(i)
+	MyInstrument.send(":DIGITIZE CHAN1,CHAN2" + '\n')
+## Read Power consumption of the targe
+	get_waveform_power(MyInstrument)
 #get_snapshot(MyInstrument)
 
 ## Read Trigger information of the target
-get_waveform_trigger(MyInstrument)
-
+	get_waveform_trigger(MyInstrument)
+	i = i +1
 ## Closing Oscilloscope socket
 MyInstrument.close()
 
