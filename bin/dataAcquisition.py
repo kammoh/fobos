@@ -45,25 +45,25 @@ def main():
 	configExtract.configureWorkspace()	
 	printFunctions.printHeaderToScreenAndLog()
 	extractOscilloscopeConfigAttributes()
-	#cfg.dataToControlBoard = getPlainText()
-	#cfg.keyToControlBoard = getKey()
+	cfg.dataToControlBoard = getPlainText()
+	cfg.keyToControlBoard = getKey()
 	openOscilloscopeConnection()
 	setOscilloscopeConfigAttributes()
 	initializeOscilloscopeDataStorage()
-	#openControlBoardConnection()
-	#setControlBoardConfigAttributes()
+	openControlBoardConnection()
+	setControlBoardConfigAttributes()
 	traceCount = 0
 	#displayReg(0x0C)
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
 		armOscilloscope()
-		#runEncrytionOnControlBoard(traceCount)
+		runEncrytionOnControlBoard(traceCount)
 		populateOscilloscopeDataStorage(traceCount)
-		#populateControlBoardOutputDataStorage(traceCount)
+		populateControlBoardOutputDataStorage(traceCount)
 		traceCount += 1
 	#saveOscilloscopeDataStorage()	
-	#saveControlBoardOutputDataStorage()
+	saveControlBoardOutputDataStorage()
 	closeOscilloscopeConnection()
-	#closeControlBoardConnection()
+	closeControlBoardConnection()
 #############################################################################
 ########### Show Plots for Power and Trigger
 ##############################################################################
