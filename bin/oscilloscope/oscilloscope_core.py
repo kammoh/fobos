@@ -283,11 +283,11 @@ def getDataFromOscilloscope(channelName) :
 	chanType = 'CHAN4'	
   cfg.Oscilloscope.send(":WAVEFORM:SOURCE " + chanType + '\n')
   cfg.Oscilloscope.send(":WAVEFORM:SOURCE?" + '\n')
-  #print "\tOscilloscope Says .. ->" +cfg.Oscilloscope.recv(200)
+  printFunctions.printToLog("\tOscilloscope Says .. Acquiring  ->" + cfg.Oscilloscope.recv(200))
   cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE BYTE" + '\n')
   cfg.Oscilloscope.send(":WAVEFORM:POINTS 8000000" + '\n')  
   cfg.Oscilloscope.send("WAVEFORM:POINTS?" + '\n')
-  #print "\tOscillopscope Says .. > " + cfg.Oscilloscope.recv(200)
+  printFunctions.printToLog("\tOscillopscope Says .. Obtaining # point -> " + cfg.Oscilloscope.recv(200))
 
   #cmdString = ":WAVEFORM:POINTS " + str(cfg.osc_attributes['WAVE_DATA_SIZE'])
   #print cmdString
