@@ -367,22 +367,26 @@ def populateOscilloscopeDataStorage(traceCount):
 	if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF'):
 		dataFromOscilloscope = getDataFromOscilloscope('CHANNEL1')
 		adjustedData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, dataFromOscilloscope)
-		numpy.save(cfg.CHANNEL1_MEASUREMENT_FILE, adjustedData)
+		with open(cfg.CHANNEL1_MEASUREMENT_FILE, 'a') as fileHandle:
+			numpy.save(fileHandle, adjustedData)
 		
 	if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF'):
 		dataFromOscilloscope = getDataFromOscilloscope('CHANNEL2')
 		adjustedData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, dataFromOscilloscope)
-		numpy.save(cfg.CHANNEL2_MEASUREMENT_FILE, adjustedData)
+		with open(cfg.CHANNEL2_MEASUREMENT_FILE, 'a') as fileHandle:
+			numpy.save(fileHandle, adjustedData)
 		
 	if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF'):
 		dataFromOscilloscope = getDataFromOscilloscope('CHANNEL3')
 		adjustedData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, dataFromOscilloscope)
-		numpy.save(cfg.CHANNEL3_MEASUREMENT_FILE, adjustedData)
+		with open(cfg.CHANNEL3_MEASUREMENT_FILE, 'a') as fileHandle:
+			numpy.save(fileHandle, adjustedData)
 		
 	if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF'):
 		dataFromOscilloscope = getDataFromOscilloscope('CHANNEL4')
 		adjustedData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, dataFromOscilloscope)
-		numpy.save(cfg.CHANNEL4_MEASUREMENT_FILE, adjustedData)
+		with open(cfg.CHANNEL4_MEASUREMENT_FILE, 'a') as fileHandle:
+			numpy.save(fileHandle, adjustedData)
 				
 
 def oldpopulateOscilloscopeDataStorage(traceCount):
