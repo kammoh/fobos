@@ -107,7 +107,7 @@ def adjustSampleSize(sampleLength, dataArray):
 		temp = dataArray.shape
 		newDataArray = dataArray
 		arrLen = temp[0]
-		print "Array Length --> " + str(arrLen)
+		#print "Array Length --> " + str(arrLen)
 		if (arrLen == sampleLength):
 			return dataArray
 		elif (arrLen > sampleLength):

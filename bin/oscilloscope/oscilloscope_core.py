@@ -283,11 +283,11 @@ def getDataFromOscilloscope(channelName) :
 	chanType = 'CHAN4'	
   cfg.Oscilloscope.send(":WAVEFORM:SOURCE " + chanType + '\n')
   cfg.Oscilloscope.send(":WAVEFORM:SOURCE?" + '\n')
-  print "\tOscilloscope Says .. ->" +cfg.Oscilloscope.recv(200)
+  #print "\tOscilloscope Says .. ->" +cfg.Oscilloscope.recv(200)
   cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE BYTE" + '\n')
   cfg.Oscilloscope.send(":WAVEFORM:POINTS 8000000" + '\n')  
   cfg.Oscilloscope.send("WAVEFORM:POINTS?" + '\n')
-  print "\tOscillopscope Says .. > " + cfg.Oscilloscope.recv(200)
+  #print "\tOscillopscope Says .. > " + cfg.Oscilloscope.recv(200)
 
   #cmdString = ":WAVEFORM:POINTS " + str(cfg.osc_attributes['WAVE_DATA_SIZE'])
   #print cmdString
@@ -297,7 +297,7 @@ def getDataFromOscilloscope(channelName) :
   cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')
   preamble = cfg.Oscilloscope.recv(200)
   #print "first"
-  print "\tpreamble as per oscilloscope - " + preamble
+  #print "\tpreamble as per oscilloscope - " + preamble
   fileId = open(cfg.TEMP_PREAMBLE_FILE, "wb")
   fileId.write(preamble)
   fileId.close()
@@ -313,12 +313,12 @@ def getDataFromOscilloscope(channelName) :
   off = preamble[8]
   sdiv = preamble[2] * preamble[4] / 10
   delay = (preamble[2] / 2) * preamble[4] + preamble[5]
-  printFunctions.printToScreenAndLog("\t\tScope Settings for -> " + channelName)
-  printFunctions.printToScreenAndLog("\t\tVolts per Division = " + str(vdiv))
-  printFunctions.printToScreenAndLog("\t\tOffset = " + str(off))
-  printFunctions.printToScreenAndLog("\t\tSeconds per Division = " + str(sdiv))
-  printFunctions.printToScreenAndLog("\t\tDelay = " + str(delay))  
-  printFunctions.printToScreenAndLog("\tReading Data of " + channelName)
+  printFunctions.printToLog("\t\tScope Settings for -> " + channelName)
+  printFunctions.printToLog("\t\tVolts per Division = " + str(vdiv))
+  printFunctions.printToLog("\t\tOffset = " + str(off))
+  printFunctions.printToLog("\t\tSeconds per Division = " + str(sdiv))
+  printFunctions.printToLog("\t\tDelay = " + str(delay))  
+  printFunctions.printToLog("\tReading Data of " + channelName)
   cfg.Oscilloscope.send(":WAVEFORM:DATA?" + '\n') 
   tData = int(preamble[2])
   wavedata = ""
@@ -328,7 +328,7 @@ def getDataFromOscilloscope(channelName) :
   while (len(wavedata) < tData):
   	temp = cfg.Oscilloscope.recv(tData)
         wavedata = wavedata + temp
-  print "\tLength of obtained data - " + str(len(wavedata))
+  #print "\tLength of obtained data - " + str(len(wavedata))
   #lowerBound = tData - len(temp)
   #rData = lowerBound
   #temp = temp[10:]
@@ -348,9 +348,9 @@ def getDataFromOscilloscope(channelName) :
   support.removeFile(cfg.TEMP_PREAMBLE_FILE)
   support.removeFile(cfg.TEMP_MEASUREMENT_FILE)
   if (cfg.SAMPLE_LENGTH_FROM_OSC == None):
-	print "\t\tFirst run"
+	#print "\t\tFirst run"
 	cfg.SAMPLE_LENGTH_FROM_OSC = len(measuredChannelData)
-  print "\tSAmple Length --> " + str(cfg.SAMPLE_LENGTH_FROM_OSC)
+  #print "\tSAmple Length --> " + str(cfg.SAMPLE_LENGTH_FROM_OSC)
   return (measuredChannelData)
 
 def initializeOscilloscopeDataStorage():
