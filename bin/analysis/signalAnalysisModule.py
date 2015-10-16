@@ -103,10 +103,11 @@ def adjustSampleSize(sampleLength, dataArray):
 		if(cfg.PROGRAM_CALL == "ANALYSIS"):
 			printFunctions.printToAnalysisLog("\tAdjusting Sample Size to ->" + str(sampleLength))
 		else:
-			printFunctions.printToLog("\tAdjusting Sample Size to ->" + str(sampleLength))
+			printFunctions.printToScreenAndLog("\tAdjusting Sample Size to ->" + str(sampleLength))
 		temp = dataArray.shape
 		newDataArray = dataArray
 		arrLen = temp[0]
+		print "Array Length --> " + str(arrLen)
 		if (arrLen == sampleLength):
 			return dataArray
 		elif (arrLen > sampleLength):
