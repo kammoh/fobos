@@ -27,15 +27,15 @@ import matplotlib.pyplot as plt
 ######## SUB MACROS ####################################################
 ########################################################################
 
-CHANNEL1_MEASUREMENT_FILE_NAME = "channel1Data.dat"
-CHANNEL2_MEASUREMENT_FILE_NAME = "channel2Data.dat"
-CHANNEL3_MEASUREMENT_FILE_NAME = "channel3Data.dat"
-CHANNEL4_MEASUREMENT_FILE_NAME = "channel4Data.dat"
+CHANNEL1_MEASUREMENT_FILE_NAME = "channel1Data.npy"
+CHANNEL2_MEASUREMENT_FILE_NAME = "channel2Data.npy"
+CHANNEL3_MEASUREMENT_FILE_NAME = "channel3Data.npy"
+CHANNEL4_MEASUREMENT_FILE_NAME = "channel4Data.npy"
 
-CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME = "channel1TriggerData.dat"
-CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME = "channel2TriggerData.dat"
-CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME = "channel3TriggerData.dat"
-CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME = "channel4TriggerData.dat"
+CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME = "channel1TriggerData.npy"
+CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME = "channel2TriggerData.npy"
+CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME = "channel3TriggerData.npy"
+CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME = "channel4TriggerData.npy"
 
 def clearScreen():
   os.system( [ 'clear', 'cls' ][ os.name == 'nt' ] )
@@ -44,7 +44,7 @@ def clearScreen():
 def plotRawTrace(fileName, traceLowerBound, traceUpperBound):
 	if os.path.exists(fileName):
 		print "-> File Set - " + fileName
-		dataToPlot = numpy.loadtxt(fileName)
+		dataToPlot = numpy.load(fileName)
 		plotName = str(fileName)
 		figs = plt.figure()	
 		figs.suptitle(plotName, fontsize=14, fontweight='bold')
