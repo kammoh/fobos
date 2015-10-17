@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use work.fobos_package.all;
 
-entity victimComm is 
+entity victimCommunicationHandler is 
 	port(
 	     clock: in std_logic;
 		 start : in std_logic;
@@ -10,52 +10,38 @@ entity victimComm is
 		 targetClock : in std_logic;
 		 src_read  : in std_logic;
 		 dst_write : in std_logic;
-		 block_size : in std_logic_vector(7 downto 0);
-		 key_size : in std_logic_vector(7 downto 0);
-		 vdlRst : out std_logic;
-		 vdlEnb : out std_logic;
-		 vklRst : out std_logic;
-		 vklEnb : out std_logic;		 
-		 vrRst : out std_logic;
-		 vrEnb : out std_logic;
+		 vdlRst : out std_logic; -- Victim TO Data load 
+		 vdlEnb : out std_logic; -- Victim TO Data enable
+		 vklRst : out std_logic; -- Victim TO Key load
+		 vklEnb : out std_logic; -- Victim TO Key load		 
+		 vrRst : out std_logic; -- Victim FROM data load
+		 vrEnb : out std_logic; -- Victim FROM data enable
 		 src_ready : out std_logic;
 		 dst_ready : out std_logic		 
 		 );
-end victimComm;
+end victimCommunicationHandler;
 
 
-architecture structure of victimComm is
+architecture structure of victimCommunicationHandler is
 type state is (boot, init1, st1, st2, st3, st4, st5); 
 signal pr_state,nx_state:state;
 
 signal load_cnt_key, enb_cnt_key, load_cnt_data, enb_cnt_data, load_cnt_ct, enb_cnt_ct : std_logic;
 signal data_set, key_set, ct_set : std_logic;  
-signal dataBlockSize, keyBlockSize, vDataBlockSize : std_logic_vector(7 downto 0);
+signal dataBlockSize, keyBlockSize, vDataBlockSize : integer RANGE 0 to (maxBlockSize/interfaceWidth);
 
 begin
 	
 ------------------------ Control signals to Victim Controller------------
-dataTovictimCounter : 	counter generic map(N => 8) port map(
-		 clk => targetClock,
-		 reset => load_cnt_data,
-		 enable => enb_cnt_data,
-		 counter_out => dataBlockSize);
-keyTovictimCounter : 	counter generic map(N => 8) port map(
-		 clk => targetClock,
-		 reset => load_cnt_key,
-		 enable => enb_cnt_key,
-		 counter_out => keyBlockSize);
-		 
-dataFromVictimCounter :  counter generic map(N => 8) port map(
-		 clk => targetClock,
-		 reset => load_cnt_data,
-		 enable => enb_cnt_data,
-		 counter_out => vDataBlockSize);
-		 		 
+counterInputkey : integerCounter port map(clock => clock, reset => reset, load => load_cnt_key, enable => enb_cnt_key, q => keyBlockSize);
+key_set <= '1' when  keyBlockSize >= (maxKeySize/interfaceWidth)-1 else '0';
 
-data_set <= '1' when  dataBlockSize >= block_size else '0';
-key_set <= '1' when  keyBlockSize >= key_size else '0';
-ct_set <= '1' when vDataBlockSize >= block_size else '0';
+counterInputdata : integerCounter port map(clock => clock, reset => reset, load => load_cnt_data, enable => enb_cnt_data, q => dataBlockSize);
+data_set <= '1' when  dataBlockSize >= (maxBlockSize/interfaceWidth)-1 else '0';
+
+counterOutputData : integerCounter port map(clock => clock, reset => reset, load => load_cnt_output, enable => enb_cnt_output, q => vDataBlockSize);	
+ct_set <= '1' when vDataBlockSize >= (maxBlockSize/interfaceWidth)-1 else '0';
+
 -----------------------------------------------------------------------------------	
 present_state:	process (reset,clock)
 					begin
