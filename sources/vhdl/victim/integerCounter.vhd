@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.all; 
 use IEEE.STD_LOGIC_unsigned.all;
 use IEEE.STD_LOGIC_arith.all;
-use work.victim_pkg.all;
+use work.fobos_package.all;
 
 entity integerCounter is  
 	 port(

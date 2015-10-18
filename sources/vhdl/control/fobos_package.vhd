@@ -6,7 +6,7 @@ package fobos_package is
 ------------------------------------------------------------------------
 -- USER CONTROLLED VAIRABLES
 ------------------------------------------------------------------------
-constant board : integer := 2;
+constant board : integer := 1;
 constant interfaceWidth : integer := 4;
 constant maxBlockSize : integer := 128;
 constant maxKeySize : integer := 128;
@@ -172,7 +172,7 @@ generic( interfaceSize : integer := 4;
 port
 (
 clock: in std_logic;
-enable: in std_logic; 
+load: in std_logic; 
 sr_e : in std_logic;
 sr_input : in std_logic_vector (dataSize-1 downto 0);
 sr_output: out std_logic_vector (interfaceSize-1 downto 0)
@@ -186,7 +186,7 @@ generic( interfaceSize : integer := 4;
 port
 (
 clock: in std_logic;
-enable: in std_logic;
+reset: in std_logic;
 sr_e : in std_logic;
 sr_input : in std_logic_vector (interfaceSize-1 downto 0);
 sr_output: out std_logic_vector (dataSize-1 downto 0)
@@ -194,7 +194,7 @@ sr_output: out std_logic_vector (dataSize-1 downto 0)
 ) ;
 end component;
 
-component victimComm is 
+component victimCommunicationHandler is 
 	port(
 	     clock: in std_logic;
 		 start : in std_logic;
@@ -202,17 +202,90 @@ component victimComm is
 		 targetClock : in std_logic;
 		 src_read  : in std_logic;
 		 dst_write : in std_logic;
-		 block_size : in std_logic_vector(7 downto 0);
-		 key_size : in std_logic_vector(7 downto 0);
-		 vdlRst : out std_logic;
-		 vdlEnb : out std_logic;
-		 vklRst : out std_logic;
-		 vklEnb : out std_logic;		 
-		 vrRst : out std_logic;
-		 vrEnb : out std_logic;
+		 databusHandle : out std_logic; -- data/key to victim selection line		 
+		 vdlRst : out std_logic; -- Victim TO Data load 
+		 vdlEnb : out std_logic; -- Victim TO Data enable
+		 vklRst : out std_logic; -- Victim TO Key load
+		 vklEnb : out std_logic; -- Victim TO Key load		 
+		 vrRst : out std_logic; -- Victim FROM data load
+		 vrEnb : out std_logic; -- Victim FROM data enable
 		 src_ready : out std_logic;
 		 dst_ready : out std_logic		 
 		 );
 end component;
 
+component integerCounter is  
+	 port(
+		 clock : in STD_LOGIC;
+		 reset : in STD_LOGIC;	
+		 load : in STD_LOGIC;
+		 enable : in STD_LOGIC;
+		 q : out integer range 0 to (maxBlockSize/interfaceWidth)
+	     );
+end component;
+
+
+----------------------------------------------
+---------------VICTIM TOP LEVEL---------------
+----------------------------------------------
+component victimController is 
+	port(
+	     clock: in std_logic;
+		 reset: in std_logic;
+		 src_ready : in std_logic;
+		 dst_ready : in std_logic;
+		 done_exe : in std_logic;
+		 start_to_crypto : out std_logic;
+		 src_read  : out std_logic;
+		 dst_write : out std_logic;
+		 data_enb : out std_logic;
+		 key_enb : out std_logic;
+		 cmd_enb : out std_logic;
+		 sr_output_enb : out std_logic;
+		 sr_output_load : out std_logic
+
+		 );
+end component;
+
+component shiftregDataToControl IS
+generic( interfaceSize : integer := 4;
+		dataSize: integer:= 128);
+port
+(
+clock: in std_logic;
+load: in std_logic; 
+sr_e : in std_logic;
+sr_input : in std_logic_vector (dataSize-1 downto 0);
+sr_output: out std_logic_vector (interfaceSize-1 downto 0)
+
+) ;
+end component;
+
+component shiftregDataFromControl IS
+generic( interfaceSize : integer := 4;
+		dataSize: integer:= 128);
+port
+(
+clock: in std_logic;
+reset: in std_logic;
+sr_e : in std_logic;
+sr_input : in std_logic_vector (interfaceSize-1 downto 0);
+sr_output: out std_logic_vector (dataSize-1 downto 0)
+
+) ;
+end component;
+
+component victimTopLevel is 
+	port(
+	     clock: in std_logic;
+		 reset: in std_logic;
+		 src_ready : in STD_LOGIC;
+		 dst_ready : in STD_LOGIC;
+		 datain : in std_logic_vector(interfaceWidth-1 downto 0);
+		 src_read  : out STD_LOGIC;
+		 dst_write : out STD_LOGIC;
+		 dataout : out std_logic_vector(interfaceWidth-1 downto 0)
+
+		 );
+end component;
 end fobos_package;

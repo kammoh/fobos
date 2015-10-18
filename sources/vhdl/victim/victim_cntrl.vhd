@@ -1,7 +1,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.STD_LOGIC_UNSIGNED.all;
-use work.victim_pkg.all;
+use work.fobos_package.all;
 
 entity victimController is 
 	port(
@@ -50,7 +50,7 @@ present_state:	process (reset,clock)
 						end if;
 end process;
 -------------------------------------------------------------------------------------
-next_state_function: process(clock,reset,src_ready, buffer_full_key,buffer_full_data, buffer_empty,done_exe, key_data_bit, dst_ready)
+next_state_function: process(pr_state,clock,reset,src_ready, buffer_full_key,buffer_full_data, buffer_empty,done_exe, key_data_bit, dst_ready)
   begin
 	  case pr_state is
 		  when init1 =>

@@ -68,7 +68,8 @@ signal keyToCtrlBrd : std_logic_vector(maxKeySize-1 downto 0);
 signal dataFromCtrlBrd : std_logic_vector(maxBlockSize-1 downto 0);
 signal dataFromPc, dataToPc : std_logic_vector(7 downto 0);
 signal src_read, src_ready, dst_ready, dst_write : std_logic;
-signal datain, dataout : std_logic_vector(interfaceWidth-1 downto 0);
+signal datain, dataout, keyTextToVictim, plainTextToVictim : std_logic_vector(interfaceWidth-1 downto 0);
+signal databusHandle : std_logic; -- data/key to victim selection line
 ------------------------------------------------------------------------
 -- Data Registers Declarations
 ------------------------------------------------------------------------
@@ -474,25 +475,26 @@ sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc);
 -------- SHIFT REGISTERS FOR CONTROL BOARD TO VICTIM BOARD AND VICE-VERSA
 ----------------------------------------------------------------------------
 --
-dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
+--dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
 
---ControlVictimCommunication: victimComm port map(
---clock => victimClk, start => encStart, reset => system_reset, targetClock => victimCLk,
---src_read  => src_read, dst_write => dst_write, block_size => dataBlockSize,
---key_size => keySize, vdlRst => vdlRst, vdlEnb => cdlEnb, vklRst => cklRst,
---vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready);
+
+ControlVictimCommunication: victimCommunicationHandler port map(
+clock => victimClk, start => encStart, reset => system_reset, targetClock => victimCLk, databusHandle => databusHandle,
+src_read  => src_read, dst_write => dst_write, vdlRst => vdlRst, vdlEnb => cdlEnb, vklRst => cklRst,
+vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready);
 --
---controlBoardToVictimDataShiftreg : shiftregDataToVictim generic map( interfaceSize => interfaceWidth,
---		dataSize => maxBlockSize) port map (clock => victimClk, reset =>vdlRst,
---sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
-----
---controlBoardToVictimKeyShiftreg : shiftregDataToVictim generic map( interfaceSize => interfaceWidth,
---		dataSize => maxBlockSize) port map(clock => victimClk, reset =>vklRst,
---sr_e => vklEnb, sr_input => dataToCtrlBrd, sr_output => dataout);
-----
---victimToControlBoardShiftReg : shiftregDataFromVictim generic map( interfaceSize => interfaceWidth,
---		dataSize => maxBlockSize) port map(clock => victimClk, reset =>vrRst,
---sr_e => vrEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
+controlBoardToVictimDataShiftreg : shiftregDataToVictim generic map( interfaceSize => interfaceWidth,
+		dataSize => maxBlockSize) port map (clock => victimClk, load =>vdlRst,
+sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => plainTextToVictim);
+--
+controlBoardToVictimKeyShiftreg : shiftregDataToVictim generic map( interfaceSize => interfaceWidth,
+		dataSize => maxBlockSize) port map(clock => victimClk, load =>vklRst,
+sr_e => vklEnb, sr_input => dataToCtrlBrd, sr_output => keyTextToVictim);
+dataout <= plainTextToVictim when databusHandle = '1' else keyTextToVictim;
+--
+victimToControlBoardShiftReg : shiftregDataFromVictim generic map( interfaceSize => interfaceWidth,
+		dataSize => maxBlockSize) port map(clock => victimClk, reset =>vrRst,
+sr_e => vrEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
 
 
 
@@ -500,6 +502,9 @@ dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
 ----- FOR TESTING PURPOSE VICTIM IS IMPLEMENTED HERE -- PLEASE DELETE IT
 --------------------------------------------------------------------------
 
+victimDeclaration : victimTopLevel port map( clock => victimClk, reset => not encStart,
+src_ready => src_ready, dst_ready => dst_ready, datain => datain, 
+src_read => src_read, dst_write => dst_write, dataout => dataout);
 
 
 

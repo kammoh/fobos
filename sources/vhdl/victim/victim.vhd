@@ -1,6 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
-use work.victim_pkg.all;
+use work.fobos_package.all;
 
 entity victimTopLevel is 
 	port(
