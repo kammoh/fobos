@@ -17,5 +17,5 @@ architecture structural of errorCodes is
 begin
 statusCode <= x"01" when victimDCMLocked = '0' else
 			     x"02" when dataReadyToPickUp = '1' else
-			      x"00";
+			     x"00";
 end structural;

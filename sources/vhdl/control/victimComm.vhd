@@ -18,13 +18,14 @@ entity victimCommunicationHandler is
 		 vrRst : out std_logic; -- Victim FROM data load
 		 vrEnb : out std_logic; -- Victim FROM data enable
 		 src_ready : out std_logic;
+		 stateMachineStatus: out std_logic_vector(7 downto 0); -- For debug purpose
 		 dst_ready : out std_logic		 
 		 );
 end victimCommunicationHandler;
 
 
 architecture structure of victimCommunicationHandler is
-type state is (boot, init1, st1, st2, st3, st4); 
+type state is (boot, init1, st1, st2, st3, st4, st5); 
 signal pr_state,nx_state:state;
 
 signal load_cnt_key, enb_cnt_key, load_cnt_data, enb_cnt_data, load_cnt_ct, enb_cnt_ct : std_logic;
@@ -94,8 +95,14 @@ next_state_function: process(clock,src_read,key_set,data_set, dst_write, ct_set,
 		  if (ct_set='0') then
 				nx_state <= st4;
 		  else
-				nx_state <= boot;
+				nx_state <= st5;
 		  end if;
+		  when st5 =>
+		  if (start='1') then
+				nx_state <= st5;
+		  else
+				nx_state <= boot;
+		  end if;		  
 		end case;
 end process; 
 ------------------------------------------------------------------------
@@ -107,22 +114,33 @@ end process;
 		 when boot =>
 		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1';load_cnt_ct <= '1';enb_cnt_ct <= '0'; databusHandle <= '0';
 		 enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '0';vdlRst <= '1'; vdlEnb <= '0'; vklRst <= '1'; vklEnb <= '0'; vrRst <= '1'; vrEnb <= '0';
+		 stateMachineStatus <= x"09";
 		 when init1 =>
 		 src_ready <= '1'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '0'; databusHandle <= '0';
 		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '1'; vdlEnb <= '0'; vklRst <= '1'; vklEnb <= '0'; vrRst <= '1'; vrEnb <= '0';
+		 stateMachineStatus <= x"02";
 		 when st1 => 
 		 src_ready <= '1'; load_cnt_key <= '0'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '1';dst_ready <= '0'; databusHandle <= '0';
 		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '1'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '1'; vrRst <= '1'; vrEnb <= '0';
+		 stateMachineStatus <= x"03";
 		 when st2 =>		 
 	 	 src_ready <= '1'; load_cnt_key <= '1'; load_cnt_data <= '0'; enb_cnt_data<= '1'; enb_cnt_key<= '0';dst_ready <= '0'; databusHandle <= '1';
 		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '1'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '0'; vrEnb <= '0';
+		 stateMachineStatus <= x"04";
 		 when st3=>
 		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '1'; databusHandle <= '1';	 
 		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '0'; vrEnb <= '0';
+		 stateMachineStatus <= x"05";
 		 when st4=>		  
 		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '1'; databusHandle <= '1';	 
 		 load_cnt_ct <= '0';enb_cnt_ct <= '1';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '0'; vrEnb <= '1';
+		 stateMachineStatus <= x"06";
+		 when st5=>		  
+		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '1'; databusHandle <= '1';	 
+		 load_cnt_ct <= '0';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '0'; vrEnb <= '0';
+		 stateMachineStatus <= x"07";
 		 when others =>
+		 stateMachineStatus <= x"08";
 		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0'; dst_ready <= '0'; databusHandle <= '1';
 		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '0'; vrEnb <= '0';
 	end case;

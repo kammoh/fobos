@@ -11,6 +11,7 @@ entity victimTopLevel is
 		 datain : in std_logic_vector(interfaceWidth-1 downto 0);
 		 src_read  : out STD_LOGIC;
 		 dst_write : out STD_LOGIC;
+		 stateMachineStatus: out std_logic_vector(7 downto 0); -- used for debog purpose only
 		 dataout : out std_logic_vector(interfaceWidth-1 downto 0)
 
 		 );
@@ -67,13 +68,14 @@ control: victimController port map(
 		 data_enb => data_enb,
 		 key_enb => key_enb,
 		 cmd_enb => cmd_enb,
+		 stateMachineStatus => stateMachineStatus,
 		 sr_output_enb => sr_output_enb,
 		 sr_output_load => sr_output_load
 		 );
 ------------------------ Crypto Core ------------------------- 
 
 
-data_from_crypto <= (key_to_crypto xor data_to_crypto) when start_to_crypto = '1' else (others => '0');
+data_from_crypto <= (key_to_crypto) when start_to_crypto = '1' else (others => '0');
 done_exe <= '1' when start_to_crypto ='1' else '0';
 
 	

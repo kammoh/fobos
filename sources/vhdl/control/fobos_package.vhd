@@ -209,6 +209,7 @@ component victimCommunicationHandler is
 		 vklEnb : out std_logic; -- Victim TO Key load		 
 		 vrRst : out std_logic; -- Victim FROM data load
 		 vrEnb : out std_logic; -- Victim FROM data enable
+		 stateMachineStatus: out std_logic_vector(7 downto 0); -- For debug purpose		 
 		 src_ready : out std_logic;
 		 dst_ready : out std_logic		 
 		 );
@@ -241,6 +242,7 @@ component victimController is
 		 data_enb : out std_logic;
 		 key_enb : out std_logic;
 		 cmd_enb : out std_logic;
+		 stateMachineStatus: out std_logic_vector (7 downto 0);		 
 		 sr_output_enb : out std_logic;
 		 sr_output_load : out std_logic
 
@@ -284,6 +286,7 @@ component victimTopLevel is
 		 datain : in std_logic_vector(interfaceWidth-1 downto 0);
 		 src_read  : out STD_LOGIC;
 		 dst_write : out STD_LOGIC;
+		 stateMachineStatus: out std_logic_vector (7 downto 0);		 
 		 dataout : out std_logic_vector(interfaceWidth-1 downto 0)
 
 		 );

@@ -16,6 +16,7 @@ entity victimController is
 		 data_enb : out std_logic;
 		 key_enb : out std_logic;
 		 cmd_enb : out std_logic;
+		 stateMachineStatus: out std_logic_vector (7 downto 0);
 		 sr_output_enb : out std_logic;
 		 sr_output_load : out std_logic
 
@@ -119,6 +120,7 @@ end process;
 		 load_cnt_key <= '1'; enb_cnt_key <= '0';
 		 load_cnt_data <= '1'; enb_cnt_data <= '0';
 		 load_cnt_output <= '1';enb_cnt_output <= '0';
+		 stateMachineStatus <= x"01";
 		 
 --		 when ldcmd =>
 --		 dst_write<='0'; 
@@ -145,6 +147,7 @@ end process;
 		 load_cnt_key <= '0'; enb_cnt_key <= '0';
 		 load_cnt_data <= '0'; enb_cnt_data <= '0';
 		 load_cnt_output <= '0';enb_cnt_output <= '0';
+		 stateMachineStatus <= x"02";
 		 
 		 when st2 =>		 
 		 dst_write<='0'; 
@@ -158,7 +161,8 @@ end process;
 		 load_cnt_key <= '0'; enb_cnt_key <= '1';
 		 load_cnt_data <= '0'; enb_cnt_data <= '0';
 		 load_cnt_output <= '0';enb_cnt_output <= '0';
-		 
+		 		 stateMachineStatus <= x"03";
+
 		 when st3=>
 		 
 		 dst_write<='0'; 
@@ -172,7 +176,8 @@ end process;
 		 load_cnt_key <= '0'; enb_cnt_key <= '0';
 		 load_cnt_data <= '0'; enb_cnt_data <= '1';
 		 load_cnt_output <= '0';enb_cnt_output <= '0';
-		 
+		 		 stateMachineStatus <= x"04";
+
 --		 when init2 =>
 --		 dst_write<='0'; 
 --		 src_read<='1';	
@@ -197,7 +202,8 @@ end process;
 		 load_cnt_key <= '0'; enb_cnt_key <= '0';
 		 load_cnt_data <= '0'; enb_cnt_data <= '0';
 		 load_cnt_output <= '0';enb_cnt_output <= '0';
-		 
+		 		 stateMachineStatus <= x"05";
+
 		 when st5=>
 		 dst_write<='1'; 
 		 src_read<='0';	
@@ -210,7 +216,8 @@ end process;
 		 load_cnt_key <= '0'; enb_cnt_key <= '0';
 		 load_cnt_data <= '0'; enb_cnt_data <= '0';
 		 load_cnt_output <= '0';enb_cnt_output <= '0';
-		 
+		 		 stateMachineStatus <= x"06";
+
 		 when last =>
 		 
 		 dst_write<='1'; 
@@ -224,7 +231,8 @@ end process;
 		 load_cnt_key <= '0'; enb_cnt_key <= '0';
 		 load_cnt_data <= '0'; enb_cnt_data <= '0';
 		 load_cnt_output <= '0';enb_cnt_output <= '1';
-		 
+		 		 stateMachineStatus <= x"07";
+
 		 when others =>
 		 
 		 dst_write<='1'; 
@@ -238,7 +246,8 @@ end process;
 		 load_cnt_key <= '0'; enb_cnt_key <= '0';
 		 load_cnt_data <= '0'; enb_cnt_data <= '0';
 		 load_cnt_output <= '0';enb_cnt_output <= '1';		 
-		 
+		 		 stateMachineStatus <= x"08";
+
 	end case;
 end process;
 
