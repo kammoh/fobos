@@ -36,13 +36,13 @@ begin
 	
 ------------------------ Control signals to Victim Controller------------
 counterInputkey : integerCounter port map(clock => clock, reset => reset, load => load_cnt_key, enable => enb_cnt_key, q => keyBlockSize);
-key_set <= '1' when  keyBlockSize >= (maxKeySize/interfaceWidth)-1 else '0';
+key_set <= '1' when  keyBlockSize >= (maxKeySize/interfaceWidth) else '0';
 
 counterInputdata : integerCounter port map(clock => clock, reset => reset, load => load_cnt_data, enable => enb_cnt_data, q => dataBlockSize);
-data_set <= '1' when  dataBlockSize >= (maxBlockSize/interfaceWidth)-1 else '0';
+data_set <= '1' when  dataBlockSize >= (maxBlockSize/interfaceWidth) else '0';
 
 counterOutputData : integerCounter port map(clock => clock, reset => reset, load => load_cnt_ct, enable => enb_cnt_ct, q => vDataBlockSize);	
-ct_set <= '1' when vDataBlockSize >= (maxBlockSize/interfaceWidth)-1 else '0';
+ct_set <= '1' when vDataBlockSize >= (maxBlockSize/interfaceWidth) else '0';
 
 -----------------------------------------------------------------------------------	
 present_state:	process (reset,clock)
@@ -125,11 +125,11 @@ end process;
 		 stateMachineStatus <= x"03";
 		 when st2 =>		 
 	 	 src_ready <= '1'; load_cnt_key <= '1'; load_cnt_data <= '0'; enb_cnt_data<= '1'; enb_cnt_key<= '0';dst_ready <= '0'; databusHandle <= '1';
-		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '1'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '0'; vrEnb <= '0';
+		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '1'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '1'; vrEnb <= '0';
 		 stateMachineStatus <= x"04";
 		 when st3=>
 		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '1'; databusHandle <= '1';	 
-		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '0'; vrEnb <= '0';
+		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '1'; vrEnb <= '0';
 		 stateMachineStatus <= x"05";
 		 when st4=>		  
 		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '1'; databusHandle <= '1';	 

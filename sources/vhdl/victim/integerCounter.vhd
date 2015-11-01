@@ -10,8 +10,7 @@ entity integerCounter is
 		 reset : in STD_LOGIC;	
 		 load : in STD_LOGIC;
 		 enable : in STD_LOGIC;
-		 q : out integer range 0 to (maxBlockSize/interfaceWidth)
-	     );
+		 q : out integer range 0 to (maxBlockSize/interfaceWidth)	     );
 end integerCounter;
 
 

@@ -58,7 +58,7 @@ signal pwmAccumulator : std_logic_vector(8 downto 0);
 signal dataFromAdc : std_logic_vector(15 downto 0);
 signal counter_adc_select, bram_data_collect_start : std_logic;
 signal ADC_DCM_OK : std_logic;
-signal clktobram, targetModuleReset : std_logic;
+signal clktobram, targetModuleReset, resetVictimCommunicationController : std_logic;
 signal victimClk, victimDCMLocked : std_logic;
 signal encStart, encEnd, triggerCheck : std_logic;
 signal dlEnb, dlRst, drRst, drEnb, klRst, klEnb : std_logic;
@@ -365,7 +365,7 @@ klRst <= '1' when controlReg = x"08" else '0';
 klEnb <= '1' when controlReg = x"09" else '0';
 
 encStart <= '1' when dataReg1 = x"FF" else '0';
-
+resetVictimCommunicationController <= '1' when dataReg1 = x"02" else '0';
 --bram_extaddress_reset <= dataReg0(7);
 --bram_extaddress_enable <= dataReg0(6);
 --counter_adc_select <= dataReg0(5);
@@ -479,9 +479,7 @@ sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc);
 
 
 ControlVictimCommunication: victimCommunicationHandler port map(
-clock => victimClk, start => encStart, reset => system_reset, targetClock => victimCLk, databusHandle => databusHandle,
-src_read  => src_read, dst_write => dst_write, vdlRst => vdlRst, vdlEnb => vdlEnb, vklRst => vklRst,
-vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready, stateMachineStatus => stateMachineLeds);
+clock => victimClk, start => encStart, reset => resetVictimCommunicationController, targetClock => victimCLk, databusHandle => databusHandle, src_read  => src_read, dst_write => dst_write, vdlRst => vdlRst, vdlEnb => vdlEnb, vklRst => vklRst, vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready, stateMachineStatus => stateMachineLeds);
 --
 controlBoardToVictimDataShiftreg : shiftregDataToVictim generic map( interfaceSize => interfaceWidth,
 		dataSize => maxBlockSize) port map (clock => victimClk, load =>vdlRst,

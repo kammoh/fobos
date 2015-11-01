@@ -33,14 +33,14 @@ signal enb_cnt_data, enb_cnt_key, enb_cnt_output :std_logic;
 begin
 ------------------------ Control signals to Victim Controller------------
 counterInputKey : integerCounter port map(clock => clock, reset => reset, load => load_cnt_key, enable => enb_cnt_key, q => cnt_out1);
-buffer_full_key <= '1' when cnt_out1 = (maxKeySize/interfaceWidth)-1  else '0';
+buffer_full_key <= '1' when cnt_out1 >= (maxKeySize/interfaceWidth)  else '0';
 
 counterInputData : integerCounter port map(clock => clock, reset => reset, load => load_cnt_data, enable => enb_cnt_data, q => cnt_out2);
-buffer_full_data <= '1' when cnt_out2 = (maxBlockSize/interfaceWidth)-1 else '0';
+buffer_full_data <= '1' when cnt_out2 >= (maxBlockSize/interfaceWidth) else '0';
 
 ------------------------ Control signals to Victim Controller------------
 counterOutputData : integerCounter port map(clock => clock, reset => reset, load => load_cnt_output, enable => enb_cnt_output, q => cnt_out3);	
-buffer_empty <= '1' when cnt_out3 = (maxBlockSize/interfaceWidth)-1 else '0';
+buffer_empty <= '1' when cnt_out3 >= (maxBlockSize/interfaceWidth) else '0';
 -------------------------------------------------------------------------
 present_state:	process (reset,clock)
 					begin
@@ -62,14 +62,14 @@ next_state_function: process(pr_state,clock,reset,src_ready, buffer_full_key,buf
 		  end if;
 		  
 		  when st2 =>
-		  if (buffer_full_key = '0' and src_ready = '1') then	
+		  if (buffer_full_key = '0') then	
 			  nx_state <= st2;
 		  else
 			  nx_state<= st3;
 		  end if;
 		  
 		  when st3 =>
-		  if (buffer_full_data = '0' and src_ready = '1') then	
+		  if (buffer_full_data = '0') then	
 			  nx_state <= st3;
 		  else
 			  nx_state<= st4;

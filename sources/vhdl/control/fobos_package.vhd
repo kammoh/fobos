@@ -291,4 +291,20 @@ component victimTopLevel is
 
 		 );
 end component;
+------------------------------------------------------------------
+------- FOLLOWING AES INSTANTIATION NEEDS TO BE DELETED ----------
+------------------------------------------------------------------
+
+component aes_non_pipe is
+	port (	
+			clock : in std_logic ;
+			start : in std_logic ;
+			data_in : in std_logic_vector (0 to 127);
+			key_in : in std_logic_vector (0 to 127);
+			data_out : out std_logic_vector (0 to 127);	
+			--trigger : out std_logic	;
+			done : out std_logic
+			);
+
+end component;
 end fobos_package;

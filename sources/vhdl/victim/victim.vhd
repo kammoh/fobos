@@ -75,7 +75,7 @@ control: victimController port map(
 ------------------------ Crypto Core ------------------------- 
 
 
-data_from_crypto <= (key_to_crypto) when start_to_crypto = '1' else (others => '0');
+data_from_crypto <= (data_to_crypto xor key_to_crypto) when start_to_crypto = '1' else (others => '0');
 done_exe <= '1' when start_to_crypto ='1' else '0';
 
 	
