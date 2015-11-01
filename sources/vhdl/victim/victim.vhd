@@ -74,9 +74,27 @@ control: victimController port map(
 		 );
 ------------------------ Crypto Core ------------------------- 
 
+-------------------------------------------------------------------------------------------------------
+-----------------  DUMMY VICTIM -----------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+--data_from_crypto <= (data_to_crypto xor key_to_crypto) when start_to_crypto = '1' else (others => '0');
+--done_exe <= '1' when start_to_crypto ='1' else '0';
 
-data_from_crypto <= (data_to_crypto xor key_to_crypto) when start_to_crypto = '1' else (others => '0');
-done_exe <= '1' when start_to_crypto ='1' else '0';
+-------------------------------------------------------------------------------------------------------
+-----------------  AES 128 -----------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+
+
+victimAES : aes_non_pipe port map (	
+			clock => clock,
+			start =>  not start_to_crypto, -- active low
+			data_in => data_to_crypto,
+			key_in => key_to_crypto,
+			data_out => data_from_crypto,	
+			done => done_exe
+			);
+
+
 
 	
 
