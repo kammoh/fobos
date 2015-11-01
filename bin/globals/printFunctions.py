@@ -125,7 +125,7 @@ def printToOutputFile(data, type):
 			file.write(output)
 			
 	if(type == globals.KEY):
-		TOTAL_DATA = cfg.config_attributes['KEY_SIZE']-1
+		TOTAL_DATA = cfg.config_attributes['KEY_SIZE']
 		for count in range (0, TOTAL_DATA):
 			output += str(data[count]) + " "
 		output += "\n"	

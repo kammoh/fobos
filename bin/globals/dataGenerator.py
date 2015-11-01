@@ -50,6 +50,23 @@ def generateRandomKey( ):
 	TOTAL_DATA = cfg.config_attributes['KEY_SIZE']
 	printFunctions.printToScreenAndLog("\tGenerating " + str(TOTAL_DATA) + " bytes of random key")
 	randomKeyBytes = convertToHex(Random.get_random_bytes(TOTAL_DATA))
+	print len(randomKeyBytes)
+	print randomKeyBytes[0]
+	print randomKeyBytes[1]
+	print randomKeyBytes[2]
+	print randomKeyBytes[3]
+	print randomKeyBytes[4]
+	print randomKeyBytes[5]
+	print randomKeyBytes[6]
+	print randomKeyBytes[7]
+	print randomKeyBytes[8]
+	print randomKeyBytes[9]
+	print randomKeyBytes[10]
+	print randomKeyBytes[11]
+	print randomKeyBytes[12]
+	print randomKeyBytes[13]
+	print randomKeyBytes[14]	
+	print randomKeyBytes[15]	
 	printFunctions.printToOutputFile(randomKeyBytes, globals.KEY)
 	return randomKeyBytes	
 	

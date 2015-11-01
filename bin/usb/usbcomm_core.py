@@ -140,6 +140,8 @@ def sendKeyToControlBoard():
 	status = putRegByte(0x30, 0x08)
 	status = putRegByte(0x30, 0x09)
 	for count in range(0, cfg.config_attributes['KEY_SIZE']):
+		
+		print str(count) + str(cfg.keyToControlBoard[count])
 		status = putRegByte(0x7A, int(cfg.keyToControlBoard[count], 16))
 	status = putRegByte(0x30, 0x00)
 	return status
@@ -157,18 +159,25 @@ def populateControlBoardOutputDataStorage(traceCount):
 		cfg.dataFromControlBoard = tempArray
 	else:
 		for x in tempArray:
+			#print x
 			cfg.dataFromControlBoard.append(x)
+	#printFunctions.printToOutputFile(cfg.dataFromControlBoard, globals.CIPHERTEXT)		
 	return status
 	
 def runEncrytionOnControlBoard (traceCount):
 	if (cfg.config_attributes['DUMMY_RUN'] == 'YES'):
-		printFunctions.printToScreenAndLog("\tRunning Dummy Encryption - " + str(traceCount+1))
-		status = putRegByte(0x01, 0x00) # Initialize	
+		status = putRegByte(0x01, 0x02) # Initialize
+		printFunctions.printToScreenAndLog("\tRunning Dummy Encryption - " + str(traceCount+1))	
 		if (traceCount == 0):
 			printFunctions.printToScreenAndLog("\t\tFirst Run - Setting the key for Encryption")
 			sendKeyToControlBoard()
+			
 		sendBlockOfDataToControlBoard(traceCount)
+		status = putRegByte(0x01, 0x00) # Initialize
+		#support.goToSleep(1)		
 		status = putRegByte(0x01, 0xFF) # Run
+		#support.goToSleep(1)
+		#status = putRegByte(0x01, 0x00) # End
 		return status
 
 def saveControlBoardOutputDataStorage():
@@ -177,7 +186,7 @@ def saveControlBoardOutputDataStorage():
 	return True
 
 def displayReg(regByte):
-	status = putRegByte(0x40, 0x0C)
+	status = putRegByte(0x40, regByte)
 	return status
 # def streamDataFromBRAM(cfg.USB_HANDLE, nosBytes, logfile, dataToStream, debug):
 
