@@ -515,10 +515,10 @@ displayLED <= dataBlockSize when displayReg = x"01" else
 			  stateMachineLeds when displayReg = x"03" else
 			  plainTextForTarget(15 downto 8) when displayReg = x"04" else
 			  plainTextForTarget(7 downto 0) when displayReg = x"05" else
-			  "0000" & keyTextToVictim when displayReg = x"06" else
-			  "0000" & plainTextToVictim when displayReg = x"07" else
-			  "0000" & dataout when displayReg = x"08" else
-			  "0000" & datain when displayReg = x"09" else
+			  "0000" & keyTextToVictim(3 downto 0) when displayReg = x"06" else
+			  "0000" & plainTextToVictim(3 downto 0) when displayReg = x"07" else
+			  "0000" & dataout(3 downto 0) when displayReg = x"08" else
+			  "0000" & datain(3 downto 0) when displayReg = x"09" else
 			  commandToTargetControl when displayReg = x"0A" else
 			  stateMachineLedsTarget when displayReg = x"0B" else
 			  "0000000" & encStart when displayReg = x"0C" else
