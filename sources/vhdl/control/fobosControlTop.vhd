@@ -23,17 +23,17 @@ port (
 --  adc_or : in std_logic
 
    -- Oscilloscope Ports
-	trigger : out std_logic
+	trigger : out std_logic;
 
-	-- DUT Ports
---	victimClock : out std_logic;
---	reset: out std_logic;
---	src_ready: out std_logic;
---	dst_ready: out std_logic;
---	datain: out std_logic_vector(interfaceWidth-1 downto 0);
---	src_read: in std_logic;
---	dst_write: in std_logic;
---	dataout: in std_logic_vector(interfaceWidth-1 downto 0)
+	-- DUT Ports from DUT point of view, i.e. dataout is data from dut to control
+	victimClock: out std_logic;
+	reset: out std_logic;
+	src_ready: out std_logic;
+	dst_ready: out std_logic;
+	datain: out std_logic_vector(interfaceWidth-1 downto 0);
+	src_read: in std_logic;
+	dst_write: in std_logic;
+	dataout: in std_logic_vector(interfaceWidth-1 downto 0)
 
 );
 end fobosControlTop;
@@ -59,7 +59,8 @@ signal dataFromAdc : std_logic_vector(15 downto 0);
 signal counter_adc_select, bram_data_collect_start : std_logic;
 signal ADC_DCM_OK : std_logic;
 signal clktobram, targetModuleReset, resetVictimCommunicationController : std_logic;
-signal victimClk, victimDCMLocked : std_logic;
+signal victimClk : std_logic; 
+signal victimDCMLocked : std_logic;
 signal encStart, encEnd, triggerCheck : std_logic;
 signal dlEnb, dlRst, drRst, drEnb, klRst, klEnb : std_logic;
 signal vdlEnb, vdlRst, vklEnb, vklRst, vrRst, vrEnb, cdlEnb, cklEnb, cklRst : std_logic;
@@ -67,8 +68,9 @@ signal dataToCtrlBrd : std_logic_vector(maxBlockSize-1 downto 0);
 signal keyToCtrlBrd : std_logic_vector(maxKeySize-1 downto 0);
 signal dataFromCtrlBrd : std_logic_vector(maxBlockSize-1 downto 0);
 signal dataFromPc, dataToPc : std_logic_vector(7 downto 0);
-signal src_read, src_ready, dst_ready, dst_write : std_logic;
-signal datain, dataout, keyTextToVictim, plainTextToVictim : std_logic_vector(interfaceWidth-1 downto 0);
+-- signal src_read, src_ready, dst_ready, dst_write : std_logic;
+-- signal datain, dataout, 
+signal keyTextToVictim, plainTextToVictim : std_logic_vector(interfaceWidth-1 downto 0);
 signal databusHandle : std_logic; -- data/key to victim selection line
 ------------------------------------------------------------------------
 -- Data Registers Declarations
@@ -231,7 +233,7 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 		end if;
 	end if;
 end process;
---displayLED <= displayReg;
+displayLED <= displayReg;
 
 ------------------------------------------------------------------------
 -- Target Registers
@@ -489,42 +491,42 @@ controlBoardToVictimKeyShiftreg : shiftregDataToVictim generic map( interfaceSiz
 		dataSize => maxBlockSize) port map(clock => victimClk, load =>vklRst,
 sr_e => vklEnb, sr_input => keyToCtrlBrd, sr_output => keyTextToVictim);
 
-dataout <= plainTextToVictim when databusHandle = '1' else keyTextToVictim;
+datain <= plainTextToVictim when databusHandle = '1' else keyTextToVictim;
 --
 victimToControlBoardShiftReg : shiftregDataFromVictim generic map( interfaceSize => interfaceWidth,
 		dataSize => maxBlockSize) port map(clock => victimClk, reset =>vrRst,
-sr_e => vrEnb, sr_input => datain, sr_output => dataFromCtrlBrd);
-
-
+sr_e => vrEnb, sr_input => dataout, sr_output => dataFromCtrlBrd);
 
 --------------------------------------------------------------------------
 ----- FOR TESTING PURPOSE VICTIM IS IMPLEMENTED HERE -- PLEASE DELETE IT
 --------------------------------------------------------------------------
 
-victimDeclaration : victimTopLevel port map( clock => victimClk, reset => not encStart,
-src_ready => src_ready, dst_ready => dst_ready, datain => dataout, 
-src_read => src_read, dst_write => dst_write, dataout => datain, stateMachineStatus => stateMachineLedsTarget);
+-- victimDeclaration : victimTopLevel port map( clock => victimClk, reset => not encStart,
+-- src_ready => src_ready, dst_ready => dst_ready, datain => dataout, 
+-- src_read => src_read, dst_write => dst_write, dataout => datain, stateMachineStatus => stateMachineLedsTarget);
 
 
 
 ----------------------------------------------------------------------------
 ------- DISPLAY LEDs for Debugging
 ----------------------------------------------------------------------------
-displayLED <= dataBlockSize when displayReg = x"01" else
-			  keySize when displayReg = x"02" else
-			  stateMachineLeds when displayReg = x"03" else
-			  plainTextForTarget(15 downto 8) when displayReg = x"04" else
-			  plainTextForTarget(7 downto 0) when displayReg = x"05" else
-			  "0000" & keyTextToVictim(3 downto 0) when displayReg = x"06" else
-			  "0000" & plainTextToVictim(3 downto 0) when displayReg = x"07" else
-			  "0000" & dataout(3 downto 0) when displayReg = x"08" else
-			  "0000" & datain(3 downto 0) when displayReg = x"09" else
-			  commandToTargetControl when displayReg = x"0A" else
-			  stateMachineLedsTarget when displayReg = x"0B" else
-			  "0000000" & encStart when displayReg = x"0C" else
-			  displayReg;
+-- displayLED <= dataBlockSize when displayReg = x"01" else
+--			  keySize when displayReg = x"02" else
+--			  stateMachineLeds when displayReg = x"03" else
+--			  plainTextForTarget(15 downto 8) when displayReg = x"04" else
+--			  plainTextForTarget(7 downto 0) when displayReg = x"05" else
+--			  "0000" & keyTextToVictim(3 downto 0) when displayReg = x"06" else
+--			  "0000" & plainTextToVictim(3 downto 0) when displayReg = x"07" else
+--			  "0000" & dataout(3 downto 0) when displayReg = x"08" else
+--			  "0000" & datain(3 downto 0) when displayReg = x"09" else
+--			  commandToTargetControl when displayReg = x"0A" else
+--			  stateMachineLedsTarget when displayReg = x"0B" else
+--			  "0000000" & encStart when displayReg = x"0C" else
+--			  displayReg;
 
 trigger <= triggerCheck;			  
---victimClock <= victimClk;
+victimClock <= victimClk;
+reset <= not encStart;
+
 end Behavioral;
 
