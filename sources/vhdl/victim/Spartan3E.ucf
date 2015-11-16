@@ -5,41 +5,41 @@
 # ==== FX2 Connector (FX2) ====
 # ===================== Data out to Control  =================================== 
 
-NET "dout<15>"  LOC = "B4"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;   
-NET "dout<14>"  LOC = "A4"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<13>"  LOC = "D5"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<12>"  LOC = "C5"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<11>"  LOC = "A6"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<10>"  LOC = "B6"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<9>"   LOC = "E7"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<8>"   LOC = "F7"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<7>"   LOC = "D7"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<6>"   LOC = "C7"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "dout<5>"   LOC = "F8"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<4>"   LOC = "E8"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<3>"   LOC = "F9"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<2>"   LOC = "E9"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<1>"   LOC = "D11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "dout<0>"   LOC = "C11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<15>"  LOC = "B4"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;   
+NET "dataout<14>"  LOC = "A4"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<13>"  LOC = "D5"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<12>"  LOC = "C5"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<11>"  LOC = "A6"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<10>"  LOC = "B6"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<9>"   LOC = "E7"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<8>"   LOC = "F7"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<7>"   LOC = "D7"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<6>"   LOC = "C7"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "dataout<5>"   LOC = "F8"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<4>"   LOC = "E8"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<3>"   LOC = "F9"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<2>"   LOC = "E9"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<1>"   LOC = "D11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<0>"   LOC = "C11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
 
 # ==================== Data in from Control ===================================
 
-NET "din<0>"    LOC = "F11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "din<1>"    LOC = "E11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "din<2>"    LOC = "E12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "din<3>"    LOC = "F12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "din<4>"    LOC = "A13" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "din<5>"    LOC = "B13" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "din<6>"    LOC = "A14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "din<7>"    LOC = "B14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "din<8>"    LOC = "C14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "din<9>"    LOC = "D14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "din<10>"   LOC = "A16" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "din<11>"   LOC = "B16" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "din<12>"   LOC = "D12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "din<13>"   LOC = "C12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
-NET "din<14>"   LOC = "A15" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
-NET "din<15>"   LOC = "B15" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;    
+NET "datain<0>"    LOC = "F11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "datain<1>"    LOC = "E11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "datain<2>"    LOC = "E12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<3>"    LOC = "F12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<4>"    LOC = "A13" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<5>"    LOC = "B13" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<6>"    LOC = "A14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<7>"    LOC = "B14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<8>"    LOC = "C14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<9>"    LOC = "D14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<10>"   LOC = "A16" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<11>"   LOC = "B16" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<12>"   LOC = "D12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<13>"   LOC = "C12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
+NET "datain<14>"   LOC = "A15" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<15>"   LOC = "B15" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;    
 
 # ===================== CONTROL SIGNALS ==================================================================
 
