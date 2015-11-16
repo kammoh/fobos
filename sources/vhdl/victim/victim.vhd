@@ -8,11 +8,11 @@ entity victimTopLevel is
 		 reset: in std_logic;
 		 src_ready : in STD_LOGIC;
 		 dst_ready : in STD_LOGIC;
-		 datain : in std_logic_vector(interfaceWidth-1 downto 0);
+		 din : in std_logic_vector(interfaceWidth-1 downto 0);
 		 src_read  : out STD_LOGIC;
 		 dst_write : out STD_LOGIC;
 		 --stateMachineStatus: out std_logic_vector(7 downto 0); -- used for debog purpose only
-		 dataout : out std_logic_vector(interfaceWidth-1 downto 0)
+		 dout : out std_logic_vector(interfaceWidth-1 downto 0)
 
 		 );
 end victimTopLevel;
@@ -38,7 +38,7 @@ begin
  			clock => clock,
 			reset => reset,
 			sr_e  => data_enb ,
-			sr_input => datain,
+			sr_input => din,
 			sr_output => data_to_crypto) ;
 
  key : shiftregDataFromControl generic map (interfaceSize => interfaceWidth, dataSize => maxKeySize ) 
@@ -46,7 +46,7 @@ begin
  			clock => clock,
 			reset => reset,
 			sr_e  => key_enb ,
-			sr_input => datain,
+			sr_input => din,
 			sr_output => key_to_crypto) ;
 ------------------------ Output Shift-Registers-------------------------			
  output  : shiftregDataToControl  generic map (interfaceSize => interfaceWidth, dataSize => maxBlockSize ) 
@@ -55,7 +55,7 @@ begin
 			load => sr_output_load, 
 			sr_e  => sr_output_enb,
 			sr_input => data_from_crypto,
-			sr_output => dataout) ;
+			sr_output => dout) ;
 ------------------------ Victim outer-level Controller-------------------		
 control: victimController port map(
 	     clock => clock,

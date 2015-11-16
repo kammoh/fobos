@@ -47,8 +47,8 @@ NET "src_ready" LOC = "C4"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
 NET "src_read"  LOC = "E13" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
 NET "dst_ready" LOC = "C15" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
 NET "dst_write" LOC = "C3"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
-NET "rst"       LOC = "B11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "reset"       LOC = "B11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
 #NET "trigger"   LOC = "A15" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
 
 # ======================== CLOCK SIGNAL ==================================================================
-NET "clk"       LOC = "E10"; # Clock
+NET "clock"       LOC = "E10"; # Clock
