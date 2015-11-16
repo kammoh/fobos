@@ -11,7 +11,7 @@ entity victimTopLevel is
 		 datain : in std_logic_vector(interfaceWidth-1 downto 0);
 		 src_read  : out STD_LOGIC;
 		 dst_write : out STD_LOGIC;
-		 stateMachineStatus: out std_logic_vector(7 downto 0); -- used for debog purpose only
+		 --stateMachineStatus: out std_logic_vector(7 downto 0); -- used for debog purpose only
 		 dataout : out std_logic_vector(interfaceWidth-1 downto 0)
 
 		 );
@@ -29,6 +29,7 @@ signal cmd_buffer : std_logic_vector(interfaceWidth-1 downto 0);
 signal data_to_crypto : std_logic_vector(maxBlockSize-1 downto 0); -- to crypto_core
 signal key_to_crypto : std_logic_vector(maxKeySize-1 downto 0);	-- to crypto_core
 signal data_from_crypto : std_logic_vector(maxBlockSize-1 downto 0); -- from crypto_core
+signal stateMachineStatus : std_logic_vector(7 downto 0);
 begin
 
  ------------------------ Input Shift-Registers-------------------------
