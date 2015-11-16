@@ -26,7 +26,7 @@ port (
 	trigger : out std_logic;
 
 	-- DUT Ports from DUT point of view, i.e. dataout is data from dut to control
-	victimClock: out std_logic;
+	DUTClock: out std_logic;
 	reset: out std_logic;
 	src_ready: out std_logic;
 	dst_ready: out std_logic;
@@ -525,7 +525,7 @@ sr_e => vrEnb, sr_input => dataout, sr_output => dataFromCtrlBrd);
 --			  displayReg;
 
 trigger <= triggerCheck;			  
-victimClock <= victimClk;
+DUTClock <= victimClk;
 reset <= not encStart;
 
 end Behavioral;
