@@ -61,7 +61,7 @@ NET "trigger" LOC = "K12" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L11N
 
 ## FX2 connector for connection to DUT
 # ==== FX2 Connector (FX2) ====
-# ===================== Data out to Control  =================================== 
+# ===================== Data out to DUT  =================================== 
 NET "datain<15>"  LOC = "C3";    # Bank = 0, Pin name = IO_L25P_0, Type = I/O,                        Sch name = R-IO3
 NET "datain<14>"  LOC = "C4";    # Bank = 0, Pin name = IO, Type = I/O,                               Sch name = R-IO4
 NET "datain<13>"  LOC = "B6";    # Bank = 0, Pin name = IO_L20P_0, Type = I/O,                        Sch name = R-IO5
@@ -79,7 +79,7 @@ NET "datain<2>"   LOC = "B10";   # Bank = 0, Pin name = IO_L12P_0/GCLK6, Type = 
 NET "datain<1>"   LOC = "A11";   # Bank = 0, Pin name = IO, Type = I/O,                               Sch name = R-IO23
 NET "datain<0>"   LOC = "D11";   # Bank = 0, Pin name = IO_L09N_0, Type = I/O,                        Sch name = R-IO24
 
-# ==================== Data in from Control ===================================
+# ==================== Data in from DUT ===================================
 NET "dataout<0>"  LOC = "E10";   # Bank = 0, Pin name = IO_L11N_0/GCLK5, Type = GCLK,                 Sch name = R-IO25
 NET "dataout<1>"  LOC = "B11";   # Bank = 0, Pin name = IO/VREF_0, Type = VREF,                       Sch name = R-IO26
 NET "dataout<2>"  LOC = "C11";   # Bank = 0, Pin name = IO_L09P_0, Type = I/O,                        Sch name = R-IO27
