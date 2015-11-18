@@ -17,7 +17,7 @@ port (
   EppWait: out std_logic;       -- Port wait signal
   displayLED : out std_logic_vector(7 downto 0);
   cergbanner : out std_logic_vector(11 downto 0);
-  externClock : in std_logic;
+  EXTClock : in std_logic;
   victimClockSelector: in std_logic;
   -- ADC PORTS
 --  adc_clock : out std_logic;
@@ -30,7 +30,7 @@ port (
 	trigger : out std_logic;
 
 	-- DUT Ports from DUT point of view, i.e. dataout is data from dut to control
-	DUTClock: in std_logic;
+	DUTClock: out std_logic;
 	reset: out std_logic;
 	src_ready: out std_logic;
 	dst_ready: out std_logic;
@@ -395,7 +395,7 @@ statusReg(7) <= '0';
 VictimClockSelectingMux : BUFGMUX generic map (CLK_SEL_TYPE => "SYNC")
 port map (
 O => victimClk, -- 1-bit Clock MUX output
-I0 => externClock, -- 1-bit Clock0 input
+I0 => EXTClock, -- 1-bit Clock0 input
 I1 => generatedClkForVictim, -- 1-bit Clock1 input
 S => victimClockSelector -- 1-bit Clock select input
 );
@@ -542,7 +542,7 @@ sr_e => vrEnb, sr_input => dataout, sr_output => dataFromCtrlBrd);
 --			  displayReg;
 
 trigger <= triggerCheck;			  
---DUTClock <= victimClk;
+DUTClock <= victimClk;
 reset <= not encStart;
 
 end Behavioral;
