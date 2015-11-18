@@ -1,8 +1,10 @@
 library IEEE;
+library UNISIM;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.fobos_package.all;
+use unisim.vcomponents.all;
 
 entity fobosControlTop is 
 port (
@@ -15,6 +17,8 @@ port (
   EppWait: out std_logic;       -- Port wait signal
   displayLED : out std_logic_vector(7 downto 0);
   cergbanner : out std_logic_vector(11 downto 0);
+  externClock : in std_logic;
+  victimClockSelector: in std_logic;
   -- ADC PORTS
 --  adc_clock : out std_logic;
 --  amp_gain : out std_logic;
@@ -26,7 +30,7 @@ port (
 	trigger : out std_logic;
 
 	-- DUT Ports from DUT point of view, i.e. dataout is data from dut to control
-	DUTClock: out std_logic;
+	DUTClock: in std_logic;
 	reset: out std_logic;
 	src_ready: out std_logic;
 	dst_ready: out std_logic;
@@ -59,7 +63,7 @@ signal dataFromAdc : std_logic_vector(15 downto 0);
 signal counter_adc_select, bram_data_collect_start : std_logic;
 signal ADC_DCM_OK : std_logic;
 signal clktobram, targetModuleReset, resetVictimCommunicationController : std_logic;
-signal victimClk : std_logic; 
+signal generatedClkForVictim, victimClk : std_logic; 
 signal victimDCMLocked : std_logic;
 signal encStart, encEnd, triggerCheck : std_logic;
 signal dlEnb, dlRst, drRst, drEnb, klRst, klEnb : std_logic;
@@ -384,6 +388,19 @@ statusReg(4) <= '0';
 statusReg(5) <= '0';
 statusReg(6) <= '0';
 statusReg(7) <= '0';
+
+------------------------------------------------------------------------
+-- Victim Clock Selector
+------------------------------------------------------------------------
+VictimClockSelectingMux : BUFGMUX generic map (CLK_SEL_TYPE => "SYNC")
+port map (
+O => victimClk, -- 1-bit Clock MUX output
+I0 => externClock, -- 1-bit Clock0 input
+I1 => generatedClkForVictim, -- 1-bit Clock1 input
+S => victimClockSelector -- 1-bit Clock select input
+);
+-- E
+
 ------------------------------------------------------------------------
 -- Frequency checkers
 ------------------------------------------------------------------------
@@ -449,7 +466,7 @@ frequency_counter_out => victimClockFrequency);
 -- Victim Clock Generation
 ------------------------------------------------------------------------
 victimClockGeneration : victimDCM  generic map (board => board)
-   port map ( clkin => clk,   rst => system_reset, clkout => victimClk,
+   port map ( clkin => clk,   rst => system_reset, clkout => generatedClkForVictim,
           locked_out  => victimDCMLocked);
 			 
 ------------------------------------------------------------------------
@@ -525,7 +542,7 @@ sr_e => vrEnb, sr_input => dataout, sr_output => dataFromCtrlBrd);
 --			  displayReg;
 
 trigger <= triggerCheck;			  
-DUTClock <= victimClk;
+--DUTClock <= victimClk;
 reset <= not encStart;
 
 end Behavioral;

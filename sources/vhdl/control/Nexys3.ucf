@@ -73,3 +73,7 @@ NET "clk" CLOCK_DEDICATED_ROUTE = FALSE;
 #NET "dst_read"       LOC = "C12" | IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L47N,                           Sch name = JD8
 #NET "dataout<2>"     LOC = "F12" | IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L51P,                           Sch name = JD9
 #NET "dataout<0>"     LOC = "E12" | IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L51N,                           Sch name = JD10
+
+
+#NET "externClock"LOC = "C5";    # Bank = 0, Pin name = IO_L23P_0, Type = I/O,                        Sch name = R-IO7
+#NET "victimClockSelector"LOC = "F7";    # Bank = 0, Pin name = IO_L19P_0, Type = I/O,                        Sch name = R-IO8

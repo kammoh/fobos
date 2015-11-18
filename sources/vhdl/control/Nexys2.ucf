@@ -106,8 +106,8 @@ NET "reset"       LOC = "A6";    # Bank = 0, Pin name = IO_L20N_0, Type = I/O,  
 
 # ======================== CLOCK SIGNAL ==================================================================
 NET "DUTClock" LOC = "D9";
-#LOC = "C5";    # Bank = 0, Pin name = IO_L23P_0, Type = I/O,                        Sch name = R-IO7
-#LOC = "F7";    # Bank = 0, Pin name = IO_L19P_0, Type = I/O,                        Sch name = R-IO8
+#NET "externClock"LOC = "C5";    # Bank = 0, Pin name = IO_L23P_0, Type = I/O,                        Sch name = R-IO7
+#NET "victimClockSelector"LOC = "F7";    # Bank = 0, Pin name = IO_L19P_0, Type = I/O,                        Sch name = R-IO8
 #LOC = "E7";    # Bank = 0, Pin name = IO_L19N_0/VREF_0, Type = VREF,                Sch name = R-IO9
 
 
