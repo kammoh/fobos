@@ -4,6 +4,7 @@
 
 
 NET "clk" LOC = "B8" ;#| IOSTANDARD = "LVCMOS33"; #Bank = 2, pin name = IO_L30N_GCLK0_USERCCLK, Sch name = GCLK
+NET "clk" CLOCK_DEDICATED_ROUTE = FALSE; #
 NET "EppAstb" LOC = "V14" ;#| IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L41N_GCLK26_M3DQ5, Sch name = U-FLAGA
 NET "EppDstb" LOC = "U14" ;#| IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L42P_GCLK25_TRDY2_M3UDM, Sch name = U-FLAGB
 NET "EppWrite" LOC = "V16" ;#| IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L55N_M3A14, Sch name = U-FLAGC
@@ -106,6 +107,8 @@ NET "reset"       LOC = "A6" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;  
 
 # ======================== CLOCK SIGNAL ==================================================================
 NET "DUTClock" LOC = "D9" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;
+NET "EXTClock" LOC = "B9" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;
+NET "victimClockSelector"       LOC = "G18";   # Bank = 1, Pin name = IP, Type = INPUT,                             Sch name = SW0
 #LOC = "C5";    # Bank = 0, Pin name = IO_L23P_0, Type = I/O,                        Sch name = R-IO7
 #LOC = "F7";    # Bank = 0, Pin name = IO_L19P_0, Type = I/O,                        Sch name = R-IO8
 #LOC = "E7";    # Bank = 0, Pin name = IO_L19N_0/VREF_0, Type = VREF,                Sch name = R-IO9
