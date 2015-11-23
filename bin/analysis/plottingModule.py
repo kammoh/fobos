@@ -127,7 +127,7 @@ def plotCorr(corrMatrix, corrType):
 			
 def traceNoStringParser(tString):
 	if(tString == "ALL"):
-		tracesToPrint = numpy.zeros(0)
+		tracesToPrint = numpy.arange(cfg.config_attributes['NUMBER_OF_TRACES'])
 	else:	
 		tracesToPrint = numpy.zeros(0)
 		tStringSplit = re.split(",", tString)
@@ -155,6 +155,7 @@ def plotTrace(dataToPlot, traceNos, plotType):
 		runNo += 1
 		cfg.SNAPSHOT_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.SNAPSHOT_FILE_NAME)	
 	tracesToPrint = traceNoStringParser(traceNos)
+	print tracesToPrint
 	firstRun = True
 	if len(tracesToPrint) > 0:
 		for trceNo in tracesToPrint:
@@ -171,12 +172,13 @@ def plotTrace(dataToPlot, traceNos, plotType):
 	plt.clf()
 	tiledPlotCounter = 0
 	if(plotType == 'OVERLAY'):
-		printFunctions.printToScreenAndAnalysisLog("Plotting traces - Overlayed Format")	
+		printFunctions.printToScreenAndAnalysisLog("Plotting traces - Overlayed Format")
+		plt.grid(b=True, which='Major', color = 'b', linestyle = '--')
 		plt.plot(toPlot)
 		plt.ylabel('volts')
 		plt.xlabel('time')
 		plt.title('Processed Data')
-		plt.grid(b=True, which='Major', color = 'b', linestyle = '--')
+		
 	elif(plotType == 'TILED'):
 		printFunctions.printToScreenAndAnalysisLog("Plotting traces - Tiled Format")
 		fig,axes = plt.subplots(len(tracesToPrint), 1, sharex= True, sharey = True)
@@ -218,13 +220,15 @@ def plotRawTrace(dataToPlot, traceLowerBound, traceUpperBound):
 	toPlot = numpy.transpose(dataToPlot)
 	plt.hold(False)
 	plt.clf()
-	plt.plot(toPlot[traceLowerBound:traceUpperBound], linestyle='.')
+	plt.grid(b=True, which='Major', color = 'b', linestyle = '--')
+	plt.plot(toPlot[traceLowerBound:traceUpperBound], color = 'r')
+	plt.savefig(cfg.SNAPSHOT_FILE,dpi=100)
 	plt.ylabel('volts')
 	plt.xlabel('time')
 	plt.title('Processed Data')
-	plt.grid(b=True, which='Major', color = 'b', linestyle = '--')
+	plt.show()
 	printFunctions.printToAnalysisLog("Saving " + cfg.SNAPSHOT_FILE)
-	plt.savefig(cfg.SNAPSHOT_FILE,dpi=100)
+	
 
 def showRawTrace(dataToPlot):
 	figs = plt.figure()	
@@ -233,7 +237,7 @@ def showRawTrace(dataToPlot):
 	toPlot = numpy.transpose(dataToPlot)
 	plt.hold(False)
 	plt.clf()
-	plt.plot(toPlot, linestyle='.')
+	plt.plot(toPlot)
 	plt.ylabel('volts')
 	plt.xlabel('time')
 	plt.title('Processed Data')

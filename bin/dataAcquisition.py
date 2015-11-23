@@ -56,9 +56,13 @@ def main():
 	#displayReg(0x0C)
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
 		armOscilloscope()
+		print "a"
 		runEncrytionOnControlBoard(traceCount)
+		print "b"
 		populateOscilloscopeDataStorage(traceCount)
+		print "c"
 		populateControlBoardOutputDataStorage(traceCount)
+		print "d"
 		traceCount += 1
 	#saveOscilloscopeDataStorage()	
 	saveControlBoardOutputDataStorage()

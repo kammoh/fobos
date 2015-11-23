@@ -41,8 +41,8 @@ TRIGGER_LENGTH_CYCLES = 20 #@VICTIM CLOCK
 # =============================================
 # =============================================
 
-PLAINTEXT_GENERATION = RANDOM
-DATA_FILE     = plaintexts.txt
+PLAINTEXT_GENERATION = RANDOM # USER | RANDOM
+DATA_FILE     = connectiontest.txt
 KEY_GENERATION = RANDOM
 KEY_FILE      = keys.txt
 INPUT_FORMAT  = hex # Default => hex

@@ -236,7 +236,6 @@ def configureAnalysisWorkspace():
 	support.createDirectory(cfg.LOCAL_CONFIGDIR)
 	shutil.copy(cfg.ANALYSIS_SCRIPT_FILE, cfg.LOCAL_CONFIGDIR)
 	signalAnalysisModule.readRawTraces()
-
 def extractAnalysisConfigAttributes(CONFIG_FILE):
 	CONFIG_FILE = os.path.join(cfg.ANALYSISCONFIGDIR, CONFIG_FILE)
 	FILE_COPY = os.path.join(cfg.LOCAL_CONFIGDIR, CONFIG_FILE)

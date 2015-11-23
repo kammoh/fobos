@@ -100,22 +100,30 @@ def acquireHypotheticalValues(POWER_MODEL_FILE):
 	return(keyGuess)
 	
 def adjustSampleSize(sampleLength, dataArray):
+		
+		
 		if(cfg.PROGRAM_CALL == "ANALYSIS"):
 			printFunctions.printToAnalysisLog("\tAdjusting Sample Size to ->" + str(sampleLength))
+			print 'analysis'
 		else:
 			printFunctions.printToLog("\tAdjusting Sample Size to ->" + str(sampleLength))
 		temp = dataArray.shape
 		newDataArray = dataArray
 		arrLen = temp[0]
-		#print "Array Length --> " + str(arrLen)
+		print "Array Length --> " + str(arrLen)
 		if (arrLen == sampleLength):
+			
 			return dataArray
+			
 		elif (arrLen > sampleLength):
+			
 			diff = arrLen-sampleLength
 			for count in range(0,diff):
 				newDataArray = numpy.delete(newDataArray, -1, 0)
 			return newDataArray	
+			
 		elif (arrLen < sampleLength):
+			
 			diff = sampleLength-arrLen
 			for count in range (0,diff):
 				newDataArray = numpy.append(newDataArray,0)
@@ -131,12 +139,16 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 		alignedData = numpy.zeros(0)
 		singleTraceFlag = False
 		temp = totalMeasuredTriggerData.shape
+		
 		totalNumOfTraceSets = temp[0]
+		
 		if (totalNumOfTraceSets == totalMeasuredTriggerData.size):
 			totalNumOfTraceSets = 1
 			singleTraceFlag = True
+			print singleTraceFlag
 		traceLength = 0
 		for traceSet in range(0, totalNumOfTraceSets):
+			print traceSet
 			if(singleTraceFlag == True):
 				measuredPowerData = totalMeasuredPowerData
 				measuredTriggerData = totalMeasuredTriggerData
@@ -154,23 +166,28 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 					if(firstTriggerSampleHigh == True):
 						if (triggerCount == 0):
 							tempArray = numpy.zeros(0)
+							
 						elif(triggerCount == 1 and traceSet == 0):
 							t = tempArray.shape
 							traceLength = t[0]
 							alignedData = tempArray
-							tempArray = numpy.zeros(0)	
+							tempArray = numpy.zeros(0)
+							
 						elif(triggerCount > 1):
 							tempArray = adjustSampleSize(traceLength, tempArray)
 							alignedData = numpy.vstack((alignedData,tempArray))
 							tempArray = numpy.zeros(0)
+							
 						firstTriggerSampleHigh = False
 						triggerCount += 1
+						
 					tempArray = numpy.append(tempArray, measuredPowerData[sampleNo])
+					
 				elif(measuredTriggerData[sampleNo] < cfg.analysisConfigAttributes['TRIGGER_THRESHOLD']  and firstTriggerHigh == True):
+					
 					firstTriggerSampleHigh = True
 					tempArray = numpy.append(tempArray, measuredPowerData[sampleNo])
-			alignedData = numpy.vstack((alignedData,adjustSampleSize(traceLength,tempArray)))	
-
+			alignedData = numpy.vstack((alignedData,adjustSampleSize(traceLength,tempArray)))
 		return (alignedData)	
 	
 	elif(cfg.analysisConfigAttributes['CAPTURE_MODE'] == 'SINGLE'):
@@ -218,9 +235,17 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 		
 
 def readRawTraces():
-	cfg.RAW_POWER_DATA = numpy.load(cfg.RAW_UNALIGNED_POWER_FILE)
-	cfg.RAW_TRIGGER_DATA = numpy.load(cfg.RAW_UNALIGNED_TRIGGER_FILE)
-	
+	measurementFile = open(cfg.RAW_UNALIGNED_POWER_FILE, "r")
+	triggerFile = open(cfg.RAW_UNALIGNED_TRIGGER_FILE, "r")
+	for traceCount in range (0, cfg.config_attributes['NUMBER_OF_TRACES']):
+		tempArrayMeasurement = numpy.load(measurementFile)
+		tempArrayTrigger = numpy.load(triggerFile)
+		if (traceCount == 0):
+			cfg.RAW_POWER_DATA  = tempArrayMeasurement
+			cfg.RAW_TRIGGER_DATA  = tempArrayTrigger
+		elif (traceCount > 0):
+			cfg.RAW_POWER_DATA  = numpy.vstack((cfg.RAW_POWER_DATA,tempArrayMeasurement))
+			cfg.RAW_TRIGGER_DATA  = numpy.vstack((cfg.RAW_TRIGGER_DATA,tempArrayTrigger))
 		
 	
 def getAlignedMeasuredPowerData():

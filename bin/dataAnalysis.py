@@ -43,8 +43,11 @@ def main():
 	support.clear_screen()
 	init()
 	printFunctions.printAnalysisHeaderToScreen()
+	
 	configExtract.extractConfigAttributes()
+	
 	configExtract.configureAnalysisWorkspace()
+	
 	printFunctions.printAnalysisHeaderToLog()
 	support.setPlotAttributes()
 	#################################################################
@@ -53,11 +56,12 @@ def main():
 	#plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 200750, 204750)
 	#plottingModule.plotRawTrace(cfg.RAW_TRIGGER_DATA,200750, 204750)
 	configExtract.extractAnalysisConfigAttributes("signalAlignmentParams.txt")
-	plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 0, 20000000)	
-	plottingModule.plotRawTrace(cfg.RAW_TRIGGER_DATA, 0, 20000000)	
-	#alignedData = signalAnalysisModule.getAlignedMeasuredPowerData() # Aligned Power traces with respect to trigger
+	
+	plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 0, 2000000)	
+	plottingModule.plotRawTrace(cfg.RAW_TRIGGER_DATA , 0, 2000000)	
+	alignedData = signalAnalysisModule.getAlignedMeasuredPowerData() # Aligned Power traces with respect to trigger
 	#signalAnalysisModule.spectogram(cfg.RAW_POWER_DATA)
-	#plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')	
+	plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')	
 	#sampleVarTimeWise = sca.calculate_var(alignedData, globals.TRACE_WISE) 	
 	# #support.wait()
 	# configExtract.extractAnalysisConfigAttributes("traceExpungeParams.txt")

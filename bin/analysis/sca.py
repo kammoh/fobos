@@ -194,7 +194,11 @@ def calculate_autocorrelation(measuredData):
 			corrMatrix = numpy.vstack((corrMatrix, corrArray))	
 			corrArray = numpy.zeros(0)			
 	return corrMatrix	
-		
+def calculate_var(data, axis):
+	printFunctions.printToScreenAndAnalysisLog("Calculating Variance")
+	data = numpy.var(data , axis = axis)
+	plt.plot(data)
+	plt.show()
 def main():
 	os.system('cls')
 	dt = 0.0005

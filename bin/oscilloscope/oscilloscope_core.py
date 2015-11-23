@@ -173,7 +173,7 @@ def setOscilloscopeConfigAttributes():
   printFunctions.printToLog("\t"+ cmd_string)
   cfg.Oscilloscope.send(cmd_string+'\n')
   cfg.Oscilloscope.send(":WAVEFORM:FORMAT BYTE" + '\n')
-  #cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE RAW" + '\n') 
+  cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE RAW" + '\n') #changed 
 
 def extractOscilloscopeConfigAttributes():
   data_from_file = support.readFile(cfg.OSC_CONFIGFILE)
@@ -295,9 +295,9 @@ def getDataFromOscilloscope(channelName) :
   #printFunctions.printToLog("\t# of samples requested -> " + cfg.Oscilloscope.recv(200))    
   printFunctions.printToLog("\tReading Preamble of " + channelName)
   cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')
-  preamble = cfg.Oscilloscope.recv(200)
+  preamble = cfg.Oscilloscope.recv(400)
   #print "first"
-  #print "\tpreamble as per oscilloscope - " + preamble
+  print "\tpreamble as per oscilloscope - " + preamble
   fileId = open(cfg.TEMP_PREAMBLE_FILE, "wb")
   fileId.write(preamble)
   fileId.close()
@@ -322,11 +322,15 @@ def getDataFromOscilloscope(channelName) :
   cfg.Oscilloscope.send(":WAVEFORM:DATA?" + '\n') 
   tData = int(preamble[2])
   wavedata = ""
+  temp = cfg.Oscilloscope.recv(11)
+  print temp
   temp = cfg.Oscilloscope.recv(tData)
+  #print len(temp)
   wavedata = wavedata+temp
   #support.goToSleep(2)
   while (len(wavedata) < tData):
   	temp = cfg.Oscilloscope.recv(tData)
+  	#print len(temp)
         wavedata = wavedata + temp
   #print "\tLength of obtained data - " + str(len(wavedata))
   #lowerBound = tData - len(temp)
@@ -340,6 +344,7 @@ def getDataFromOscilloscope(channelName) :
     #count += len(temp)
     #rData = tData - count
   #print wavedata
+  
   printFunctions.printToLog("Got the entire data. Moving on..!")
   fileId = open(cfg.TEMP_MEASUREMENT_FILE, "wb")
   fileId.write(str(wavedata))
