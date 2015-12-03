@@ -1,0 +1,80 @@
+#########################################
+### NEXYS2 BOARD DUT CONSTRAINTS FILE ###
+#########################################
+
+### FX2 connector for connection to Control
+## ==== FX2 Connector (FX2) ====
+## ===================== Data out to DUT  =================================== 
+#NET "datain<15>"  LOC = "C3" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L25P_0, Type = I/O,                        Sch name = R-IO3
+#NET "datain<14>"  LOC = "C4" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO, Type = I/O,                               Sch name = R-IO4
+#NET "datain<13>"  LOC = "B6" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L20P_0, Type = I/O,                        Sch name = R-IO5
+#NET "datain<12>"  LOC = "D5" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L23N_0/VREF_0, Type = VREF,                Sch name = R-IO6
+#NET "datain<11>"  LOC = "D7" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L18N_0/VREF_0, Type = VREF,                Sch name = R-IO13
+#NET "datain<10>"  LOC = "E8" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L17P_0, Type = I/O,                        Sch name = R-IO14
+#NET "datain<9>"   LOC = "E9" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L15P_0, Type = I/O,                        Sch name = R-IO15
+#NET "datain<8>"   LOC = "C9" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L14P_0/GCLK10, Type = GCLK,                Sch name = R-IO16
+##NET "datain<7>"   LOC = "A8" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO, Type = I/O,                               Sch name = R-IO17
+##NET "datain<6>"   LOC = "G9" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO, Type = I/O,                               Sch name = R-IO18
+#NET "datain<5>"   LOC = "F9" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L15N_0, Type = I/O,                        Sch name = R-IO19
+##NET "datain<4>"   LOC = "D10" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L11P_0/GCLK4, Type = GCLK,                 Sch name = R-IO20
+#NET "datain<3>"   LOC = "A10" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L12N_0/GCLK7, Type = GCLK,                 Sch name = R-IO21
+#NET "datain<2>"   LOC = "B10" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L12P_0/GCLK6, Type = GCLK,                 Sch name = R-IO22
+#NET "datain<1>"   LOC = "A11" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO, Type = I/O,                               Sch name = R-IO23
+#NET "datain<0>"   LOC = "D11" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L09N_0, Type = I/O,                        Sch name = R-IO24
+#
+## ===================== Data in from DUT ===================================
+#NET "dataout<0>"  LOC = "E10" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L11N_0/GCLK5, Type = GCLK,                 Sch name = R-IO25
+#NET "dataout<1>"  LOC = "B11" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO/VREF_0, Type = VREF,                       Sch name = R-IO26
+#NET "dataout<2>"  LOC = "C11" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L09P_0, Type = I/O,                        Sch name = R-IO27
+#NET "dataout<3>"  LOC = "E11" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L08P_0, Type = I/O,                        Sch name = R-IO28
+#NET "dataout<4>"  LOC = "F11" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L08N_0, Type = I/O,                        Sch name = R-IO29
+#NET "dataout<5>"  LOC = "E12" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L06N_0, Type = I/O,                        Sch name = R-IO30
+#NET "dataout<6>"  LOC = "F12" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L06P_0, Type = I/O,                        Sch name = R-IO31
+#NET "dataout<7>"  LOC = "A13" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L05P_0, Type = I/O,                        Sch name = R-IO32
+#NET "dataout<8>"  LOC = "B13" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L05N_0/VREF_0, Type = VREF,                Sch name = R-IO33
+#NET "dataout<9>"  LOC = "E13" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO, Type = I/O,                               Sch name = R-IO34
+#NET "dataout<10>" LOC = "A14" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L04N_0, Type = I/O,                        Sch name = R-IO35
+#NET "dataout<11>" LOC = "C14" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L03N_0/VREF_0, Type = VREF,                Sch name = R-IO36
+#NET "dataout<12>" LOC = "D14" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L03P_0, Type = I/O,                        Sch name = R-IO37
+#NET "dataout<13>" LOC = "B14" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L04P_0, Type = I/O,                        Sch name = R-IO38
+#NET "dataout<14>" LOC = "A16" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L01N_0, Type = I/O,                        Sch name = R-IO39
+#NET "dataout<15>" LOC = "B16" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;   # Bank = 0, Pin name = IO_L01P_0, Type = I/O,                        Sch name = R-IO40
+#
+## ===================== CONTROL SIGNALS ====================================
+#NET "src_ready"   LOC = "C7" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L18P_0, Type = I/O,                        Sch name = R-IO11
+#NET "src_read"    LOC = "F8" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L17N_0, Type = I/O,                        Sch name = R-IO12
+#NET "dst_ready"   LOC = "B4" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L24N_0, Type = I/O,                        Sch name = R-IO1
+#NET "dst_write"   LOC = "A4" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L24P_0, Type = I/O,                        Sch name = R-IO2
+#NET "reset"       LOC = "A6" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L20N_0, Type = I/O,                        Sch name = R-IO10
+#
+## ======================== CLOCK SIGNAL ====================================
+# NET "clock"    LOC = "D9" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;
+#LOC = "C5";    # Bank = 0, Pin name = IO_L23P_0, Type = I/O,                        Sch name = R-IO7
+#LOC = "F7";    # Bank = 0, Pin name = IO_L19P_0, Type = I/O,                        Sch name = R-IO8
+#LOC = "E7";    # Bank = 0, Pin name = IO_L19N_0/VREF_0, Type = VREF,                Sch name = R-IO9
+
+## Pmod JD and JC connector for connection to Control
+# ==== JD and JC Connector (Pmod) ====
+# ===================== Data out to DUT  =================================== 
+NET "datain<3>"   LOC = "G13" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L20N_1, Type = I/O,                        Sch name = JC3
+NET "datain<2>"   LOC = "G16" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L18N_1, Type = I/O,                        Sch name = JC9
+NET "datain<1>"   LOC = "H16" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L16P_1, Type = I/O,                        Sch name = JC4
+NET "datain<0>"   LOC = "J12" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L15P_1/A2, Type = DUAL,                    Sch name = JC10
+
+# ===================== Data in from DUT ===================================
+NET "dataout<0>"  LOC = "J14" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L14N_1/A3/RHCLK7, Type = RHCLK/DUAL,       Sch name = JD10/LD0,Led<0>
+NET "dataout<1>"  LOC = "P18" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L06N_1, Type = I/O,                        Sch name = JD4
+NET "dataout<2>"  LOC = "J15" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L14P_1/A4/RHCLK6, Type = RHCLK/DUAL,       Sch name = JD9/LD1, Led<1>
+NET "dataout<3>"  LOC = "N18" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L08P_1, Type = I/O,                        Sch name = JD3
+
+# ===================== CONTROL SIGNALS ====================================
+NET "src_ready"   LOC = "J16" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L13N_1/A5/RHCLK5, Type = RHCLK/DUAL,       Sch name = JC2
+NET "src_read"    LOC = "F14" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L21N_1, Type = I/O,                        Sch name = JC8
+NET "dst_ready"   LOC = "M18" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L08N_1, Type = I/O,                        Sch name = JD2
+NET "dst_write"   LOC = "K15" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L12P_1/A8/RHCLK2, Type = RHCLK/DUAL,       Sch name = JD8/LD2, Led<2>
+NET "reset"       LOC = "J13" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L15N_1/A1, Type = DUAL,                    Sch name = JD1
+
+# ======================== CLOCK SIGNAL ====================================
+NET "clock"       LOC = "G15" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L18P_1, Type = I/O,                        Sch name = JC1
+NET "clock" CLOCK_DEDICATED_ROUTE = FALSE;
+
