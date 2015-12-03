@@ -27,7 +27,8 @@ NET "EppDB<7>" LOC = "R10" ;#| IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO
 #NET "displayLED<0>" LOC = "J14" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L2P_CMPCLK, Sch name = LD0
 #NET "displayLED<1>" LOC = "J15" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L2N_CMPMOSI, Sch name = LD1
 #NET "displayLED<2>" LOC = "K15" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L5P, Sch name = LD2
-#NET "displayLED<3>" LOC = "K14" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L5N, Sch name = LD3
+#NET "displayLED<3>" LOC = "K14" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L5N, Sch name = LD
+NET "clkseltest" LOC = "E17" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L15P, Sch name = LD4
 #NET "displayLED<4>" LOC = "E17" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L15P, Sch name = LD4
 #NET "displayLED<5>" LOC = "P15" | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L15N, Sch name = LD5
 #NET "displayLED<6>" LOC = "F4"  | IOSTANDARD = "LVCMOS33"; #Bank = 2, Pin name = IO_L16P, Sch name = LD6
@@ -109,7 +110,7 @@ NET "trigger" LOC = "K12" |IOSTANDARD = LVCMOS33; # Bank = 1, Pin name = IO_L11N
 #NET "reset"       LOC = "A6" |IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;    # Bank = 0, Pin name = IO_L20N_0, Type = I/O,                        Sch name = R-IO10
 #
 ## ======================== CLOCK SIGNAL ====================================
-#NET "DUTClock"    LOC = "D9" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;
+NET "DUTClock"    LOC = "D9" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;
 NET "EXTClock"    LOC = "B9" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8;
 #LOC = "C5";    # Bank = 0, Pin name = IO_L23P_0, Type = I/O,                        Sch name = R-IO7
 #LOC = "F7";    # Bank = 0, Pin name = IO_L19P_0, Type = I/O,                        Sch name = R-IO8
@@ -137,7 +138,7 @@ NET "dst_write"   LOC = "K15" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name 
 NET "reset"       LOC = "J13" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L15N_1/A1, Type = DUAL,                    Sch name = JD1
 
 # ======================== CLOCK SIGNAL ====================================
-NET "DUTClock"    LOC = "G15" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L18P_1, Type = I/O,                        Sch name = JC1
+#NET "DUTClock"    LOC = "G15" | IOSTANDARD = "LVCMOS33";   # Bank = 1, Pin name = IO_L18P_1, Type = I/O,                        Sch name = JC1
 #NET "EXTClock"    
 
 #NET "JC<4>"       LOC = "H15";   # Bank = 1, Pin name = IO_L17N_1, Type = I/O,                        Sch name = JC7

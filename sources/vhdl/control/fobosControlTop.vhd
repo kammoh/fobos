@@ -15,10 +15,11 @@ port (
   --EppReset : in std_logic;        -- Port reset signal
   EppDB  : inout std_logic_vector(7 downto 0); -- port data bus
   EppWait: out std_logic;       -- Port wait signal
-  displayLED : out std_logic_vector(7 downto 0);
+ -- displayLED : out std_logic_vector(7 downto 0);
   cergbanner : out std_logic_vector(11 downto 0);
   EXTClock : in std_logic;
   victimClockSelector: in std_logic;
+  clkseltest : out std_logic;
   -- ADC PORTS
 --  adc_clock : out std_logic;
 --  amp_gain : out std_logic;
@@ -237,7 +238,7 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 		end if;
 	end if;
 end process;
-displayLED <= displayReg;
+--displayLED <= displayReg;
 
 ------------------------------------------------------------------------
 -- Target Registers
@@ -400,6 +401,8 @@ I1 => generatedClkForVictim, -- 1-bit Clock1 input
 S => victimClockSelector -- 1-bit Clock select input
 );
 -- E
+
+clkseltest <= victimClockSelector;
 
 ------------------------------------------------------------------------
 -- Frequency checkers
