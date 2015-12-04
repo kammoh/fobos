@@ -41,7 +41,7 @@ TRIGGER_LENGTH_CYCLES = 20 #@VICTIM CLOCK
 # =============================================
 # =============================================
 
-PLAINTEXT_GENERATION = USER # USER | RANDOM
+PLAINTEXT_GENERATION = RANDOM # USER | RANDOM
 DATA_FILE     = connectiontest.txt
 KEY_GENERATION = RANDOM
 KEY_FILE      = keys.txt
@@ -57,7 +57,7 @@ KEY_SIZE = 16 # In Bytes
 # =============================================
 # =============================================
 DUMMY_RUN = YES #YES/NO
-NUMBER_OF_TRACES = 66 
+NUMBER_OF_TRACES = 16 
 
 # =============================================
 # =============================================

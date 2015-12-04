@@ -113,7 +113,7 @@ DCM_CLKGEN_instance_N3 : DCM_CLKGEN
 generic map
 (
 	CLKFXDV_DIVIDE => 32, -- CLKFXDV divide value (2, 4, 8, 16, 32)
-	CLKFX_DIVIDE => 128, -- Divide value - D - (1-256)
+	CLKFX_DIVIDE => 16, -- Divide value - D - (1-256)
 	CLKFX_MD_MAX => 0.01, -- Specify maximum M/D ratio for timing anlysis
 	CLKFX_MULTIPLY => 4, -- Multiply value - M - (2-256)
 	CLKIN_PERIOD => 10.0, -- Input clock period specified in nS

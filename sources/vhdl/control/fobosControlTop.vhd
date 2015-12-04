@@ -545,7 +545,7 @@ sr_e => vrEnb, sr_input => dataout, sr_output => dataFromCtrlBrd);
 --			  displayReg;
 
 trigger <= triggerCheck;			  
-DUTClock <= victimClk;
+DUTClock <= not victimClk;
 reset <= not encStart;
 
 end Behavioral;
