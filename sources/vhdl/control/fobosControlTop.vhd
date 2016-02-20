@@ -66,7 +66,7 @@ signal ADC_DCM_OK : std_logic;
 signal clktobram, targetModuleReset, resetVictimCommunicationController : std_logic;
 signal generatedClkForVictim, victimClk : std_logic; 
 signal victimDCMLocked : std_logic;
-signal encStart, encEnd, triggerCheck : std_logic;
+signal EndPCDataComm, encStart, encEnd, triggerCheck : std_logic;
 signal dlEnb, dlRst, drRst, drEnb, klRst, klEnb : std_logic;
 signal vdlEnb, vdlRst, vklEnb, vklRst, vrRst, vrEnb, cdlEnb, cklEnb, cklRst : std_logic;
 signal dataToCtrlBrd : std_logic_vector(maxBlockSize-1 downto 0);
@@ -371,7 +371,7 @@ drEnb <= '1' when controlReg = x"07" else '0';
 klRst <= '1' when controlReg = x"08" else '0';
 klEnb <= '1' when controlReg = x"09" else '0';
 
-encStart <= '1' when dataReg1 = x"FF" else '0';
+EndPCDataComm <= '1' when dataReg1 = x"FF" else '0';
 resetVictimCommunicationController <= '1' when dataReg1 = x"02" else '0';
 --bram_extaddress_reset <= dataReg0(7);
 --bram_extaddress_enable <= dataReg0(6);
@@ -493,7 +493,7 @@ controlBoardToPCShiftReg : shiftregDataToPC generic map (dataSize => maxBlockSiz
 sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc); 
 --
 --
-----------------------------------------------------------------------------
+------------------------------------------------------------------------
 -------- SHIFT REGISTERS FOR CONTROL BOARD TO VICTIM BOARD AND VICE-VERSA
 ----------------------------------------------------------------------------
 --
@@ -501,7 +501,7 @@ sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc);
 
 
 ControlVictimCommunication: victimCommunicationHandler port map(
-clock => victimClk, start => encStart, reset => resetVictimCommunicationController, targetClock => victimCLk, databusHandle => databusHandle, src_read  => src_read, dst_write => dst_write, vdlRst => vdlRst, vdlEnb => vdlEnb, vklRst => vklRst, vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready, stateMachineStatus => stateMachineLeds);
+clock => victimClk, start => EndPCDataComm, reset => resetVictimCommunicationController, targetClock => victimCLk, databusHandle => databusHandle, src_read  => src_read, dst_write => dst_write, vdlRst => vdlRst, vdlEnb => vdlEnb, vklRst => vklRst, vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready, stateMachineStatus => stateMachineLeds, encStart => encStart);
 --
 controlBoardToVictimDataShiftreg : shiftregDataToVictim generic map( interfaceSize => interfaceWidth,
 		dataSize => maxBlockSize) port map (clock => victimClk, load =>vdlRst,
@@ -521,7 +521,7 @@ sr_e => vrEnb, sr_input => dataout, sr_output => dataFromCtrlBrd);
 ----- FOR TESTING PURPOSE VICTIM IS IMPLEMENTED HERE -- PLEASE DELETE IT
 --------------------------------------------------------------------------
 
--- victimDeclaration : victimTopLevel port map( clock => victimClk, reset => not encStart,
+-- victimDeclaration : victimTopLevel port map( clock => victimClk, reset => not EndPCDataComm,
 -- src_ready => src_ready, dst_ready => dst_ready, datain => dataout, 
 -- src_read => src_read, dst_write => dst_write, dataout => datain, stateMachineStatus => stateMachineLedsTarget);
 
@@ -541,12 +541,12 @@ sr_e => vrEnb, sr_input => dataout, sr_output => dataFromCtrlBrd);
 --			  "0000" & datain(3 downto 0) when displayReg = x"09" else
 --			  commandToTargetControl when displayReg = x"0A" else
 --			  stateMachineLedsTarget when displayReg = x"0B" else
---			  "0000000" & encStart when displayReg = x"0C" else
+--			  "0000000" & EndPCDataComm when displayReg = x"0C" else
 --			  displayReg;
 
 trigger <= triggerCheck;			  
 DUTClock <= not victimClk;
-reset <= not encStart;
+reset <= not EndPCDataComm;
 
 end Behavioral;
 

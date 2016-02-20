@@ -6,8 +6,8 @@ package fobos_package is
 ------------------------------------------------------------------------
 -- USER CONTROLLED VAIRABLES
 ------------------------------------------------------------------------
-constant board : integer := 2;
-constant interfaceWidth : integer := 4;
+constant board : integer := 1;
+constant interfaceWidth : integer := 16;
 constant maxBlockSize : integer := 128;
 constant maxKeySize : integer := 128;
 ------------------------------------------------------------------------
@@ -211,7 +211,8 @@ component victimCommunicationHandler is
 		 vrEnb : out std_logic; -- Victim FROM data enable
 		 stateMachineStatus: out std_logic_vector(7 downto 0); -- For debug purpose		 
 		 src_ready : out std_logic;
-		 dst_ready : out std_logic		 
+		 dst_ready : out std_logic;
+                 encStart : out std_logic		 
 		 );
 end component;
 

@@ -19,13 +19,14 @@ entity victimCommunicationHandler is
 		 vrEnb : out std_logic; -- Victim FROM data enable
 		 src_ready : out std_logic;
 		 stateMachineStatus: out std_logic_vector(7 downto 0); -- For debug purpose
-		 dst_ready : out std_logic		 
+		 dst_ready : out std_logic;
+                 encStart : out std_logic		 
 		 );
 end victimCommunicationHandler;
 
 
 architecture structure of victimCommunicationHandler is
-type state is (boot, init1, st1, st2, st3, st4, st5); 
+type state is (boot, init1, st1, st2, st3, st3a, st4, st5); 
 signal pr_state,nx_state:state;
 
 signal load_cnt_key, enb_cnt_key, load_cnt_data, enb_cnt_data, load_cnt_ct, enb_cnt_ct : std_logic;
@@ -81,7 +82,14 @@ next_state_function: process(clock,src_read,key_set,data_set, dst_write, ct_set,
 		  if (data_set = '0') then	
 			  nx_state <= st2;
 		  else
-			  nx_state<= st3;
+			  nx_state<= st3a;
+		  end if;
+		  
+                  when st3a =>
+		  if (dst_write = '0') then
+			  nx_state <= st3;
+		  else 
+			  nx_state <= st4;
 		  end if;
 		  
 		  when st3 => 
@@ -109,7 +117,7 @@ end process;
  output_function: process(pr_state)
  begin	 
    src_ready <= '0';dst_ready <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '0'; vrEnb <= '0';
-		databusHandle <= '0';
+		databusHandle <= '0'; encStart <= '0';
 	case pr_state is 
 		 when boot =>
 		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1';load_cnt_ct <= '1';enb_cnt_ct <= '0'; databusHandle <= '0';
@@ -127,6 +135,10 @@ end process;
 	 	 src_ready <= '1'; load_cnt_key <= '1'; load_cnt_data <= '0'; enb_cnt_data<= '1'; enb_cnt_key<= '0';dst_ready <= '0'; databusHandle <= '1';
 		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '1'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '1'; vrEnb <= '0';
 		 stateMachineStatus <= x"04";
+		 when st3a=>
+		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '1'; databusHandle <= '1';	 
+		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '1'; vrEnb <= '0'; encStart <= '1';
+		 stateMachineStatus <= x"09";
 		 when st3=>
 		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '1'; databusHandle <= '1';	 
 		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '1'; vrEnb <= '0';

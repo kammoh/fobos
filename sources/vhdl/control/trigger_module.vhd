@@ -41,7 +41,7 @@ begin
 triggerWaitCounter   : counter generic map (N=>32) port map (clk => clock, reset => cntTrigWaitLd, enable => cntTrigWaitEn, counter_out => cntTriggerWaitOut);
 triggerLengthCounter : counter generic map (N=>32) port map (clk => clock, reset => cntTrigLenLd,  enable => cntTrigLenEn,  counter_out => cntTriggerLenOut);
 zTriggerWait   <= '1' when cntTriggerWaitOut < noOfTriggerWaitCycles else '0';
-zTriggerLen   <= '1' when cntTriggerLenOut < triggerLength else '0';
+zTriggerLen   <= '0' when cntTriggerLenOut < triggerLength else '1';
 
 --------------------Async Reset---------------------------------
 present_state:	process (reset,clock)
@@ -69,9 +69,9 @@ next_state_function: process(clock,reset,zTriggerWait, zTriggerLen, startOfEncry
 		  
 		  when st1 =>
 		  if (zTriggerWait = '1') then
-			nx_state <= st2;
-			else
 			nx_state <= st1;
+			else
+			nx_state <= st2;
 		 end if;	
 		
 		 when st2 => 

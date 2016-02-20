@@ -30,11 +30,11 @@ LOGGING = INFO # INFO|DEBUG
 # =============================================
 # =============================================
 
-CONTROL_BOARD = Nexys3
+CONTROL_BOARD = Nexys2
 VICTIM_RESET = 11
 TIME_OUT = 50000
-TRIGGER_WAIT_CYCLES = 10 #@VICTIM CLOCK
-TRIGGER_LENGTH_CYCLES = 20 #@VICTIM CLOCK
+TRIGGER_WAIT_CYCLES = 5 #@VICTIM CLOCK must be >0
+TRIGGER_LENGTH_CYCLES = 10 #@VICTIM CLOCK
 # =============================================
 # =============================================
 # Test Data Generation Settings
@@ -57,7 +57,7 @@ KEY_SIZE = 16 # In Bytes
 # =============================================
 # =============================================
 DUMMY_RUN = YES #YES/NO
-NUMBER_OF_TRACES = 16 
+NUMBER_OF_TRACES = 1 
 
 # =============================================
 # =============================================
