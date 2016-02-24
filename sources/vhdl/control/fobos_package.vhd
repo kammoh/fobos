@@ -235,11 +235,11 @@ package fobos_package is
     ----------------------------------------------------------------------------
     component victimController is 
         port(
-            clock                   : in std_logic;
-            reset                   : in std_logic;
-            src_ready               : in std_logic;
-            dst_ready               : in std_logic;
-            done_exe                : in std_logic;
+            clock                   : in  std_logic;
+            reset                   : in  std_logic;
+            src_ready               : in  std_logic;
+            dst_ready               : in  std_logic;
+            done_exe                : in  std_logic;
             start_to_crypto         : out std_logic;
             src_read                : out std_logic;
             dst_write               : out std_logic;
@@ -259,10 +259,10 @@ package fobos_package is
             dataSize                : integer:= 128);
         port
         (
-            clock                   : in std_logic;
-            load                    : in std_logic; 
-            sr_e                    : in std_logic;
-            sr_input                : in std_logic_vector (dataSize-1 downto 0);
+            clock                   : in  std_logic;
+            load                    : in  std_logic; 
+            sr_e                    : in  std_logic;
+            sr_input                : in  std_logic_vector (dataSize-1 downto 0);
             sr_output               : out std_logic_vector (interfaceSize-1 downto 0)
         ) ;
     end component;
@@ -273,21 +273,21 @@ package fobos_package is
             dataSize                : integer:= 128);
         port
            (
-            clock                   : in std_logic;
-            reset                   : in std_logic;
-            sr_e                    : in std_logic;
-            sr_input                : in std_logic_vector (interfaceSize-1 downto 0);
+            clock                   : in  std_logic;
+            reset                   : in  std_logic;
+            sr_e                    : in  std_logic;
+            sr_input                : in  std_logic_vector (interfaceSize-1 downto 0);
             sr_output               : out std_logic_vector (dataSize-1 downto 0)
             ) ;
     end component;
     
     component victimTopLevel is 
         port(
-            clock                   : in std_logic;
-            reset                   : in std_logic;
-            src_ready               : in STD_LOGIC;
-            dst_ready               : in STD_LOGIC;
-            datain                  : in std_logic_vector(interfaceWidth-1 downto 0);
+            clock                   : in  std_logic;
+            reset                   : in  std_logic;
+            src_ready               : in  STD_LOGIC;
+            dst_ready               : in  STD_LOGIC;
+            datain                  : in  std_logic_vector(interfaceWidth-1 downto 0);
             src_read                : out STD_LOGIC;
             dst_write               : out STD_LOGIC;
             stateMachineStatus      : out std_logic_vector (7 downto 0);      
@@ -301,14 +301,29 @@ package fobos_package is
     
     component aes_non_pipe is
         port (  
-                clock               : in std_logic ;
-                start               : in std_logic ;
-                data_in             : in std_logic_vector (0 to 127);
-                key_in              : in std_logic_vector (0 to 127);
+                clock               : in  std_logic ;
+                start               : in  std_logic ;
+                data_in             : in  std_logic_vector (0 to 127);
+                key_in              : in  std_logic_vector (0 to 127);
                 data_out            : out std_logic_vector (0 to 127); 
                 --trigger           : out std_logic   ;
                 done                : out std_logic
                 );
-    
-    end component;
+    END COMPONENT;
+                
+    COMPONENT AES_Enc
+        PORT(
+                clk                 : IN std_logic;
+                rst                 : IN std_logic;
+                din                 : IN std_logic_vector(127 downto 0);
+                key                 : IN std_logic_vector(127 downto 0);
+                init                : IN std_logic;
+                start               : IN std_logic;          
+                dout                : OUT std_logic_vector(127 downto 0);
+                ready               : OUT std_logic;
+                done                : OUT std_logic;
+                done_init           : OUT std_logic
+            );
+    END COMPONENT;
+
 end fobos_package;

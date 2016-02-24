@@ -1,3 +1,15 @@
+-------------------------------------------------------------------------------
+--! @file       victim_cntrl.vhd
+--! @brief      Controller for victim
+--!
+--! @author     Rajesh Velegalati
+--! @Modified   Panasayya Yalla   
+--! @copyright  Copyright © 2016 Cryptographic Engineering Research Group
+--!             ECE Department, George Mason University Fairfax, VA, U.S.A.
+--!             All rights Reserved.
+-------------------------------------------------------------------------------
+
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.STD_LOGIC_UNSIGNED.all;

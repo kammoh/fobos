@@ -30,6 +30,13 @@ signal data_to_crypto       : std_logic_vector(maxBlockSize-1   downto 0); -- to
 signal key_to_crypto        : std_logic_vector(maxKeySize-1     downto 0); -- to crypto_core
 signal data_from_crypto     : std_logic_vector(maxBlockSize-1   downto 0); -- from crypto_core
 signal stateMachineStatus   : std_logic_vector(7 downto 0);
+signal done_init            : std_logic;
+signal init                 : std_logic;
+signal start                : std_logic;
+signal ready                : std_logic;
+---======STATE DECLARATIONS
+type STATE is (S_INIT, SL_KEY_SR, SL_KEY, SL_DATA_SR, SL_DATA, S_WAIT, S_GEN_RNDKEY); ---unused states
+    signal pr_state,nx_state:state;
 begin
 
  ------------------------ Input Shift-Registers-------------------------
@@ -105,18 +112,117 @@ control: victimController
 --------------------------------------------------------------------------------
 
 
-victimAES : aes_non_pipe 
-            port map    ( 
-                            clock               => clock              ,
-                            start               => not start_to_crypto, -- active low
-                            data_in             => data_to_crypto     ,
-                            key_in              => key_to_crypto      ,
-                            data_out            => data_from_crypto   ,   
-                            done                => done_exe
-                        );
+-- victimAES : aes_non_pipe 
+            -- port map    ( 
+                            -- clock               => clock              ,
+                            -- start               => not start_to_crypto, -- active low
+                            -- data_in             => data_to_crypto     ,
+                            -- key_in              => key_to_crypto      ,
+                            -- data_out            => data_from_crypto   ,   
+                            -- done                => done_exe
+                        -- );
 
+Inst_AES_Enc: AES_Enc 
+            PORT MAP(
+                            clk       => clock,
+                            rst       => reset,
+                            din       => data_to_crypto,
+                            key       => key_to_crypto,
+                            dout      => data_from_crypto,
+                            init      => init,
+                            start     => start,
+                            ready     => ready,
+                            done      => done_exe,
+                            done_init => done_init
+                    );
 
+--======Generation of control signals for AES_Enc
+present_state:  process (reset,clock)
+                    begin
+                        if(reset='1') then
+                            pr_state<=S_INIT;
+                        elsif (clock'event and clock='1')then
+                            pr_state<=nx_state;
+                        end if;
+                end process;
 
+next_state_function: process(pr_state, key_enb, data_enb,done_exe,done_init)
+    begin
+        case pr_state is
+            when S_INIT =>
+                if (key_enb = '1') then
+                    nx_state <= SL_KEY_SR;
+                else
+                    nx_state<=S_INIT;
+                end if;
+            
+            when SL_KEY_SR =>
+                if (key_enb = '0') then   
+                    nx_state <= SL_DATA_SR;
+                else
+                    nx_state<= SL_KEY_SR;
+                end if;
+            
+            
+            when SL_DATA_SR =>
+                if (data_enb = '0') then   
+                    nx_state <= SL_KEY;
+                else
+                    nx_state<= SL_DATA_SR;
+                end if;
+            
+            when SL_KEY =>
+                nx_state <= S_GEN_RNDKEY;
+                
+            when S_GEN_RNDKEY=>
+                if(done_init='1')then
+                    nx_state <= SL_DATA;
+                else
+                    nx_state <= S_GEN_RNDKEY;
+                end if;
+            
+            when SL_DATA =>
+                nx_state <= S_WAIT;
+            
+            when S_WAIT  =>
+                if(done_exe='1')then
+                    nx_state <= S_INIT;
+                else
+                    nx_state <= S_WAIT;
+                end if;
+                
+            when others=>
+                nx_state<=S_INIT;
+        end case;
+    end process; 
+    
+output_function: process(pr_state)
+    begin   
+        INIT  <= '0';
+        START <= '0';
+        case pr_state is 
+            when S_INIT =>
+            
+            when SL_KEY_SR =>
+                
+            when SL_KEY =>
+                INIT <='1';
+            
+            when SL_DATA_SR =>
+            
+            when SL_DATA =>
+                START <= '1';
+                
+            when S_GEN_RNDKEY=>
+            
+            when S_WAIT  =>
+            
+            when others=>
+            
+        end case;
+    end process;        
+                
+                
     
 
 end structure; 
