@@ -13,10 +13,10 @@ architecture bench of victim_fpga_tb is
   		 reset: in std_logic;
   		 src_ready : in STD_LOGIC;
   		 dst_ready : in STD_LOGIC;
-  		 datain : in std_logic_vector(3 downto 0);
+  		 datain : in std_logic_vector(15 downto 0);
   		 src_read  : out STD_LOGIC;
   		 dst_write : out STD_LOGIC;
-  		 dataout : out std_logic_vector(3 downto 0)
+  		 dataout : out std_logic_vector(15 downto 0)
   		 );
   end component;
 
@@ -24,10 +24,10 @@ architecture bench of victim_fpga_tb is
   signal reset: std_logic;
   signal src_ready: STD_LOGIC;
   signal dst_ready: STD_LOGIC;
-  signal datain: std_logic_vector(3 downto 0);
+  signal datain: std_logic_vector(15 downto 0);
   signal src_read: STD_LOGIC;
   signal dst_write: STD_LOGIC;
-  signal dataout: std_logic_vector(3 downto 0) ;
+  signal dataout: std_logic_vector(15 downto 0) ;
   signal t : time := 20ns;
 begin
 
