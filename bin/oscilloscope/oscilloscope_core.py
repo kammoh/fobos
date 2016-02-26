@@ -173,7 +173,7 @@ def setOscilloscopeConfigAttributes():
   printFunctions.printToLog("\t"+ cmd_string)
   cfg.Oscilloscope.send(cmd_string+'\n')
   cfg.Oscilloscope.send(":WAVEFORM:FORMAT BYTE" + '\n')
-  cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE RAW" + '\n') #changed 
+  cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE RAW" + '\n') #get more than 1000 points only then this line is on 2/26 JK
 
 def extractOscilloscopeConfigAttributes():
   data_from_file = support.readFile(cfg.OSC_CONFIGFILE)
@@ -355,7 +355,7 @@ def getDataFromOscilloscope(channelName) :
   if (cfg.SAMPLE_LENGTH_FROM_OSC == None):
 	#print "\t\tFirst run"
 	cfg.SAMPLE_LENGTH_FROM_OSC = len(measuredChannelData)
-  #print "\tSAmple Length --> " + str(cfg.SAMPLE_LENGTH_FROM_OSC)
+  print "\tSAmple Length --> " + str(cfg.SAMPLE_LENGTH_FROM_OSC)
   return (measuredChannelData)
 
 def initializeOscilloscopeDataStorage():

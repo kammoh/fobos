@@ -64,7 +64,7 @@ def main():
 		populateControlBoardOutputDataStorage(traceCount)
 		print "d"
 		traceCount += 1
-	saveOscilloscopeDataStorage()	
+#	saveOscilloscopeDataStorage()   #only saved data when commented, Rajesh logic I guess 2/26 JK	
 	saveControlBoardOutputDataStorage()
 	closeOscilloscopeConnection()
 	closeControlBoardConnection()
