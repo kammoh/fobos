@@ -188,13 +188,13 @@ ANALYSIS_FOLDER_NAME = "analysis"
 TESTDIRNAME = "testing"
 POWERMODELS_DIRNAME = "data"
 PROJECTPATH_FILENAME = "projectPath.txt"
-ALIGNED_DATA_FILE_NAME = "rawDataAligned"
+ALIGNED_DATA_FILE_NAME = "rawDataAligned.npy"
 SNAPSHOT_FILE_NAME = "traces.png"
 FOBOS_ANALYSIS_LOG_FILE_NAME = "FOBOSAnalysisLog.txt"
 ANALYSIS_SCRIPT_FILENAME = "dataAnalysis.py"
-COMPRESSED_DATA_FILE_NAME = "compressedData"
-SAMPLE_SPACE_DISP_FILE_NAME = "sampleSpaceDispData"
-TRACE_EXPUNGE_DATA_FILE_NAME = "traceExpunge"
+COMPRESSED_DATA_FILE_NAME = "compressedData.npy"
+SAMPLE_SPACE_DISP_FILE_NAME = "sampleSpaceDispData.npy"
+TRACE_EXPUNGE_DATA_FILE_NAME = "traceExpunge.npy"
 
 
 

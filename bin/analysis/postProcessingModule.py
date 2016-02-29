@@ -152,6 +152,7 @@ def traceExpunge(measuredData):
 			teFlag = numpy.append(teFlag, traceCount)
 			traceCount += 1
 		numpy.save(cfg.TRACE_EXPUNGE_DATA_FILE, teFlag)
+	print len(newMeasuredData)
 	return newMeasuredData
 
 	

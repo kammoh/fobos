@@ -88,6 +88,8 @@ def correlation_pearson(measuredData, modeledData):
 	firstRun = True
 	for rowM in measuredData:
 		for rowH in modeledData :
+			#print len(rowH)
+			#print len(rowM)
 			c, p = statModule.pearsonr(rowH, rowM)
 			corrArray = numpy.append(corrArray, c)
 		if(firstRun == True):

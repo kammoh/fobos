@@ -33,7 +33,7 @@ LOGGING = INFO # INFO|DEBUG
 CONTROL_BOARD = Nexys2
 VICTIM_RESET = 11
 TIME_OUT = 50000
-TRIGGER_WAIT_CYCLES = 1 #@VICTIM CLOCK must be >0
+TRIGGER_WAIT_CYCLES = 22 #@VICTIM CLOCK must be >0
 TRIGGER_LENGTH_CYCLES = 1 #@VICTIM CLOCK
 # =============================================
 # =============================================
@@ -42,8 +42,8 @@ TRIGGER_LENGTH_CYCLES = 1 #@VICTIM CLOCK
 # =============================================
 
 PLAINTEXT_GENERATION = RANDOM # USER | RANDOM
-DATA_FILE     = connectiontest.txt
-KEY_GENERATION = RANDOM
+DATA_FILE     = plaintexts.txt
+KEY_GENERATION = RANDOM # USER | RANDOM 
 KEY_FILE      = keys.txt
 INPUT_FORMAT  = hex # Default => hex
 OUTPUT_FORMAT = hex # Default => hex
@@ -57,7 +57,7 @@ KEY_SIZE = 16 # In Bytes
 # =============================================
 # =============================================
 DUMMY_RUN = YES  #YES/NO
-NUMBER_OF_TRACES = 4 
+NUMBER_OF_TRACES = 1000 
 
 # =============================================
 # =============================================
@@ -73,11 +73,11 @@ OSCILLOSCOPE_PORT = 5025
 AUTOSCALE = NO   # YES|NO    
 IMPEDANCE = ONEMEG #FIFTY|ONEMEG
 # VOLTAGE AND TIME RANGE OPTIONS        
-CHANNEL_RANGE1 = 0.16V
-CHANNEL_RANGE2 = 10V
+CHANNEL_RANGE1 = 0.10V
+CHANNEL_RANGE2 = 6V
 CHANNEL_RANGE3 = OFF
 CHANNEL_RANGE4 = OFF
-TIME_RANGE = 0.01
+TIME_RANGE = 0.00005
 TIMEBASE_REF = LEFT    
 # TRIGGER OPTIONS
 TRIGGER_SOURCE =  CHANNEL2
@@ -86,5 +86,5 @@ TRIGGER_SWEEP = NORM
 TRIGGER_LEVEL = 1
 TRIGGER_SLOPE = POSITIVE
 # ACQUIRE OPTIONS
-ACQUIRE_TYPE = NORM # NORM|PEAK|HRES|AVER
+ACQUIRE_TYPE = HRES # NORM|PEAK|HRES|AVER
 ACQUIRE_MODE = RTIM   # RTIM | ETIM| SEG

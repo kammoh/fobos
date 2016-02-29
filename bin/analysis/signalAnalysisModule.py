@@ -93,10 +93,10 @@ def acquireHypotheticalValues(POWER_MODEL_FILE):
 	printFunctions.printToScreenAndAnalysisLog("Acquiring Power Model File")
 	printFunctions.printToAnalysisLog("\tReading " + fileToLoad +"\n") 
 	keyGuess = numpy.loadtxt(fileToLoad)
-	if (os.path.isfile(cfg.TRACE_EXPUNGE_DATA_FILE) == True):
-		kgExData = numpy.loadtxt(cfg.TRACE_EXPUNGE_DATA_FILE)
-		keyGuess = numpy.delete(keyGuess, kgExData, globals.TRACE_WISE)
-	keyGuess = keyGuess[:,:-1]
+	#if (os.path.isfile(cfg.TRACE_EXPUNGE_DATA_FILE) == True):
+	#	kgExData = numpy.load(cfg.TRACE_EXPUNGE_DATA_FILE)
+	#	keyGuess = numpy.delete(keyGuess, kgExData, globals.TRACE_WISE)
+	##print len(keyGuess[0])
 	return(keyGuess)
 	
 def adjustSampleSize(sampleLength, dataArray):
