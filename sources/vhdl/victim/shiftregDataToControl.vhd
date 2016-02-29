@@ -27,10 +27,12 @@ begin
 		if(load='1') then
     		temp<=sr_input;
 		elsif (sr_e = '1') then
-			sr_output <= temp(dataSize-1 downto dataSize-interfaceSize);
+			--sr_output <= temp(dataSize-1 downto dataSize-interfaceSize);
 			temp(dataSize-1 downto interfaceSize) <= temp(dataSize-interfaceSize-1 downto 0);
 		end if;
+    sr_output <= temp(dataSize-1 downto dataSize-interfaceSize);    
 	end if;
+    
 end process; 
 
 end beh;

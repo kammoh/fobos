@@ -44,10 +44,16 @@ ARCHITECTURE behavior OF tb_victim IS
    -- Test Vectors
    signal key       : std_logic_vector(127 downto 0):=
                                     x"2B7E151628AED2A6ABF7158809CF4F3C";
+   signal key1      : std_logic_vector(127 downto 0):=
+                                    x"FB284A91308B0C576C0B5D109D6CB009";
+   signal key2      : std_logic_vector(127 downto 0):=
+                                    x"1E594A095A0347E7457321BAADFFB975";
    signal plaintext1: std_logic_vector(127 downto 0):=
                                     x"3243F6A8885A308D313198A2E0370734";
    signal plaintext2: std_logic_vector(127 downto 0):=
-                                    x"abcdef0123456789abcdef0123456789";                                    
+                                    x"CC428A030FDDEDF5AA63618750A23167";                                    
+   signal Ciphertext2:std_logic_vector(127 downto 0):=
+                                    x"C6402266201A962A0336B1F14BE31C44";                                    
    signal cmd_key       : std_logic_vector(15 downto 0);                                   
    signal cmd_plaintext : std_logic_vector(15 downto 0);                                   
 BEGIN
@@ -88,7 +94,7 @@ BEGIN
       wait for clock_period*2;--Need to include extra wait. Don't know the reason
       
       L1:   for i in 7 downto 0 loop
-                datain <= key(16*i+15 downto 16*i);
+                datain <= key2(16*i+15 downto 16*i);
                 wait for clock_period;
             end loop;
             
@@ -96,12 +102,13 @@ BEGIN
       wait for clock_period;
       
       L2:   for i in 7 downto 0 loop
-                datain <= plaintext1(16*i+15 downto 16*i);
+                datain <= plaintext2(16*i+15 downto 16*i);
                 wait for clock_period;
             end loop;
       src_ready <='0';
       dst_ready <='1';
       wait until dst_write<='1';
+      dst_ready <='1';
       wait for clock_period*16;
       
     wait;

@@ -36,7 +36,7 @@ entity victimController is
 end victimController;
 
 architecture structure of victimController is
-    type STATE is (S_INIT, SL_KEY, SL_DATA, S_PROCESS, S_OUT_WAIT, S_OUT,
+    type STATE is (S_INIT, SL_KEY, SL_DATA, S_PROCESS, S_OUT_WAIT, S_OUT, S_OUT_A,
                    ldcmd, init2, start, st1, st6); ---unused states
     signal pr_state,nx_state:state;
     signal buffer_full_key  : std_logic; 
@@ -126,14 +126,17 @@ next_state_function: process(pr_state, clock, reset, src_ready, buffer_full_key,
                     nx_state <= S_OUT_WAIT;
                 else
                     nx_state <= S_PROCESS;
-                end if;         
+                end if;
             
             when S_OUT_WAIT=>
                 if (dst_ready = '1') then
-                    nx_state <= S_OUT;
+                    nx_state <= S_OUT_A;
                 else
                     nx_state <= S_OUT_WAIT;
                 end if;
+            
+            when S_OUT_A=> 
+                nx_state<= S_OUT;
             
             when S_OUT=>
                 if(buffer_empty='0') then
@@ -282,7 +285,8 @@ next_state_function: process(pr_state, clock, reset, src_ready, buffer_full_key,
                 enb_cnt_output     <= '0';
                 stateMachineStatus <= x"06";
     
-            when S_OUT =>
+            
+            when S_OUT_A =>
                 dst_write          <= '1'; 
                 src_read           <= '0'; 
                 start_to_crypto    <= '1';
@@ -299,6 +303,23 @@ next_state_function: process(pr_state, clock, reset, src_ready, buffer_full_key,
                 enb_cnt_output     <= '1';
                 stateMachineStatus <= x"07";
     
+            when S_OUT =>
+                dst_write          <= '1'; 
+                src_read           <= '0'; 
+                start_to_crypto    <= '1';
+                data_enb           <= '0';
+                key_enb            <= '0';
+                cmd_enb            <= '0';
+                sr_output_enb      <= '1';
+                sr_output_load     <= '0';
+                load_cnt_key       <= '0'; 
+                enb_cnt_key        <= '0';
+                load_cnt_data      <= '0'; 
+                enb_cnt_data       <= '0';
+                load_cnt_output    <= '0';
+                enb_cnt_output     <= '1';
+                stateMachineStatus <= x"08";
+    
             when others =>
                 dst_write          <= '1'; 
                 src_read           <= '0'; 
@@ -314,7 +335,7 @@ next_state_function: process(pr_state, clock, reset, src_ready, buffer_full_key,
                 enb_cnt_data       <= '0';
                 load_cnt_output    <= '0';
                 enb_cnt_output     <= '1';       
-                stateMachineStatus <= x"08";
+                stateMachineStatus <= x"09";
     
         end case;
     end process;
