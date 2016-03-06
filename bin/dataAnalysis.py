@@ -19,6 +19,7 @@
 #                                                                           	 #
 ##################################################################################
 import os
+import time
 from globals import cfg, globals,support, printFunctions, configExtract
 from analysis import signalAnalysisModule
 from analysis import postProcessingModule
@@ -55,43 +56,51 @@ def main():
 	#################################################################
 	#plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 200750, 204750)
 	#plottingModule.plotRawTrace(cfg.RAW_TRIGGER_DATA,200750, 204750)
+	#plottingModule.showRawTrace(cfg.RAW_POWER_DATA)
+	#plottingModule.showRawTrace(cfg.RAW_TRIGGER_DATA)
+	#print cfg.RAW_POWER_DATA.shape
+	#print cfg.RAW_TRIGGER_DATA.shape
 	configExtract.extractAnalysisConfigAttributes("signalAlignmentParams.txt")
 	
 	#plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 0, 2000000)	
 	#plottingModule.plotRawTrace(cfg.RAW_TRIGGER_DATA , 0, 2000000)	
 	alignedData = signalAnalysisModule.getAlignedMeasuredPowerData() # Aligned Power traces with respect to trigger
 	#signalAnalysisModule.spectogram(cfg.RAW_POWER_DATA)
-	#plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')	
-	sampleVarTimeWise = sca.calculate_var(alignedData, globals.TRACE_WISE) 	
-	support.wait()
-#	configExtract.extractAnalysisConfigAttributes("traceExpungeParams.txt")
+	plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')	
+	#sampleVarTimeWise = sca.calculate_var(alignedData, globals.TRACE_WISE) 	
+	#support.wait()
+        #configExtract.extractAnalysisConfigAttributes("traceExpungeParams.txt")
 	#alignedData = postProcessingModule.traceExpunge(alignedData)
 	#plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')
 	configExtract.extractAnalysisConfigAttributes("sampleSpaceDispParams.txt")
 	windowedData = postProcessingModule.sampleSpaceDisp(alignedData)
-	#plottingModule.plotTrace(windowedData, 'ALL', 'OVERLAY')
-	configExtract.extractAnalysisConfigAttributes("compressionParams.txt")
-	compressedData = postProcessingModule.compressData(windowedData)
+	plottingModule.plotTrace(windowedData, 'ALL', 'OVERLAY')
+	#configExtract.extractAnalysisConfigAttributes("compressionParams.txt")
+	#compressedData = postProcessingModule.compressData(windowedData)
 	#plottingModule.plotTrace(compressedData, 'ALL', 'OVERLAY')
-	hypotheticalPowerData = signalAnalysisModule.acquireHypotheticalValues("hw1000x256.txt")
-	correlationData = sca.correlation_pearson(alignedData, hypotheticalPowerData) 
+	hypotheticalPowerData = signalAnalysisModule.acquireHypotheticalValues("hw4000x256.txt")
+	#correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData)
+        correlationData = sca.correlation_pearson(windowedData, hypotheticalPowerData)
+ 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	#mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,22)
-	sp = sca.correlation_spearman(compressedData, hypotheticalPowerData)
+	#sp = sca.correlation_spearman(compressedData, hypotheticalPowerData)
+	sp = sca.correlation_spearman(windowedData, hypotheticalPowerData)
 	plottingModule.plotCorr(sp, globals.SPEARMAN)
 	#an = sca.anova(compressedData, hypotheticalPowerData)
 	#plottingModule.plotCorr(an, globals.ANOVA)	
-	ac = sca.calculate_autocorrelation(alignedData)
-	plottingModule.plotCorr(ac, globals.AUTOCORR)
-	# m1 = statisticsModule.calculate_mean(alignedData, globals.SAMPLE_WISE)
-	# m2 = statisticsModule.calculate_mean(alignedData, globals.TRACE_WISE)
-	# s1 = statisticsModule.calculate_std(alignedData, globals.SAMPLE_WISE)
-	# s2 = statisticsModule.calculate_std(alignedData, globals.TRACE_WISE)
-	# v1 = statisticsModule.calculate_var(alignedData, globals.SAMPLE_WISE)
-	# v2 = statisticsModule.calculate_var(alignedData, globals.TRACE_WISE)
+	#ac = sca.calculate_autocorrelation(alignedData)
+	#plottingModule.plotCorr(ac, globals.AUTOCORR)
+        #m1 = statisticsModule.calculate_mean(alignedData, globals.SAMPLE_WISE)
+	#m2 = statisticsModule.calculate_mean(alignedData, globals.TRACE_WISE)
+	#s1 = statisticsModule.calculate_std(alignedData, globals.SAMPLE_WISE)
+	#s2 = statisticsModule.calculate_std(alignedData, globals.TRACE_WISE)
+	#v1 = statisticsModule.calculate_var(alignedData, globals.SAMPLE_WISE)
+	#v2 = statisticsModule.calculate_var(alignedData, globals.TRACE_WISE)
 
 	
 if __name__ == "__main__": 
-	main()		
-	
+	start_time=time.time()
+        main()		
+	print("Total Execution Time=%s seconds" %(time.time() - start_time))
 	

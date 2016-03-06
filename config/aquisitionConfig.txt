@@ -43,7 +43,7 @@ TRIGGER_LENGTH_CYCLES = 1 #@VICTIM CLOCK
 
 PLAINTEXT_GENERATION = RANDOM # USER | RANDOM
 DATA_FILE     = plaintexts.txt
-KEY_GENERATION = RANDOM # USER | RANDOM 
+KEY_GENERATION = USER # USER | RANDOM 
 KEY_FILE      = keys.txt
 INPUT_FORMAT  = hex # Default => hex
 OUTPUT_FORMAT = hex # Default => hex
@@ -57,7 +57,7 @@ KEY_SIZE = 16 # In Bytes
 # =============================================
 # =============================================
 DUMMY_RUN = YES  #YES/NO
-NUMBER_OF_TRACES = 1000 
+NUMBER_OF_TRACES = 4000 
 
 # =============================================
 # =============================================

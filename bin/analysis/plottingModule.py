@@ -155,7 +155,6 @@ def plotTrace(dataToPlot, traceNos, plotType):
 		runNo += 1
 		cfg.SNAPSHOT_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.SNAPSHOT_FILE_NAME)	
 	tracesToPrint = traceNoStringParser(traceNos)
-	print tracesToPrint
 	firstRun = True
 	if len(tracesToPrint) > 0:
 		for trceNo in tracesToPrint:

@@ -145,10 +145,8 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 		if (totalNumOfTraceSets == totalMeasuredTriggerData.size):
 			totalNumOfTraceSets = 1
 			singleTraceFlag = True
-			print singleTraceFlag
 		traceLength = 0
 		for traceSet in range(0, totalNumOfTraceSets):
-			print traceSet
 			if(singleTraceFlag == True):
 				measuredPowerData = totalMeasuredPowerData
 				measuredTriggerData = totalMeasuredTriggerData
@@ -180,7 +178,7 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 							
 						firstTriggerSampleHigh = False
 						triggerCount += 1
-						
+						#print triggerCount	
 					tempArray = numpy.append(tempArray, measuredPowerData[sampleNo])
 					
 				elif(measuredTriggerData[sampleNo] < cfg.analysisConfigAttributes['TRIGGER_THRESHOLD']  and firstTriggerHigh == True):
@@ -200,6 +198,7 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 			singleTraceFlag = True
 		traceLength = 0
 		for traceSet in range(0, totalNumOfTraceSets):
+			print "\n\nProcessing Trace Set number: " + str(traceSet)
 			if(singleTraceFlag == True):
 				measuredPowerData = totalMeasuredPowerData
 				measuredTriggerData = totalMeasuredTriggerData
@@ -235,8 +234,9 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 		
 
 def readRawTraces():
-	measurementFile = open(cfg.RAW_UNALIGNED_POWER_FILE, "r")
-	triggerFile = open(cfg.RAW_UNALIGNED_TRIGGER_FILE, "r")
+	printFunctions.printToScreenAndAnalysisLog("Loading Power and Trigger Data ..")
+	measurementFile = open(cfg.RAW_UNALIGNED_POWER_FILE, "rb+")
+	triggerFile = open(cfg.RAW_UNALIGNED_TRIGGER_FILE, "rb+")
 	for traceCount in range (0, cfg.config_attributes['NUMBER_OF_TRACES']):
 		tempArrayMeasurement = numpy.load(measurementFile)
 		tempArrayTrigger = numpy.load(triggerFile)
@@ -246,6 +246,7 @@ def readRawTraces():
 		elif (traceCount > 0):
 			cfg.RAW_POWER_DATA  = numpy.vstack((cfg.RAW_POWER_DATA,tempArrayMeasurement))
 			cfg.RAW_TRIGGER_DATA  = numpy.vstack((cfg.RAW_TRIGGER_DATA,tempArrayTrigger))
+	printFunctions.printToScreenAndAnalysisLog("..DONE")		
 		
 	
 def getAlignedMeasuredPowerData():
@@ -257,9 +258,11 @@ def getAlignedMeasuredPowerData():
 		return (alignedData)
 	else:
 		printFunctions.printToScreenAndAnalysisLog("\tNo aligned power signal data set found. Commencing power signal alignment process")
+		readRawTraces()
 		alignedData = computeAlignedData(cfg.RAW_POWER_DATA, cfg.RAW_TRIGGER_DATA)
 		numpy.save(cfg.ALIGNED_DATA_FILE, alignedData)
 		return(alignedData)
+
 
 def spectogram(dataToPlot):
 	dataToPlot = numpy.transpose(dataToPlot)

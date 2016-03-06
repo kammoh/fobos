@@ -17,6 +17,7 @@
 #                                                                           #
 #############################################################################
 import os
+import time
 from globals import cfg, globals,support, printFunctions, configExtract
 from oscilloscope.oscilloscope_core import *
 from analysis import plottingModule
@@ -56,13 +57,13 @@ def main():
 	#displayReg(0x0C)
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
 		armOscilloscope()
-		print "a"
+		#print "a"
 		runEncrytionOnControlBoard(traceCount)
-		print "b"
+		#print "b"
 		populateOscilloscopeDataStorage(traceCount)
-		print "c"
+		#print "c"
 		populateControlBoardOutputDataStorage(traceCount)
-		print "d"
+		#print "d"
 		traceCount += 1
 #	saveOscilloscopeDataStorage()   #only saved data when commented, Rajesh logic I guess 2/26 JK	
 	saveControlBoardOutputDataStorage()
@@ -74,7 +75,9 @@ def main():
 	#plottingModule.showRawTrace(channel1Data)
 	
 if __name__ == "__main__":
+    start_time=time.time()#to print execution time:Panci
     main()
+    print("Total Run time=%s" %(time.time() -  start_time))#to print execution time:Panci
 
 	# if(cfg.config_attributes['CAPTURE_MODE'] == globals.CAPTURE_MODE_MULTI):
 		# armOscilloscope()
