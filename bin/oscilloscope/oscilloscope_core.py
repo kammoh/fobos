@@ -285,7 +285,7 @@ def getDataFromOscilloscope(channelName) :
   cfg.Oscilloscope.send(":WAVEFORM:SOURCE?" + '\n')
   printFunctions.printToLog("\tOscilloscope Says .. Acquiring  ->" + cfg.Oscilloscope.recv(200))
   cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE BYTE" + '\n')
-  cfg.Oscilloscope.send(":WAVEFORM:POINTS 8000000" + '\n')  
+  cfg.Oscilloscope.send(":WAVEFORM:POINTS 16000" + '\n')#changed from 8,000,000 panci  
   cfg.Oscilloscope.send("WAVEFORM:POINTS?" + '\n')
   printFunctions.printToLog("\tOscillopscope Says .. Obtaining # point -> " + cfg.Oscilloscope.recv(200))
 

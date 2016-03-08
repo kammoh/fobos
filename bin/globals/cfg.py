@@ -81,7 +81,7 @@ osc_attributes = {
  'TRIGGER_LEVEL' : "",    'TRIGGER_SLOPE' : "",    'SAMPLE_INPUT' : "",     'ACQUIRE_TYPE' : "",
  'ACQUIRE_MODE' : "",     'ACQUIRE_COMPLETE' : "", 'WAVE_DATA_SIZE' : "",   'NUM_PWR_TRACE' : "",
  'SCREEN_CAP' : "",       'SCREEN_FORMAT' : "",    'SCREEN_NAME' : "",      'OUTPUT_DIR' : "",
- 'OSCILLOSCOPE_IP' : "",  'OSCILLOSCOPE_PORT' : "",
+ 'OSCILLOSCOPE_IP' : "",  'OSCILLOSCOPE_PORT' : "", 'WAVEFORM_SIZE' : "",
  }
 
 ##################################################
@@ -114,6 +114,8 @@ ANALYSIS_SCRIPT_FILE = ""
 SPECTOGRAM_FILE = ""
 PEARSON_GRAPH_FILE = ""
 SPEARMAN_GRAPH_FILE = ""
+HISTOGRAM_PEARSON_FILE = ""
+HISTOGRAM_SPEARMAN_FILE = ""
 AUTOCORR_GRAPH_FILE = ""
 ANOVA_GRAPH_FILE = ""
 MAXGUESSENT_FILE = ""

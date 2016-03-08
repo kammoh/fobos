@@ -205,6 +205,10 @@ SPECTOGRAM_FILE_NAME = "spectogram.png"
 
 PEARSON_GRAPH_FILE_NAME = "pearsonsCorrelationGraph.png"
 SPEARMAN_GRAPH_FILE_NAME = "spearmanCorrelationGraph.png"
+
+HISTOGRAM_PEARSON_FILE_NAME = "histPearsonsCorrelationGuesses.png"
+HISTOGRAM_SPEARMAN_FILE_NAME = "histSpearmanCorrelationGuesses.png"
+
 AUTOCORR_GRAPH_FILE_NAME = "autocorrelationGraph.png"
 ANOVA_GRAPH_FILE_NAME = "oneWayANOVAGraph.png"
 MAXGUESSENT_FILE_NAME = "maximumGuessingEntropy.png"

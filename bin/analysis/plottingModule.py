@@ -25,7 +25,50 @@ from globals import configExtract
 import matplotlib.pyplot as plt
 from globals import support
 
-
+def plotHist(corrMatrix, corrType):
+	corrMat = numpy.transpose(corrMatrix)
+	dataToPlot = numpy.zeros(0)
+	dataToPlot = numpy.append(dataToPlot, numpy.argmax(corrMat, 0))	
+	figs = plt.figure()	
+	figs.suptitle('Histogram Plot', fontsize=14, fontweight='bold')
+	plt.hold(False)
+	plt.clf()
+	if(corrType == globals.PEARSON):
+		printFunctions.printToScreenAndAnalysisLog("Plotting Histogram for Pearson's Correlation Guesses")
+		runNo = 1
+		cfg.HISTOGRAM_PEARSON_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.HISTOGRAM_PEARSON_FILE_NAME)
+		while os.path.exists(cfg.HISTOGRAM_PEARSON_FILE):
+			runNo += 1
+			cfg.HISTOGRAM_PEARSON_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.HISTOGRAM_PEARSON_FILE_NAME)		
+		
+		printFunctions.printToAnalysisLog("Plotting Histogram for Pearson's Correlation Guesses to PNG file - " + cfg.HISTOGRAM_PEARSON_FILE) 
+		plt.hist(dataToPlot)
+		plt.xlim(0,255)
+		plt.ylabel('# of Occurances')
+		plt.xlabel('Key Guesses')
+		plt.title('# of Occurances vs Key Guess (BYTE)')
+		plt.savefig(cfg.HISTOGRAM_PEARSON_FILE,dpi=100)
+		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
+			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_PEARSON_FILE.replace("png", "pdf")),dpi=100)
+			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_PEARSON_FILE.replace("png", "eps")),dpi=100)
+	elif(corrType == globals.SPEARMAN):
+		printFunctions.printToScreenAndAnalysisLog("Histogram for Spearman's Correlation Guesses")
+		runNo = 1
+		cfg.HISTOGRAM_SPEARMAN_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.HISTOGRAM_SPEARMAN_FILE_NAME)
+		while os.path.exists(cfg.HISTOGRAM_SPEARMAN_FILE):
+			runNo += 1
+			cfg.HISTOGRAM_SPEARMAN_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.HISTOGRAM_SPEARMAN_FILE_NAME)		
+		printFunctions.printToAnalysisLog("Histogram for Spearman's RHO Correlation Guesses to PNG file - " + cfg.HISTOGRAM_SPEARMAN_FILE)
+		plt.hist(dataToPlot)
+		plt.xlim(0,255)
+		plt.ylabel('# of Occurances')
+		plt.xlabel('Key Guesses')
+		plt.title('# of Occurances vs Key Guess (BYTE)')
+		plt.savefig(cfg.HISTOGRAM_SPEARMAN_FILE,dpi=100)
+		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
+			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_SPEARMAN_FILE.replace("png","pdf")),dpi=100)
+			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_SPEARMAN_FILE.replace("png","eps")),dpi=100)
+	
 	
 def plotCorr(corrMatrix, corrType):
 	dataToPlot = numpy.transpose(corrMatrix)
