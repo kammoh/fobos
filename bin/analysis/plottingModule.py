@@ -23,6 +23,7 @@ from globals import cfg,globals, printFunctions
 import re
 from globals import configExtract
 import matplotlib.pyplot as plt
+from matplotlib.ticker import AutoMinorLocator
 from globals import support
 
 def plotHist(corrMatrix, corrType):
@@ -33,6 +34,8 @@ def plotHist(corrMatrix, corrType):
 	figs.suptitle('Histogram Plot', fontsize=14, fontweight='bold')
 	plt.hold(False)
 	plt.clf()
+	fig, ax = plt.subplots()#:Panci
+	minorLocator = AutoMinorLocator()#:Panci
 	if(corrType == globals.PEARSON):
 		printFunctions.printToScreenAndAnalysisLog("Plotting Histogram for Pearson's Correlation Guesses")
 		runNo = 1
@@ -42,15 +45,22 @@ def plotHist(corrMatrix, corrType):
 			cfg.HISTOGRAM_PEARSON_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.HISTOGRAM_PEARSON_FILE_NAME)		
 		
 		printFunctions.printToAnalysisLog("Plotting Histogram for Pearson's Correlation Guesses to PNG file - " + cfg.HISTOGRAM_PEARSON_FILE) 
-		plt.hist(dataToPlot)
+		bins = numpy.linspace(0, 255, 256)#Added to increase the number of bins :Panci (3/8/16)
+		plt.hist(dataToPlot, bins) #Added to increase the number of bins :Panci (3/8/16)
 		plt.xlim(0,255)
 		plt.ylabel('# of Occurances')
 		plt.xlabel('Key Guesses')
 		plt.title('# of Occurances vs Key Guess (BYTE)')
-		plt.savefig(cfg.HISTOGRAM_PEARSON_FILE,dpi=100)
+		ax.xaxis.set_minor_locator(minorLocator)#:Panci
+		plt.tick_params(which='both', width=2)#:Panci
+		#plt.tick_params(which='major', length=7)#:Panci
+		plt.tick_params(which='major', lentht=8)#:Panci
+		plt.tick_params(which='minor', length=30, color='r')#:Panci
+		#plt.grid(True)#Added to show grid :Panci (3/8/16)
+		plt.savefig(cfg.HISTOGRAM_PEARSON_FILE,dpi=400)
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
-			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_PEARSON_FILE.replace("png", "pdf")),dpi=100)
-			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_PEARSON_FILE.replace("png", "eps")),dpi=100)
+			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_PEARSON_FILE.replace("png", "pdf")),dpi=400)
+			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_PEARSON_FILE.replace("png", "eps")),dpi=400)
 	elif(corrType == globals.SPEARMAN):
 		printFunctions.printToScreenAndAnalysisLog("Histogram for Spearman's Correlation Guesses")
 		runNo = 1
@@ -59,7 +69,8 @@ def plotHist(corrMatrix, corrType):
 			runNo += 1
 			cfg.HISTOGRAM_SPEARMAN_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.HISTOGRAM_SPEARMAN_FILE_NAME)		
 		printFunctions.printToAnalysisLog("Histogram for Spearman's RHO Correlation Guesses to PNG file - " + cfg.HISTOGRAM_SPEARMAN_FILE)
-		plt.hist(dataToPlot)
+		bins = numpy.linspace(0, 255, 256)#Added to increase the number of bins :Panci (3/8/16)
+		plt.hist(dataToPlot, bins)#Added to increase the number of bins :Panci (3/8/16)
 		plt.xlim(0,255)
 		plt.ylabel('# of Occurances')
 		plt.xlabel('Key Guesses')
