@@ -54,8 +54,8 @@ def plotHist(corrMatrix, corrType):
 		ax.xaxis.set_minor_locator(minorLocator)#:Panci
 		plt.tick_params(which='both', width=2)#:Panci
 		#plt.tick_params(which='major', length=7)#:Panci
-		plt.tick_params(which='major', lentht=8)#:Panci
-		plt.tick_params(which='minor', length=30, color='r')#:Panci
+		#plt.tick_params(which='major', lentht=8)#:Panci
+		#plt.tick_params(which='minor', length=30, color='r')#:Panci
 		#plt.grid(True)#Added to show grid :Panci (3/8/16)
 		plt.savefig(cfg.HISTOGRAM_PEARSON_FILE,dpi=400)
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
