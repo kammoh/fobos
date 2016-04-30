@@ -20,6 +20,7 @@
 ##################################################################################
 import os
 import time
+import numpy
 from globals import cfg, globals,support, printFunctions, configExtract
 from analysis import signalAnalysisModule
 from analysis import postProcessingModule
@@ -54,37 +55,64 @@ def main():
 	#################################################################
 	############# USER DEFINED SECTION FROM HERE #######################
 	#################################################################
-	#plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 200750, 204750)
+        #plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 200750, 204750)
 	#plottingModule.plotRawTrace(cfg.RAW_TRIGGER_DATA,200750, 204750)
 	#plottingModule.showRawTrace(cfg.RAW_POWER_DATA)
 	#plottingModule.showRawTrace(cfg.RAW_TRIGGER_DATA)
 	#print cfg.RAW_POWER_DATA.shape
 	#print cfg.RAW_TRIGGER_DATA.shape
-	configExtract.extractAnalysisConfigAttributes("signalAlignmentParams.txt")
 	
+        ####################################################
+        ####1. Trace alignment with respect to trigger####
+        ####################################################
+        configExtract.extractAnalysisConfigAttributes("signalAlignmentParams.txt")
 	#plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 0, 2000000)	
 	#plottingModule.plotRawTrace(cfg.RAW_TRIGGER_DATA , 0, 2000000)	
 	alignedData = signalAnalysisModule.getAlignedMeasuredPowerData() # Aligned Power traces with respect to trigger
-	#signalAnalysisModule.spectogram(cfg.RAW_POWER_DATA)
+        #signalAnalysisModule.spectogram(cfg.RAW_POWER_DATA)
 	plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')	
-	sampleVarTimeWise = statisticsModule.calculate_std(alignedData, globals.TRACE_WISE) 	
-	support.wait()
-	configExtract.extractAnalysisConfigAttributes("traceExpungeParams.txt")
-	alignedData = postProcessingModule.traceExpunge(alignedData)
+	
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        ####2. Cacluation of standard deviation and variance for trace expunge
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        #sampleVarTimeWise = statisticsModule.calculate_std(alignedData, globals.TRACE_WISE) 	
+	#sampleVarTimeWise = statisticsModule.calculate_var(alignedData, globals.TRACE_WISE)
+        #support.wait()
+	#configExtract.extractAnalysisConfigAttributes("traceExpungeParams.txt")
+	#alignedData = postProcessingModule.traceExpunge(alignedData)
 	plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')
-	#configExtract.extractAnalysisConfigAttributes("sampleSpaceDispParams.txt")
-	#windowedData = postProcessingModule.sampleSpaceDisp(alignedData)
-	#plottingModule.plotTrace(windowedData, 'ALL', 'OVERLAY')
-	#configExtract.extractAnalysisConfigAttributes("compressionParams.txt")
-	#compressedData = postProcessingModule.compressData(windowedData)
-	#plottingModule.plotTrace(compressedData, 'ALL', 'OVERLAY')
-	hypotheticalPowerData = signalAnalysisModule.acquireHypotheticalValues("hw1000x256.txt")
-	correlationData = sca.correlation_pearson(alignedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	
+        ####################################################
+        ####3. Windowing the data based on start point and sample window size
+        ####################################################
+        configExtract.extractAnalysisConfigAttributes("sampleSpaceDispParams.txt")
+	windowedData = postProcessingModule.sampleSpaceDisp(alignedData)
+	plottingModule.plotTrace(windowedData, 'ALL', 'OVERLAY')
+	numpy.save(cfg.WINDOWED_DATA_FILE, windowedData)
+        
+        ####################################################
+        ####4. Compression of data points ####
+        ####################################################
+        configExtract.extractAnalysisConfigAttributes("compressionParams.txt")
+	compressedData = postProcessingModule.compressData(windowedData)
+	plottingModule.plotTrace(compressedData, 'ALL', 'OVERLAY')
+        
+        ####################################################
+        ####5. Hypothetical power model  ####
+        ####################################################
+	hypotheticalPowerData = signalAnalysisModule.acquireHypotheticalValues("hw2000x256.txt")
+	
+        ####################################################
+        ####6. Correlation plots  ####
+        ####################################################
+        #correlationData = sca.correlation_pearson(alignedData, hypotheticalPowerData) 
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData)#added to use the compressed data:Panci 
+        plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	#mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,22)
 	#sp = sca.correlation_spearman(alignedData, hypotheticalPowerData)
-	#plottingModule.plotCorr(sp, globals.SPEARMAN)
+	#sp = sca.correlation_spearman(compressedData, hypotheticalPowerData)
+        #plottingModule.plotCorr(sp, globals.SPEARMAN)
 	#plottingModule.plotHist(sp, globals.SPEARMAN)
 	#an = sca.anova(compressedData, hypotheticalPowerData)
 	#plottingModule.plotCorr(an, globals.ANOVA)	
@@ -98,8 +126,8 @@ def main():
 	#v2 = statisticsModule.calculate_var(alignedData, globals.TRACE_WISE)
 
 	
-if __name__ == "__main__": 
-	start_time=time.time()
+if __name__ == "__main__":
+        start_time=time.time()
         main()		
 	print("Total Execution Time=%s seconds" %(time.time() - start_time))
 	

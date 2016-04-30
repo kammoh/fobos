@@ -224,6 +224,7 @@ def configureAnalysisWorkspace():
 		printFunctions.printToScreenBold("\tMeasurement Directory @\n\t"+cfg.MEASUREMENT_FOLDER+"\n\tdoes not exits. Please re-run the FOBOS Analysis again\n")
 		support.exitProgram()
 	cfg.ALIGNED_DATA_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.ALIGNED_DATA_FILE_NAME)
+	cfg.WINDOWED_DATA_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.WINDOWED_DATA_FILE_NAME)
 	updatePowerAndTriggerFileNames()
 	cfg.RAW_UNALIGNED_POWER_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, cfg.RAW_UNALIGNED_POWER_FILE_NAME)
 	cfg.RAW_UNALIGNED_TRIGGER_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME)

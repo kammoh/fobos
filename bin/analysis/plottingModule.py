@@ -49,14 +49,14 @@ def plotHist(corrMatrix, corrType):
 		plt.hist(dataToPlot, bins) #Added to increase the number of bins :Panci (3/8/16)
 		plt.xlim(0,255)
 		plt.ylabel('# of Occurances')
-		plt.xlabel('Key Guesses')
+		plt.xlabel('Key Guesses:0(0x00)-->255(0xFF)')
 		plt.title('# of Occurances vs Key Guess (BYTE)')
 		ax.xaxis.set_minor_locator(minorLocator)#:Panci
-		plt.tick_params(which='both', width=2)#:Panci
+		#plt.tick_params(which='both', width=1)#:Panci
 		#plt.tick_params(which='major', length=7)#:Panci
 		#plt.tick_params(which='major', lentht=8)#:Panci
-		#plt.tick_params(which='minor', length=30, color='r')#:Panci
-		#plt.grid(True)#Added to show grid :Panci (3/8/16)
+		plt.tick_params(which='minor', length=30, color='g')#:Panci
+		plt.grid(True)#Added to show grid :Panci (3/8/16)
 		plt.savefig(cfg.HISTOGRAM_PEARSON_FILE,dpi=400)
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_PEARSON_FILE.replace("png", "pdf")),dpi=400)
@@ -87,6 +87,8 @@ def plotCorr(corrMatrix, corrType):
 	figs.suptitle('Measured Traces', fontsize=14, fontweight='bold')
 	plt.hold(False)
 	plt.clf()
+        fig, ax = plt.subplots()#Panci
+        minorLocator = AutoMinorLocator(10)#Panci
 	if(corrType == globals.PEARSON):
 		printFunctions.printToScreenAndAnalysisLog("Plotting Pearson's Correlation Values vs Key guess")
 		runNo = 1
@@ -101,10 +103,15 @@ def plotCorr(corrMatrix, corrType):
 		plt.ylabel('Pearson r value')
 		plt.xlabel('Key Byte')
 		plt.title('Correlation vs Key Guess (BYTE)')
-		plt.savefig(cfg.PEARSON_GRAPH_FILE,dpi=100)
+                ax.xaxis.set_minor_locator(minorLocator)
+                plt.grid(which='major', axis='x', linewidth=0.75, linestyle='-', color='0.75')
+                plt.grid(which='minor', axis='x', linewidth=0.25, linestyle='-', color='0.75')
+                plt.grid(which='major', axis='y', linewidth=0.75, linestyle='-', color='0.75')
+                plt.grid(which='minor', axis='y', linewidth=0.25, linestyle='-', color='0.75')
+                plt.savefig(cfg.PEARSON_GRAPH_FILE,dpi=100)
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
-			plt.savefig(support.shiftPathToGraphFolder(cfg.PEARSON_GRAPH_FILE.replace("png", "pdf")),dpi=100)
-			plt.savefig(support.shiftPathToGraphFolder(cfg.PEARSON_GRAPH_FILE.replace("png", "eps")),dpi=100)
+			plt.savefig(support.shiftPathToGraphFolder(cfg.PEARSON_GRAPH_FILE.replace("png", "pdf")),dpi=400)
+			plt.savefig(support.shiftPathToGraphFolder(cfg.PEARSON_GRAPH_FILE.replace("png", "eps")),dpi=400)
 	elif(corrType == globals.SPEARMAN):
 		printFunctions.printToScreenAndAnalysisLog("Plotting Spearman's Correlation Values vs Key guess")
 		runNo = 1
