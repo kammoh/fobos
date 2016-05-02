@@ -56,6 +56,7 @@ ARCHITECTURE behavior OF tb_victim IS
                                     x"C6402266201A962A0336B1F14BE31C44";                                    
    signal cmd_key       : std_logic_vector(15 downto 0);                                   
    signal cmd_plaintext : std_logic_vector(15 downto 0);                                   
+   signal count         : integer :=0;                                   
 BEGIN
  
     -- Instantiate the Unit Under Test (UUT)
@@ -78,8 +79,13 @@ BEGIN
         clock <= '0';
         wait for clock_period/2;
     end process;
- 
-
+	count_process :process
+    begin
+        count <= count +1;
+		  wait for clock_period;
+    end process;
+		
+		
    -- Stimulus process
     stim_proc: process
     begin        
@@ -94,7 +100,7 @@ BEGIN
       wait for clock_period*2;--Need to include extra wait. Don't know the reason
       
       L1:   for i in 7 downto 0 loop
-                datain <= key2(16*i+15 downto 16*i);
+                datain <= key(16*i+15 downto 16*i);
                 wait for clock_period;
             end loop;
             
@@ -102,7 +108,7 @@ BEGIN
       wait for clock_period;
       
       L2:   for i in 7 downto 0 loop
-                datain <= plaintext2(16*i+15 downto 16*i);
+                datain <= plaintext1(16*i+15 downto 16*i);
                 wait for clock_period;
             end loop;
       src_ready <='0';

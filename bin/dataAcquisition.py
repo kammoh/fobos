@@ -77,7 +77,7 @@ def main():
 if __name__ == "__main__":
     start_time=time.time()#to print execution time:Panci
     main()
-    print("Total Run time=%s" %(time.time() -  start_time))#to print execution time:Panci
+    print("Total Run time=%s seconds" %(time.time() -  start_time))#to print execution time:Panci
 
 	# if(cfg.config_attributes['CAPTURE_MODE'] == globals.CAPTURE_MODE_MULTI):
 		# armOscilloscope()
