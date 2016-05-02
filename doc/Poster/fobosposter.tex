@@ -251,7 +251,7 @@ teaching tool.
 % ---------------------------------------------------------------------------
        \begin{block}{FOBOS Analysis}
         \begin{center}
-          \includegraphics[scale=1.5]{../figures/fobos-dac}
+          \includegraphics[scale=1.5]{../figures/fobos-dan}
         \end{center} 
        \end{block}
 % ---------------------------------------------------------------------------
@@ -324,16 +324,26 @@ COMPRESSION_TYPE = MAX
            \includegraphics[width=0.9\linewidth]{../figures/aes128}
          \end{center}
          \begin{itemize}
-           \item bla
-           \item bla
-         \end{itemize} 
+		 \item {\small $Power_{guess}$ = HD(SBOX($CT_{i-1}$), SBOX($PT_{i}$ $\oplus$ $Key_{guess}$) )}
+		 \item
+         \end{itemize}
+	 \begin{minipage}[t]{0.49\linewidth}
+		 \includegraphics[width=0.80\linewidth]{../figures/oscilloscope-all-4ch} 
+	 \end{minipage}%
+	 \begin{minipage}[t]{0.49\linewidth}  
+		 \begin{itemize}
+		  \item 
+		  \item 
+		 \end{itemize}
+         \end{minipage} 
+	 
         \begin{minipage}[t]{0.49\linewidth}
-           \includegraphics[width=0.9\linewidth]{../figures/pearson-r}
+           \includegraphics[width=0.9\linewidth]{../figures/pearsonsCoActual}
         \end{minipage}%
         \begin{minipage}[t]{0.49\linewidth}  
-           \includegraphics[width=0.9\linewidth]{../figures/histogram}
+		\includegraphics[width=0.9\linewidth]{../figures/histPearsonsCoActual}
         \end{minipage}
- 
+	
        \end{block}
 % ---------------------------------------------------------------------------
 % ---------------------------------------------------------------------------
