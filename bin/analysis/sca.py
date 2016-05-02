@@ -1,7 +1,7 @@
 #!/usr/bin/python
 ##################################################################################
 #                                                                           	 #
-#	Copyright 2014 Cryptographic Engineering Research Group (CERG)               #
+#	Copyright 2016 Cryptographic Engineering Research Group (CERG)               #
 #	George Mason University														 #	
 #   http://cryptography.gmu.edu/fobos                                            #                            
 #									                                             #                             	 
