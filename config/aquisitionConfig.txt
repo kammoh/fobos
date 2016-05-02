@@ -57,7 +57,7 @@ KEY_SIZE = 16 # In Bytes
 # =============================================
 # =============================================
 DUMMY_RUN = YES  #YES/NO
-NUMBER_OF_TRACES = 20
+NUMBER_OF_TRACES = 2000
 
 # =============================================
 # =============================================
@@ -73,11 +73,11 @@ OSCILLOSCOPE_PORT = 5025
 AUTOSCALE = NO   # YES|NO    
 IMPEDANCE = FIFTY #FIFTY|ONEMEG
 # VOLTAGE AND TIME RANGE OPTIONS        
-CHANNEL_RANGE1 = 0.056V
+CHANNEL_RANGE1 = 0.12V
 CHANNEL_RANGE2 = 6V
-CHANNEL_RANGE3 = ON # ON|OFF|voltage range
-CHANNEL_RANGE4 = ON # ON|OFF|voltage range
-TIME_RANGE = 0.00008
+CHANNEL_RANGE3 = OFF # ON|OFF|voltage range
+CHANNEL_RANGE4 = OFF # ON|OFF|voltage range
+TIME_RANGE = 0.000021
 TIMEBASE_REF = LEFT    
 # TRIGGER OPTIONS
 TRIGGER_SOURCE =  CHANNEL2

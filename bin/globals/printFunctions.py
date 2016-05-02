@@ -23,6 +23,8 @@ import os
 import traceback
 import cfg , globals, support
 import logging
+from dataGenerator import *
+
 
 			
 # def initLogging():
@@ -35,7 +37,26 @@ def printArray(array, num):
   while(i<num):
     sys.stdout.write("%02X\n" % array[i])
     i=i+1
-
+def printArrayNorm(array, num):	
+  key = getKeyForAnalysis()
+  i = 1
+  output = ""
+  bytesMissed = 0
+  while(i<=num):
+	if (array[i] == int(key[i-1], 16)):
+		output += ("%02x " % array[i])
+		i=i+1
+	else:
+		output += ("%02x" % array[i]) + str("("+key[i-1]+") ") 
+		bytesMissed = bytesMissed+1
+		i=i+1
+  output += "\n"
+  output += "Total of " + str(bytesMissed) + " bytes incorrect (correct values indicated in () above)" + "\n"
+  return str(output)
+  
+def printKeyFound(array):
+	printToScreenAndAnalysisLog("Key Found: " + printArrayNorm(array, cfg.config_attributes['KEY_SIZE']))
+	
 def printControlBoardHeaderToScreenAndLog():
     output = "\tStarting PC-FPGA Communication via USB\n";
     output += "\tControl Board -> " +  cfg.config_attributes['CONTROL_BOARD'] + "\n";

@@ -218,13 +218,13 @@ def configureAnalysisWorkspace():
 	support.createDirectory(cfg.ANALYSIS_WORKSPACE)
 	printFunctions.printToScreen("This Analysis will be located @ - " + cfg.ANALYSIS_WORKSPACE)
 	cfg.MEASUREMENT_FOLDER = os.path.join(tempFolderName, globals.MEASUREMENT_FOLDERNAME)
+	cfg.OUTPUT_FOLDER= os.path.join(tempFolderName, globals.OUTPUT_FOLDERNAME)
 	printFunctions.printToScreen("This Analysis uses data from - " + cfg.MEASUREMENT_FOLDER)
 	if (os.path.isdir(cfg.MEASUREMENT_FOLDER) == False):
 		os.remove(cfg.MEASUREMENT_PROJECT_PATH_FILE)
 		printFunctions.printToScreenBold("\tMeasurement Directory @\n\t"+cfg.MEASUREMENT_FOLDER+"\n\tdoes not exits. Please re-run the FOBOS Analysis again\n")
 		support.exitProgram()
 	cfg.ALIGNED_DATA_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.ALIGNED_DATA_FILE_NAME)
-	cfg.WINDOWED_DATA_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.WINDOWED_DATA_FILE_NAME)
 	updatePowerAndTriggerFileNames()
 	cfg.RAW_UNALIGNED_POWER_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, cfg.RAW_UNALIGNED_POWER_FILE_NAME)
 	cfg.RAW_UNALIGNED_TRIGGER_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME)
@@ -232,6 +232,9 @@ def configureAnalysisWorkspace():
 	cfg.FOBOS_ANALYSIS_LOG_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, globals.FOBOS_ANALYSIS_LOG_FILE_NAME)
 	cfg.GRAPHS_FOLDER = os.path.join(cfg.ANALYSIS_WORKSPACE, globals.GRAPHS_FOLDERNAME)
 	cfg.LOCAL_CONFIGDIR = os.path.join(cfg.ANALYSIS_WORKSPACE, globals.ANALYSIS_CONFIG_DIRNAME)
+	cfg.KEY_FILE = os.path.join(cfg.OUTPUT_FOLDER,globals.KEY_FILE_NAME)
+
+	cfg.KEYARRAY = [0]* (cfg.config_attributes['KEY_SIZE'] + 1)
 	if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 		support.createDirectory(cfg.GRAPHS_FOLDER)	
 	support.createDirectory(cfg.LOCAL_CONFIGDIR)

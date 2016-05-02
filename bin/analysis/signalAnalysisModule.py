@@ -27,6 +27,9 @@ from globals import support
 import pylab
 import matplotlib.pyplot as plt
 
+def updatePowerModelUsingBCPA(myArray1, myArray2, rowA):
+	myArray1 += myArray2[rowA,:].copy() # create a temporary variable
+	return myArray1
 
 def acquireDataValues_old(rawDataFile):
 	printFunctions.printToAnalysisLog("Reading " + rawDataFile+"\n")
@@ -94,8 +97,24 @@ def acquireHypotheticalValues(POWER_MODEL_FILE):
 	printFunctions.printToAnalysisLog("\tReading " + fileToLoad +"\n") 
 	keyGuess = numpy.loadtxt(fileToLoad)
 	#if (os.path.isfile(cfg.TRACE_EXPUNGE_DATA_FILE) == True):
-	#	kgExData = numpy.load(cfg.TRACE_EXPUNGE_DATA_FILE)
-	#	keyGuess = numpy.delete(keyGuess, kgExData, globals.TRACE_WISE)
+		#kgExData = numpy.load(cfg.TRACE_EXPUNGE_DATA_FILE)
+		#keyGuess = numpy.delete(keyGuess, kgExData, globals.TRACE_WISE)	
+	##print len(keyGuess[0])
+	return(keyGuess)
+	
+def acquirePowerModel(POWER_MODEL_FILE, CPATYPE):
+	fileToLoad = os.path.join(cfg.POWERMODELDIR, POWER_MODEL_FILE)
+	printFunctions.printToScreenAndAnalysisLog("Acquiring Power Model File for Key Byte - " + str(cfg.KEY_INDEX))
+	printFunctions.printToAnalysisLog("\tReading " + fileToLoad +"\n") 
+	keyGuess = numpy.loadtxt(fileToLoad)
+	if (os.path.isfile(cfg.TRACE_EXPUNGE_DATA_FILE) == True):
+		kgExData = numpy.load(cfg.TRACE_EXPUNGE_DATA_FILE)
+		keyGuess = numpy.delete(keyGuess, kgExData, globals.TRACE_WISE)
+	if (CPATYPE == globals.ADAPTIVE_CPA):
+		if (cfg.LAST_POWER_MODEL != None and cfg.KEYARRAY != None):
+			keyGuess = updatePowerModelUsingBCPA(keyGuess, cfg.LAST_POWER_MODEL, cfg.KEYARRAY[cfg.KEY_INDEX])
+	cfg.LAST_POWER_MODEL = keyGuess
+	cfg.KEY_INDEX = cfg.KEY_INDEX + 1
 	##print len(keyGuess[0])
 	return(keyGuess)
 	
@@ -235,8 +254,8 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 
 def readRawTraces():
 	printFunctions.printToScreenAndAnalysisLog("Loading Power and Trigger Data ..")
-	measurementFile = open(cfg.RAW_UNALIGNED_POWER_FILE, "rb+")
-	triggerFile = open(cfg.RAW_UNALIGNED_TRIGGER_FILE, "rb+")
+	measurementFile = open(cfg.RAW_UNALIGNED_POWER_FILE, 'r')
+	triggerFile = open(cfg.RAW_UNALIGNED_TRIGGER_FILE, 'r')
 	for traceCount in range (0, cfg.config_attributes['NUMBER_OF_TRACES']):
 		tempArrayMeasurement = numpy.load(measurementFile)
 		tempArrayTrigger = numpy.load(triggerFile)

@@ -20,7 +20,6 @@
 ##################################################################################
 import os
 import time
-import numpy
 from globals import cfg, globals,support, printFunctions, configExtract
 from analysis import signalAnalysisModule
 from analysis import postProcessingModule
@@ -55,65 +54,135 @@ def main():
 	#################################################################
 	############# USER DEFINED SECTION FROM HERE #######################
 	#################################################################
-        #plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 200750, 204750)
+	#plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 200750, 204750)
 	#plottingModule.plotRawTrace(cfg.RAW_TRIGGER_DATA,200750, 204750)
 	#plottingModule.showRawTrace(cfg.RAW_POWER_DATA)
 	#plottingModule.showRawTrace(cfg.RAW_TRIGGER_DATA)
 	#print cfg.RAW_POWER_DATA.shape
 	#print cfg.RAW_TRIGGER_DATA.shape
+	configExtract.extractAnalysisConfigAttributes("signalAlignmentParams.txt")
 	
-        ####################################################
-        ####1. Trace alignment with respect to trigger####
-        ####################################################
-        configExtract.extractAnalysisConfigAttributes("signalAlignmentParams.txt")
-	#plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 0, 2000000)	
-	#plottingModule.plotRawTrace(cfg.RAW_TRIGGER_DATA , 0, 2000000)	
+	#plottingModule.plotTrace(cfg.RAW_POWER_DATA, 'ALL', 'OVERLAY')	
+	#plottingModule.plotTrace(cfg.RAW_TRIGGER_DATA , 'ALL', 'OVERLAY')	
 	alignedData = signalAnalysisModule.getAlignedMeasuredPowerData() # Aligned Power traces with respect to trigger
-        #signalAnalysisModule.spectogram(cfg.RAW_POWER_DATA)
-	plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')	
-	
-        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        ####2. Cacluation of standard deviation and variance for trace expunge
-        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        #sampleVarTimeWise = statisticsModule.calculate_std(alignedData, globals.TRACE_WISE) 	
-	#sampleVarTimeWise = statisticsModule.calculate_var(alignedData, globals.TRACE_WISE)
-        #support.wait()
+	#print alignedData.shape
+	#signalAnalysisModule.spectogram(cfg.RAW_POWER_DATA)
+	#plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')	
+	#sampleVarTimeWise = statisticsModule.calculate_std(alignedData, globals.TRACE_WISE) 	
+	#support.wait()
 	#configExtract.extractAnalysisConfigAttributes("traceExpungeParams.txt")
 	#alignedData = postProcessingModule.traceExpunge(alignedData)
-	plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')
-	
-        ####################################################
-        ####3. Windowing the data based on start point and sample window size
-        ####################################################
-        configExtract.extractAnalysisConfigAttributes("sampleSpaceDispParams.txt")
+	#plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')
+	configExtract.extractAnalysisConfigAttributes("sampleSpaceDispParams.txt")
 	windowedData = postProcessingModule.sampleSpaceDisp(alignedData)
-	plottingModule.plotTrace(windowedData, 'ALL', 'OVERLAY')
-	numpy.save(cfg.WINDOWED_DATA_FILE, windowedData)
-        
-        ####################################################
-        ####4. Compression of data points ####
-        ####################################################
-        configExtract.extractAnalysisConfigAttributes("compressionParams.txt")
+	#plottingModule.plotTrace(windowedData, 'ALL', 'OVERLAY')
+	configExtract.extractAnalysisConfigAttributes("compressionParams.txt")
 	compressedData = postProcessingModule.compressData(windowedData)
-	plottingModule.plotTrace(compressedData, 'ALL', 'OVERLAY')
-        
-        ####################################################
-        ####5. Hypothetical power model  ####
-        ####################################################
-	hypotheticalPowerData = signalAnalysisModule.acquireHypotheticalValues("hw2000x256.txt")
-	
-        ####################################################
-        ####6. Correlation plots  ####
-        ####################################################
-        #correlationData = sca.correlation_pearson(alignedData, hypotheticalPowerData) 
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData)#added to use the compressed data:Panci 
-        plottingModule.plotCorr(correlationData, globals.PEARSON)
+	#plottingModule.plotTrace(compressedData, 'ALL', 'OVERLAY')
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_0.txt", globals.ADAPTIVE_CPA)
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
-	#mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,22)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])#50 is the factor in the plot
+        #either use cfg.KEY_INDEX|actual key(eg.2B)
+	#print mge
+	
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_1.txt", globals.ADAPTIVE_CPA)
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_2.txt", globals.ADAPTIVE_CPA)
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_3.txt", globals.ADAPTIVE_CPA)
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_4.txt", globals.ADAPTIVE_CPA)
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 	
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_5.txt", globals.ADAPTIVE_CPA)
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_6.txt", globals.ADAPTIVE_CPA)
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 	
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_7.txt", globals.ADAPTIVE_CPA)
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_8.txt", globals.ADAPTIVE_CPA)	
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_9.txt", globals.ADAPTIVE_CPA)		
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_10.txt", globals.ADAPTIVE_CPA)	
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_11.txt", globals.ADAPTIVE_CPA)	
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_12.txt", globals.ADAPTIVE_CPA)
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_13.txt", globals.ADAPTIVE_CPA)
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_14.txt", globals.ADAPTIVE_CPA)	
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_15.txt", globals.ADAPTIVE_CPA)
+	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+	plottingModule.plotCorr(correlationData, globals.PEARSON)	
+	plottingModule.plotHist(correlationData, globals.PEARSON)
+	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+
+	printFunctions.printKeyFound(cfg.KEYARRAY)
+
 	#sp = sca.correlation_spearman(alignedData, hypotheticalPowerData)
-	#sp = sca.correlation_spearman(compressedData, hypotheticalPowerData)
-        #plottingModule.plotCorr(sp, globals.SPEARMAN)
-	#plottingModule.plotHist(sp, globals.SPEARMAN)
+	#plottingModule.plotCorr(sp, globals.SPEARMAN)
+	#cfg.KEYARRAY1 = plottingModule.plotHist(sp, globals.SPEARMAN)
 	#an = sca.anova(compressedData, hypotheticalPowerData)
 	#plottingModule.plotCorr(an, globals.ANOVA)	
 	#ac = sca.calculate_autocorrelation(alignedData)
@@ -126,8 +195,8 @@ def main():
 	#v2 = statisticsModule.calculate_var(alignedData, globals.TRACE_WISE)
 
 	
-if __name__ == "__main__":
-        start_time=time.time()
+if __name__ == "__main__": 
+	start_time=time.time()
         main()		
 	print("Total Execution Time=%s seconds" %(time.time() - start_time))
 	

@@ -27,13 +27,18 @@ import matplotlib.pyplot as plt
 import scipy.stats.stats as statModule
 from globals import configExtract
 from pylab import *
+import plottingModule
 
+
+
+	
+	
 def findKeyByteLocation(keyByte,corrMatrix):
-	keyValue = corrMatrix[keyByte]
-	array = sorted(corrMatrix, reverse=True)
+	tcorrMatrix = numpy.transpose(corrMatrix)
+	keyValue = tcorrMatrix[keyByte]
+	array = sorted(tcorrMatrix, reverse=True)
 	try:
 		index_element=array.index(keyValue)
-		#print index_element
 		if (index_element == -1):
 			index_element = 255
 		return index_element
@@ -76,7 +81,13 @@ def findMaxValuesCorr(correlationMatrix, corrType):
 	string = ""
 	while(count < len(maxIndex)):
 		string += "Window[" +str(int(count))+ "] Key Byte- " + str(hex(int(maxIndex[count]))) + " [" + str(int(maxIndex[count])) + "] 1-way ANOVA p_val - "+ str(maxValue[count])+ "\n"
-		count += 1
+		if (cfg.KEY_BYTE_MAX_CORR == None):
+			cfg.KEY_BYTE_MAX_CORR = maxValue[count]
+			cfg.KEY_BYTE_CORR = int(maxIndex[count])
+		elif(cfg.KEY_BYTE_MAX_CORR < maxValue[count]):
+			cfg.KEY_BYTE_MAX_CORR = maxValue[count]
+			cfg.KEY_BYTE_CORR = int(maxIndex[count])
+		count += 1	
 	fid.write(string)
 	fid.close()
 
@@ -144,17 +155,26 @@ def findMinimumGuessingEntropy(measuredData, modeledData, correlationType, stepS
 	printFunctions.printToScreenAndAnalysisLog("Calculating Minimum Guessing Entropy for an Known Key Byte")
 	totalTraces = len(measuredData)
 	mgeArray = numpy.zeros(0)
-	firstRun = True
-	for step in range(1,totalTraces, stepSize):
+	mgeMatrix = numpy.zeros(0)
+	firstRun = True	
+	for step in range(10,totalTraces, stepSize):
 		pwrData = measuredData[1:step,:]
 		hypData = modeledData[:,1:step]
 		crrMat = cpaPearson(pwrData, hypData)
-		keyLoc = findKeyByteLocation(knownKey,crrMat)
+		totalPoints = len(crrMat)
+		for eachPoint in range(0, totalPoints, 1):
+			tempCrrMat = crrMat[eachPoint,:]
+			keyLoc = findKeyByteLocation(knownKey,tempCrrMat)
+			mgeArray = numpy.append(mgeArray, keyLoc)
 		if(firstRun == True):
-			mgeArray = keyLoc
+			mgeMatrix = mgeArray
+			mgeArray = numpy.zeros(0)
 			firstRun = False
 		else:
-			mgeArray = numpy.vstack((mgeArray, keyLoc))
+			mgeMatrix = numpy.vstack((mgeMatrix, mgeArray))
+			mgeArray = numpy.zeros(0)
+			
+	plottingModule.plotMGE(mgeMatrix, stepSize, knownKey)		
 	return mgeArray
 	
 def anova(measuredData, modeledData):
@@ -201,35 +221,35 @@ def calculate_var(data, axis):
 	data = numpy.var(data , axis = axis)
 	plt.plot(data)
 	plt.show()
+
+def testArrayLoading():
+	i=0
+	b = numpy.zeros(0)
+	a = numpy.zeros(0)
+	temp = numpy.zeros(0)
+	while (i<10):
+		b = i
+		print b
+		with open("testfile.npy", 'a+b') as fileHandle:
+			numpy.save(fileHandle, b)
+		i = i+1
+	i=0
+	fi = open("testfile.npy", 'r')
+	while(i<10):
+		temp = numpy.load(fi)
+		print temp
+		if (i == 0):
+			a = temp
+			print a
+		else:
+			a = numpy.vstack((a,temp))
+			print a
+		i=i+1
+	print a
+		
 def main():
 	os.system('cls')
-	dt = 0.0005
-	t = arange(0.0, 20.0, dt)
-	s1 = sin(2*pi*100*t)
-	s2 = 2*sin(2*pi*400*t)
-
-	# create a transient "chirp"
-	mask = where(logical_and(t>10, t<12), 1.0, 0.0)
-	s2 = s2 * mask
-
-	# add some noise into the mix
-	nse = 0.01*randn(len(t))
-
-	x = s1 + s2 + nse # the signal
-	NFFT = 1024       # the length of the windowing segments
-	Fs = int(1.0/dt)  # the sampling frequency
-
-	# Pxx is the segments x freqs array of instantaneous power, freqs is
-	# the frequency vector, bins are the centers of the time bins in which
-	# the power is computed, and im is the matplotlib.image.AxesImage
-	# instance
-
-	ax1 = subplot(211)
-	plot(t, x)
-	subplot(212, sharex=ax1)
-	Pxx, freqs, bins, im = specgram(x, NFFT=NFFT, Fs=Fs, noverlap=900,
-									cmap=cm.gist_heat)
-	show()
+	testArrayLoading()
 
 
 	

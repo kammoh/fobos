@@ -46,21 +46,24 @@ def plotHist(corrMatrix, corrType):
 		
 		printFunctions.printToAnalysisLog("Plotting Histogram for Pearson's Correlation Guesses to PNG file - " + cfg.HISTOGRAM_PEARSON_FILE) 
 		bins = numpy.linspace(0, 255, 256)#Added to increase the number of bins :Panci (3/8/16)
-		plt.hist(dataToPlot, bins) #Added to increase the number of bins :Panci (3/8/16)
+		y,x,_ = plt.hist(dataToPlot, bins) #Added to increase the number of bins :Panci (3/8/16)
 		plt.xlim(0,255)
 		plt.ylabel('# of Occurances')
-		plt.xlabel('Key Guesses:0(0x00)-->255(0xFF)')
+		plt.xlabel('Key Guesses')
 		plt.title('# of Occurances vs Key Guess (BYTE)')
 		ax.xaxis.set_minor_locator(minorLocator)#:Panci
-		#plt.tick_params(which='both', width=1)#:Panci
+		plt.tick_params(which='both', width=2)#:Panci
 		#plt.tick_params(which='major', length=7)#:Panci
-		#plt.tick_params(which='major', lentht=8)#:Panci
-		plt.tick_params(which='minor', length=30, color='g')#:Panci
-		plt.grid(True)#Added to show grid :Panci (3/8/16)
+		plt.tick_params(which='major', length=8)#:Panci
+		plt.tick_params(which='minor', length=30, color='r')#:Panci
+		#plt.grid(True)#Added to show grid :Panci (3/8/16)
 		plt.savefig(cfg.HISTOGRAM_PEARSON_FILE,dpi=400)
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_PEARSON_FILE.replace("png", "pdf")),dpi=400)
 			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_PEARSON_FILE.replace("png", "eps")),dpi=400)
+		plt.close(figs)
+		cfg.KEY_BYTE_HIST = numpy.argmax(y)
+		return(numpy.argmax(y))	
 	elif(corrType == globals.SPEARMAN):
 		printFunctions.printToScreenAndAnalysisLog("Histogram for Spearman's Correlation Guesses")
 		runNo = 1
@@ -79,7 +82,37 @@ def plotHist(corrMatrix, corrType):
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_SPEARMAN_FILE.replace("png","pdf")),dpi=100)
 			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_SPEARMAN_FILE.replace("png","eps")),dpi=100)
+		plt.close(figs)
+		cfg.KEY_BYTE_HIST = numpy.argmax(y)		
+		return (numpy.argmax(y))	
 	
+
+def plotMGE(corrMatrix, stepSize, knownKey):
+	dataToPlot = corrMatrix#numpy.transpose(corrMatrix)
+	figs = plt.figure()	
+	figs.suptitle('Minimum Guessing Entropy', fontsize=14, fontweight='bold')
+	plt.hold(False)
+	plt.clf()
+	printFunctions.printToScreenAndAnalysisLog("Plotting Minimum Guessing Entropy")
+	runNo = 1
+	cfg.MGE_GRAPH_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.MGE_GRAPH_FILE_NAME)
+	while os.path.exists(cfg.MGE_GRAPH_FILE):
+		runNo += 1
+		cfg.MGE_GRAPH_FILE = os.path.join(cfg.ANALYSIS_WORKSPACE, str(runNo) + "-" +globals.MGE_GRAPH_FILE_NAME)		
+	
+	printFunctions.printToAnalysisLog("Plotting Minimum Guessing Entropy to PNG file - " + cfg.MGE_GRAPH_FILE) 
+	plt.plot(dataToPlot)
+	plt.ylim(0,255)
+	plt.ylabel('Minimum Guessing Entropy')
+	string = "Number of Traces * "+ str(stepSize) 
+	plt.xlabel(string)
+	string = "Minimum Guessing Entropy Plot for Key Guess - " + ("%02x " % knownKey)
+	plt.title(string)
+	plt.savefig(cfg.MGE_GRAPH_FILE,dpi=100)
+	if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
+		plt.savefig(support.shiftPathToGraphFolder(cfg.MGE_GRAPH_FILE.replace("png", "pdf")),dpi=100)
+		plt.savefig(support.shiftPathToGraphFolder(cfg.MGE_GRAPH_FILE.replace("png", "eps")),dpi=100)
+	plt.close(figs)	
 	
 def plotCorr(corrMatrix, corrType):
 	dataToPlot = numpy.transpose(corrMatrix)
@@ -87,8 +120,6 @@ def plotCorr(corrMatrix, corrType):
 	figs.suptitle('Measured Traces', fontsize=14, fontweight='bold')
 	plt.hold(False)
 	plt.clf()
-        fig, ax = plt.subplots()#Panci
-        minorLocator = AutoMinorLocator(10)#Panci
 	if(corrType == globals.PEARSON):
 		printFunctions.printToScreenAndAnalysisLog("Plotting Pearson's Correlation Values vs Key guess")
 		runNo = 1
@@ -103,15 +134,11 @@ def plotCorr(corrMatrix, corrType):
 		plt.ylabel('Pearson r value')
 		plt.xlabel('Key Byte')
 		plt.title('Correlation vs Key Guess (BYTE)')
-                ax.xaxis.set_minor_locator(minorLocator)
-                plt.grid(which='major', axis='x', linewidth=0.75, linestyle='-', color='0.75')
-                plt.grid(which='minor', axis='x', linewidth=0.25, linestyle='-', color='0.75')
-                plt.grid(which='major', axis='y', linewidth=0.75, linestyle='-', color='0.75')
-                plt.grid(which='minor', axis='y', linewidth=0.25, linestyle='-', color='0.75')
-                plt.savefig(cfg.PEARSON_GRAPH_FILE,dpi=100)
+		plt.savefig(cfg.PEARSON_GRAPH_FILE,dpi=100)
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
-			plt.savefig(support.shiftPathToGraphFolder(cfg.PEARSON_GRAPH_FILE.replace("png", "pdf")),dpi=400)
-			plt.savefig(support.shiftPathToGraphFolder(cfg.PEARSON_GRAPH_FILE.replace("png", "eps")),dpi=400)
+			plt.savefig(support.shiftPathToGraphFolder(cfg.PEARSON_GRAPH_FILE.replace("png", "pdf")),dpi=100)
+			plt.savefig(support.shiftPathToGraphFolder(cfg.PEARSON_GRAPH_FILE.replace("png", "eps")),dpi=100)
+		plt.close(figs)	
 	elif(corrType == globals.SPEARMAN):
 		printFunctions.printToScreenAndAnalysisLog("Plotting Spearman's Correlation Values vs Key guess")
 		runNo = 1
@@ -129,6 +156,7 @@ def plotCorr(corrMatrix, corrType):
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 			plt.savefig(support.shiftPathToGraphFolder(cfg.SPEARMAN_GRAPH_FILE.replace("png","pdf")),dpi=100)
 			plt.savefig(support.shiftPathToGraphFolder(cfg.SPEARMAN_GRAPH_FILE.replace("png","eps")),dpi=100)
+		plt.close(figs)	
 	elif(corrType == 'AUTOCORRELATION'):	
 		printFunctions.printToScreenAndAnalysisLog("Plotting AutoCorrelation Values of data")
 		runNo = 1
@@ -146,6 +174,7 @@ def plotCorr(corrMatrix, corrType):
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 			plt.savefig(support.shiftPathToGraphFolder(cfg.AUTOCORR_GRAPH_FILE.replace("png","pdf")),dpi=100)
 			plt.savefig(support.shiftPathToGraphFolder(cfg.AUTOCORR_GRAPH_FILE.replace("png","eps")),dpi=100)
+		plt.close(figs)	
 
 	if(corrType == globals.ANOVA):
 		printFunctions.printToScreenAndAnalysisLog("Plotting 1-way ANOVA p values vs Key guess")
@@ -164,7 +193,8 @@ def plotCorr(corrMatrix, corrType):
 		plt.savefig(cfg.ANOVA_GRAPH_FILE,dpi=100)
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 			plt.savefig(support.shiftPathToGraphFolder(cfg.ANOVA_GRAPH_FILE.replace("png", "pdf")),dpi=100)
-			plt.savefig(support.shiftPathToGraphFolder(cfg.ANOVA_GRAPH_FILE.replace("png", "eps")),dpi=100)			
+			plt.savefig(support.shiftPathToGraphFolder(cfg.ANOVA_GRAPH_FILE.replace("png", "eps")),dpi=100)	
+		plt.close(figs)	
 	if(corrType == globals.MAXGUESSENTROPY):
 		printFunctions.printToScreenAndAnalysisLog("Plotting Maximum Guessing Entropy")
 		runNo = 1
@@ -183,6 +213,7 @@ def plotCorr(corrMatrix, corrType):
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 			plt.savefig(support.shiftPathToGraphFolder(cfg.MAXGUESSENT_FILE.replace("png", "pdf")),dpi=100)
 			plt.savefig(support.shiftPathToGraphFolder(cfg.MAXGUESSENT_FILE.replace("png", "eps")),dpi=100)
+		plt.close(figs)	
 			
 			
 			
@@ -267,6 +298,7 @@ def plotTrace(dataToPlot, traceNos, plotType):
 	if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 		plt.savefig(support.shiftPathToGraphFolder(cfg.SNAPSHOT_FILE.replace("png","pdf")),dpi=100)
 		plt.savefig(support.shiftPathToGraphFolder(cfg.SNAPSHOT_FILE.replace("png","eps")),dpi=100)
+	plt.close(figs)	
 
 def plotRawTrace(dataToPlot, traceLowerBound, traceUpperBound):
 	figs = plt.figure()	
@@ -288,6 +320,7 @@ def plotRawTrace(dataToPlot, traceLowerBound, traceUpperBound):
 	plt.title('Processed Data')
 	plt.show()
 	printFunctions.printToAnalysisLog("Saving " + cfg.SNAPSHOT_FILE)
+	plt.close(figs)
 	
 
 def showRawTrace(dataToPlot):
