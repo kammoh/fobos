@@ -20,20 +20,30 @@ import os
 import re
 from sys import argv
 from socket import *
+#from oscilloscope_sockets import MyInstrumentSend
 import sys
 #import visa
 import numpy
+import time
 
 osc_attributes = {
- 'RESOURCE' : "",        'AUTOSCALE' : "",        'IMPEDANCE' : "",        'CHANNEL_RANGE1' : "",
- 'CHANNEL_RANGE2' : "",   'CHANNEL_RANGE3' : "",   'CHANNEL_RANGE4' : "",   'CHANNEL1_DISPLAY' : "",
+ 'RESOURCE' : "",        'AUTOSCALE' : "",        'CHANNEL1_IMPEDANCE' : "",        'CHANNEL1_RANGE' : "",
+ 'CHANNEL2_RANGE' : "",   'CHANNEL3_RANGE' : "",   'CHANNEL4_RANGE' : "",   'CHANNEL1_DISPLAY' : "",
  'CHANNEL2_DISPLAY' : "", 'CHANNEL3_DISPLAY' : "", 'CHANNEL4_DISPLAY' : "", 'TIME_RANGE' : "",
  'TIMEBASE_REF' : "",     'TRIGGER_SOURCE' : "",   'TRIGGER_MODE' : "",     'TRIGGER_SWEEP' : "",
  'TRIGGER_LEVEL' : "",    'TRIGGER_SLOPE' : "",    'SAMPLE_INPUT' : "",     'ACQUIRE_TYPE' : "",
  'ACQUIRE_MODE' : "",     'ACQUIRE_COMPLETE' : "", 'WAVE_DATA_SIZE' : "",   'NUM_PWR_TRACE' : "",
  'SCREEN_CAP' : "",       'SCREEN_FORMAT' : "",    'SCREEN_NAME' : "",      'OUTPUT_DIR' : "",
- 'OSCILLOSCOPE_IP' : "",  'OSCILLOSCOPE_PORT' : "",
+ 'OSCILLOSCOPE_IP' : "",  'OSCILLOSCOPE_PORT' : "", 'TIME_SCALE' : "", 'CHANNEL1_SCALE' : "",
+ 'CHANNEL2_SCALE' : "",   'CHANNEL3_SCALE' : "",    'CHANNEL4_SCALE' : "", 'CHANNEL2_IMPEDANCE' : "",
+ 'CHANNEL3_IMPEDANCE' : "", 'CHANNEL4_IMPEDANCE' : "",
  }
+ 
+# Oscilloscope can get confused if too many commands arrive too fast
+def MyInstrumentSend(instr,str):
+    instr.send(str+'\n')
+    print "\t"+str
+    time.sleep(.5)
  
 def clear_screen():
     if (sys.platform == "linux2" ):
@@ -80,25 +90,46 @@ def get_attribs(data_list) :
             elif re.match('^AUTOSCALE', object) :
 				value = re.split("=", object)
 				osc_attributes['AUTOSCALE'] = value[1].strip(" ")
-            elif re.match('^IMPEDANCE', object) :
+            elif re.match('^CHANNEL1_IMPEDANCE', object) :
                 value = re.split("=", object)
-                osc_attributes['IMPEDANCE'] = value[1].strip(" ")
-            elif re.match('^CHANNEL_RANGE1', object) :
+                osc_attributes['CHANNEL1_IMPEDANCE'] = value[1].strip(" ")
+            elif re.match('^CHANNEL2_IMPEDANCE', object) :
                 value = re.split("=", object)
-                osc_attributes['CHANNEL_RANGE1'] = value[1].strip(" ")
-            elif re.match('^CHANNEL_RANGE2', object) :
+                osc_attributes['CHANNEL2_IMPEDANCE'] = value[1].strip(" ")
+            elif re.match('^CHANNEL3_IMPEDANCE', object) :
                 value = re.split("=", object)
-                osc_attributes['CHANNEL_RANGE2'] = value[1].strip(" ")
-            elif re.match('^CHANNEL_RANGE3', object) :
+                osc_attributes['CHANNEL3_IMPEDANCE'] = value[1].strip(" ")
+            elif re.match('^CHANNEL4_IMPEDANCE', object) :
                 value = re.split("=", object)
-                osc_attributes['CHANNEL_RANGE3'] = value[1].strip(" ")
-            elif re.match('^CHANNEL_RANGE4', object) :
+                osc_attributes['CHANNEL4_IMPEDANCE'] = value[1].strip(" ")
+            elif re.match('^CHANNEL1_RANGE', object) :
                 value = re.split("=", object)
-                osc_attributes['CHANNEL_RANGE4'] = value[1].strip(" ")
+                osc_attributes['CHANNEL1_RANGE'] = value[1].strip(" ")
+            elif re.match('^CHANNEL2_RANGE', object) :
+                value = re.split("=", object)
+                osc_attributes['CHANNEL2_RANGE'] = value[1].strip(" ")
+            elif re.match('^CHANNEL3_RANGE', object) :
+                value = re.split("=", object)
+                osc_attributes['CHANNEL3_RANGE'] = value[1].strip(" ")
+            elif re.match('^CHANNEL4_RANGE', object) :
+                value = re.split("=", object)
+                osc_attributes['CHANNEL4_RANGE'] = value[1].strip(" ")
+            elif re.match('^CHANNEL1_SCALE', object) :
+                value = re.split("=", object)
+                osc_attributes['CHANNEL1_SCALE'] = value[1].strip(" ")
+            elif re.match('^CHANNEL2_SCALE', object) :
+                value = re.split("=", object)
+                osc_attributes['CHANNEL2_SCALE'] = value[1].strip(" ")
+            elif re.match('^CHANNEL3_SCALE', object) :
+                value = re.split("=", object)
+                osc_attributes['CHANNEL3_SCALE'] = value[1].strip(" ")
+            elif re.match('^CHANNEL4_SCALE', object) :
+                value = re.split("=", object)
+                osc_attributes['CHANNEL4_SCALE'] = value[1].strip(" ")
             elif re.match('^CHANNEL1_DISPLAY', object) :
                 value = re.split("=", object)
-                osc_attributes['CHANNEL2_DISPLAY'] = value[1].strip(" ")
-            elif re.match('^CHANNEL1_DISPLAY', object) :
+                osc_attributes['CHANNEL1_DISPLAY'] = value[1].strip(" ")
+            elif re.match('^CHANNEL2_DISPLAY', object) :
                 value = re.split("=", object)
                 osc_attributes['CHANNEL2_DISPLAY'] = value[1].strip(" ")
             elif re.match('^CHANNEL3_DISPLAY', object) :
@@ -110,6 +141,9 @@ def get_attribs(data_list) :
             elif re.match('^TIME_RANGE', object) :
                 value = re.split("=", object)
                 osc_attributes['TIME_RANGE'] = value[1].strip(" ")
+            elif re.match('^TIME_SCALE', object) :
+                value = re.split("=", object)
+                osc_attributes['TIME_SCALE'] = value[1].strip(" ")
             elif re.match('^TIMEBASE_REF', object) :
                 value = re.split("=", object)
                 osc_attributes['TIMEBASE_REF'] = value[1].strip(" ")
@@ -134,6 +168,9 @@ def get_attribs(data_list) :
             elif re.match('^ACQUIRE_TYPE', object) :
                 value = re.split("=", object)
                 osc_attributes['ACQUIRE_TYPE'] = value[1].strip(" ")
+            elif re.match('^ACQUIRE_MDEPTH', object) :
+                value = re.split("=", object)
+                osc_attributes['ACQUIRE_MDEPTH'] = value[1].strip(" ")
             elif re.match('^ACQUIRE_MODE', object) :
                 value = re.split("=", object)
                 osc_attributes['ACQUIRE_MODE'] = value[1].strip(" ")
@@ -161,12 +198,11 @@ def get_attribs(data_list) :
 	return(osc_attributes) 
 
 def get_waveform_power(MyInstrument) :
-	MyInstrument.send(":WAVEFORM:FORMAT BYTE" + '\n')
-	MyInstrument.send(":WAVEFORM:SOURCE CHAN1" + '\n')
-	MyInstrument.send(":WAVEFORM:POINTS:MODE RAW" + '\n')
-	MyInstrument.send(":WAVEFORM:POINTS 8000000" + '\n')
+	MyInstrumentSend(MyInstrument,":WAVEFORM:FORMAT BYTE")
+	MyInstrumentSend(MyInstrument,":WAVEFORM:SOURCE CHAN1")
+	MyInstrumentSend(MyInstrument,":WAVEFORM:MODE RAW")
 	print "\tReading Preamble of Power Source"
-	MyInstrument.send(":WAVEFORM:PREAMBLE?" + '\n')
+	MyInstrumentSend(MyInstrument,":WAVEFORM:PREAMBLE?")
 	preamble = MyInstrument.recv(200)
 	fpowerpreamble = open("preambleChannel1.dat", "wb")
 	fpowerpreamble.write(preamble)
@@ -176,16 +212,19 @@ def get_waveform_power(MyInstrument) :
 	fid.close()
 	print "\tTotal Number of Points to Receive: " + str(int(preamble[2]))
 	print "\tReading Data of Power Source"
-	MyInstrument.send(":WAVEFORM:DATA?" + '\n') 
+	MyInstrumentSend(MyInstrument,":WAVEFORM:START 1")
+	MyInstrumentSend(MyInstrument,":WAVEFORM:STOP 250000") 
+	MyInstrumentSend(MyInstrument,":WAVEFORM:DATA?") 
 	tData = int(preamble[2])
 	wavedata = ""
 	count = 0
 	temp = MyInstrument.recv(tData)
 	lowerBound = tData - len(temp)
+	print str(len(temp)) + "\n"
 	rData = lowerBound
 	temp = temp[10:]
 	while(count < lowerBound):
-	#	print count,rData
+		print count,rData
 		wavedata = wavedata + temp
 		temp = MyInstrument.recv(rData)
 		count += len(temp)
@@ -260,8 +299,9 @@ def get_snapshot(MyInstrument):
 
 def oscilloscope_connect(osc_ipaddress, osc_portnos):
 	osc_socket = socket( AF_INET, SOCK_STREAM )
+	osc_socket.setsockopt(IPPROTO_TCP, TCP_NODELAY, 1)
 	#osc_socket.setblocking(False)
-	osc_socket.connect(("192.168.0.10", 5025))#have to put in error checks dummy
+	osc_socket.connect(("192.168.10.54", 5555))#have to put in error checks dummy
 	osc_socket.send("*IDN?"+"\n")
 	osc_id = osc_socket.recv(200)
 	print "\tConnected to Oscilloscope ID :"+ osc_id

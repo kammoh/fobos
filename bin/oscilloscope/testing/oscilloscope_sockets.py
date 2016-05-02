@@ -18,6 +18,7 @@
 #############################################################################
 import os
 import re
+import time
 from sys import argv
 import sys
 from oscilloscope_core import *
@@ -54,75 +55,136 @@ inst_attrib = get_attribs(data_list)
 ## Connect to Oscilloscope
 MyInstrument = oscilloscope_connect(inst_attrib['OSCILLOSCOPE_IP'],inst_attrib['OSCILLOSCOPE_PORT'])
 
+
 ## Reset Instrument
-MyInstrument.send("*RST" + '\n')
-
+#MyInstrumentSend(MyInstrument,"*RST")
+#time.sleep(8)
+	
 print "\tSetting Oscilloscope Attributes"
-if inst_attrib['IMPEDANCE'] :
-	cmd_string = ":CHANNEL1:IMPEDANCE "+inst_attrib['IMPEDANCE']
-	MyInstrument.send(cmd_string+'\n')
-	
-if inst_attrib['CHANNEL_RANGE1'] :
-	cmd_string = ":CHANNEL1:RANGE "+inst_attrib['CHANNEL_RANGE1']
-	MyInstrument.send(cmd_string+'\n')
+if inst_attrib['CHANNEL1_IMPEDANCE'] :
+	cmd_string = ":CHANNEL1:IMPEDANCE "+inst_attrib['CHANNEL1_IMPEDANCE']
+	MyInstrumentSend(MyInstrument,cmd_string)
 
-if inst_attrib['CHANNEL_RANGE2'] :
-	cmd_string = ":CHANNEL2:RANGE "+inst_attrib['CHANNEL_RANGE2']
-	MyInstrument.send(cmd_string+'\n')
-
-if inst_attrib['CHANNEL_RANGE3'] :
-	cmd_string = ":CHANNEL3:RANGE "+inst_attrib['CHANNEL_RANGE3']
-	MyInstrument.send(cmd_string+'\n')
+if inst_attrib['CHANNEL2_IMPEDANCE'] :
+	cmd_string = ":CHANNEL2:IMPEDANCE "+inst_attrib['CHANNEL2_IMPEDANCE']
+	MyInstrumentSend(MyInstrument,cmd_string)
 	
-if inst_attrib['CHANNEL_RANGE4'] :
-	cmd_string = ":CHANNEL4:RANGE "+inst_attrib['CHANNEL_RANGE4']
-	MyInstrument.send(cmd_string+'\n')
+if inst_attrib['CHANNEL3_IMPEDANCE'] :
+	cmd_string = ":CHANNEL3:IMPEDANCE "+inst_attrib['CHANNEL3_IMPEDANCE']
+	MyInstrumentSend(MyInstrument,cmd_string)
+	
+if inst_attrib['CHANNEL4_IMPEDANCE'] :
+	cmd_string = ":CHANNEL4:IMPEDANCE "+inst_attrib['CHANNEL4_IMPEDANCE']
+	MyInstrumentSend(MyInstrument,cmd_string)
+
+if inst_attrib['CHANNEL1_DISPLAY'] :
+	cmd_string = ":CHANNEL1:DISPLAY "+inst_attrib['CHANNEL1_DISPLAY']
+	MyInstrumentSend(MyInstrument,cmd_string)
+
+if inst_attrib['CHANNEL2_DISPLAY'] :
+	cmd_string = ":CHANNEL2:DISPLAY "+inst_attrib['CHANNEL2_DISPLAY']
+	MyInstrumentSend(MyInstrument,cmd_string)
+
+if inst_attrib['CHANNEL3_DISPLAY'] :
+	cmd_string = ":CHANNEL3:DISPLAY "+inst_attrib['CHANNEL3_DISPLAY']
+	MyInstrumentSend(MyInstrument,cmd_string)
+
+if inst_attrib['CHANNEL4_DISPLAY'] :
+	cmd_string = ":CHANNEL4:DISPLAY "+inst_attrib['CHANNEL4_DISPLAY']
+	MyInstrumentSend(MyInstrument,cmd_string)
+
+if inst_attrib['CHANNEL1_RANGE'] :
+	cmd_string = ":CHANNEL1:RANGE "+inst_attrib['CHANNEL1_RANGE']
+	MyInstrumentSend(MyInstrument,cmd_string)
+
+if inst_attrib['CHANNEL2_RANGE'] :
+	cmd_string = ":CHANNEL2:RANGE "+inst_attrib['CHANNEL2_RANGE']
+	MyInstrumentSend(MyInstrument,cmd_string)
+
+if inst_attrib['CHANNEL3_RANGE'] :
+	cmd_string = ":CHANNEL3:RANGE "+inst_attrib['CHANNEL3_RANGE']
+	MyInstrumentSend(MyInstrument,cmd_string)
+	
+if inst_attrib['CHANNEL4_RANGE'] :
+	cmd_string = ":CHANNEL4:RANGE "+inst_attrib['CHANNEL4_RANGE']
+	MyInstrumentSend(MyInstrument,cmd_string)
+
+if inst_attrib['CHANNEL1_SCALE'] :
+	cmd_string = ":CHANNEL1:SCALE "+inst_attrib['CHANNEL1_SCALE']
+	MyInstrumentSend(MyInstrument,cmd_string)
+
+if inst_attrib['CHANNEL2_SCALE'] :
+	cmd_string = ":CHANNEL2:SCALE "+inst_attrib['CHANNEL2_SCALE']
+	MyInstrumentSend(MyInstrument,cmd_string)
+
+if inst_attrib['CHANNEL3_SCALE'] :
+	cmd_string = ":CHANNEL3:SCALE "+inst_attrib['CHANNEL3_SCALE']
+	MyInstrumentSend(MyInstrument,cmd_string)
+	
+if inst_attrib['CHANNEL4_SCALE'] :
+	cmd_string = ":CHANNEL4:SCALE "+inst_attrib['CHANNEL4_SCALE']
+	MyInstrumentSend(MyInstrument,cmd_string)
 
 if inst_attrib['TIME_RANGE'] :
-	cmd_string = ":TIM:RANG "+inst_attrib['TIME_RANGE']
-	MyInstrument.send(cmd_string+'\n')
+	cmd_string = ":TIME:RANGE "+inst_attrib['TIME_RANGE']
+	MyInstrumentSend(MyInstrument,cmd_string)
+
+if inst_attrib['TIME_SCALE'] :
+	cmd_string = ":TIME:SCALE "+inst_attrib['TIME_SCALE']
+	MyInstrumentSend(MyInstrument,cmd_string)
 
 if inst_attrib['TIMEBASE_REF'] :
 	cmd_string = ":TIMEBASE:REFERENCE "+inst_attrib['TIMEBASE_REF']
-	MyInstrument.send(cmd_string+'\n')
-
+	MyInstrumentSend(MyInstrument,cmd_string)
+	
 if inst_attrib['TRIGGER_SOURCE'] :
 	cmd_string = ":TRIGger:EDGE:SOURce "+inst_attrib['TRIGGER_SOURCE']
-	MyInstrument.send(cmd_string+'\n')
+	MyInstrumentSend(MyInstrument,cmd_string)
 
 if inst_attrib['TRIGGER_MODE'] :
 	cmd_string = ":TRIGGER:MODE "+inst_attrib['TRIGGER_MODE']
-	MyInstrument.send(cmd_string+'\n')
+	MyInstrumentSend(MyInstrument,cmd_string)
 
 if inst_attrib['TRIGGER_SWEEP'] :
 	cmd_string = ":TRIGGER:SWEEP "+inst_attrib['TRIGGER_SWEEP']
-	MyInstrument.send(cmd_string+'\n')
+	MyInstrumentSend(MyInstrument,cmd_string)
 
 if inst_attrib['TRIGGER_LEVEL'] :
 	cmd_string = ":TRIGGER:EDGE:LEVEL "+inst_attrib['TRIGGER_LEVEL']
-	MyInstrument.send(cmd_string+'\n')
+	MyInstrumentSend(MyInstrument,cmd_string)
 
 if inst_attrib['TRIGGER_SLOPE'] :
 	cmd_string = ":TRIGGER:EDGE:SLOPE "+inst_attrib['TRIGGER_SLOPE']
-	MyInstrument.send(cmd_string+'\n')
+	MyInstrumentSend(MyInstrument,cmd_string)
 
 if inst_attrib['ACQUIRE_TYPE'] :
 	cmd_string = ":ACQUIRE:TYPE "+inst_attrib['ACQUIRE_TYPE']
-	MyInstrument.send(cmd_string+'\n')
+	MyInstrumentSend(MyInstrument,cmd_string)
 
+if inst_attrib['ACQUIRE_MDEPTH'] :
+	cmd_string = ":ACQUIRE:MDEPTH "+inst_attrib['ACQUIRE_MDEPTH']
+	MyInstrumentSend(MyInstrument,cmd_string)
+	
 if inst_attrib['ACQUIRE_MODE'] :
 	cmd_string = ":ACQUIRE:MODE "+inst_attrib['ACQUIRE_MODE']
-	MyInstrument.send(cmd_string+'\n')
+	MyInstrumentSend(MyInstrument,cmd_string)
 
 if inst_attrib['ACQUIRE_COMPLETE'] :
 	cmd_string = ":ACQUIRE:COMPLETE "+inst_attrib['ACQUIRE_COMPLETE']
-	MyInstrument.send(cmd_string+'\n')	
+	MyInstrumentSend(MyInstrument,cmd_string)	
 
-## Digitize
+### Digitize
+
 i = 0
-while (i < 1000):
+while (i < 10):
 	print "run No" + str(i)
-	MyInstrument.send(":DIGITIZE CHAN1,CHAN2" + '\n')
+	MyInstrumentSend(MyInstrument,":SINGLE")
+	done = "WAIT\n"
+	while (done != "STOP\n"):
+	  	MyInstrumentSend(MyInstrument,":TRIGGER:STATUS?")
+	  	done=MyInstrument.recv(5)
+	  	print done
+	print done
 ## Read Power consumption of the targe
 	get_waveform_power(MyInstrument)
 #get_snapshot(MyInstrument)
