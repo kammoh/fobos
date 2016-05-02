@@ -91,8 +91,12 @@ def getPlainText():
 def getKey():		
 	keyToEncrypt = []
 	if(cfg.config_attributes['KEY_GENERATION'] == globals.USER):
-		printFunctions.printToScreenAndLog("\tKey Size :" + str(cfg.config_attributes['KEY_SIZE']))
-		printFunctions.printToScreenAndLog("\tReading Key from "+ cfg.config_attributes['KEY_FILE'] +" file")
+		if (cfg.PROGRAM_CALL == "ANALYSIS"):
+			printFunctions.printToScreenAndAnalysisLog("\tKey Size :" + str(cfg.config_attributes['KEY_SIZE']))
+			printFunctions.printToScreenAndAnalysisLog("\tReading Key from "+ cfg.config_attributes['KEY_FILE'] +" file")		
+		else:
+			printFunctions.printToScreenAndLog("\tKey Size :" + str(cfg.config_attributes['KEY_SIZE']))
+			printFunctions.printToScreenAndLog("\tReading Key from "+ cfg.config_attributes['KEY_FILE'] +" file")
 		rawData = support.readFile(cfg.config_attributes['KEY_FILE'])
 		for count in range(0, len(rawData)):
 			temp = support.convertToByteArray(rawData[count])
@@ -101,6 +105,14 @@ def getKey():
 	elif(cfg.config_attributes['KEY_GENERATION'] == globals.RANDOM):
 		keyToEncrypt = generateRandomKey()
 	return keyToEncrypt	
+	
+def getKeyForAnalysis():		
+	keyToEncrypt = []
+	rawData = support.readFile(cfg.KEY_FILE)
+	for count in range(0, len(rawData)):
+		temp = support.convertToByteArray(rawData[count])
+		for x in temp: keyToEncrypt.append(x)
+	return keyToEncrypt		
 
 	
 def main():
