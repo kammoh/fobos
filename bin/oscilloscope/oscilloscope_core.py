@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #############################################################################
 #                                                                           #
-#	Copyright 2014 CERG                                                     #
+#	Copyright 2016 CERG                                                     #
 #	                                                                        #
 #	Licensed under the Apache License, Version 2.0 (the "License");         #
 #	you may not use this file except in compliance with the License.        #
@@ -45,16 +45,16 @@ def get_attribs(data_list) :
         elif re.match('^IMPEDANCE', object) :
             value = re.split("=", object)
             cfg.osc_attributes['IMPEDANCE'] = value[1].strip(" ")
-        elif re.match('^CHANNEL_RANGE1', object) :
+        elif re.match('^CHANNEL1_RANGE', object) :
             value = re.split("=", object)
             cfg.osc_attributes['CHANNEL_RANGE1'] = value[1].strip(" ")
-        elif re.match('^CHANNEL_RANGE2', object) :
+        elif re.match('^CHANNEL2_RANGE', object) :
             value = re.split("=", object)
             cfg.osc_attributes['CHANNEL_RANGE2'] = value[1].strip(" ")
-        elif re.match('^CHANNEL_RANGE3', object) :
+        elif re.match('^CHANNEL3_RANGE', object) :
             value = re.split("=", object)
             cfg.osc_attributes['CHANNEL_RANGE3'] = value[1].strip(" ")
-        elif re.match('^CHANNEL_RANGE4', object) :
+        elif re.match('^CHANNEL4_RANGE', object) :
             value = re.split("=", object)
             cfg.osc_attributes['CHANNEL_RANGE4'] = value[1].strip(" ")
         elif re.match('^TIME_RANGE', object) :

@@ -1,6 +1,6 @@
 #############################################################################
 #                                                                           #
-#	Copyright 2015 CERG                                                     #
+#	Copyright 2016 CERG                                                     #
 #	                                                                        #
 #	Licensed under the Apache License, Version 2.0 (the "License");         #
 #	you may not use this file except in compliance with the License.        #
@@ -56,7 +56,7 @@ KEY_SIZE = 16 # In Bytes
 # FOBOS Capture Settings
 # =============================================
 # =============================================
-DUMMY_RUN = YES  #YES/NO
+DUMMY_RUN = NO  #YES/NO
 NUMBER_OF_TRACES = 10
 
 # =============================================
@@ -73,10 +73,10 @@ OSCILLOSCOPE_PORT = 5025
 AUTOSCALE = NO   # YES|NO    
 IMPEDANCE = FIFTY #FIFTY|ONEMEG
 # VOLTAGE AND TIME RANGE OPTIONS        
-CHANNEL_RANGE1 = 0.12V
-CHANNEL_RANGE2 = 6V
-CHANNEL_RANGE3 = OFF # ON|OFF|voltage range
-CHANNEL_RANGE4 = OFF # ON|OFF|voltage range
+CHANNEL1_RANGE = 0.12V
+CHANNEL2_RANGE = 6V
+CHANNEL3_RANGE = OFF # ON|OFF|voltage range
+CHANNEL4_RANGE = OFF # ON|OFF|voltage range
 TIME_RANGE = 0.000021
 TIMEBASE_REF = LEFT    
 # TRIGGER OPTIONS

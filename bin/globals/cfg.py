@@ -1,7 +1,7 @@
 #!/usr/bin/python
 ##################################################################################
 #                                                                           	 #
-#	Copyright 2014 Cryptographic Engineering Research Group (CERG)               #
+#	Copyright 2016 Cryptographic Engineering Research Group (CERG)               #
 #	George Mason University														 #	
 #   http://cryptography.gmu.edu/fobos                                            #                            
 #									                                             #                             	 
@@ -128,6 +128,7 @@ CORR_SPEARMAN_RESULT_FILE = ""
 ANOVA_RESULT_FILE = ""
 
 KEYARRAY = None
+EXPECTED_KEY = None
 LAST_POWER_MODEL = None
 KEY_INDEX = 0
 KEY_BYTE_MAX_CORR = None
