@@ -56,29 +56,34 @@
 
 % ---------------------------------------------------------------------------
       \begin{block}{Abstract}
-Side-channel analysis (SCA) attacks pose a growing threat to implementations of cryptographic 
-algorithms implemented in software as well as in hardware. Current standard 
-side-channel evaluation boards with Field Programmable Gate Arrays (FPGAs), that allow 
-for exploring the vulnerability of cryptographic implementations on FPGAs, are expensive
-and available only for a few FPGA devices. Furthermore, a complete open source 
-software package that includes drivers that run test cases on the board, 
-control the measurement equipment, and contain several side-channel analysis 
-techniques is not readily available. Each user has to assemble their own setup
-based on software packages from multiple sources, written in multiple languages
-and write parts themselves. Additionally, this complexity and cost makes it very difficult,
-if not impossible, to educate students on side-channel analysis
-through hands-on laboratory exercises. 
-FOBOS is an open-source framework for conducting side-channel attacks on FPGAs
-which supports multiple FPGA devices and includes all necessary software to run 
-differential power analysis attacks, which are the most prominent kind of side-channel attacks. 
-Through its completeness and support for educational FPGA boards it is an ideal 
-teaching tool.
+Side-channel analysis (SCA) attacks pose a growing threat to the
+implementations of cryptographic algorithms in software as well as in
+hardware. Current standard side-channel evaluation boards with Field
+Programmable Gate Arrays (FPGAs), that allow for exploring the
+vulnerability of cryptographic implementations on FPGAs, are expensive
+and available only for a few FPGA devices. Furthermore, a complete
+open source software package that includes drivers that run test cases
+on the board, control the measurement equipment, and contain several
+SCA techniques, are not readily available. Each user has to assemble
+his/her own setup based on software packages from multiple sources,
+written in multiple languages and/or write parts of the code
+themselves. Additionally, this complexity and cost makes it very
+difficult, if not impossible, to educate students on SCA through
+hands-on laboratory exercises. 
+FOBOS is an open-source framework for
+conducting SCA attacks on FPGAs which supports multiple FPGA devices
+and includes all necessary software to run Differential Power Analysis
+(DPA) attacks, which are the most prominent kind of SCA attacks.
+Through its completeness and support for educational FPGA boards it is
+an ideal teaching tool.
+
+
       \end{block}
 	 
 %---------------------------------------------------------------------------------
 
       \begin{block}{Side Channel Analysis (SCA)}
-          \vspace{-1ex}
+          %\vspace{-1ex}
         \begin{itemize}
           \item {\color{red}Danger:} Implementations are susceptible to Side Channel Analysis (SCA).
         \end{itemize}
@@ -130,7 +135,7 @@ teaching tool.
           \begin{tabular}{|r||c|c|c|c||c|c}\hline
             \rowcolor{RoyalBlue!20}%
               & \multicolumn{4}{>{\columncolor{RoyalBlue!20}}c||}{\textbf{SASEBO}} 
-              & \multicolumn{2}{>{\columncolor{RoyalBlue!20}}c|}{\textbf{SAKURA}}      \\ 
+              & \multicolumn{2}{>{\columncolor{RoyalBlue!20}}c}{\textbf{SAKURA}}      \\ 
             \rowcolor{RoyalBlue!20}%
             \rb{\textbf{Board}}   &          & \textbf{G} & \textbf{GII}  & \textbf{B}   & \textbf{X}   & \textbf{G}    \\ \hline
             \textbf{Control}      & Virtex-2 & Virtex-2   &               &              &              &               \\
@@ -145,7 +150,7 @@ teaching tool.
               & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r|}{65\,nm}        
               & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r||}{90\,nm}       
               & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r|}{28\,nm}    
-              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r|}{45\,nm} \\       
+              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r}{45\,nm} \\       
                                   &          & RS232,     &               & RS232,       &              &               \\
             \rowcolor{RoyalBlue!20}%
             \rb{\textbf{PC Data}} &RS232     &FT245RL     &\rb{FT2232D}   & FT245RL      & USB          & USB           \\ 
@@ -208,7 +213,7 @@ teaching tool.
       \end{block}
 %------------------------------------------------------------------------------------
           \begin{block}{Drawbacks of Current Solutions}   
-          \vspace{-1ex}
+          %\vspace{-1ex}
             \begin{itemize}
               \item Commercial Solutions are too expensive for educational use and for
                     many research groups
@@ -224,6 +229,7 @@ teaching tool.
               \item No complete, free, and open-source solution is available.
               \item No inexpensive out-of-the-box solution for education.
             \end{itemize}
+	    \vspace{0.8ex}
           \end{block}
         
 %---------------------------------------------------------------------------------
