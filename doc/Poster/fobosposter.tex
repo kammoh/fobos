@@ -1,4 +1,4 @@
-\documentclass[final]{beamer}
+\documentclass[xcolor=pdftex,dvipsnames,table,final]{beamer}
 \mode<presentation>
 {
   \usetheme{PosterCERG}
@@ -78,6 +78,7 @@ teaching tool.
 %---------------------------------------------------------------------------------
 
       \begin{block}{Side Channel Analysis (SCA)}
+          \vspace{-1ex}
         \begin{itemize}
           \item {\color{red}Danger:} Implementations are susceptible to Side Channel Analysis (SCA).
         \end{itemize}
@@ -117,31 +118,104 @@ teaching tool.
       \end{block}
 %-----------------------------------------------------------------------------------
       \begin{block}{Current SCA Evaluation Solutions}
-        \begin{minipage}[t]{0.49\linewidth}
-          {\large\textbf{AES}}%\vspace{1ex}
+        {\large\textbf{Hardware (FPGAs)}}%\vspace{1ex}
+        \begin{itemize}
+          \item Homegrown platforms or 
+          \item SAKURA Boards (starting at \$1,500, or donation)
+        \end{itemize}
+        \begin{center}
+        { \small%
+          \renewcommand\tabcolsep{4pt}% 
+          \rowcolors{3}{RoyalBlue!5}{RoyalBlue!20}%
+          \begin{tabular}{|r||c|c|c|c||c|c}\hline
+            \rowcolor{RoyalBlue!20}%
+              & \multicolumn{4}{>{\columncolor{RoyalBlue!20}}c||}{\textbf{SASEBO}} 
+              & \multicolumn{2}{>{\columncolor{RoyalBlue!20}}c|}{\textbf{SAKURA}}      \\ 
+            \rowcolor{RoyalBlue!20}%
+            \rb{\textbf{Board}}   &          & \textbf{G} & \textbf{GII}  & \textbf{B}   & \textbf{X}   & \textbf{G}    \\ \hline
+            \textbf{Control}      & Virtex-2 & Virtex-2   &               &              &              &               \\
+            \rowcolor{RoyalBlue!5}%
+            \textbf{FPGA}         & Pro      & Pro        &\rb{Spartan-3A}&\rb{Stratix-2}&\rb{Spartan-6}&\rb{Spartan-6} \\
+            \rowcolor{RoyalBlue!20}%
+            \textbf{DUT}          & Virtex-2 & Virtex-2   &               &              &              &               \\
+            \textbf{FPGA}         & Pro      & Pro        &\rb{Virtex-5}  &\rb{Stratix-2}&\rb{Kintex-7} &\rb{Spartan-6} \\ 
+            \textbf{Techn.}       
+              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r|}{130\,nm}  
+              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r|}{130\,nm}  
+              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r|}{65\,nm}        
+              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r||}{90\,nm}       
+              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r|}{28\,nm}    
+              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r|}{45\,nm} \\       
+                                  &          & RS232,     &               & RS232,       &              &               \\
+            \rowcolor{RoyalBlue!20}%
+            \rb{\textbf{PC Data}} &RS232     &FT245RL     &\rb{FT2232D}   & FT245RL      & USB          & USB           \\ 
+            \rb{\textbf{Comms.}}  &          &(USB)       &\rb{(USB)}     & (USB)        &              &               \\ 
+                                  &Discon-   &Discon-     &Discon-        &              &              &               \\ 
+            \rowcolor{RoyalBlue!5}%
+            \rb{\textbf{Status}}  &tinued    &tinued      &tinued         &              &              &               \\ \hline
+          \end{tabular}
+        }
+        \end{center}
+        {\large\textbf{Software}}%\vspace{1ex}
+        \begin{itemize}
+            \item The DUT is driven and power data acquired by
+            \begin{itemize}
+                \item Homegrown data acquisition software,
+                \item Modified SASEBO software written in C\#, or
+            \end{itemize}
+        \end{itemize}
+        \begin{center}
+        \begin{minipage}[t]{0.9\linewidth}  
+        \setbeamercolor{padding}{fg=white, bg=cergbg1}
+        \begin{beamercolorbox}[rounded=true]{padding}
+          \textbf{IA Meter}
+          {\small
           \begin{itemize}
-            \item NIST standard for block ciphers.
-             \item Based on Rijndael block cipher.
-            %\item Traditional block cipher.
-            \item 128-bit block size.
-            \item 128/192/256-bit key size.
+            \item Opensource set of Python scripts for acquisition and storage.
+            \item Mostly independent of hardware platform and oscilloscope.
           \end{itemize}
-        \end{minipage}%
-        \begin{minipage}[t]{0.49\linewidth}  
-          {\large\textbf{Keccak-$p$[1600,$n_r$]}}%\vspace{1ex} %permutation
-          \begin{itemize}
-            \item Permutation based on Keccak, winner of competition for next Secure Hash Algorithm (SHA-3).
-            \item 1600-bit state size.
-            %\item Keccak is based on Sponge construction.
-          \end{itemize}
+          }
+        \end{beamercolorbox}
         \end{minipage}
+        \end{center}
+
+        \begin{itemize}
+            \item The data is analyzed either by
+            \begin{itemize}
+                \item Homegrown analysis software or
+            \end{itemize}
+        \end{itemize}
+        \begin{center}
+        \begin{minipage}[t]{0.9\linewidth}  
+        \setbeamercolor{padding}{fg=white, bg=cergbg1}
+        \begin{beamercolorbox}[rounded=true]{padding}
+          \textbf{OpenSCA Toolbox}
+          {\small
+          \begin{itemize}
+            \item Opensouce Matlab codes to perform DPA attacks.
+            \item Supports first, higher order, and template attacks.
+          \end{itemize}
+        }
+        \end{beamercolorbox}
+        \end{minipage}
+        \end{center}
+        {\large\textbf{Commercial Solutions}}%\vspace{1ex}
+        \begin{itemize}
+          \item Cryptography Research: DPA Workstation\texttrademark
+          \item Riscure: Inspector
+          \item Secure IC: Smart SIC Analyzer 
+        \end{itemize}
       \end{block}
 %------------------------------------------------------------------------------------
           \begin{block}{Drawbacks of Current Solutions}   
+          \vspace{-1ex}
             \begin{itemize}
+              \item Commercial Solutions are too expensive for educational use and for
+                    many research groups
+
               \item IA Meter only performs acquisition using Python.
               \item OpenSCA Toolbox performs only analysis using Matlab.
-              \item SASEBO has very limited FPGA support und uses C\#.
+              \item SAKURA has very limited FPGA support und uses C\#.
               \begin{itemize}
                 \item DPA resistance depends on FPGA family.
                 \item DPA resistance depends on FPGA packaging (e.g., w/ or w/o capacitances).
@@ -152,37 +226,6 @@ teaching tool.
             \end{itemize}
           \end{block}
         
-%---------------------------------------------------------------------------------
-      \begin{block}{Modes of Operation Summary}
-        \begin{table}[t]\setlength{\tabcolsep}{2.0pt}
-         \centering
-          \vspace{-2ex}%\large
-          %\footnotesize
-          \caption{AES / Rijndael* and Keccak Modes \small (Rd. = Number of rounds)}\label{tab:aesmodes}
-          \begin{tabular}{|l|l|l|llll|l|l|}\hline
-            &Operation  &  Mode         & Block & Key & Rd.    &\hspace{1ex}$\rho$& Inputs                    & Outputs \\ \hline
-            \parbox[t]{9mm}{\multirow{6}{*}{\rotatebox[]{90}{\textbf{AES}}}}
-            &Hash*      &  AES-Hash     & 256   & N/A & 14     &      &  $|M|$, $M$             & $H$       \\
-            &MAC        &  CMAC         & 128   & 128 & 10     &      &  $|M|$, $M$, $K$, $IV$  & $T$       \\
-            &AEAD       &  GCM          & 128   & 128 & 10     &      &  $|M|$, $M$, $K$, $IV$, & $T$, $C$  \\
-            &           &               &       &     &        &      &  $|AD|$, $AD$           &           \\
-            &PRNG       &  Fortuna      & 128   & N/A & 14     &      &  $S$                    & $R$       \\ \hline
-            \parbox[t]{9mm}{\multirow{6}{*}{\rotatebox[]{90}{\textbf{Keccak}}}}
-            &Hash       & Sponge        & 1600  & N/A & 24     & 1088 &  $|M|$, $M$             & $H$      \\
-            &MAC        & Sponge        & 1600  & 128 & 24     & 1088 &  $|M|$, $M$, $K$, $IV$  & $T$      \\
-            &AEAD       & Duplex        & 1600  & 128 & 12     & 1344 &  $|M|$, $M$, $K$, $IV$, & $T$, $C$ \\
-            &           &               &       &     &        &      &  $|AD|$, $AD$           &          \\
-            &PRNG       & Duplex        & 1600  & N/A & 12     & 1344 &  $S$                    & $R$      \\ \hline
-          \end{tabular}
-        \end{table}
-        \hspace{1ex}
-        {
-          \footnotesize $M$--Message, $K$--Key, $AD$--Associated Data, $S$--Seed, $IV$--Initialization Value, 
-                        $H$--Hash, $T$--Tag, \\ \hspace{3.5ex}$C$--Cipher-text, $R$--Random Number, $|X|$--Length of $X$
-        }
-        \\
-       \end{block}
-
 %---------------------------------------------------------------------------------
     \end{column}
 % ---------------------------------------------------------------------------
