@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #############################################################################
 #                                                                           #
-#	Copyright 2014 CERG                                                     #
+#	Copyright 2016 CERG                                                     #
 #	                                                                        #
 #	Licensed under the Apache License, Version 2.0 (the "License");         #
 #	you may not use this file except in compliance with the License.        #
@@ -36,11 +36,10 @@ def init():
 
 
 #############################################
-###### Version 0.2 of FOBOS Capture
-###### Only Oscilloscope comm is instantiated
+###### Version 0.9 Beta of FOBOS Capture ####
 #############################################
 def main():	
-	support.clear_screen()
+	support.clear_screen()                                     
 	init()
 	configExtract.extractConfigAttributes()
 	configExtract.configureWorkspace()	
@@ -54,55 +53,22 @@ def main():
 	openControlBoardConnection()
 	setControlBoardConfigAttributes()
 	traceCount = 0
-	#displayReg(0x0C)
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
 		armOscilloscope()
-		#print "a"
 		runEncrytionOnControlBoard(traceCount)
-		#print "b"
 		populateOscilloscopeDataStorage(traceCount)
-		#print "c"
 		populateControlBoardOutputDataStorage(traceCount)
-		#print "d"
 		traceCount += 1
-#	saveOscilloscopeDataStorage()   #only saved data when commented, Rajesh logic I guess 2/26 JK	
 	saveControlBoardOutputDataStorage()
 	closeOscilloscopeConnection()
 	closeControlBoardConnection()
 #############################################################################
-########### Show Plots for Power and Trigger
+########### End of Main                                                  ####
 ##############################################################################
-	#plottingModule.showRawTrace(channel1Data)
+	
 	
 if __name__ == "__main__":
     start_time=time.time()#to print execution time:Panci
     main()
     print("Total Run time=%s" %(time.time() -  start_time))#to print execution time:Panci
-
-	# if(cfg.config_attributes['CAPTURE_MODE'] == globals.CAPTURE_MODE_MULTI):
-		# armOscilloscope()
-		# channel1Data =  numpy.zeros(0)
-		# channel2Data = numpy.zeros(0)
-		# channel1Data = get_waveform_power()
-		# channel2Data = get_waveform_trigger()
-	# elif(cfg.config_attributes['CAPTURE_MODE'] == globals.CAPTURE_MODE_SINGLE):
-		# runCount = 0
-		# channel1Data = numpy.zeros(0)
-		# channel2Data = numpy.zeros(0)
-		# if(runCount < cfg.config_attributes['NUMBER_OF_ENCRYPTIONS']):
-			# armOscilloscope()
-			# tempChannel1Data = get_waveform_power()
-			# tempChannel2Data = get_waveform_trigger()
-			# if (runCount == 0):
-				# channel1Data =  tempChannel1Data
-				# channel2Data = tempChannel2Data
-				# tempChannel1Data = numpy.zeros(0)
-				# tempChannel2Data = numpy.zeros(0)
-			# else:
-				# channel1Data = numpy.vstack((channel1Data, tempChannel1Data))
-				# channel2Data = numpy.vstack((channel2Data, tempChannel2Data))
-				# tempChannel1Data = numpy.zeros(0)
-				# tempChannel2Data = numpy.zeros(0)				
-			# runCount += 1
-	
 

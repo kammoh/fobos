@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #############################################################################
 #                                                                           #
-#	Copyright 2014 CERG                                                     #
+#	Copyright 2016 CERG                                                     #
 #	                                                                        #
 #	Licensed under the Apache License, Version 2.0 (the "License");         #
 #	you may not use this file except in compliance with the License.        #
@@ -38,7 +38,8 @@ def printArray(array, num):
     sys.stdout.write("%02X\n" % array[i])
     i=i+1
 def printArrayNorm(array, num):	
-  key = getKeyForAnalysis()
+  #key = getKeyForAnalysis()
+  key = cfg.EXPECTED_KEY
   i = 1
   output = ""
   bytesMissed = 0

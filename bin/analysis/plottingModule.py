@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #############################################################################
 #                                                                           #
-#	Copyright 2014 CERG                                                     #
+#	Copyright 2016 CERG                                                     #
 #	                                                                        #
 #	Licensed under the Apache License, Version 2.0 (the "License");         #
 #	you may not use this file except in compliance with the License.        #
@@ -78,6 +78,12 @@ def plotHist(corrMatrix, corrType):
 		plt.ylabel('# of Occurances')
 		plt.xlabel('Key Guesses')
 		plt.title('# of Occurances vs Key Guess (BYTE)')
+		ax.xaxis.set_minor_locator(minorLocator)#:Panci
+		plt.tick_params(which='both', width=2)#:Panci
+		#plt.tick_params(which='major', length=7)#:Panci
+		plt.tick_params(which='major', length=8)#:Panci
+		plt.tick_params(which='minor', length=30, color='r')#:Panci
+		#plt.grid(True)#Added to show grid :Panci (3/8/16)		
 		plt.savefig(cfg.HISTOGRAM_SPEARMAN_FILE,dpi=100)
 		if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 			plt.savefig(support.shiftPathToGraphFolder(cfg.HISTOGRAM_SPEARMAN_FILE.replace("png","pdf")),dpi=100)

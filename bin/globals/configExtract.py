@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #############################################################################
 #                                                                           #
-#	Copyright 2014 CERG                                                     #
+#	Copyright 2016 CERG                                                     #
 #	                                                                        #
 #	Licensed under the Apache License, Version 2.0 (the "License");         #
 #	you may not use this file except in compliance with the License.        #
@@ -247,10 +247,10 @@ def extractAnalysisConfigAttributes(CONFIG_FILE):
 	data_list = support.readFile(CONFIG_FILE)
 	data_list = support.removeComments(data_list)
 	for object in data_list:
-		if re.match('^SAMPLE_WINDOW', object) :
+		if re.match('^SAMPLE_WINDOW_SIZE', object) :
 			value = re.split("=", object)
 			cfg.analysisConfigAttributes['SAMPLE_WINDOW'] = int(value[1].strip(" "))
-		if re.match('^WINDOW_START_POINT', object) :
+		if re.match('^SAMPLE_WINDOW_START', object) :
 			value = re.split("=", object)
 			cfg.analysisConfigAttributes['WINDOW_START_POINT'] = int(value[1].strip(" "))
 		if re.match('^TRIGGER_THRESHOLD', object) :			

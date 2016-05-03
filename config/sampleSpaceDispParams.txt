@@ -1,5 +1,5 @@
 ####################################################
 #### Sample Space Disposition Module Parameters ####
 ####################################################
-SAMPLE_WINDOW = 450
-WINDOW_START_POINT = 650 
+SAMPLE_WINDOW_SIZE = 450
+SAMPLE_WINDOW_START = 650 
