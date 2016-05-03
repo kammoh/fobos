@@ -288,7 +288,10 @@ teaching tool.
         \begin{center}
           \includegraphics[width=0.9\linewidth]{../figures/FOBOS-label}
         \end{center} 
-        \vspace{-1ex}
+        \begin{itemize}
+          \item FOBOS Control can be Digilent Nexys2 or Nexys3, soon Nexys4.
+        \end{itemize}
+        \vspace{-0.2ex}
        \end{block}
      
 % ---------------------------------------------------------------------------
@@ -320,49 +323,52 @@ teaching tool.
         \end{minipage}
 	\hspace{-5ex}
 	\begin{minipage}{0.31\linewidth}
-		{\small
-		\begin{itemize}
-		 \item Histogram, correlation, and minimum guessing entropy for 
-		       identifying the probable key bytes
-		 \item Variance and standard deviation to identify and remove the outliers 
-		       in the measured traces. 
-		\end{itemize}
-	}  
+          {\small
+          \begin{itemize}
+            \item Minimum Guessing Entropy shows how many guesses (possible keys) are 
+                  remaining for a given number of traces. 
+            \item Autocorrelation indicates repeating patterns in a trace such as round 
+                  operations which help in identifying where to attack. 
+          \end{itemize}
+          }  
 	\end{minipage} 
        \end{block}
 % ---------------------------------------------------------------------------
        \begin{block}{Analysis Workflow}
+        \vspace{-1ex}
         \begin{center}
           \includegraphics[scale=1.5]{../figures/data_anl}
         \end{center} 
-\begin{enumerate}
-\item Post-Processing Module
-	\begin{itemize}
-	\item Processes the raw data obtained from the oscilloscope to actual voltage values.
-	\item The user can further select a processing step on the measured power data
-	\end{itemize}
-\item SCA Module
-	\begin{itemize}
-	\item User can test his/her own power model using a library of state-of-the art side channel
-		distinguishers.
-	\item Currently our FOBOS prototype supports CPA \& MIA only.
-	\end{itemize}
-\item Statistics Module
-	\begin{itemize}
-	\item User can perform basic and advanced statistics on the measured power data
-	\end{itemize}
-\end{enumerate}
+        \vspace{-1ex}
+        \begin{enumerate}
+          \item Statistics Module
+          \begin{itemize}
+            \item Statistics can identify outliers in traces and samples across traces.
+          \end{itemize}
+          \item Post-Processing Module
+          \begin{itemize}
+            \item The main goal of these modules is to reduce the amount of data that 
+                  has to be analyzed by the SCA Module.
+          \end{itemize}
+          \item SCA Module
+          \begin{itemize}
+            \item User can test his/her own power model using a library of state-of-the art side channel
+                  distinguishers.
+            \item FOBOS supports CPA using Spearman, Pearson, ANOVA \& MIA.
+          \end{itemize}
+        \end{enumerate}
 
        \end{block}
 % ---------------------------------------------------------------------------
        \begin{block}{Signal Alignment}
         \begin{minipage}[t]{0.49\linewidth}
-          \includegraphics[scale=2.0]{../figures/alignedTraces}
+          \includegraphics[scale=2.4]{../figures/tracealingment}
         \end{minipage}%
         \begin{minipage}[t]{0.49\linewidth}
+         \vspace{-4cm}
          \begin{itemize}
-           \item bla
-           \item bla
+          \item The recorded trigger signal is used by FOBOS Analysis to align the
+                power traces.
          \end{itemize} 
         \end{minipage}
        \end{block}
@@ -372,7 +378,7 @@ teaching tool.
 		\includegraphics[width=0.9\linewidth]{../figures/oscilloscope-sample-window}
         \end{minipage}%
         \begin{minipage}[t]{0.49\linewidth}%
-          \vspace{-6cm}% 
+          \vspace{-6.5cm}% 
           \begin{itemize}
             \item User can select any part of the trace for further analysis.
             \item Reduces computation time.
@@ -397,8 +403,8 @@ SAMPLE_WINDOW = 1000
         \begin{minipage}[t]{0.49\linewidth}%
           \vspace{-6.5cm}% 
          \begin{itemize}
-           \item Compress to MAXimum, MINimum, or MEAN of given sample set.
-           \item Further reduces number of points for correlation.
+           \item Compresses length to MAXimum, MINimum, or MEAN.
+%           \item Further reduces number of points for correlation.
          \end{itemize} 
           \begin{center}
             \setbeamercolor{padding}{fg=white, bg=cergbg3}
@@ -414,34 +420,36 @@ COMPRESSION_TYPE = MAX
        \end{block}
 % ---------------------------------------------------------------------------
        \begin{block}{Example: Attack on AES}
+        \vspace{-1ex}
          \begin{center}
            \includegraphics[width=0.9\linewidth]{../figures/aes128}
+
+           {\small $PowerGuess_{i, j}$ = HD(SBOX($CT_{i-1}$), SBOX($PT_{i}$ $\oplus$ $KeyGuess_{j}$) )}
          \end{center}
-         \begin{itemize}
-		 \item {\small $PowerGuess_{i, j}$ = HD(SBOX($CT_{i-1}$), SBOX($PT_{i}$ $\oplus$ $KeyGuess_{j}$) )}
-		 \item
-         \end{itemize}
 	 \begin{minipage}[t]{0.49\linewidth}
 		 %\begin{center}
-			\includegraphics[width=0.80\linewidth]{../figures/oscilloscope-all-4ch} 
+			~~\includegraphics[width=0.80\linewidth]{../figures/oscilloscope-all-4ch} 
 		%\end{center}
 	 
 	 \end{minipage}%
 	 \begin{minipage}[t]{0.49\linewidth}  
-		 \vspace{-6cm}
+		 \hspace{-5ex}\vspace{-6cm}{\small
 		 \begin{itemize}
-		  \item 
-		  \item 
-		 \end{itemize}
+		  \item First round attack on AES-128.
+		  \item Key (0x16) recovered after 1 hour.
+                  \item Requires 2000 encryptions.
+                  \item Pearson's Correlation.
+                  \item Sometimes histogram is more clear than correlation plot.
+		 \end{itemize}}
          \end{minipage} 
 	 
         \begin{minipage}[t]{0.49\linewidth}
-           \includegraphics[width=0.9\linewidth]{../figures/pearsonsCoActual}
+           \includegraphics[width=1.0\linewidth]{../figures/pearsonsCoActual}
         \end{minipage}%
         \begin{minipage}[t]{0.49\linewidth}  
-		\includegraphics[width=0.9\linewidth]{../figures/histPearsonsCoActual}
+		\includegraphics[width=1.0\linewidth]{../figures/histPearsonsCoActual}
         \end{minipage}
-	
+        \vspace{-3.8ex}
        \end{block}
 % ---------------------------------------------------------------------------
 % ---------------------------------------------------------------------------
