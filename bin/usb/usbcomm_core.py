@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #############################################################################
 #                                                                           #
-#	Copyright 2014 CERG                                                     #
+#	Copyright 2016 CERG                                                     #
 #	                                                                        #
 #	Licensed under the Apache License, Version 2.0 (the "License");         #
 #	you may not use this file except in compliance with the License.        #
@@ -170,6 +170,20 @@ def runEncrytionOnControlBoard (traceCount):
 		printFunctions.printToScreenAndLog("\tRunning Dummy Encryption - " + str(traceCount+1))	
 		if (traceCount == 0):
 			printFunctions.printToScreenAndLog("\t\tFirst Run - Setting the key for Encryption")
+			sendKeyToControlBoard()
+			
+		sendBlockOfDataToControlBoard(traceCount)
+		status = putRegByte(0x01, 0x00) # Initialize
+		#support.goToSleep(1)		
+		status = putRegByte(0x01, 0xFF) # Run
+		#support.goToSleep(1)
+		#status = putRegByte(0x01, 0x00) # End
+		return status
+	elif (cfg.config_attributes['DUMMY_RUN'] == 'NO'):
+		status = putRegByte(0x01, 0x02) # Initialize
+		printFunctions.printToScreenAndLog("\tStarted Encryption/Decryption No - " + str(traceCount+1))	
+		if (traceCount == 0):
+			printFunctions.printToScreenAndLog("\t\tFirst Run - Setting the key for Encryption/Decryption")
 			sendKeyToControlBoard()
 			
 		sendBlockOfDataToControlBoard(traceCount)

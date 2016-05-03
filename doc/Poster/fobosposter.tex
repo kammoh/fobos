@@ -9,7 +9,7 @@
 % Arch E: 36"x48" use 91.44 x 121.92 OK for FedexKinko, use 4 columns
 % each column should be 0.22\linewidth
 \usepackage[orientation=portrait,size=custom,width=76.2,height=106.68,scale=1]{beamerposter}
-% DATE-2015 Poster format
+% DATE-2016 Poster format
 % DIN-A0-Portrait ----1189mm X 841mm or 118.9cm x 84.1cm or 46.8in x 33.1in 
 %\usepackage[orientation=portrait, size=custom, width=84.1, height=118.9 scale=1.0]{beamerposter}sd
 \usepackage{multirow,wrapfig}
@@ -293,9 +293,20 @@ teaching tool.
     
 % ---------------------------------------------------------------------------
        \begin{block}{FOBOS Analysis}
-        \begin{center}
-          \includegraphics[scale=1.5]{../figures/fobos-dan}
-        \end{center} 
+        \begin{minipage}{0.69\linewidth}
+		\includegraphics[scale=1.5]{../figures/fobos-dan}
+        \end{minipage}
+	\hspace{-5ex}
+	\begin{minipage}{0.31\linewidth}
+		\begin{itemize}
+		 \item Histogram, correlation, and minimum guessing entropy for 
+		       identifying the probable key bytes
+		 \item Variance and standard deviation to identify and remove the outliers 
+		       in the measured traces. 
+		\end{itemize}
+
+	\end{minipage}
+
        \end{block}
 % ---------------------------------------------------------------------------
        \begin{block}{Analysis Workflow}
@@ -306,7 +317,7 @@ teaching tool.
 % ---------------------------------------------------------------------------
        \begin{block}{Signal Alignment}
         \begin{minipage}[t]{0.49\linewidth}
-          \includegraphics[scale=0.5]{../figures/signalAlignment}
+          \includegraphics[scale=2.0]{../figures/alignedTraces}
         \end{minipage}%
         \begin{minipage}[t]{0.49\linewidth}
          \begin{itemize}

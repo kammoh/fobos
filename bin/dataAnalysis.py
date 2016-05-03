@@ -1,7 +1,7 @@
 #!/usr/bin/python
 ##################################################################################
 #                                                                           	 #
-#	Copyright 2014 Cryptographic Engineering Research Group (CERG)               #
+#	Copyright 2016 Cryptographic Engineering Research Group (CERG)               #
 #	George Mason University														 #	
 #   http://cryptography.gmu.edu/fobos                                            #                            
 #									                                             #                             	 
@@ -20,7 +20,7 @@
 ##################################################################################
 import os
 import time
-from globals import cfg, globals,support, printFunctions, configExtract
+from globals import cfg, globals,support, printFunctions, configExtract, dataGenerator
 from analysis import signalAnalysisModule
 from analysis import postProcessingModule
 from analysis import plottingModule
@@ -44,29 +44,17 @@ def main():
 	support.clear_screen()
 	init()
 	printFunctions.printAnalysisHeaderToScreen()
-	
 	configExtract.extractConfigAttributes()
-	
 	configExtract.configureAnalysisWorkspace()
-	
 	printFunctions.printAnalysisHeaderToLog()
 	support.setPlotAttributes()
+	cfg.EXPECTED_KEY = dataGenerator.getKeyForAnalysis()
 	#################################################################
 	############# USER DEFINED SECTION FROM HERE #######################
 	#################################################################
 	#plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 200750, 204750)
-	#plottingModule.plotRawTrace(cfg.RAW_TRIGGER_DATA,200750, 204750)
-	#plottingModule.showRawTrace(cfg.RAW_POWER_DATA)
-	#plottingModule.showRawTrace(cfg.RAW_TRIGGER_DATA)
-	#print cfg.RAW_POWER_DATA.shape
-	#print cfg.RAW_TRIGGER_DATA.shape
 	configExtract.extractAnalysisConfigAttributes("signalAlignmentParams.txt")
-	
-	#plottingModule.plotTrace(cfg.RAW_POWER_DATA, 'ALL', 'OVERLAY')	
-	#plottingModule.plotTrace(cfg.RAW_TRIGGER_DATA , 'ALL', 'OVERLAY')	
 	alignedData = signalAnalysisModule.getAlignedMeasuredPowerData() # Aligned Power traces with respect to trigger
-	#print alignedData.shape
-	#signalAnalysisModule.spectogram(cfg.RAW_POWER_DATA)
 	#plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')	
 	#sampleVarTimeWise = statisticsModule.calculate_std(alignedData, globals.TRACE_WISE) 	
 	#support.wait()
@@ -79,114 +67,122 @@ def main():
 	configExtract.extractAnalysisConfigAttributes("compressionParams.txt")
 	compressedData = postProcessingModule.compressData(windowedData)
 	#plottingModule.plotTrace(compressedData, 'ALL', 'OVERLAY')
+	autoCorrelatedData = sca.calculate_autocorrelation(alignedData)
+	plottingModule.plotCorr(autoCorrelatedData, globals.AUTOCORR)
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_0.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])#50 is the factor in the plot
-        #either use cfg.KEY_INDEX|actual key(eg.2B)
-	#print mge
-	
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
+	#50 is the factor in the plot
+        #either use cfg.KEYARRAY[cfg.KEY_INDEX] or cfg.EXPECTED_KEY[cfg.KEY_INDEX]
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_1.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 	
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_2.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_3.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_4.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 	
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_5.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_6.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 	
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_7.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_8.txt", globals.ADAPTIVE_CPA)	
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_9.txt", globals.ADAPTIVE_CPA)		
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_10.txt", globals.ADAPTIVE_CPA)	
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_11.txt", globals.ADAPTIVE_CPA)	
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_12.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_13.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_14.txt", globals.ADAPTIVE_CPA)	
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_15.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)	
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	printFunctions.printKeyFound(cfg.KEYARRAY)
-
-	#sp = sca.correlation_spearman(alignedData, hypotheticalPowerData)
-	#plottingModule.plotCorr(sp, globals.SPEARMAN)
-	#cfg.KEYARRAY1 = plottingModule.plotHist(sp, globals.SPEARMAN)
-	#an = sca.anova(compressedData, hypotheticalPowerData)
-	#plottingModule.plotCorr(an, globals.ANOVA)	
-	#ac = sca.calculate_autocorrelation(alignedData)
-	#plottingModule.plotCorr(ac, globals.AUTOCORR)
         #m1 = statisticsModule.calculate_mean(alignedData, globals.SAMPLE_WISE)
 	#m2 = statisticsModule.calculate_mean(alignedData, globals.TRACE_WISE)
 	#s1 = statisticsModule.calculate_std(alignedData, globals.SAMPLE_WISE)
@@ -198,5 +194,5 @@ def main():
 if __name__ == "__main__": 
 	start_time=time.time()
         main()		
-	print("Total Execution Time=%s seconds" %(time.time() - start_time))
+	print("\tTotal Execution Time=%s seconds" %(time.time() - start_time))
 	
