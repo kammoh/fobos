@@ -67,6 +67,8 @@ def main():
 	configExtract.extractAnalysisConfigAttributes("compressionParams.txt")
 	compressedData = postProcessingModule.compressData(windowedData)
 	#plottingModule.plotTrace(compressedData, 'ALL', 'OVERLAY')
+	autoCorrelatedData = sca.calculate_autocorrelation(alignedData)
+	plottingModule.plotCorr(autoCorrelatedData, globals.AUTOCORR)
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_0.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)

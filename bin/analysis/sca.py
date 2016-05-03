@@ -200,7 +200,7 @@ def anova(measuredData, modeledData):
 	
 def calculate_autocorrelation(measuredData):
 	printFunctions.printToScreenAndAnalysisLog("Calculating Autocorrelation for Measured data")
-	mData = numpy.transpose(measuredData)
+	mData = measuredData#numpy.transpose(measuredData)
 	corrMatrix = numpy.zeros(0)
 	corrArray =  numpy.zeros(0)
 	firstRun = True	
