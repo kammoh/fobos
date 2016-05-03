@@ -254,25 +254,41 @@ teaching tool.
         \end{itemize}
       \end{block}
 % ---------------------------------------------------------------------------
-      \begin{block}{Top Level Diagram}
+      \begin{block}{Main Components of FOBOS}
         \begin{center}
           \includegraphics[scale=1.5]{../figures/fobos-top}
         \end{center} 
-       \end{block}
+      \end{block}
      
 % ---------------------------------------------------------------------------
       \begin{block}{FOBOS Acquisition}
         \begin{center}
           \includegraphics[scale=1.5]{../figures/fobos-dac}
         \end{center} 
+
+          \begin{itemize}
+            \item FOBOS Acquisition Hardware contains 
+            \begin{itemize}
+              \item VHDL for the \textbf{Control Board} to interface with DUT,
+              \item VHDL-wrapper for the \textbf{DUT board} to instantiate a user provided algorithm, and
+              \item Connector description.
+            \end{itemize}
+            \item FOBOS Acquisition Software is written in Python and 
+            \begin{itemize}
+              \item Controls FOBOS Acquisition Hardware,
+              \item Controls measurement equipment, and
+              \item Stores measurements and setup information.
+            \end{itemize}
+          \end{itemize}
        \end{block}
      
 % ---------------------------------------------------------------------------
       \begin{block}{FOBOS Hardware}
-        \vspace{-2ex}
+        \vspace{-1ex}
         \begin{center}
           \includegraphics[width=0.9\linewidth]{../figures/FOBOS-label}
         \end{center} 
+        \vspace{-1ex}
        \end{block}
      
 % ---------------------------------------------------------------------------
@@ -280,6 +296,12 @@ teaching tool.
         \begin{center}
           \includegraphics[scale=1.5]{../figures/data_acq}
         \end{center} 
+        \begin{itemize}
+          \item Control Board sends Key and Plaintext to the DUT.
+          \item After DUT receives all data, the Control Board generates the trigger.
+          \item The trigger indicates that the cryptographic algorithm has started
+                and initiates capture of data by the oscilloscope.
+        \end{itemize}
        \end{block}
      
 % ---------------------------------------------------------------------------
@@ -313,6 +335,24 @@ teaching tool.
         \begin{center}
           \includegraphics[scale=1.5]{../figures/data_anl}
         \end{center} 
+\begin{enumerate}
+\item Post-Processing Module
+	\begin{itemize}
+	\item Processes the raw data obtained from the oscilloscope to actual voltage values.
+	\item The user can further select a processing step on the measured power data
+	\end{itemize}
+\item SCA Module
+	\begin{itemize}
+	\item User can test his/her own power model using a library of state-of-the art side channel
+		distinguishers.
+	\item Currently our FOBOS prototype supports CPA \& MIA only.
+	\end{itemize}
+\item Statistics Module
+	\begin{itemize}
+	\item User can perform basic and advanced statistics on the measured power data
+	\end{itemize}
+\end{enumerate}
+
        \end{block}
 % ---------------------------------------------------------------------------
        \begin{block}{Signal Alignment}
