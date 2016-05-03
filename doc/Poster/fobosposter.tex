@@ -275,10 +275,10 @@ teaching tool.
 % ---------------------------------------------------------------------------
        \begin{block}{Sample Space Disposition}
         \begin{minipage}[t]{0.49\linewidth}%
-          \includegraphics[width=0.9\linewidth]{../figures/oscilloscope-sample-window}\hspace{-2ex}
+          \includegraphics[width=0.9\linewidth]{../figures/oscilloscope-sample-window}
         \end{minipage}%
         \begin{minipage}[t]{0.49\linewidth}%
-          \vspace{-8cm}% 
+          \vspace{-6cm}% 
           \begin{itemize}
             \item User can select any part of the trace for further analysis.
             \item Reduces computation time.
@@ -301,7 +301,7 @@ SAMPLE_WINDOW = 1000
 		\includegraphics[width=0.9\linewidth]{../figures/oscilloscope-compression-window}
         \end{minipage}%
         \begin{minipage}[t]{0.49\linewidth}%
-          \vspace{-8cm}% 
+          \vspace{-6.5cm}% 
          \begin{itemize}
            \item Compress to MAXimum, MINimum, or MEAN of given sample set.
            \item Further reduces number of points for correlation.
@@ -324,13 +324,17 @@ COMPRESSION_TYPE = MAX
            \includegraphics[width=0.9\linewidth]{../figures/aes128}
          \end{center}
          \begin{itemize}
-		 \item {\small $Power_{guess}$ = HD(SBOX($CT_{i-1}$), SBOX($PT_{i}$ $\oplus$ $Key_{guess}$) )}
+		 \item {\small $PowerGuess_{i, j}$ = HD(SBOX($CT_{i-1}$), SBOX($PT_{i}$ $\oplus$ $KeyGuess_{j}$) )}
 		 \item
          \end{itemize}
 	 \begin{minipage}[t]{0.49\linewidth}
-		 \includegraphics[width=0.80\linewidth]{../figures/oscilloscope-all-4ch} 
+		 %\begin{center}
+			\includegraphics[width=0.80\linewidth]{../figures/oscilloscope-all-4ch} 
+		%\end{center}
+	 
 	 \end{minipage}%
 	 \begin{minipage}[t]{0.49\linewidth}  
+		 \vspace{-6cm}
 		 \begin{itemize}
 		  \item 
 		  \item 
