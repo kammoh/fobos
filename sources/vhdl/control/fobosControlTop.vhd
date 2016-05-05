@@ -1,3 +1,24 @@
+--##################################################################################
+--#                                                                                #
+--#	Copyright 2016 Cryptographic Engineering Research Group (CERG)               #
+--#	George Mason University							                                   #	
+--#   http://cryptography.gmu.edu/fobos                                            #                            
+--#                                                   							        #                             	 
+--#	Licensed under the Apache License, Version 2.0 (the "License");        	     #
+--#	you may not use this file except in compliance with the License.       	     #
+--#	You may obtain a copy of the License at                                	     #
+--#	                                                                       	     #
+--#	    http://www.apache.org/licenses/LICENSE-2.0                         	     #
+--#	                                                                       	     #
+--#	Unless required by applicable law or agreed to in writing, software    	     #
+--#	distributed under the License is distributed on an "AS IS" BASIS,      	     #
+--#	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.     #
+--#	See the License for the specific language governing permissions and          #
+--#	limitations under the License.                                               #
+--#                                                                           	  #
+--##################################################################################
+
+
 library IEEE;
 library UNISIM;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -18,7 +39,7 @@ port (
  -- displayLED : out std_logic_vector(7 downto 0);
   cergbanner : out std_logic_vector(11 downto 0);
   EXTClock : in std_logic;
-  victimClockSelector: in std_logic;
+  dutClockSelector: in std_logic;
   clkseltest : out std_logic;
   -- ADC PORTS
 --  adc_clock : out std_logic;
@@ -63,9 +84,9 @@ signal pwmAccumulator : std_logic_vector(8 downto 0);
 signal dataFromAdc : std_logic_vector(15 downto 0);
 signal counter_adc_select, bram_data_collect_start : std_logic;
 signal ADC_DCM_OK : std_logic;
-signal clktobram, targetModuleReset, resetVictimCommunicationController : std_logic;
-signal generatedClkForVictim, victimClk : std_logic; 
-signal victimDCMLocked : std_logic;
+signal clktobram, targetModuleReset, resetdutCommunicationController : std_logic;
+signal generatedClkFordut, dutClk : std_logic; 
+signal dutDCMLocked : std_logic;
 signal EndPCDataComm, encStart, encEnd, triggerCheck : std_logic;
 signal dlEnb, dlRst, drRst, drEnb, klRst, klEnb : std_logic;
 signal vdlEnb, vdlRst, vklEnb, vklRst, vrRst, vrEnb, cdlEnb, cklEnb, cklRst : std_logic;
@@ -75,8 +96,8 @@ signal dataFromCtrlBrd : std_logic_vector(maxBlockSize-1 downto 0);
 signal dataFromPc, dataToPc : std_logic_vector(7 downto 0);
 -- signal src_read, src_ready, dst_ready, dst_write : std_logic;
 -- signal datain, dataout, 
-signal keyTextToVictim, plainTextToVictim : std_logic_vector(interfaceWidth-1 downto 0);
-signal databusHandle : std_logic; -- data/key to victim selection line
+signal keyTextTodut, plainTextTodut : std_logic_vector(interfaceWidth-1 downto 0);
+signal databusHandle : std_logic; -- data/key to dut selection line
 ------------------------------------------------------------------------
 -- Data Registers Declarations
 ------------------------------------------------------------------------
@@ -84,7 +105,7 @@ signal dataReg0 : std_logic_vector(7 downto 0); -- address 00
 signal dataReg1 : std_logic_vector(7 downto 0); -- address 01
 signal bram_output : std_logic_vector(15 downto 0); -- address 10, 11
 signal mainclockfrequency : std_logic_vector(31 downto 0); -- address 20,21,22,23
-signal victimClockFrequency : std_logic_vector(31 downto 0); -- address 24,25,26,27
+signal dutClockFrequency : std_logic_vector(31 downto 0); -- address 24,25,26,27
 signal adcGain : std_logic_vector(7 downto 0); -- address 60
 signal adcAmp : std_logic_vector(7 downto 0); -- address 61
 signal plainTextForTarget : std_logic_vector(15 downto 0); -- address 73,74
@@ -155,10 +176,10 @@ fpgatohost_data <=  dataReg0 when regEppAdrOut = x"00" else
 		    mainclockfrequency(23 downto 16) when regEppAdrOut = x"21" else			 
 			mainclockfrequency(15 downto 8)  when regEppAdrOut = x"22" else
 		    mainclockfrequency(7 downto 0)   when regEppAdrOut = x"23" else
-			victimClockFrequency(31 downto 24) when regEppAdrOut = x"24" else
-		    victimClockFrequency(23 downto 16) when regEppAdrOut = x"25" else			 
-			victimClockFrequency(15 downto 8)  when regEppAdrOut = x"26" else
-		    victimClockFrequency(7 downto 0)   when regEppAdrOut = x"27" else			
+			dutClockFrequency(31 downto 24) when regEppAdrOut = x"24" else
+		    dutClockFrequency(23 downto 16) when regEppAdrOut = x"25" else			 
+			dutClockFrequency(15 downto 8)  when regEppAdrOut = x"26" else
+		    dutClockFrequency(7 downto 0)   when regEppAdrOut = x"27" else			
 		    ---------------------------------------
 		    controlReg when regEppAdrOut = x"30" else
 		    statusReg  when regEppAdrOut = x"31" else
@@ -372,7 +393,7 @@ klRst <= '1' when controlReg = x"08" else '0';
 klEnb <= '1' when controlReg = x"09" else '0';
 
 EndPCDataComm <= '1' when dataReg1 = x"FF" else '0';
-resetVictimCommunicationController <= '1' when dataReg1 = x"02" else '0';
+resetdutCommunicationController <= '1' when dataReg1 = x"02" else '0';
 --bram_extaddress_reset <= dataReg0(7);
 --bram_extaddress_enable <= dataReg0(6);
 --counter_adc_select <= dataReg0(5);
@@ -381,7 +402,7 @@ resetVictimCommunicationController <= '1' when dataReg1 = x"02" else '0';
 ------------------------------------------------------------------------
 -- Control Signals
 ------------------------------------------------------------------------
-statusReg(0) <= victimDCMLocked;
+statusReg(0) <= dutDCMLocked;
 statusReg(1) <= '0';
 statusReg(2) <= '0';
 statusReg(3) <= '0';
@@ -391,18 +412,18 @@ statusReg(6) <= '0';
 statusReg(7) <= '0';
 
 ------------------------------------------------------------------------
--- Victim Clock Selector
+-- dut Clock Selector
 ------------------------------------------------------------------------
-VictimClockSelectingMux : BUFGMUX generic map (CLK_SEL_TYPE => "SYNC")
+dutClockSelectingMux : BUFGMUX generic map (CLK_SEL_TYPE => "SYNC")
 port map (
-O => victimClk, -- 1-bit Clock MUX output
+O => dutClk, -- 1-bit Clock MUX output
 I0 => EXTClock, -- 1-bit Clock0 input
-I1 => generatedClkForVictim, -- 1-bit Clock1 input
-S => victimClockSelector -- 1-bit Clock select input
+I1 => generatedClkFordut, -- 1-bit Clock1 input
+S => dutClockSelector -- 1-bit Clock select input
 );
 -- E
 
-clkseltest <= victimClockSelector;
+clkseltest <= dutClockSelector;
 
 ------------------------------------------------------------------------
 -- Frequency checkers
@@ -411,9 +432,9 @@ mainclockFreqChecker : frequency_counter generic map (board => board) port map (
 sampleclk => clk, reset => frequency_counter_reset,
 frequency_counter_out => mainclockfrequency);
 
-victimclockFreqChecker : frequency_counter generic map (board => board) port map (refclk => clk,
-sampleclk => victimClk, reset => frequency_counter_reset,
-frequency_counter_out => victimClockFrequency);
+dutclockFreqChecker : frequency_counter generic map (board => board) port map (refclk => clk,
+sampleclk => dutClk, reset => frequency_counter_reset,
+frequency_counter_out => dutClockFrequency);
 
 ------------------------------------------------------------------------
 -- ADC Ports In/Out
@@ -466,16 +487,16 @@ frequency_counter_out => victimClockFrequency);
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
--- Victim Clock Generation
+-- dut Clock Generation
 ------------------------------------------------------------------------
-victimClockGeneration : victimDCM  generic map (board => board)
-   port map ( clkin => clk,   rst => system_reset, clkout => generatedClkForVictim,
-          locked_out  => victimDCMLocked);
+dutClockGeneration : dutDCM  generic map (board => board)
+   port map ( clkin => clk,   rst => system_reset, clkout => generatedClkFordut,
+          locked_out  => dutDCMLocked);
 			 
 ------------------------------------------------------------------------
 -- Trigger Generation for Oscilloscope
 ------------------------------------------------------------------------			 
-triggerGen : trigger_module port map (clock => victimClk, reset => system_reset, startOfEncryption => encStart, 
+triggerGen : trigger_module port map (clock => dutClk, reset => system_reset, startOfEncryption => encStart, 
 triggerLength => triggerLength, noOfTriggerWaitCycles => noOfTriggerWaitCycles, trigger_out => triggerCheck); 
 
 --------------------------------------------------------------------------
@@ -494,34 +515,34 @@ sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc);
 --
 --
 ------------------------------------------------------------------------
--------- SHIFT REGISTERS FOR CONTROL BOARD TO VICTIM BOARD AND VICE-VERSA
+-------- SHIFT REGISTERS FOR CONTROL BOARD TO dut BOARD AND VICE-VERSA
 ----------------------------------------------------------------------------
 --
 --dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
 
 
-ControlVictimCommunication: victimCommunicationHandler port map(
-clock => victimClk, start => EndPCDataComm, reset => resetVictimCommunicationController, targetClock => victimCLk, databusHandle => databusHandle, src_read  => src_read, dst_write => dst_write, vdlRst => vdlRst, vdlEnb => vdlEnb, vklRst => vklRst, vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready, stateMachineStatus => stateMachineLeds, encStart => encStart);
+ControldutCommunication: dutCommunicationHandler port map(
+clock => dutClk, start => EndPCDataComm, reset => resetdutCommunicationController, targetClock => dutCLk, databusHandle => databusHandle, src_read  => src_read, dst_write => dst_write, vdlRst => vdlRst, vdlEnb => vdlEnb, vklRst => vklRst, vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready, stateMachineStatus => stateMachineLeds, encStart => encStart);
 --
-controlBoardToVictimDataShiftreg : shiftregDataToVictim generic map( interfaceSize => interfaceWidth,
-		dataSize => maxBlockSize) port map (clock => victimClk, load =>vdlRst,
-sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => plainTextToVictim);
+controlBoardTodutDataShiftreg : shiftregDataTodut generic map( interfaceSize => interfaceWidth,
+		dataSize => maxBlockSize) port map (clock => dutClk, load =>vdlRst,
+sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => plainTextTodut);
 --
-controlBoardToVictimKeyShiftreg : shiftregDataToVictim generic map( interfaceSize => interfaceWidth,
-		dataSize => maxBlockSize) port map(clock => victimClk, load =>vklRst,
-sr_e => vklEnb, sr_input => keyToCtrlBrd, sr_output => keyTextToVictim);
+controlBoardTodutKeyShiftreg : shiftregDataTodut generic map( interfaceSize => interfaceWidth,
+		dataSize => maxBlockSize) port map(clock => dutClk, load =>vklRst,
+sr_e => vklEnb, sr_input => keyToCtrlBrd, sr_output => keyTextTodut);
 
-datain <= plainTextToVictim when databusHandle = '1' else keyTextToVictim;
+datain <= plainTextTodut when databusHandle = '1' else keyTextTodut;
 --
-victimToControlBoardShiftReg : shiftregDataFromVictim generic map( interfaceSize => interfaceWidth,
-		dataSize => maxBlockSize) port map(clock => victimClk, reset =>vrRst,
+dutToControlBoardShiftReg : shiftregDataFromdut generic map( interfaceSize => interfaceWidth,
+		dataSize => maxBlockSize) port map(clock => dutClk, reset =>vrRst,
 sr_e => vrEnb, sr_input => dataout, sr_output => dataFromCtrlBrd);
 
 --------------------------------------------------------------------------
------ FOR TESTING PURPOSE VICTIM IS IMPLEMENTED HERE -- PLEASE DELETE IT
+----- FOR TESTING PURPOSE dut IS IMPLEMENTED HERE -- PLEASE DELETE IT
 --------------------------------------------------------------------------
 
--- victimDeclaration : victimTopLevel port map( clock => victimClk, reset => not EndPCDataComm,
+-- dutDeclaration : dutTopLevel port map( clock => dutClk, reset => not EndPCDataComm,
 -- src_ready => src_ready, dst_ready => dst_ready, datain => dataout, 
 -- src_read => src_read, dst_write => dst_write, dataout => datain, stateMachineStatus => stateMachineLedsTarget);
 
@@ -535,8 +556,8 @@ sr_e => vrEnb, sr_input => dataout, sr_output => dataFromCtrlBrd);
 --			  stateMachineLeds when displayReg = x"03" else
 --			  plainTextForTarget(15 downto 8) when displayReg = x"04" else
 --			  plainTextForTarget(7 downto 0) when displayReg = x"05" else
---			  "0000" & keyTextToVictim(3 downto 0) when displayReg = x"06" else
---			  "0000" & plainTextToVictim(3 downto 0) when displayReg = x"07" else
+--			  "0000" & keyTextTodut(3 downto 0) when displayReg = x"06" else
+--			  "0000" & plainTextTodut(3 downto 0) when displayReg = x"07" else
 --			  "0000" & dataout(3 downto 0) when displayReg = x"08" else
 --			  "0000" & datain(3 downto 0) when displayReg = x"09" else
 --			  commandToTargetControl when displayReg = x"0A" else
@@ -545,7 +566,7 @@ sr_e => vrEnb, sr_input => dataout, sr_output => dataFromCtrlBrd);
 --			  displayReg;
 
 trigger <= triggerCheck;			  
-DUTClock <= not victimClk;
+DUTClock <= not dutClk;
 reset <= not EndPCDataComm;
 
 end Behavioral;
