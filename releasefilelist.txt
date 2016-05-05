@@ -1,4 +1,5 @@
 # use with tar czvf fobos-0.1.tgz -T releasefilelist.txt
+./fobos/LICENSE.txt
 ./fobos/bin/dataAcquisition.py
 ./fobos/bin/dataAnalysis.py
 
