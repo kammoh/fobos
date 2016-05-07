@@ -57,7 +57,7 @@ KEY_SIZE = 16 # In Bytes
 # =============================================
 # =============================================
 DUMMY_RUN = NO  #YES/NO
-NUMBER_OF_TRACES = 10
+NUMBER_OF_TRACES = 2000
 
 # =============================================
 # =============================================
@@ -77,7 +77,7 @@ CHANNEL1_RANGE = 0.12V
 CHANNEL2_RANGE = 6V
 CHANNEL3_RANGE = OFF # ON|OFF|voltage range
 CHANNEL4_RANGE = OFF # ON|OFF|voltage range
-TIME_RANGE = 0.000021
+TIME_RANGE = 0.000020
 TIMEBASE_REF = LEFT    
 # TRIGGER OPTIONS
 TRIGGER_SOURCE =  CHANNEL2

@@ -55,7 +55,7 @@ def main():
 	#plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 200750, 204750)
 	configExtract.extractAnalysisConfigAttributes("signalAlignmentParams.txt")
 	alignedData = signalAnalysisModule.getAlignedMeasuredPowerData() # Aligned Power traces with respect to trigger
-	#plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')	
+	plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')	
 	#sampleVarTimeWise = statisticsModule.calculate_std(alignedData, globals.TRACE_WISE) 	
 	#support.wait()
 	#configExtract.extractAnalysisConfigAttributes("traceExpungeParams.txt")
@@ -67,15 +67,15 @@ def main():
 	configExtract.extractAnalysisConfigAttributes("compressionParams.txt")
 	compressedData = postProcessingModule.compressData(windowedData)
 	#plottingModule.plotTrace(compressedData, 'ALL', 'OVERLAY')
-	autoCorrelatedData = sca.calculate_autocorrelation(alignedData)
-	plottingModule.plotCorr(autoCorrelatedData, globals.AUTOCORR)
+	#autoCorrelatedData = sca.calculate_autocorrelation(alignedData)
+	#plottingModule.plotCorr(autoCorrelatedData, globals.AUTOCORR)
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_0.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-	#50 is the factor in the plot
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,20,cfg.KEYARRAY[cfg.KEY_INDEX])
+	#50 is the factor(major bins increment values) in the plot
         #either use cfg.KEYARRAY[cfg.KEY_INDEX] or cfg.EXPECTED_KEY[cfg.KEY_INDEX]
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_1.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
