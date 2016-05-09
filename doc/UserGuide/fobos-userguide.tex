@@ -1,0 +1,351 @@
+\documentclass[letterpaper,10pt]{book}
+\usepackage{cergtheme}
+\usepackage{afterpage}
+\usepackage{amsmath,amssymb,latexsym,amsthm,amsfonts}
+\usepackage[utf8]{inputenc}
+\usepackage[table,svgnames,dvipsnames]{xcolor}%for coloring the cells and rows
+%\usepackage{multirow}
+\usepackage{fancyvrb}
+\usepackage{verbatim}
+\usepackage{tcolorbox}
+
+\usepackage{graphicx,rotating}
+\usepackage{enumerate}%enumerating with roman, alpha etc.
+\usepackage{array,multirow}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{color}
+%\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}%adding file as fgiures
+%\usepackage{longtable}% for long tables spanning across multiple pages
+\usepackage{setspace}% for setting the line spacing
+\usepackage{datetime}
+\onehalfspacing
+\usepackage{amsmath}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{fullpage}%Using the full page
+\usepackage{capt-of}%enables using caption without use of figure or table environment
+\usepackage[pdftitle=FOBOS-CERG,pdfauthor=Panasayya Yalla,pdffitwindow=true, pdfcreator=Panasayya Yalla,
+            pdfsubject=SideChannel\ Power Analysis\ ,pdfkeywords={Side Channel, Cryptography, Power Analysis, DPA},
+            colorlinks=false]{hyperref}%For linking tables and figures in the document.
+
+%\usepackage[usenames,dvipsnames]{xcolor}
+%opening
+\renewcommand\familydefault{\rmdefault}
+%%%%%setting for table boaders%%%%%
+\setlength{\arrayrulewidth}{0.5mm}
+\setlength{\tabcolsep}{18pt}
+\renewcommand{\arraystretch}{1.0}% for streching the tables
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{glossaries}
+%\makeglossaries
+\makeglossaries
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% redefine \VerbatimInput
+\RecustomVerbatimCommand{\VerbatimInput}{VerbatimInput}%
+{fontsize=\footnotesize,
+	%
+	frame=lines,  % top and bottom rule only
+	framesep=2em, % separation between frame and text
+	rulecolor=\color{Gray},
+	%
+	%label=\fbox{\color{Black}data.txt},
+	%labelposition=topline,
+	%
+	commandchars=\|\(\), % escape character and argument delimiters for
+	% commands within the verbatim
+	commentchar=*        % comment character
+}
+
+
+
+
+
+%%%%%%%%SETTING THE TITLE PAGE%%%%%%%%%%%%%%5
+\usepackage{pdfcolmk}
+%\pdftitle={Interface-CERG}
+%\usepackage[svgnames]{xcolor}
+
+%%%%%%%%%%%%%%%%%%Drawing folder structure
+\usepackage{tikz}
+\usetikzlibrary{trees}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------------------------------
+%   TITLE PAGE
+%----------------------------------------------------------------------------------------
+\newlength{\drop} % Command for generating a specific amount of whitespace
+\newcommand*{\titleAT}
+    {
+    \begingroup % Create the command for including the title page in the document
+    \centering % Center all text
+    \drop=0.1\textheight % Define the command as 10% of the total text height
+    \rule{\textwidth}{1pt}\par % Thick horizontal line
+    \vspace{2pt}\vspace{-\baselineskip} % Whitespace between lines
+    \rule{\textwidth}{0.4pt}\par % Thin horizontal line
+    \vspace{0.25\drop} % Whitespace between the top lines and title
+    
+        \textcolor{black}
+	{
+            { \Huge \textbf{Flexible Opensource BOard }}\\
+	    { \Huge \textbf{for}}\\
+	    { \Huge \textbf{Side-channel analysis}}
+    }    \\ 
+        \drop=0.1\textheight % Define the command as 10% of the total text height
+	\rule{\textwidth}{1pt}\par % Thick horizontal line
+	\vspace{2pt}\vspace{-\baselineskip} % Whitespace between lines
+	\rule{\textwidth}{0.4pt}\par % Thin horizontal line
+	\vspace{0.25\drop} % Whitespace between the top lines and title
+	{ \Large \textit{FOBOS User Guide $v1.0$}}\\
+        %\title{FOBOS: A Prototype for Conducting Side-channel Evaluations on FPGAs}}\\[0.5\baselineskip] % Title line 1
+        %\vspace{0.25\drop} % Whitespace between the title and short horizontal line
+        %\rule{0.5\textwidth}{2.5pt}\par% Short horizontal line under the title
+        %{\Huge{FOBOS Version 1.0}}\par
+        \vspace{\drop} % Whitespace between the thin horizontal line and the author name
+        {\Large \textsc{Rajesh Velegalati, Panasayya Yalla \\ \& \\ Jens-Peter Kaps}}\\
+        {\urlstyle{same}
+		\nolinkurl{{rvelegal, pyalla, jkaps}'at'gmu.edu}} \par
+            %{Email:\href{mailto:pyalla@gmu.edu}{pyalla@gmu.edu}}\par % Author name
+        \vfill % Whitespace between the author name and publisher text
+        %{\large \textcolor{Red}{\plogo}}\\[0.5\baselineskip] % Publisher logo
+        {\large \textsc{George Mason University\\ Fairfax, Virginia}}\par % Publisher
+                {\large \textit{ \today }}\par% Current date
+        %{\large \textit{ October 15$^{th}$, 2015 }}\par% specific date
+        %\vspace*{\drop} % Whitespace under the publisher text
+
+        \begin{minipage}{\textwidth}
+              \begin{minipage}[!t]{0.30\textwidth}
+                \begin{center}
+                     \vspace{1ex}
+                    \includegraphics[scale=0.35]{./themefigs/CERG-logo-sm.png}
+                     % CERG-logo-sm.png: 200x150 pixel, 72dpi, 7.05x5.29 cm, bb=0 0 200 150
+                \end{center}
+            \end{minipage}
+            \begin{minipage}[!t]{0.39\textwidth}
+                 \hspace{3ex}
+            \end{minipage}
+            \begin{minipage}[!t]{0.30\textwidth}
+		\begin{center}    
+			\includegraphics[scale=.50]{./themefigs/Mason-logo.png}
+		\end{center}
+            \end{minipage}
+        \end{minipage}
+        \rule{\textwidth}{0.4pt}\par % Thin horizontal line
+        \vspace{2pt}\vspace{-\baselineskip} % Whitespace between lines
+        \rule{\textwidth}{1pt}\par
+        \begin{minipage}{\textwidth}
+              \begin{minipage}[!t]{0.30\textwidth}
+                \begin{center}
+                     \vspace{1ex}
+                    \href{https://cryptography.gmu.edu/}{www.cryptography.gmu.edu} % Thick horizontal line
+                     % CERG-logo-sm.png: 200x150 pixel, 72dpi, 7.05x5.29 cm, bb=0 0 200 150
+                \end{center}
+            \end{minipage}
+            \begin{minipage}[!t]{0.39\textwidth}
+                 \hspace{3ex}
+            \end{minipage}
+            \begin{minipage}[!t]{0.30\textwidth}
+		    \centering
+                    \href{https://www.gmu.edu/}{www.gmu.edu} % Thick horizontal line
+            \end{minipage}
+        \end{minipage}
+        %\href{http://cryptography.gmu.edu}{http://cryptography.gmu.edu} % Thick horizontal line
+    \endgroup
+    \clearpage
+    \newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+    }
+    
+    
+    \newcommand*{\titleATa}
+        {
+        \begingroup % Create the command for including the title page in the document
+        \centering % Center all text
+        \drop=0.1\textheight % Define the command as 10% of the total text height
+        \rule{\textwidth}{1pt}\par % Thick horizontal line
+        \vspace{2pt}\vspace{-\baselineskip} % Whitespace between lines
+        \rule{\textwidth}{0.4pt}\par % Thin horizontal line
+        \vspace{0.25\drop} % Whitespace between the top lines and title
+        
+            \textcolor{black}
+    	{
+                { \Huge \textbf{Flexible Opensource BOard }}\\
+    	    { \Huge \textbf{for}}\\
+    	    { \Huge \textbf{Side-channel analysis}}
+        }    \\ 
+            \drop=0.1\textheight % Define the command as 10% of the total text height
+    	\rule{\textwidth}{1pt}\par % Thick horizontal line
+    	\vspace{2pt}\vspace{-\baselineskip} % Whitespace between lines
+    	\rule{\textwidth}{0.4pt}\par % Thin horizontal line
+    	\vspace{0.25\drop} % Whitespace between the top lines and title
+    	{ \Large \textit{FOBOS Reference Manual $v1.0$}}\\
+            %\title{FOBOS: A Prototype for Conducting Side-channel Evaluations on FPGAs}}\\[0.5\baselineskip] % Title line 1
+            %\vspace{0.25\drop} % Whitespace between the title and short horizontal line
+            %\rule{0.5\textwidth}{2.5pt}\par% Short horizontal line under the title
+            %{\Huge{FOBOS Version 1.0}}\par
+            \vspace{\drop} % Whitespace between the thin horizontal line and the author name
+            {\Large \textsc{Rajesh Velegalati, Panasayya Yalla \\ \& \\ Jens-Peter Kaps}}\\
+            {\urlstyle{same}
+    		\nolinkurl{{rvelegal, pyalla, jkaps}'at'gmu.edu}} \par
+                %{Email:\href{mailto:pyalla@gmu.edu}{pyalla@gmu.edu}}\par % Author name
+            \vfill % Whitespace between the author name and publisher text
+            %{\large \textcolor{Red}{\plogo}}\\[0.5\baselineskip] % Publisher logo
+            {\large \textsc{George Mason University\\ Fairfax, Virginia}}\par % Publisher
+                    {\large \textit{ \today }}\par% Current date
+            %{\large \textit{ October 15$^{th}$, 2015 }}\par% specific date
+            %\vspace*{\drop} % Whitespace under the publisher text
+    
+            \begin{minipage}{\textwidth}
+                  \begin{minipage}[!t]{0.30\textwidth}
+                    \begin{center}
+                         \vspace{1ex}
+                        \includegraphics[scale=0.35]{./themefigs/CERG-logo-sm.png}
+                         % CERG-logo-sm.png: 200x150 pixel, 72dpi, 7.05x5.29 cm, bb=0 0 200 150
+                    \end{center}
+                \end{minipage}
+                \begin{minipage}[!t]{0.39\textwidth}
+                     \hspace{3ex}
+                \end{minipage}
+                \begin{minipage}[!t]{0.30\textwidth}
+    		\begin{center}    
+    			\includegraphics[scale=.50]{./themefigs/Mason-logo.png}
+    		\end{center}
+                \end{minipage}
+            \end{minipage}
+            \rule{\textwidth}{0.4pt}\par % Thin horizontal line
+            \vspace{2pt}\vspace{-\baselineskip} % Whitespace between lines
+            \rule{\textwidth}{1pt}\par
+            \begin{minipage}{\textwidth}
+                  \begin{minipage}[!t]{0.30\textwidth}
+                    \begin{center}
+                         \vspace{1ex}
+                        \href{https://cryptography.gmu.edu/}{www.cryptography.gmu.edu} % Thick horizontal line
+                         % CERG-logo-sm.png: 200x150 pixel, 72dpi, 7.05x5.29 cm, bb=0 0 200 150
+                    \end{center}
+                \end{minipage}
+                \begin{minipage}[!t]{0.39\textwidth}
+                     \hspace{3ex}
+                \end{minipage}
+                \begin{minipage}[!t]{0.30\textwidth}
+    		    \centering
+                        \href{https://www.gmu.edu/}{www.gmu.edu} % Thick horizontal line
+                \end{minipage}
+            \end{minipage}
+            %\href{http://cryptography.gmu.edu}{http://cryptography.gmu.edu} % Thick horizontal line
+        \endgroup
+        \clearpage
+        \newcommand\blankpage{%
+        \null
+        \thispagestyle{empty}%
+        \addtocounter{page}{-1}%
+        \newpage}
+        }
+%\title{\Large{\textbf{Interface for Lightweight Implementations of \\Authenticated Cipher}}}
+%\author{Panasayya Yalla \\ George Mason University}
+%\date{}
+
+%----------------------------------------------------------------------------------------
+%   END OF TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%   GLOSSARY 
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%   END OF GLOSSARY
+%------------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------
+%   START OF DOCUMENT
+%----------------------------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------
+%   Title Page
+%----------------------------------------------------------------------------------------
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\pagenumbering{alph}
+    %\maketitle
+ { %\pagenumbering{gobble}
+\thispagestyle{empty}
+\titleAT % This command includes the title page
+ \clearpage
+ }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\pagenumbering{roman}
+{\tableofcontents
+%\clearpage
+%\begin{appendix}
+ \listoffigures
+ \listoftables
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+ %PRINTING GLOSSARIES
+ \input{gls.tex}
+ \printglossaries
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+  
+%\end{appendix}
+}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newglossaryentry{pdi}{name=pdi, description={Coordinated Universal Time}}
+%\newglossaryentry{adt}{name=ADT, description={Atlantic Daylight Time}}
+%\newglossaryentry{est}{name=EST, description={Eastern Standard Time}}
+%\printglossaries
+%\clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\startofchapters
+%\pagestyle{plain}
+\include{sca}
+\include{fobos-overview}
+\include{fobos-acquisition}
+\include{fobos-analysis}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\pagenumbering{alph}
+    %\maketitle
+ { %\pagenumbering{gobble}
+\thispagestyle{empty}
+\titleATa % This command includes the title page
+ \clearpage
+ }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\pagenumbering{roman}
+{\tableofcontents
+%\clearpage
+%\begin{appendix}
+ \listoffigures
+ \listoftables
+ \input{gls.tex}
+ \printglossaries
+ 
+%\end{appendix}
+}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newglossaryentry{pdi}{name=pdi, description={Coordinated Universal Time}}
+%\newglossaryentry{adt}{name=ADT, description={Atlantic Daylight Time}}
+%\newglossaryentry{est}{name=EST, description={Eastern Standard Time}}
+%\printglossaries
+%\clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\startofchapters
+%\pagestyle{plain}
+%\include{sca}
+\include{fobos-overview}
+\include{fobos-acquisition}
+\include{fobos-analysis}
+
+ 
+
+\end{document}
