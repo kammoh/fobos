@@ -161,6 +161,13 @@ def extractConfigAttributes():
 		if re.match('^DUMMY_RUN', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['DUMMY_RUN'] = value[1].strip(" ")
+		if re.match('^TRIGGER_THRESHOLD', object) :			
+			value = re.split("=", object)
+			cfg.config_attributes['TRIGGER_THRESHOLD'] = float(value[1].strip(" "))			
+		if re.match('^CAPTURE_MODE', object) :
+			value = re.split("=", object)
+			cfg.config_attributes['CAPTURE_MODE'] = value[1].strip(" ")
+
 			
 def updatePowerAndTriggerFileNames():
 	powerFileExistsFlag = False
@@ -253,12 +260,6 @@ def extractAnalysisConfigAttributes(CONFIG_FILE):
 		if re.match('^SAMPLE_WINDOW_START', object) :
 			value = re.split("=", object)
 			cfg.analysisConfigAttributes['WINDOW_START_POINT'] = int(value[1].strip(" "))
-		if re.match('^TRIGGER_THRESHOLD', object) :			
-			value = re.split("=", object)
-			cfg.analysisConfigAttributes['TRIGGER_THRESHOLD'] = float(value[1].strip(" "))			
-		if re.match('^CAPTURE_MODE', object) :
-			value = re.split("=", object)
-			cfg.analysisConfigAttributes['CAPTURE_MODE'] = value[1].strip(" ")
 		if re.match('^COMPRESSION_LENGTH', object) :
 			value = re.split("=", object)
 			cfg.analysisConfigAttributes['COMPRESSION_LENGTH'] = int(value[1].strip(" "))

@@ -59,6 +59,13 @@ KEY_SIZE = 16 # In Bytes
 DUMMY_RUN = NO  #YES/NO
 NUMBER_OF_TRACES = 2000
 
+
+####################################################
+######## Signal Alignment Module Parameters ########
+####################################################
+CAPTURE_MODE = SINGLE # MULTI|SINGLE
+TRIGGER_THRESHOLD = 1.0
+
 # =============================================
 # =============================================
 # FOBOS Oscilloscope Settings
