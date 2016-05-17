@@ -1,0 +1,45 @@
+\chapter{Side Channel Analysis}
+\section{Introduction}% to Side-Channel Analysis}
+Recent years have seen a dramatic increase of market adoption and utility of so called "smart" devices
+by people from all walks of life. These devices play a central role in how people are entertained, communicate,
+network, work, bank and shop. Yet for every positive outcome from these devices, there is often a corollary risk.
+For example, let us consider a smart phone. On one hand, there are billions of applications which provide 
+unprecedented ease of access to a plethora of applications or simply termed \emph{apps} to meet any user requirements. 
+On the other hands, they are also are providing a fertile environment for the distribution of hostile apps or malware.
+Also, the increased power of these smart phones makes them more suitable for a host of business purposes, which can also result
+in the exposure and compromise of corporate data and systems. Finally, the very portability of mobile devices means that
+they are highly susceptible to loss and theft. Thus there is great need in protecting information accessed by these devices
+and this information is usually secured using cryptographic algorithms. 
+
+According to Kerchoff's Law (or Shannon's Maxim)~\cite{klaws}, \newline
+\parbox[c]{\textwidth}{\textit{a cryptosystem's security must be solely based on the 
+		secret key even if everything about the underlying encryption algorithm is public knowledge.}} 
+However, physical implementations in hardware as well as in software 
+of such encryption algorithms have been shown to
+leak secret information in the form of so called side-channels
+and also during sudden change in operational characteristics of the crypto-device 
+i.e. via \emph{Fault Injection}. The side-channel leakage could be in the 
+form of power consumption~\cite{694}, electro magnetic radiation~\cite{811} or timing~\cite{694} 
+of the device. The side-channels leak sensitive information whenever the device performs an 
+operation using the secret data. Attacks which make use of such inhAnalysiserent physical leakage are called 
+side-channel attacks \Gls{SCA}. \Gls{SCA} is a new research area of applied cryptanalysis that has
+gained popularity since mid nineties. The research in this area shows that \Gls{SCA} pose a major 
+threat because the physical implementations of the cryptographic
+devices are difficult to control and often result in unintended leakage of information.
+Generally, all hardware implementations of cryptographic algorithms are assumed to be vulnerable to side 
+channel cryptanalysis, if there are no special precautions in the implementation.
+
+\section{Power Analysis}
+   \subsection{Simple Power Analysis (SPA)}
+   \subsection{Differential/Correlation Power Analysis (DPA/CPA)}
+       \subsubsection{Difference of Means}
+        \subsubsection{Spearman Rank Coefficient}
+        \subsubsection{Pearson's r}
+      
+   \subsection{Power Model}
+%      \begin{itemize}
+     \subsubsection{Hamming Distance (HD)}
+     Hamming Distance \Gls{HD}
+      \subsubsection{Hamming Weight (HW)}
+      Hamming Weight \Gls{HW}
+ %     \end{itemize}

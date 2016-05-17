@@ -1,0 +1,71 @@
+##################################################################################
+#                                                                                #
+#   Copyright 2016 Cryptographic Engineering Research Group (CERG)               #
+#   George Mason University                                                      #   
+#   http://cryptography.gmu.edu/fobos                                            #                            
+#                                                                                #                               
+#   Licensed under the Apache License, Version 2.0 (the "License");              #
+#   you may not use this file except in compliance with the License.             #
+#   You may obtain a copy of the License at                                      #
+#                                                                                #
+#       http://www.apache.org/licenses/LICENSE-2.0                               #
+#                                                                                #
+#   Unless required by applicable law or agreed to in writing, software          #
+#   distributed under the License is distributed on an "AS IS" BASIS,            #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.     #
+#   See the License for the specific language governing permissions and          #
+#   limitations under the License.                                               #
+#                                                                                
+##################################################################################
+#########################################################
+### SPARTAN-3E STARTER KIT BOARD DUT CONSTRAINTS FILE ###
+#########################################################
+
+# ==== FX2 Connector (FX2) ====
+# ==================== Data in from Control ===================================
+
+NET "datain<15>"   LOC = "B15" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;    
+NET "datain<14>"   LOC = "A15" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<13>"   LOC = "C12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
+NET "datain<12>"   LOC = "D12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<11>"   LOC = "B16" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<10>"   LOC = "A16" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<9>"    LOC = "D14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<8>"    LOC = "C14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<7>"    LOC = "B14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<6>"    LOC = "A14" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<5>"    LOC = "B13" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<4>"    LOC = "A13" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<3>"    LOC = "F12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<2>"    LOC = "E12" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "datain<1>"    LOC = "E11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "datain<0>"    LOC = "F11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+
+# ===================== Data out to Control  =================================== 
+NET "dataout<0>"   LOC = "C11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<1>"   LOC = "D11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<2>"   LOC = "E9"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<3>"   LOC = "F9"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<4>"   LOC = "E8"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<5>"   LOC = "F8"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<6>"   LOC = "C7"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "dataout<7>"   LOC = "D7"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<8>"   LOC = "F7"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<9>"   LOC = "E7"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<10>"  LOC = "B6"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<11>"  LOC = "A6"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<12>"  LOC = "C5"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<13>"  LOC = "D5"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<14>"  LOC = "A4"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "dataout<15>"  LOC = "B4"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;   
+
+# ===================== CONTROL SIGNALS =========================================
+NET "src_ready" LOC = "C4"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
+NET "src_read"  LOC = "E13" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;  
+NET "dst_ready" LOC = "C15" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+NET "dst_write" LOC = "C3"  | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ;
+NET "reset"       LOC = "B11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+#NET "trigger"   LOC = "A11" | IOSTANDARD = LVCMOS33 | SLEW = FAST | DRIVE = 8 ; 
+
+# ======================== CLOCK SIGNAL ==================================================================
+NET "clock"       LOC = "E10"; # Clock

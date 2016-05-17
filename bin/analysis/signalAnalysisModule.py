@@ -150,11 +150,11 @@ def adjustSampleSize(sampleLength, dataArray):
 			
 
 def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
-	if(cfg.analysisConfigAttributes['CAPTURE_MODE'] == "" or cfg.analysisConfigAttributes['TRIGGER_THRESHOLD'] == ""):
+	if(cfg.config_attributes['CAPTURE_MODE'] == "" or cfg.config_attributes['TRIGGER_THRESHOLD'] == ""):
 		sys.stdout.write("\tSignal Alignment parameters not found.\n\tPlease load the parameter values before calling Signal Alignment routine")
 		sys.exit(1)
 		
-	if(cfg.analysisConfigAttributes['CAPTURE_MODE'] == 'MULTI'):
+	if(cfg.config_attributes['CAPTURE_MODE'] == 'MULTI'):
 		alignedData = numpy.zeros(0)
 		singleTraceFlag = False
 		temp = totalMeasuredTriggerData.shape
@@ -178,7 +178,7 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 			tempArray = numpy.zeros(0)
 			triggerCount = 0
 			for sampleNo in range(0, len(measuredTriggerData)):
-				if(measuredTriggerData[sampleNo] > cfg.analysisConfigAttributes['TRIGGER_THRESHOLD']):
+				if(measuredTriggerData[sampleNo] > cfg.config_attributes['TRIGGER_THRESHOLD']):
 					firstTriggerHigh = True
 					if(firstTriggerSampleHigh == True):
 						if (triggerCount == 0):
@@ -200,14 +200,14 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 						#print triggerCount	
 					tempArray = numpy.append(tempArray, measuredPowerData[sampleNo])
 					
-				elif(measuredTriggerData[sampleNo] < cfg.analysisConfigAttributes['TRIGGER_THRESHOLD']  and firstTriggerHigh == True):
+				elif(measuredTriggerData[sampleNo] < cfg.config_attributes['TRIGGER_THRESHOLD']  and firstTriggerHigh == True):
 					
 					firstTriggerSampleHigh = True
 					tempArray = numpy.append(tempArray, measuredPowerData[sampleNo])
 			alignedData = numpy.vstack((alignedData,adjustSampleSize(traceLength,tempArray)))
 		return (alignedData)	
 	
-	elif(cfg.analysisConfigAttributes['CAPTURE_MODE'] == 'SINGLE'):
+	elif(cfg.config_attributes['CAPTURE_MODE'] == 'SINGLE'):
 		alignedData = numpy.zeros(0)
 		singleTraceFlag = False
 		temp = totalMeasuredTriggerData.shape
@@ -217,7 +217,8 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 			singleTraceFlag = True
 		traceLength = 0
 		for traceSet in range(0, totalNumOfTraceSets):
-			print "\n\nProcessing Trace Set number: " + str(traceSet)
+			if(cfg.PROGRAM_CALL == "analysis"):
+				printFunctions.printToScreenAndAnalysisLog("\n\nProcessing Trace Set number: " + str(traceSet))
 			if(singleTraceFlag == True):
 				measuredPowerData = totalMeasuredPowerData
 				measuredTriggerData = totalMeasuredTriggerData
@@ -233,7 +234,7 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 			sampleLength = 0
 			triggerSampleCount = 0
 			for sampleNo in range(0, len(measuredTriggerData)):
-				if(measuredTriggerData[sampleNo] > cfg.analysisConfigAttributes['TRIGGER_THRESHOLD'] and firstTriggerHigh == False):
+				if(measuredTriggerData[sampleNo] > cfg.config_attributes['TRIGGER_THRESHOLD'] and firstTriggerHigh == False):
 					firstTriggerHigh = True
 					if (traceSet == 0):
 						tempArray = measuredPowerData[sampleNo:]
@@ -254,6 +255,12 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 
 def readRawTraces():
 	printFunctions.printToScreenAndAnalysisLog("Loading Power and Trigger Data ..")
+	if (os.path.isfile(cfg.RAW_UNALIGNED_POWER_FILE) != True):
+		printFunctions.printToScreenAndAnalysisLog("Power measurement file does not exist ..")
+		sys.exit(1)
+	if (os.path.isfile(cfg.RAW_UNALIGNED_TRIGGER_FILE) != True):
+		printFunctions.printToScreenAndAnalysisLog("Trigger measurement file does not exist ..")
+		sys.exit(1)
 	measurementFile = open(cfg.RAW_UNALIGNED_POWER_FILE, 'r')
 	triggerFile = open(cfg.RAW_UNALIGNED_TRIGGER_FILE, 'r')
 	for traceCount in range (0, cfg.config_attributes['NUMBER_OF_TRACES']):
@@ -266,14 +273,26 @@ def readRawTraces():
 			cfg.RAW_POWER_DATA  = numpy.vstack((cfg.RAW_POWER_DATA,tempArrayMeasurement))
 			cfg.RAW_TRIGGER_DATA  = numpy.vstack((cfg.RAW_TRIGGER_DATA,tempArrayTrigger))
 	printFunctions.printToScreenAndAnalysisLog("..DONE")		
-		
+
+def readAlignedDataFromFile():
+	printFunctions.printToScreenAndAnalysisLog("Loading Aligned Data ..")
+	measurementFile = open(cfg.ALIGNED_DATA_FILE, 'r')
+	for traceCount in range (0, cfg.config_attributes['NUMBER_OF_TRACES']):
+		tempArrayMeasurement = numpy.load(measurementFile)
+		if (traceCount == 0):
+			cfg.RAW_POWER_DATA  = tempArrayMeasurement
+		elif (traceCount > 0):
+			cfg.RAW_POWER_DATA  = numpy.vstack((cfg.RAW_POWER_DATA,tempArrayMeasurement))
+	printFunctions.printToScreenAndAnalysisLog("..DONE")	
+	return (cfg.RAW_POWER_DATA)
 	
 def getAlignedMeasuredPowerData():
 	printFunctions.printToScreenAndAnalysisLog("Starting signal alignment routine")
 	if (os.path.isfile(cfg.ALIGNED_DATA_FILE) == True):
-		printFunctions.printToScreenAndAnalysisLog("\tFound aligned power signal data set. Loading the data set")
+		printFunctions.printToScreenAndAnalysisLog("\tFound  raw aligned power signal data set. Loading the data set")
 		printFunctions.printToAnalysisLog("\tDataSet - " +cfg.ALIGNED_DATA_FILE)
-		alignedData = numpy.load(cfg.ALIGNED_DATA_FILE)
+		#alignedData = numpy.load(cfg.ALIGNED_DATA_FILE)
+		alignedData = readAlignedDataFromFile()
 		return (alignedData)
 	else:
 		printFunctions.printToScreenAndAnalysisLog("\tNo aligned power signal data set found. Commencing power signal alignment process")

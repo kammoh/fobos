@@ -21,8 +21,8 @@ import re
 from sys import argv
 from socket import *
 import sys
-from oscilloscope_agilent import *
-from oscilloscope_global import *
+#from oscilloscope_agilent import *
+#from oscilloscope_global import *
 import shutil
 import numpy
 from globals import support,cfg , printFunctions, globals
@@ -393,6 +393,47 @@ def populateOscilloscopeDataStorage(traceCount):
 		with open(cfg.CHANNEL4_MEASUREMENT_FILE, 'a+b') as fileHandle:
 			numpy.save(fileHandle, adjustedData)
 				
+def populateOscilloscopeDataStorageAndAlign(traceCount):
+	#sampleLength = 2000000
+	#cfg.SAMPLE_LENGTH_FROM_OSC = 1000
+	printFunctions.printToScreenAndLog("\tGetting data from Oscilloscope for Trace No ->" + str(traceCount+1))
+	#print "Total array length " + len (cfg.SAMPLE_LENGTH_FROM_OSC)
+	if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF'):
+		if(cfg.osc_attributes['TRIGGER_SOURCE'] == 'CHANNEL1'):
+		  triggerDataFromOscilloscope = getDataFromOscilloscope('CHANNEL1')
+		  adjustedTriggerData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, triggerDataFromOscilloscope)
+		else:
+		  powerDataFromOscilloscope = getDataFromOscilloscope('CHANNEL1')
+		  adjustedPowerData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, powerDataFromOscilloscope)
+
+	if(cfg.osc_attributes['CHANNEL_RANGE2'] != 'OFF'):
+		if(cfg.osc_attributes['TRIGGER_SOURCE'] == 'CHANNEL2'):
+		  triggerDataFromOscilloscope = getDataFromOscilloscope('CHANNEL2')
+		  adjustedTriggerData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, triggerDataFromOscilloscope)
+		else:
+		  powerDataFromOscilloscope = getDataFromOscilloscope('CHANNEL2')
+		  adjustedPowerData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, powerDataFromOscilloscope)		
+
+	if(cfg.osc_attributes['CHANNEL_RANGE3'] != 'OFF'):
+		if(cfg.osc_attributes['TRIGGER_SOURCE'] == 'CHANNEL3'):
+		  triggerDataFromOscilloscope = getDataFromOscilloscope('CHANNEL3')
+		  adjustedTriggerData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, triggerDataFromOscilloscope)
+		else:
+		  powerDataFromOscilloscope = getDataFromOscilloscope('CHANNEL3')
+		  adjustedPowerData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, powerDataFromOscilloscope)		
+
+	if(cfg.osc_attributes['CHANNEL_RANGE4'] != 'OFF'):
+		if(cfg.osc_attributes['TRIGGER_SOURCE'] == 'CHANNEL4'):
+		  triggerDataFromOscilloscope = getDataFromOscilloscope('CHANNEL4')
+		  adjustedTriggerData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, triggerDataFromOscilloscope)
+		else:
+		  powerDataFromOscilloscope = getDataFromOscilloscope('CHANNEL4')
+		  adjustedPowerData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, powerDataFromOscilloscope)
+		  
+	rawAlignedData = signalAnalysisModule.computeAlignedData(adjustedPowerData, adjustedTriggerData)
+	print cfg.ALIGNED_DATA_FILE
+	with open(cfg.ALIGNED_DATA_FILE, 'a+b') as fileHandle:
+		numpy.save(fileHandle, rawAlignedData)
 
 def oldpopulateOscilloscopeDataStorage(traceCount):
 	#sampleLength = 2000000
@@ -441,7 +482,7 @@ def get_snapshot():
   fsnapshot.write(rawpic)
   fsnapshot.close()
 	
-def openOscilloscopeConnection():
+def openOscilloscopeConnectionOld():
   cfg.Oscilloscope = socket( AF_INET, SOCK_STREAM )
   cfg.Oscilloscope.connect((cfg.osc_attributes['OSCILLOSCOPE_IP'], cfg.osc_attributes['OSCILLOSCOPE_PORT']))#have to put in error checks dummy
   cfg.Oscilloscope.send("*IDN?"+'\n')
@@ -470,6 +511,15 @@ def openOscilloscopeConnection():
   cfg.TEMP_PREAMBLE_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals. TEMP_PREAMBLE_FILE_NAME)
   cfg.TEMP_MEASUREMENT_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.TEMP_MEASUREMENT_FILE_NAME)
 
+def openOscilloscopeConnection():
+  cfg.Oscilloscope = socket( AF_INET, SOCK_STREAM )
+  cfg.Oscilloscope.connect((cfg.osc_attributes['OSCILLOSCOPE_IP'], cfg.osc_attributes['OSCILLOSCOPE_PORT']))#have to put in error checks dummy
+  cfg.Oscilloscope.send("*IDN?"+'\n')
+  osc_id = cfg.Oscilloscope.recv(200)
+  printFunctions.printToScreenAndLog("\tConnected to Oscilloscope ID :"+ osc_id+'\n')
+  cfg.ALIGNED_DATA_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.ALIGNED_DATA_FILE_NAME)	
+  cfg.TEMP_PREAMBLE_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals. TEMP_PREAMBLE_FILE_NAME)
+  cfg.TEMP_MEASUREMENT_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.TEMP_MEASUREMENT_FILE_NAME)
 
 def armOscilloscope():
 	channelsToDigitize = None

@@ -1,21 +1,21 @@
 #!/usr/bin/python
 ##################################################################################
 #                                                                           	 #
-#	Copyright 2016 Cryptographic Engineering Research Group (CERG)               #
-#	George Mason University														 #	
+#	Copyright 2016 Cryptographic Engineering Research Group (CERG)           #
+#	George Mason University							 #	
 #   http://cryptography.gmu.edu/fobos                                            #                            
-#									                                             #                             	 
-#	Licensed under the Apache License, Version 2.0 (the "License");         	 #
-#	you may not use this file except in compliance with the License.        	 #
-#	You may obtain a copy of the License at                                 	 #
-#	                                                                        	 #
-#	    http://www.apache.org/licenses/LICENSE-2.0                          	 #
-#	                                                                        	 #
-#	Unless required by applicable law or agreed to in writing, software     	 #
-#	distributed under the License is distributed on an "AS IS" BASIS,       	 #
-#	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.	 #
-#	See the License for the specific language governing permissions and     	 #
-#	limitations under the License.                                          	 #
+#									         #                             	 
+#	Licensed under the Apache License, Version 2.0 (the "License");        	 #
+#	you may not use this file except in compliance with the License.       	 #
+#	You may obtain a copy of the License at                                	 #
+#	                                                                       	 #
+#	    http://www.apache.org/licenses/LICENSE-2.0                         	 #
+#	                                                                       	 #
+#	Unless required by applicable law or agreed to in writing, software    	 #
+#	distributed under the License is distributed on an "AS IS" BASIS,      	 #
+#	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. #
+#	See the License for the specific language governing permissions and      #
+#	limitations under the License.                                           #
 #                                                                           	 #
 ##################################################################################
 import os
@@ -55,7 +55,7 @@ def main():
 	#plottingModule.plotRawTrace(cfg.RAW_POWER_DATA, 200750, 204750)
 	configExtract.extractAnalysisConfigAttributes("signalAlignmentParams.txt")
 	alignedData = signalAnalysisModule.getAlignedMeasuredPowerData() # Aligned Power traces with respect to trigger
-	#plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')	
+	plottingModule.plotTrace(alignedData, 'ALL', 'OVERLAY')	
 	#sampleVarTimeWise = statisticsModule.calculate_std(alignedData, globals.TRACE_WISE) 	
 	#support.wait()
 	#configExtract.extractAnalysisConfigAttributes("traceExpungeParams.txt")
@@ -67,15 +67,15 @@ def main():
 	configExtract.extractAnalysisConfigAttributes("compressionParams.txt")
 	compressedData = postProcessingModule.compressData(windowedData)
 	#plottingModule.plotTrace(compressedData, 'ALL', 'OVERLAY')
-	autoCorrelatedData = sca.calculate_autocorrelation(alignedData)
-	plottingModule.plotCorr(autoCorrelatedData, globals.AUTOCORR)
+	#autoCorrelatedData = sca.calculate_autocorrelation(alignedData)
+	#plottingModule.plotCorr(autoCorrelatedData, globals.AUTOCORR)
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_0.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 	plottingModule.plotCorr(correlationData, globals.PEARSON)
 	plottingModule.plotHist(correlationData, globals.PEARSON)
 	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-	#50 is the factor in the plot
+	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,20,cfg.KEYARRAY[cfg.KEY_INDEX])
+	#50 is the factor(major bins increment values) in the plot
         #either use cfg.KEYARRAY[cfg.KEY_INDEX] or cfg.EXPECTED_KEY[cfg.KEY_INDEX]
 	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_1.txt", globals.ADAPTIVE_CPA)
 	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 

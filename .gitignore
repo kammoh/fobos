@@ -8,6 +8,11 @@
 *.backup
 *.out
 *.pyc
+*.npy
+*.vrb
+*.snm
+*.nav
+*.bak
 .directory
 .DS_Store
 __MACOSX
