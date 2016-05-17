@@ -217,7 +217,8 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 			singleTraceFlag = True
 		traceLength = 0
 		for traceSet in range(0, totalNumOfTraceSets):
-			printFunctions.printToScreenAndAnalysisLog("\n\nProcessing Trace Set number: " + str(traceSet))
+			if(cfg.PROGRAM_CALL == "analysis"):
+				printFunctions.printToScreenAndAnalysisLog("\n\nProcessing Trace Set number: " + str(traceSet))
 			if(singleTraceFlag == True):
 				measuredPowerData = totalMeasuredPowerData
 				measuredTriggerData = totalMeasuredTriggerData

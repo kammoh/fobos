@@ -430,7 +430,8 @@ def populateOscilloscopeDataStorageAndAlign(traceCount):
 		  powerDataFromOscilloscope = getDataFromOscilloscope('CHANNEL4')
 		  adjustedPowerData = signalAnalysisModule.adjustSampleSize(cfg.SAMPLE_LENGTH_FROM_OSC, powerDataFromOscilloscope)
 		  
-	rawAlignedData = computeAlignedData(adjustedPowerData, adjustedTriggerData)
+	rawAlignedData = signalAnalysisModule.computeAlignedData(adjustedPowerData, adjustedTriggerData)
+	print cfg.ALIGNED_DATA_FILE
 	with open(cfg.ALIGNED_DATA_FILE, 'a+b') as fileHandle:
 		numpy.save(fileHandle, rawAlignedData)
 
