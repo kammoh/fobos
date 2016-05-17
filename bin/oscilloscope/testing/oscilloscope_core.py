@@ -210,17 +210,18 @@ def get_waveform_power(MyInstrument) :
 	fid = open("preambleChannel1.dat", "rb")
 	preamble = numpy.fromfile(fid, dtype= numpy.float64, count = 10, sep = ",")
 	fid.close()
-	print "\tTotal Number of Points to Receive: " + str(int(preamble[2]))
+	tData = int(preamble[2])
+	print "\tTotal Number of Points to Receive: " + str(tData)
 	print "\tReading Data of Power Source"
 	MyInstrumentSend(MyInstrument,":WAVEFORM:START 1")
 	MyInstrumentSend(MyInstrument,":WAVEFORM:STOP 250000") 
 	MyInstrumentSend(MyInstrument,":WAVEFORM:DATA?") 
-	tData = int(preamble[2])
 	wavedata = ""
 	count = 0
+        tData=250000
 	temp = MyInstrument.recv(tData)
-	lowerBound = tData - len(temp)
 	print str(len(temp)) + "\n"
+	lowerBound = tData - len(temp)
 	rData = lowerBound
 	temp = temp[10:]
 	while(count < lowerBound):
