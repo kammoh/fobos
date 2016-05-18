@@ -24,8 +24,8 @@
 
 NET "clk" LOC = "V10" ;#| IOSTANDARD = "LVCMOS33"; #Bank = 2, pin name = IO_L30N_GCLK0_USERCCLK, Sch name = GCLK
 NET "clk" CLOCK_DEDICATED_ROUTE = FALSE;
-NET "victimClockSelector"      LOC = "T10" | IOSTANDARD = "LVCMOS33";   #Bank = 2, Pin name = IO_L29N_GCLK2,                     Sch name = SW0
-PIN "VictimClockSelectingMux.O" CLOCK_DEDICATED_ROUTE = FALSE;
+NET "dutClockSelector"      LOC = "T10" | IOSTANDARD = "LVCMOS33";   #Bank = 2, Pin name = IO_L29N_GCLK2,                     Sch name = SW0
+PIN "dutClockSelectingMux.O" CLOCK_DEDICATED_ROUTE = FALSE;
 NET "EppAstb" LOC = "H1" | IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L41N_GCLK26_M3DQ5, Sch name = U-FLAGA
 NET "EppDstb" LOC = "K4" | IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L42P_GCLK25_TRDY2_M3UDM, Sch name = U-FLAGB
 NET "EppWrite" LOC = "F5" | IOSTANDARD = "LVCMOS33"; #Bank = 3, Pin name = IO_L55N_M3A14, Sch name = U-FLAGC
