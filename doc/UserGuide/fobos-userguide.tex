@@ -1,4 +1,4 @@
-\documentclass[letterpaper,10pt]{book}
+\documentclass[letterpaper,11pt]{book}
 \usepackage{cergtheme}
 \usepackage{afterpage}
 \usepackage{amsmath,amssymb,latexsym,amsthm,amsfonts}
@@ -17,9 +17,9 @@
 \usepackage{color}
 %\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}%adding file as fgiures
 %\usepackage{longtable}% for long tables spanning across multiple pages
-\usepackage{setspace}% for setting the line spacing
+%\usepackage{setspace}% for setting the line spacing
 \usepackage{datetime}
-\onehalfspacing
+%\onehalfspacing
 \usepackage{amsmath}
 \usepackage{algorithmic}
 \usepackage{algorithm}
@@ -31,6 +31,20 @@
 
 %\usepackage[usenames,dvipsnames]{xcolor}
 %opening
+\definecolor{cergpurple}{RGB}{64,5,116}
+\definecolor{cergpink}{RGB}{128,35,145}
+\definecolor{cerglightblue}{RGB}{140,159,229}
+\definecolor{cergblue}{RGB}{100,116,172}
+
+% box with mandatory title and options
+\newtcolorbox{cergbox}[2][]{
+   colframe=cergpurple,
+   colback=cerglightblue!10!white,
+   fonttitle=\bfseries,
+   title = #2,
+   #1
+}
+
 \renewcommand\familydefault{\rmdefault}
 %%%%%setting for table boaders%%%%%
 \setlength{\arrayrulewidth}{0.5mm}
@@ -351,7 +365,7 @@
 \include{fobos-overview}
 \include{fobos-acquisition}
 \include{fobos-analysis}
-
+\include{oscilloscope}
  
 
 \end{document}
