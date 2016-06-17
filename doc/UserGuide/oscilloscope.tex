@@ -2,6 +2,7 @@
 \chapter{Oscilloscope}
 
 \begin{cergbox}{Top Level Oscilloscope Functions in Sequence of Usage}
+  \textbf{Used by:} dataAcquisition.py\\
   \textbf{Location:} fobos/bin/oscilloscope/oscilloscope\_core.py
   \tcblower
   \begin{itemize}
@@ -12,5 +13,73 @@
     \item armOscilloscope() 
     \item populateOscilloscopeDataStorageAndAlign(traceCount)
     \item closeOscilloscopeConnection()
+  \end{itemize}
+\end{cergbox}
+
+\begin{cergbox}{\textbf{Function:} extractOscilloscopeConfigAttributes()}
+  \textbf{Location:} fobos/bin/oscilloscope/oscilloscope\_core.py\\
+%  \textbf{Inputs:} none\\
+  \textbf{Uses:} \verb|get_attribs(data)|, \verb|cfg.osc_attributes|, \verb|cfg.OSC_CONFIGFILE|, \verb|printFunctions.printToLog| 
+%  \textbf{Requires:} 
+%  \begin{lstlisting}
+%    data_from_file = support.readFile(cfg.OSC_CONFIGFILE)
+%    data_list = support.removeComments(data_from_file)
+%    get_attribs(data_list)
+%  \end{lstlisting}
+  \tcblower
+  \begin{itemize}
+    \item Reads oscilloscope config file.
+    \item Populates global hash table \verb|cfg.osc_attributes| using \verb|get_attribs(data)|.
+  \end{itemize}
+\end{cergbox}
+
+\begin{cergbox}{\textbf{Function:} openOscilloscopeConnection()}
+  \textbf{Location:} fobos/bin/oscilloscope/oscilloscope\_core.py\\
+  \textbf{Uses:} \verb|cfg.Oscilloscope.(connect/send/receive)|, \verb|printFunctions.printToScreenAndLog| 
+  \tcblower
+  \begin{itemize}
+    \item Opens TCP/IP stream socket.
+    \item Received Oscilloscope ID.
+    \item Sets filenames for oscilloscope data from \texttt{global} in \texttt{cfg}.
+  \end{itemize}
+\end{cergbox}
+
+\begin{cergbox}{\textbf{Function:} setOscilloscopeConfigAttributes()}
+  \textbf{Location:} fobos/bin/oscilloscope/oscilloscope\_core.py \\
+  \textbf{Uses:} \verb|cfg.osc_attributes|, \verb|cfg.Oscilloscope.send|, \verb|printFunctions.printToLog| 
+  \tcblower
+  \begin{itemize}
+    \item Mapps \verb|cfg.osc_attributes| to oscilloscope commands.
+    \item Sends each command to the oscilloscope using \verb|cfg.Oscilloscope.send|.
+  \end{itemize}
+\end{cergbox}
+
+\begin{cergbox}{\textbf{Function:} initializeOscilloscopeDataStorage()}
+  \textbf{Location:} fobos/bin/oscilloscope/oscilloscope\_core.py \\
+  \textbf{Uses:} \verb|cfg.osc_attibutes|, \verb|cfg.channel|$x$\verb|Data| 
+  \tcblower
+  \begin{itemize}
+    \item Sets \verb|cfg.channel|$x$\verb|Data| to 0 for all channels that are enabled
+          in \verb|cfg.osc_attributes|.
+  \end{itemize}
+\end{cergbox}
+
+\begin{cergbox}{\textbf{Function:} armOscilloscope()}
+  \textbf{Location:} fobos/bin/oscilloscope/oscilloscope\_core.py \\
+  \textbf{Uses:} \verb|cfg.osc_attibutes|, \verb|cfg.Oscilloscope.send|, \verb|printFunctions.printToScreenAndLog|
+  \tcblower
+  \begin{itemize}
+    \item Tells the oscilloscope (using the most convoluted method) which channels
+          should be sampled.
+  \end{itemize}
+\end{cergbox}
+
+\begin{cergbox}{\textbf{Function:} popultateOscilloscopeDataStorageAndAlign(traceCount)}
+  \textbf{Location:} fobos/bin/oscilloscope/oscilloscope\_core.py \\
+  \textbf{Uses:} \verg|getDataFromOscilloscope|, \verb|cfg.osc_attibutes|, \verb|cfg.ALIGNED_DATA_FILE|, \verb|signalAnalysisModule.computeAlignedData(pdata,tdata}|, \verb|printFunctions.printToScreenAndLog|
+  \tcblower
+  \begin{itemize}
+    \item Tells the oscilloscope (using the most convoluted method) which channels
+          should be sampled.
   \end{itemize}
 \end{cergbox}
