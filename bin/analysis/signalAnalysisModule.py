@@ -275,16 +275,64 @@ def readRawTraces():
 	printFunctions.printToScreenAndAnalysisLog("..DONE")		
 
 def readAlignedDataFromFile():
-	printFunctions.printToScreenAndAnalysisLog("Loading Aligned Data ..")
+	printFunctions.printToScreenAndAnalysisLog("Loading Aligned Data ..(%d traces)" %cfg.config_attributes['NUMBER_OF_TRACES'])
 	measurementFile = open(cfg.ALIGNED_DATA_FILE, 'r')
-	for traceCount in range (0, cfg.config_attributes['NUMBER_OF_TRACES']):
+        
+	print 'File = ' + cfg.ALIGNED_DATA_FILE
+	#Get sample size to adjust all traces to the same number of samples. A better solution is to get the data cleaned up upon acquistion.
+	sampleSize = detectSampleSize(measurementFile)
+	#need to reset file handle since we used it 
+	measurementFile.seek(0)
+	for traceCount in range (0,cfg.config_attributes['NUMBER_OF_TRACES']):
+		print "traceCount= " + str(traceCount)
 		tempArrayMeasurement = numpy.load(measurementFile)
+		tempArrayMeasurement = adjustSampleSize(sampleSize, tempArrayMeasurement)
 		if (traceCount == 0):
 			cfg.RAW_POWER_DATA  = tempArrayMeasurement
+			print 'array length' + str(len(cfg.RAW_POWER_DATA))
+			print 'array length' + str(len(tempArrayMeasurement))
 		elif (traceCount > 0):
+			print "DEBUG shape: " + str(tempArrayMeasurement.shape)
+			#print 'array length cfg: ' + str(len(cfg.RAW_POWER_DATA)) 
+			#print 'array length tmp: ' + str(len(tempArrayMeasurement)) + ' count= ' + str(traceCount)
 			cfg.RAW_POWER_DATA  = numpy.vstack((cfg.RAW_POWER_DATA,tempArrayMeasurement))
+	
 	printFunctions.printToScreenAndAnalysisLog("..DONE")	
 	return (cfg.RAW_POWER_DATA)
+
+def detectSampleSize(measurementFile):
+	"""
+	This function calcualates the number of sample per trace. This is needed to do any paddig/truncation to make all 
+	traces the same size. We iterate through the first 10 traces and get the max number of traces
+	"""
+	print "DEBUG: Module: analysis, Function: detectSampleSize():"
+	print "----Detecting samples per trace"
+	maxNumOfSamples = 0
+	for traceCount in range (0,10):
+		try:
+			trace = numpy.load(measurementFile)
+		except:
+			print "----You have less than 10 samples. It looks that the max number of samples is : " + str(maxNumOfSamples)
+			return maxNumOfSamples
+		numOfSamples = len(trace)
+		if maxNumOfSamples < numOfSamples:
+			maxNumOfSamples = numOfSamples
+	print "----It looks that the max number of samples in the first 10 traces is: " + str(maxNumOfSamples)
+	return maxNumOfSamples
+	
+
+
+#def readAlignedDataFromFile():
+#	printFunctions.printToScreenAndAnalysisLog("Loading Aligned Data ..")
+#	measurementFile = open(cfg.ALIGNED_DATA_FILE, 'r')
+#	for traceCount in range (0, cfg.config_attributes['NUMBER_OF_TRACES']):
+#		tempArrayMeasurement = numpy.load(measurementFile)
+#		if (traceCount == 0):
+#			cfg.RAW_POWER_DATA  = tempArrayMeasurement
+#		elif (traceCount > 0):
+#			cfg.RAW_POWER_DATA  = numpy.vstack((cfg.RAW_POWER_DATA,tempArrayMeasurement))
+#	printFunctions.printToScreenAndAnalysisLog("..DONE")	
+#	return (cfg.RAW_POWER_DATA)
 	
 def getAlignedMeasuredPowerData():
 	printFunctions.printToScreenAndAnalysisLog("Starting signal alignment routine")
