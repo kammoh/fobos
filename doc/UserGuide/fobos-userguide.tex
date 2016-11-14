@@ -1,4 +1,5 @@
 \documentclass[letterpaper,11pt]{book}
+\usepackage[toc,page]{appendix}
 \usepackage{cergtheme}
 \usepackage{afterpage}
 \usepackage{amsmath,amssymb,latexsym,amsthm,amsfonts}
@@ -314,59 +315,12 @@
   
 %\end{appendix}
 }}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\newglossaryentry{pdi}{name=pdi, description={Coordinated Universal Time}}
-%\newglossaryentry{adt}{name=ADT, description={Atlantic Daylight Time}}
-%\newglossaryentry{est}{name=EST, description={Eastern Standard Time}}
-%\printglossaries
-%\clearpage
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\startofchapters
-%\pagestyle{plain}
-\include{sca}
-\include{fobos-overview}
-\include{fobos-acquisition}
-\include{fobos-analysis}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%\pagenumbering{alph}
-    %\maketitle
- { %\pagenumbering{gobble}
-\thispagestyle{empty}
-\titleATa % This command includes the title page
- \clearpage
- }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-{\pagenumbering{roman}
-{\tableofcontents
-%\clearpage
-%\begin{appendix}
- \listoffigures
- \listoftables
- \input{gls.tex}
- \printglossaries
- 
-%\end{appendix}
-}}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\newglossaryentry{pdi}{name=pdi, description={Coordinated Universal Time}}
-%\newglossaryentry{adt}{name=ADT, description={Atlantic Daylight Time}}
-%\newglossaryentry{est}{name=EST, description={Eastern Standard Time}}
-%\printglossaries
-%\clearpage
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \startofchapters
 %\pagestyle{plain}
 %\include{sca}
 \include{fobos-overview}
+\include{fobos-hardware-config}
 \include{fobos-acquisition}
 \include{fobos-analysis}
-\include{oscilloscope}
- 
-
+\include{functions}
 \end{document}
