@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{url}
+\begin{document}
+
+\title{Pmod connector on Nexys 4 DUT}
+
+\maketitle
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=1]{figures/pmod_connector}
+    \caption{Pmod Connectors as Viewed from Front}
+  \end{center}
+\end{figure}
+
+\begin{table}[ht]
+  \begin{center}
+    \caption{Pin Configuration on Nexys3}
+    \begin{tabular}{llll|llll}
+      Pin  & LOC & Net         & Comment & Pin  & LOC & Net        & Comment \\ \hline
+       JC1 & K2  & DUTClock       & GCLK20  &  JD1 & H4 & reset      & \\
+       JC2 & E7  & src\_ready  &         &  JD2 & H1 & dst\_ready & \\
+       JC3 & J3  & datain[3]   &         &  JD3 & G1 & dataout[3] & \\
+       JC4 & J4  & datain[1]   &         &  JD4 & G3 & dataout[1] & \\
+       JC5 &     &             & GND     &  JD4 &    & GND        & \\
+       JC7 & K1  & src\_read   &         &  JD7 & H2 &            & \\
+       JC8 & E6  &             &         &  JD8 & G4 & dst\_write  & \\
+       JC9 & J2  & datain[2]   &         &  JD9 & G2 & dataout[2] & \\
+      JC10 & G6  & datain[0]   &         & JD10 & F3 & dataout[0] & \\
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[scale=1]{figures/ctrl-dut_connections}
+    \caption{Connections between Control and DUT}
+  \end{center}
+\end{figure}
+
+\end{document}
