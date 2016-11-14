@@ -4,7 +4,7 @@
 \usepackage{url}
 \begin{document}
 
-\title{Connecting to DUT via Pmod}
+\title{Pmod On Nexys3 Controller and DUT}
 
 \maketitle
 
@@ -20,12 +20,13 @@
     \caption{Pin Configuration on Nexys3}
     \begin{tabular}{llll|llll}
       Pin  & LOC & Net         & Comment & Pin  & LOC & Net        & Comment \\ \hline
-       JC1 & H3  & clock       & GCLK20  &  JD1 & G11 & reset      & \\
+       JC1 & H3  & DUTClock    & GCLK20  &  JD1 & G11 & reset      & \\
        JC2 & L7  & src\_ready  &         &  JD2 & F10 & dst\_ready & \\
        JC3 & K6  & datain[3]   &         &  JD3 & F11 & dataout[3] & \\
        JC4 & G3  & datain[1]   &         &  JD4 & E11 & dataout[1] & \\
-       JC7 & G1  &             & GND     &  JD7 & D12 &            & GND \\
-       JC8 & J1  & src\_read   &         &  JD8 & C12 & dst\_read  & \\
+       JC5 &	 & 			   & GND     &  JD5 &     & GND        & \\
+       JC7 & G1  & src\_read   &         &  JD7 & D12 &            &\\
+       JC8 & J1  & 			   &         &  JD8 & C12 & dst\_write & \\
        JC9 & J6  & datain[2]   &         &  JD9 & F12 & dataout[2] & \\
       JC10 & F2  & datain[0]   &         & JD10 & E12 & dataout[0] & \\
     \end{tabular}
