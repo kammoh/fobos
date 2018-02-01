@@ -33,7 +33,8 @@ entity counter is
 	   enable : in std_logic; 
 --		input  : in std_logic_vector(N-1 downto 0);
       counter_out : out std_logic_vector(N-1 downto 0)
-	);
+		
+		);
 end counter;
 
 architecture Behavioral of counter is
@@ -41,19 +42,22 @@ architecture Behavioral of counter is
 	signal temp : std_logic_vector(N-1 downto 0);
 	
 begin
-	
-	counting : process( clk, reset )
+	--process (clk, regEppAdrOut, ctlEppDwrOut)
+	counting : process( clk )
 	begin
-		if reset = '1' then
-			temp <= (others => '0');
-		elsif rising_edge( clk ) then
+		
+	if rising_edge( clk ) then
 --			if (load = '1' ) then
 --				temp <= input;
 --			els
-			if ( enable = '1' ) then
-				temp <=  unsigned(temp) + 1 ;
-			end if;
+		  if reset = '1' then
+			  temp <= (others => '0');
+			else 
+			   if ( enable = '1' ) then
+				  temp <=  unsigned(temp) + 1 ;
+			   end if;
 		end if;
+	end if;
 	end process;  
 	counter_out <= temp;
 	

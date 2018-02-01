@@ -17,8 +17,6 @@
 --#	limitations under the License.                                               #
 --#                                                                           	  #
 --##################################################################################
-
-
 library IEEE;
 library UNISIM;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -29,52 +27,41 @@ use unisim.vcomponents.all;
 
 entity fobosControlTop is 
 port (
-  clk : in std_logic;           -- system clock
-  EppAstb: in std_logic;        -- Address strobe
-  EppDstb: in std_logic;        -- Data strobe
-  EppWrite  : in std_logic;        -- Port write signal
-  --EppReset : in std_logic;        -- Port reset signal
-  EppDB  : inout std_logic_vector(7 downto 0); -- port data bus
-  EppWait: out std_logic;       -- Port wait signal
- -- displayLED : out std_logic_vector(7 downto 0);
-  cergbanner : out std_logic_vector(11 downto 0);
-  EXTClock : in std_logic;
-  dutClockSelector: in std_logic;
-  clkseltest : out std_logic;
-  -- ADC PORTS
---  adc_clock : out std_logic;
---  amp_gain : out std_logic;
---  amp_hilo : out std_logic;
---  adc_data : in std_logic_vector(9 downto 0);
---  adc_or : in std_logic
-
+   clk : in std_logic;  
+   EppAstb: in std_logic;        -- Address strobe
+   EppDstb: in std_logic;        -- Data strobe
+   EppWrite  : in std_logic;        -- Port write signal
+   EppDB  : inout std_logic_vector(7 downto 0); -- port data bus
+   EppWait: out std_logic;       -- Port wait signal  
+   seven_seg : out std_logic_vector(11 downto 0);
+   EXTClock : in std_logic;
+   dutClockSelector: in std_logic;
+   clkseltest : out std_logic;
    -- Oscilloscope Ports
-	trigger : out std_logic;
-
+   trigger : out std_logic;
+   long_trigger : out std_logic;
 	-- DUT Ports from DUT point of view, i.e. dataout is data from dut to control
-	DUTClock: out std_logic;
+	DUTClock: out std_logic; 
 	reset: out std_logic;
-	src_ready: out std_logic;
-	dst_ready: out std_logic;
-	datain: out std_logic_vector(interfaceWidth-1 downto 0);
-	src_read: in std_logic;
-	dst_write: in std_logic;
-	dataout: in std_logic_vector(interfaceWidth-1 downto 0)
-
+	di_valid: out std_logic;
+	do_ready: out std_logic;
+	din: out std_logic_vector(interfaceWidth-1 downto 0); 
+	di_ready: in std_logic;
+	do_valid: in std_logic;
+	dout: in std_logic_vector(interfaceWidth-1 downto 0)
 );
 end fobosControlTop;
 
 architecture Behavioral of fobosControlTop is 
-------------------------------------------------------------------------
--- Constant and Signal Declarations
-------------------------------------------------------------------------
+
 signal hosttofpga_data : std_logic_vector(7 downto 0);
+signal regEppAdrOut : std_logic_vector(7 downto 0);
+signal ctlEppDwrOut : std_logic;
 signal fpgatohost_data : std_logic_vector(7 downto 0);
 signal register_data   : std_logic_vector(7 downto 0);
-signal regEppAdrOut : std_logic_vector(7 downto 0);
 constant  inactive : std_logic := '0';
 constant active : std_logic := '1';
-signal ctlEppDwrOut, ctlEppRdCycleOut, ctlEppStartOut : std_logic;
+signal  ctlEppRdCycleOut, ctlEppStartOut : std_logic;
 signal ctlEppDoneIn : std_logic;
 signal int_addressGen_BRAM, bram_address, addressGen_BRAM : std_logic_vector(15 downto 0);
 signal z20k, int_addressGen_BRAM_enable, bram_extaddress_reset, bram_extaddress_enable: std_logic; 
@@ -89,15 +76,10 @@ signal generatedClkFordut, dutClk : std_logic;
 signal dutDCMLocked : std_logic;
 signal EndPCDataComm, encStart, encEnd, triggerCheck : std_logic;
 signal dlEnb, dlRst, drRst, drEnb, klRst, klEnb : std_logic;
-signal vdlEnb, vdlRst, vklEnb, vklRst, vrRst, vrEnb, cdlEnb, cklEnb, cklRst : std_logic;
-signal dataToCtrlBrd : std_logic_vector(maxBlockSize-1 downto 0);
-signal keyToCtrlBrd : std_logic_vector(maxKeySize-1 downto 0);
-signal dataFromCtrlBrd : std_logic_vector(maxBlockSize-1 downto 0);
+signal vdlEnb, vdlRst, vklEnb, vklRst, vrRst, vrEnb, cdlEnb, cklEnb, cklRst: std_logic;
+signal dataToCtrlBrd : std_logic_vector(7 downto 0); --fixed
+signal dataFromCtrlBrd : std_logic_vector(7 downto 0); --fixed
 signal dataFromPc, dataToPc : std_logic_vector(7 downto 0);
--- signal src_read, src_ready, dst_ready, dst_write : std_logic;
--- signal datain, dataout, 
-signal keyTextTodut, plainTextTodut : std_logic_vector(interfaceWidth-1 downto 0);
-signal databusHandle : std_logic; -- data/key to dut selection line
 ------------------------------------------------------------------------
 -- Data Registers Declarations
 ------------------------------------------------------------------------
@@ -125,26 +107,35 @@ signal displayReg : std_logic_vector(7 downto 0); -- address 40
 signal controlReg : std_logic_vector(7 downto 0); -- address 30
 signal statusReg : std_logic_vector(7 downto 0);  -- address 31
 constant programOK : std_logic_vector(7 downto 0) := x"4B"; --address 50
+
+signal display_data : std_logic_vector(15 downto 0); 
+
+signal push_to_dut_int, pop_from_dut_int : std_logic;
+signal state_debug : std_logic_vector(7 downto 0);
+------------
+signal d_write_pointer : std_logic_vector(10 downto 0);
+signal read_reg,strobe_reg,rst_dut_reg,rst_dutComm_reg ,sys_rst_reg ,
+		pc_comm_done_reg: std_logic_vector(7 downto 0); -- address 88 for debug only
+signal dut_done : std_logic;
+--debug
+signal debug_ram, debug_dout_ram, debug_addr :	STD_LOGIC_VECTOR(7 downto 0);
+
 begin
 ------------------------------------------------------------------------
 -- CERG Banner Display
 ------------------------------------------------------------------------
+--sevensegdisplayN2_gen : if (board = NEXYS2) generate
+--display: cerg_display 
+--generic map (N => NEXYS2_7SEGRR)
+--port map (clk => clk, cergbanner_segment => cergbanner);
+--end generate;
+--
+--sevensegdisplayN3_gen : if (board = NEXYS3) generate
+--display: cerg_display 
+--generic map (N => NEXYS3_7SEGRR)
+--port map (clk => clk, cergbanner_segment => cergbanner);
+--end generate;
 
-sevensegdisplayN2_gen : if (board = NEXYS2) generate
-display: cerg_display 
-generic map (N => NEXYS2_7SEGRR)
-port map (clk => clk, cergbanner_segment => cergbanner);
-end generate;
-
-sevensegdisplayN3_gen : if (board = NEXYS3) generate
-display: cerg_display 
-generic map (N => NEXYS3_7SEGRR)
-port map (clk => clk, cergbanner_segment => cergbanner);
-end generate;
-
-------------------------------------------------------------------------
--- USB Controller
-------------------------------------------------------------------------			
 EPP_Controller : EppCtrl port map (
 		  clk => clk,
 		  EppAstb => EppAstb,
@@ -162,7 +153,6 @@ EPP_Controller : EppCtrl port map (
 		  ctlEppStartOut => ctlEppStartOut,
 		  ctlEppDoneIn => ctlEppDoneIn
 		  );
-		  
 ------------------------------------------------------------------------
 -- fpga to host data output mux
 ------------------------------------------------------------------------
@@ -191,8 +181,6 @@ fpgatohost_data <=  dataReg0 when regEppAdrOut = x"00" else
 			adcGain when regEppAdrOut = x"60" else
 			adcAmp when regEppAdrOut = x"61" else
 			----------------------------------------
-			--dataFromTarget(15 downto 8) when regEppAdrOut = x"71" else
-			--dataFromTarget(7 downto 0) when regEppAdrOut = x"72" else
 			dataToPc when regEppAdrOut = x"71" else
 			
 			----------------------------------------
@@ -259,8 +247,6 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 		end if;
 	end if;
 end process;
---displayLED <= displayReg;
-
 ------------------------------------------------------------------------
 -- Target Registers
 ------------------------------------------------------------------------
@@ -291,20 +277,9 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 		end if;
 	end if;
 end process;
-
-process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
-	begin
-	if clk = '1' and clk'Event then
-		if ctlEppDwrOut = '1' and regEppAdrOut = x"7A" then
-			dataFromPc <= hosttofpga_data;
-		end if;
-	end if;
-end process;
-
 ------------------------------------------------------------------------
 -- Trigger signal registers
 ------------------------------------------------------------------------
-
 
 process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 	begin
@@ -378,27 +353,57 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 	end if;
 end process;
 
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"AA" then
+			sys_rst_reg <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"BB" then
+			rst_dutComm_reg <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"CC" then
+			rst_dut_reg <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"DD" then
+			pc_comm_done_reg <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"EE" then
+			debug_addr <= hosttofpga_data;
+		end if;
+	end if;
+end process;
 ------------------------------------------------------------------------
 -- Control Signals
 ------------------------------------------------------------------------
 
-system_reset <= '1' when controlReg = x"01" else '0';
+system_reset <= '1' when sys_rst_reg = x"FF" else '0';
 frequency_counter_reset <= '1' when controlReg = x"02" else '0';
-targetModuleReset <= '1' when controlReg = x"03" else '0';
-dlRst <= '1' when controlReg = x"04" else '0';
-drRst <= '1' when controlReg = x"05" else '0';
 dlEnb <= '1' when controlReg = x"06" else '0';
-drEnb <= '1' when controlReg = x"07" else '0';
-klRst <= '1' when controlReg = x"08" else '0';
-klEnb <= '1' when controlReg = x"09" else '0';
-
-EndPCDataComm <= '1' when dataReg1 = x"FF" else '0';
-resetdutCommunicationController <= '1' when dataReg1 = x"02" else '0';
---bram_extaddress_reset <= dataReg0(7);
---bram_extaddress_enable <= dataReg0(6);
---counter_adc_select <= dataReg0(5);
---bram_data_collect_start <= dataReg0(0);
-
+push_to_dut_int <= '1' when regEppAdrOut = x"7A" and ctlEppDwrOut = '1' else '0'; 
+pop_from_dut_int <= '1' when regEppAdrOut = x"71"  else '0'; 
+EndPCDataComm <= '1' when pc_comm_done_reg = x"FF" else '0';
+resetdutCommunicationController <= '1' when rst_dutComm_reg = x"FF" else '0';
 ------------------------------------------------------------------------
 -- Control Signals
 ------------------------------------------------------------------------
@@ -410,7 +415,6 @@ statusReg(4) <= '0';
 statusReg(5) <= '0';
 statusReg(6) <= '0';
 statusReg(7) <= '0';
-
 ------------------------------------------------------------------------
 -- dut Clock Selector
 ------------------------------------------------------------------------
@@ -421,10 +425,7 @@ I0 => EXTClock, -- 1-bit Clock0 input
 I1 => generatedClkFordut, -- 1-bit Clock1 input
 S => dutClockSelector -- 1-bit Clock select input
 );
--- E
-
-clkseltest <= dutClockSelector;
-
+clkseltest <= push_to_dut_int;
 ------------------------------------------------------------------------
 -- Frequency checkers
 ------------------------------------------------------------------------
@@ -436,55 +437,7 @@ dutclockFreqChecker : frequency_counter generic map (board => board) port map (r
 sampleclk => dutClk, reset => frequency_counter_reset,
 frequency_counter_out => dutClockFrequency);
 
-------------------------------------------------------------------------
--- ADC Ports In/Out
-------------------------------------------------------------------------
--- ADC Clock
 
---ADC_ClockGen : DCM_ADC generic map (board => board) 
---port map ( clkin => clk, rst => system_reset, clktobramN2 => clktobram,
---clkout => adc_clock, locked_out => ADC_DCM_OK);
---------------------------------------------------------------------------
-----ADC Gain
---process (clk, adcGain)
---	begin
---		if clk = '1' and clk'Event then
---			pwmAccumulator <= ("0" & pwmAccumulator(7 downto 0))
---									 + ("0" & adcGain);
---		end if;
---end process;
---amp_gain <= pwmAccumulator(8);
---------------------------------------------------------------------------
----- ADC Amplifier Hi/Lo
---amp_hilo <= adcAmp(0);
---------------------------------------------------------------------------
-----ADC data in 10-bit + adc_or(1-bit)+"00000"
---dataFromAdc <= "00000" & adc_or & adc_data;
---------------------------------------------------------------------------
----- BRAM Declarations and Address counters
---------------------------------------------------------------------------
---Internal_BRAM_Address_Generator : counter generic map (N => 16) port map(
---clk => clktobram, reset => bram_data_collect_start, enable => int_addressGen_BRAM_enable,
---counter_out => int_addressGen_BRAM);
---
---bram_data_store : bram_adc_store port map
---(clock => clktobram, addr  => bram_address(14 downto 0), wen   => int_addressGen_BRAM_enable,
---en => active, din   => datatoBRAM, dout  => bram_output);
---
---
---z20k <= '1' when int_addressGen_BRAM >= "000100111000100000" else '0';
---int_addressGen_BRAM_enable <= '1' when z20k = '0' else '0';
---
---External_BRAM_Address_Generator : counter generic map (N => 16) port map(
---clk=> EppDstb, reset =>bram_extaddress_reset, enable => bram_extaddress_enable, counter_out => addressGen_BRAM);
---
---bram_address <= int_addressGen_BRAM when bram_extaddress_enable = '0' else
---addressGen_BRAM;
---
---datatoBRAM <= "000000" & int_addressGen_BRAM(9 downto 0) when counter_adc_select = '0' else dataFromAdc;
-------------------------------------------------------------------------
--- Target
-------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
 -- dut Clock Generation
@@ -493,81 +446,68 @@ dutClockGeneration : dutDCM  generic map (board => board)
    port map ( clkin => clk,   rst => system_reset, clkout => generatedClkFordut,
           locked_out  => dutDCMLocked);
 			 
-------------------------------------------------------------------------
--- Trigger Generation for Oscilloscope
-------------------------------------------------------------------------			 
-triggerGen : trigger_module port map (clock => dutClk, reset => system_reset, startOfEncryption => encStart, 
-triggerLength => triggerLength, noOfTriggerWaitCycles => noOfTriggerWaitCycles, trigger_out => triggerCheck); 
-
---------------------------------------------------------------------------
------ SHIFT REGISTERS FOR PC TO CONTROL BOARD AND CONTROL BOARD TO PC
---------------------------------------------------------------------------
-
---
-pcToControlBoardDataShiftReg : shiftregDataFromPC generic map (dataSize => maxBlockSize) port map (clock => EppDstb, reset =>dlRst,
-sr_e => dlEnb, sr_input => dataFromPc, sr_output => dataToCtrlBrd);
---
-pcToControlBoardKeyShiftReg : shiftregDataFromPC generic map (dataSize => maxKeySize)port map (clock => EppDstb, reset =>klRst,
-sr_e => klEnb, sr_input => dataFromPc, sr_output => keyToCtrlBrd);
---
-controlBoardToPCShiftReg : shiftregDataToPC generic map (dataSize => maxBlockSize)port map (clock => EppDstb, load =>drRst,
-sr_e => drEnb, sr_input => dataFromCtrlBrd, sr_output => dataToPc); 
---
---
-------------------------------------------------------------------------
--------- SHIFT REGISTERS FOR CONTROL BOARD TO dut BOARD AND VICE-VERSA
-----------------------------------------------------------------------------
---
---dataFromCtrlBrd <= dataToCtrlBrd xor keyToCtrlBrd;
-
-
-ControldutCommunication: dutCommunicationHandler port map(
-clock => dutClk, start => EndPCDataComm, reset => resetdutCommunicationController, targetClock => dutCLk, databusHandle => databusHandle, src_read  => src_read, dst_write => dst_write, vdlRst => vdlRst, vdlEnb => vdlEnb, vklRst => vklRst, vklEnb => vklEnb, vrRst => vrRst, vrEnb => vrEnb, src_ready => src_ready, dst_ready => dst_ready, stateMachineStatus => stateMachineLeds, encStart => encStart);
---
-controlBoardTodutDataShiftreg : shiftregDataTodut generic map( interfaceSize => interfaceWidth,
-		dataSize => maxBlockSize) port map (clock => dutClk, load =>vdlRst,
-sr_e => vdlEnb, sr_input => dataToCtrlBrd, sr_output => plainTextTodut);
---
-controlBoardTodutKeyShiftreg : shiftregDataTodut generic map( interfaceSize => interfaceWidth,
-		dataSize => maxBlockSize) port map(clock => dutClk, load =>vklRst,
-sr_e => vklEnb, sr_input => keyToCtrlBrd, sr_output => keyTextTodut);
-
-datain <= plainTextTodut when databusHandle = '1' else keyTextTodut;
---
-dutToControlBoardShiftReg : shiftregDataFromdut generic map( interfaceSize => interfaceWidth,
-		dataSize => maxBlockSize) port map(clock => dutClk, reset =>vrRst,
-sr_e => vrEnb, sr_input => dataout, sr_output => dataFromCtrlBrd);
-
---------------------------------------------------------------------------
------ FOR TESTING PURPOSE dut IS IMPLEMENTED HERE -- PLEASE DELETE IT
---------------------------------------------------------------------------
-
--- dutDeclaration : dutTopLevel port map( clock => dutClk, reset => not EndPCDataComm,
--- src_ready => src_ready, dst_ready => dst_ready, datain => dataout, 
--- src_read => src_read, dst_write => dst_write, dataout => datain, stateMachineStatus => stateMachineLedsTarget);
-
-
-
+dataToPC <= dataFromCtrlBrd;
+--------DUT Interface
+dutInterface_4bit :  entity work.dutInterface_4bit(struct) 
+	Port map( 
+	        wr => push_to_dut_int, --push to dut interface
+           rd => pop_from_dut_int,
+           rst => resetdutCommunicationController,
+			  sys_clk => clk, --EppDstb,--clk,
+           dut_clk =>   DUTClk ,
+			  snd_to_dut => EndPCDataComm,
+			  done => dut_done,
+           di_valid => di_valid,
+           di_ready => di_ready,
+           do_valid => do_valid,
+           do_ready => do_ready,
+			  trigger => triggerCheck,
+			  long_trigger => long_trigger,
+           din => din,
+           dout => dout,
+           data_to_dut => hosttofpga_data,
+           data_from_dut => dataFromCtrlBrd,
+			  state_debug => state_debug,
+			  debug_ram => debug_ram,
+			  debug_dout_ram => debug_dout_ram,
+			  debug_addr => debug_addr,
+			  --
+			  EppDstb => EppDstb,
+			  clr_dout_r_cnt => system_reset --reset dout read counter
+			  
+);
 ----------------------------------------------------------------------------
 ------- DISPLAY LEDs for Debugging
-----------------------------------------------------------------------------
--- displayLED <= dataBlockSize when displayReg = x"01" else
+------------------------------------------------------------------------------
+-- display_byte <= dataBlockSize when displayReg = x"01" else
 --			  keySize when displayReg = x"02" else
 --			  stateMachineLeds when displayReg = x"03" else
 --			  plainTextForTarget(15 downto 8) when displayReg = x"04" else
 --			  plainTextForTarget(7 downto 0) when displayReg = x"05" else
 --			  "0000" & keyTextTodut(3 downto 0) when displayReg = x"06" else
 --			  "0000" & plainTextTodut(3 downto 0) when displayReg = x"07" else
---			  "0000" & dataout(3 downto 0) when displayReg = x"08" else
---			  "0000" & datain(3 downto 0) when displayReg = x"09" else
+--			  --"0000" & dataout(3 downto 0) when displayReg = x"08" else
+--			  --"0000" & datain(3 downto 0) when displayReg = x"09" else
 --			  commandToTargetControl when displayReg = x"0A" else
 --			  stateMachineLedsTarget when displayReg = x"0B" else
 --			  "0000000" & EndPCDataComm when displayReg = x"0C" else
+--			  dataToCtrlBrd(7 downto 0) when displayReg = x"0D" else
+--			  dataToCtrlBrd(15 downto 8) when displayReg = x"0E" else
 --			  displayReg;
+			  
+--display_data <= x"00" & dataToCtrlBrd;
+--display_data <= dataFromCtrlBrd;
+display_data <= x"00" & state_debug;
+--display_data <= x"00" & debug_ram;
+--display_data <= x"00" & debug_dout_ram;
 
+--display_data <= "00000" & d_write_pointer;
+--display_data<= x"0123";
+debug_seven_seg : entity work.display(behav) 
+port map (clk => clk,  d0 => display_data(3 downto 0) , d1 => display_data(7 downto 4), d2 => display_data(11 downto 8) , 
+d3=> display_data(15 downto 12), seven_seg=> seven_seg);
 trigger <= triggerCheck;			  
-DUTClock <= not dutClk;
-reset <= not EndPCDataComm;
-
+--Commented out to get direct clock
+DUTClock <=   dutClk;
+reset <= resetdutCommunicationController;
 end Behavioral;
-

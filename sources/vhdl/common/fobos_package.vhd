@@ -27,7 +27,7 @@ package fobos_package is
     -- USER CONTROLLED VAIRABLES
     ------------------------------------------------------------------------
     constant board                  : integer := 1;
-    constant interfaceWidth         : integer := 16;
+    constant interfaceWidth         : integer := 4; --WARNING! Only 4 bits supported
     constant maxBlockSize           : integer := 128;
     constant maxKeySize             : integer := 128;
     ------------------------------------------------------------------------

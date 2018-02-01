@@ -18,166 +18,156 @@
 --#                                                                           	  #
 --##################################################################################
 
-
-library IEEE;
-use IEEE.STD_LOGIC_1164.all;
+library ieee;
+use ieee.std_logic_1164.all; 
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
 use work.fobos_package.all;
 
-entity dutCommunicationHandler is 
-	port(
-	     clock: in std_logic;
-		 start : in std_logic;
-		 reset: in std_logic;	 
-		 targetClock : in std_logic;
-		 src_read  : in std_logic;
-		 dst_write : in std_logic;
-		 databusHandle : out std_logic; -- data/key to dut selection line
-		 vdlRst : out std_logic; -- dut TO Data load 
-		 vdlEnb : out std_logic; -- dut TO Data enable
-		 vklRst : out std_logic; -- dut TO Key load
-		 vklEnb : out std_logic; -- dut TO Key load		 
-		 vrRst : out std_logic; -- dut FROM data load
-		 vrEnb : out std_logic; -- dut FROM data enable
-		 src_ready : out std_logic;
-		 stateMachineStatus: out std_logic_vector(7 downto 0); -- For debug purpose
-		 dst_ready : out std_logic;
-                 encStart : out std_logic		 
-		 );
-end dutCommunicationHandler;
 
+entity dutComm is
+port(
+		--To Ctrl_top_level
+		clock : in std_logic; --dutclk
+		reset : in std_logic;
+		snd_to_dut: in std_logic; --command from pc set to 1 to start sending data to dut. Pc will set this back to zero ONLY after
+											--it reads all the result (e.g. ciphertext from the controller. controler will then go back to RESRT state 
+		done : out std_logic; -- signals to pc that result is ready 
+		trigger : out std_logic;
+		long_trigger : out std_logic;
+		--To dut
+		di_ready : in std_logic;
+	   di_valid : out std_logic;
+		do_ready : out std_logic;
+	   do_valid : in std_logic;
+		---Internal--din ctrl
+		en_din_w_cnt : out std_logic; --enable ram read counter
+		en_din_r_cnt : out std_logic;
+		clr_din_w_cnt : out std_logic;
+		clr_din_r_cnt : out std_logic;
+		sel_din_addr : out std_logic;
+		---Internal --dout ctrl
+		en_dout_w_cnt : out std_logic; --enable dout ram write counter
+		en_dout_r_cnt: out std_logic; --enable dout ram read counter
+		clr_dout_w_cnt : out std_logic;
+		clr_dout_r_cnt : out std_logic;
+		sel_dout_addr : out std_logic;
+		wr_dout_ram : out std_logic;
+		---Debug
+		state_debug : out std_logic_vector(7 downto 0)
+		--rd_dout_fifo : out std_logic
+);
+end dutComm;
+		
+architecture behav of dutComm is 
 
-architecture structure of dutCommunicationHandler is
-type state is (boot, init1, st1, st2, st3, st3a, st4, st5); 
-signal pr_state,nx_state:state;
+type STATE is (S_RESET, S_WAIT_PC_DATA, S_START_READING, S_SEND_DATA, 
+						S_WAIT_FOR_DOUT, S_GET_DATA, S_WAIT_FOR_PC_READ); 
+signal current_state,next_state:state;
 
-signal load_cnt_key, enb_cnt_key, load_cnt_data, enb_cnt_data, load_cnt_ct, enb_cnt_ct : std_logic;
-signal data_set, key_set, ct_set : std_logic;  
-signal dataBlockSize, keyBlockSize, vDataBlockSize : integer RANGE 0 to (maxBlockSize/interfaceWidth);
 
 begin
+state_reg:	process (clock)
+begin
+	if(rising_edge(clock)) then
+		if (reset='1') then
+			current_state <= S_RESET;
+		else
+			current_state<=next_state;
+		end if;
+	end if;
+end process;
+
+process(current_state,di_ready, do_valid, snd_to_dut)
+begin
+--default outputs
+di_valid <= '0';
+do_ready <= '0';
+trigger <= '0';
+long_trigger <= '0';
+--internal din ctrl
+en_din_w_cnt  <= '0';
+en_din_r_cnt <= '0';
+clr_din_w_cnt <= '0';
+clr_din_r_cnt <= '0';
+sel_din_addr <= '0';
+state_debug <= x"00";
+--internal dout ctrl
+en_dout_w_cnt <= '0';
+en_dout_r_cnt <= '0';
+clr_dout_w_cnt <= '0';
+clr_dout_r_cnt <= '0';
+sel_dout_addr <= '0';
+wr_dout_ram <= '0';
+--
+done <= '0';		
+		
+case current_state is
+   when S_RESET =>
+		next_state <= S_WAIT_PC_DATA;
+		state_debug <= x"01";
+		clr_din_r_cnt <= '1';
+		clr_din_w_cnt<= '1';
+		clr_dout_r_cnt <= '1';
+		clr_dout_w_cnt<= '1';
+		
+	when S_WAIT_PC_DATA =>
+		state_debug <= x"02";
+
+		if (snd_to_dut = '1') then
+			next_state <= S_SEND_DATA;
+		else
+			next_state <= S_WAIT_PC_DATA;
+		end if;	
+
+	when S_SEND_DATA =>
+		state_debug <= x"04";
+		sel_din_addr <= '1';
+		if (di_ready = '1') then --
+			en_din_r_cnt <= '1';
+			di_valid <= '1';
+			next_state <= S_SEND_DATA;
+		else
+			trigger <= '1';
+			long_trigger <= '1';
+			next_state <= S_WAIT_FOR_DOUT;
+		end if;
+		
+   when S_WAIT_FOR_DOUT =>
+	   state_debug <= x"05";
+	   do_ready <= '1';
+		if(do_valid = '1') then
+			wr_dout_ram <= '1';
+			next_state <= S_GET_DATA;
+		else
+		   long_trigger <= '1';
+			next_state <= S_WAIT_FOR_DOUT;
+		end if;
+		
+	when S_GET_DATA =>
+	   state_debug <= x"06";
+	   do_ready <= '1';
+		if (do_valid = '1') then
+			wr_dout_ram <= '1';
+			next_state <= S_GET_DATA;
+		else
+			next_state <= S_WAIT_FOR_PC_READ;
+		end if;
+
+	when S_WAIT_FOR_PC_READ => -- stay here until pc says
+	   state_debug <= x"07";
+		done <= '1'; --tell pc that data is ready toread
+		sel_dout_addr <= '1';
+		if (snd_to_dut = '1') then --pc will set this flag to zero after reading all data
+			next_state <= S_WAIT_FOR_PC_READ;
+		else
+			next_state <= S_RESET;
+		end if;
 	
------------------------- Control signals to dut Controller------------
-counterInputkey : integerCounter port map(clock => clock, reset => reset, load => load_cnt_key, enable => enb_cnt_key, q => keyBlockSize);
-key_set <= '1' when  keyBlockSize >= (maxKeySize/interfaceWidth) else '0';
+	when others =>
+	   state_debug <= x"08";
+		next_state <= S_RESET;
 
-counterInputdata : integerCounter port map(clock => clock, reset => reset, load => load_cnt_data, enable => enb_cnt_data, q => dataBlockSize);
-data_set <= '1' when  dataBlockSize >= (maxBlockSize/interfaceWidth) else '0';
-
-counterOutputData : integerCounter port map(clock => clock, reset => reset, load => load_cnt_ct, enable => enb_cnt_ct, q => vDataBlockSize);	
-ct_set <= '1' when vDataBlockSize >= (maxBlockSize/interfaceWidth) else '0';
-
------------------------------------------------------------------------------------	
-present_state:	process (reset,clock)
-					begin
-						if(reset='1') then
-							pr_state<=boot;
-						elsif (clock'event and clock='1')then
-							pr_state<=nx_state;
-						end if;
+end case;
 end process;
--------------------------------------------------------------------------------------
-next_state_function: process(clock,src_read,key_set,data_set, dst_write, ct_set, start, pr_state)
-  begin
-	  case pr_state is
-		  when boot =>
-		  if(start = '0') then
-		  nx_state <= boot;
-		  else
-		  nx_state <= init1;
-		  end if;
-		  when init1 =>
-		  if (src_read = '0') then
-		  nx_state <= init1;
-		  else
-		  nx_state <= st1;
-		  end if;
-
-		  when st1 =>
-		  if (key_set = '0') then	
-			  nx_state <= st1;
-		  else
-			  nx_state<= st2;
-		  end if;
-
-		  when st2 =>
-		  if (data_set = '0') then	
-			  nx_state <= st2;
-		  else
-			  nx_state<= st3a;
-		  end if;
-		  
-                  when st3a =>
-		  if (dst_write = '0') then
-			  nx_state <= st3;
-		  else 
-			  nx_state <= st4;
-		  end if;
-		  
-		  when st3 => 
-		  if (dst_write = '0') then
-			  nx_state <= st3;
-		  else 
-			  nx_state <= st4;
-		  end if;
-		  
-		  when st4 =>
-		  if (ct_set='0') then
-				nx_state <= st4;
-		  else
-				nx_state <= st5;
-		  end if;
-		  when st5 =>
-		  if (start='1') then
-				nx_state <= st5;
-		  else
-				nx_state <= boot;
-		  end if;		  
-		end case;
-end process; 
-------------------------------------------------------------------------
- output_function: process(pr_state)
- begin	 
-   src_ready <= '0';dst_ready <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '0'; vrEnb <= '0';
-		databusHandle <= '0'; encStart <= '0';
-	case pr_state is 
-		 when boot =>
-		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1';load_cnt_ct <= '1';enb_cnt_ct <= '0'; databusHandle <= '0';
-		 enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '0';vdlRst <= '1'; vdlEnb <= '0'; vklRst <= '1'; vklEnb <= '0'; vrRst <= '1'; vrEnb <= '0';
-		 stateMachineStatus <= x"09";
-		 when init1 =>
-		 src_ready <= '1'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '0'; databusHandle <= '0';
-		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '1'; vdlEnb <= '0'; vklRst <= '1'; vklEnb <= '0'; vrRst <= '1'; vrEnb <= '0';
-		 stateMachineStatus <= x"02";
-		 when st1 => 
-		 src_ready <= '1'; load_cnt_key <= '0'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '1';dst_ready <= '0'; databusHandle <= '0';
-		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '1'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '1'; vrRst <= '1'; vrEnb <= '0';
-		 stateMachineStatus <= x"03";
-		 when st2 =>		 
-	 	 src_ready <= '1'; load_cnt_key <= '1'; load_cnt_data <= '0'; enb_cnt_data<= '1'; enb_cnt_key<= '0';dst_ready <= '0'; databusHandle <= '1';
-		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '1'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '1'; vrEnb <= '0';
-		 stateMachineStatus <= x"04";
-		 when st3a=>
-		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '1'; databusHandle <= '1';	 
-		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '1'; vrEnb <= '0'; encStart <= '1';
-		 stateMachineStatus <= x"09";
-		 when st3=>
-		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '1'; databusHandle <= '1';	 
-		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '1'; vrEnb <= '0';
-		 stateMachineStatus <= x"05";
-		 when st4=>		  
-		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '1'; databusHandle <= '1';	 
-		 load_cnt_ct <= '0';enb_cnt_ct <= '1';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '0'; vrEnb <= '1';
-		 stateMachineStatus <= x"06";
-		 when st5=>		  
-		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0';dst_ready <= '1'; databusHandle <= '1';	 
-		 load_cnt_ct <= '0';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '0'; vrEnb <= '0';
-		 stateMachineStatus <= x"07";
-		 when others =>
-		 stateMachineStatus <= x"08";
-		 src_ready <= '0'; load_cnt_key <= '1'; load_cnt_data <= '1'; enb_cnt_data<= '0'; enb_cnt_key<= '0'; dst_ready <= '0'; databusHandle <= '1';
-		 load_cnt_ct <= '1';enb_cnt_ct <= '0';vdlRst <= '0'; vdlEnb <= '0'; vklRst <= '0'; vklEnb <= '0'; vrRst <= '0'; vrEnb <= '0';
-	end case;
-end process;
-
-
-end structure; 
+end behav;
