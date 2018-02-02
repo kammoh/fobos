@@ -17,27 +17,26 @@
 --#	limitations under the License.                                               #
 --#                                                                           	  #
 --##################################################################################
-
-
 library ieee;
 use ieee.std_logic_1164.all; 
 use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
 use work.fobos_package.all;
 
-
 entity trigger_module is
-port (
-		clock : in std_logic;
-		reset : in std_logic;
-		startOfEncryption : in std_logic;
-		triggerLength : in std_logic_vector(31 downto 0);
-		noOfTriggerWaitCycles : in std_logic_vector(31 downto 0);
-		trigger_out : out std_logic);
+   port (
+		clk : in std_logic;
+		rst : in std_logic;
+		dut_working : in std_logic;
+		trigger_length : in std_logic_vector(31 downto 0);
+		trigger_wait : in std_logic_vector(31 downto 0);
+	   trigger_mode : in std_logic_vector(7 downto 0);
+		trigger_out : out std_logic
+   );
 
 end trigger_module;
 		
-architecture structural of trigger_module is 
+architecture behav of trigger_module is 
 
 component counter is
 	generic (N : integer := 32);
@@ -49,104 +48,107 @@ component counter is
 	);
 end component;
 
-signal cntTrigLenEn, cntTrigWaitEn, cntTrigLenLd, cntTrigWaitLd, triggerOutBuffer : std_logic;
-signal cntTriggerLenOut, cntTriggerWaitOut : std_logic_vector(31 downto 0);
 
-signal zTriggerWait, zTriggerLen : std_logic;
+type STATE is (S_RST, S_WAIT_START, S_DELAY, S_LENGTH, S_DONE); 
+signal current_state, next_state : state;
 
-type STATE is (load, st0, st1, st2, st3); 
-signal pr_state,nx_state:state;
+signal wait_cnt_rst, wait_cnt_en, wait_cnt_expired : std_logic;
+signal wait_cnt_out : std_logic_vector(31 downto 0);
+signal len_cnt_rst, len_cnt_en, len_cnt_expired : std_logic;
+signal len_cnt_out : std_logic_vector(31 downto 0);
+
+signal trigger_s : std_logic;
 
 begin
 
-triggerWaitCounter   : counter generic map (N=>32) port map (clk => clock, reset => cntTrigWaitLd, enable => cntTrigWaitEn, counter_out => cntTriggerWaitOut);
-triggerLengthCounter : counter generic map (N=>32) port map (clk => clock, reset => cntTrigLenLd,  enable => cntTrigLenEn,  counter_out => cntTriggerLenOut);
-zTriggerWait   <= '1' when cntTriggerWaitOut < noOfTriggerWaitCycles else '0';
-zTriggerLen   <= '0' when cntTriggerLenOut < triggerLength else '1';
 
---------------------Async Reset---------------------------------
-present_state:	process (reset,clock)
-					begin
-						if(reset='1') then
-							pr_state<=load;
-						elsif (clock'event and clock='1')then
-							pr_state<=nx_state;
-						end if;
-end process;
------------------------------------------------------------------
 
-next_state_function: process(clock,reset,zTriggerWait, zTriggerLen, startOfEncryption, pr_state)
-  begin
-	  case pr_state is
-		  when load =>
-			nx_state <= st0;
-			
-		  when st0 =>
-		  if (startOfEncryption = '1') then
-			nx_state <= st1;
-			else
-			nx_state <= st0;
-		 end if;
+triggerWaitCounter : counter generic map (N=>32) port map 
+        (clk => clk, 
+        reset => wait_cnt_rst,
+		  enable => wait_cnt_en, 
+        counter_out => wait_cnt_out);
 		  
-		  when st1 =>
-		  if (zTriggerWait = '1') then
-			nx_state <= st1;
-			else
-			nx_state <= st2;
-		 end if;	
-		
-		 when st2 => 
-		 if (zTriggerLen = '1') then
-			nx_state <= st3;
-		else
-			nx_state <= st2;
-		 end if; 
-		 
-		 when st3 =>
-			if (startOfEncryption = '1') then
-				nx_state <= st3;
-			else
-				nx_state <= load;
-			end if;
-			
-		  when others=>
-			  nx_state<=load; 		
-		     
-		end case;
-end process; 
+triggerLenghtCounter : counter generic map (N=>32) port map 
+        (clk => clk, 
+        reset => len_cnt_rst,
+		  enable => len_cnt_en, 
+        counter_out => len_cnt_out);
+		  
+wait_cnt_expired   <= '1' when wait_cnt_out >= trigger_wait else '0';
+len_cnt_expired   <= '1' when  len_cnt_out >= trigger_length else '0';
 
-output_function: process(pr_state)
- begin	 
-	triggerOutBuffer <= '0';		
-	case pr_state is 
-		 when load =>
-			cntTrigLenEn <= '0'; cntTrigLenLd <= '1'; 
-			cntTrigWaitEn <= '0'; cntTrigWaitLd <= '1'; 			
-			triggerOutBuffer <= '0';
-		 when st0 => 
-			cntTrigLenEn <= '0';  cntTrigLenLd <= '1';
-			cntTrigWaitEn <= '0'; cntTrigWaitLd <= '1'; 			
-			triggerOutBuffer <= '0';
-		 when st1 => 
-			cntTrigLenEn <= '0';  cntTrigLenLd <= '0';
-			cntTrigWaitEn <= '1'; cntTrigWaitLd <= '0'; 			
-			triggerOutBuffer <= '0';
-		 when st2 =>		 
-			cntTrigLenEn <= '1'; cntTrigLenLd <= '0';	
-			cntTrigWaitEn <= '0'; cntTrigWaitLd <= '0'; 			
-			triggerOutBuffer <= '1';		
-		 when st3 =>		 
-			cntTrigLenEn <= '0'; cntTrigLenLd <= '1';	
-			cntTrigWaitEn <= '0'; cntTrigWaitLd <= '1'; 			
-			triggerOutBuffer <= '0';
-		 when others =>
-			cntTrigLenEn <= '0';  cntTrigLenLd <= '1';
-			cntTrigWaitEn <= '0'; cntTrigWaitLd <= '1'; 			
-			triggerOutBuffer <= '0';
-		 
-	end case;
+state_reg:	process (clk)
+begin
+	if(rising_edge(clk)) then
+		if (rst='1') then
+			current_state <= S_RST;
+		else
+			current_state<=next_state;
+		end if;
+	end if;
 end process;
-trigger_out <= triggerOutBuffer;
-end structural;
+
+process(current_state, dut_working, wait_cnt_expired, len_cnt_expired)
+begin
+
+--default values
+wait_cnt_rst <= '0';
+wait_cnt_en <= '0';
+len_cnt_rst <= '0';
+len_cnt_en <= '0';
+trigger_s <= '0';
+
+case current_state is
+   when S_RST =>
+	   wait_cnt_rst <= '1';
+		len_cnt_rst <= '1';
+		next_state <= S_WAIT_START;
+		
+	when S_WAIT_START =>
+		if (dut_working = '1') then
+		   if wait_cnt_expired = '1' then
+			    trigger_s <= '1';
+			end if;
+		   wait_cnt_en <= '1';
+			next_state <= S_DELAY;
+		else
+			next_state <= S_WAIT_START;
+		end if;
+		
+   when S_DELAY => --wait for "trigger_wait clock cycles"
+		if (wait_cnt_expired = '1') then
+		   trigger_s <= '1';
+			len_cnt_en <= '1';
+			next_state <= S_LENGTH; --change to lenght state
+		else
+		   wait_cnt_en <= '1';
+			next_state <= S_DELAY;
+		end if;
+		
+	when S_LENGTH =>
+	   if (len_cnt_expired = '1') then
+		   next_state <= S_DONE;
+		else
+		   trigger_s <= '1';
+			len_cnt_en <= '1';
+		   next_state <= S_LENGTH;
+		end if;
+		
+	when S_DONE =>
+	   next_state <= S_DONE;
+end case;
+
+end process;
+
+with trigger_mode select 
+     trigger_out <= trigger_s when TRG_NORM,
+                    dut_working when TRG_FULL,
+                    trigger_s and clk when TRG_NORM_CLK,
+                    dut_working and clk when TRG_FULL_CLK,
+		              trigger_s when others;
+		  
+end behav;
+
 
 
