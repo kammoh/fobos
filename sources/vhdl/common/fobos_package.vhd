@@ -38,6 +38,16 @@ package fobos_package is
     
     constant NEXYS2_7SEGRR          : integer := 14;
     constant NEXYS3_7SEGRR          : integer := 19;
+	 ------------------------------------------------------------------------
+    -- Trigger Modes
+    ------------------------------------------------------------------------
+	 constant TRG_NORM             : std_logic_vector(7 downto 0) := x"00"; --Normal trigger. 
+                                                                            --Trigger wait and length apply
+	 constant TRG_FULL               : std_logic_vector(7 downto 0) := x"01"; --Follows dut_working signal
+	                                                                         --From di_ready=0 until do_valid=1
+	 constant TRG_NORM_CLK           : std_logic_vector(7 downto 0) := x"02"; --Same as TRG_NORM but anded with clk
+	 constant TRG_FULL_CLK           : std_logic_vector(7 downto 0) := x"03"; --Same as TRG_FULL but anded with clk
+
     ------------------------------------------------------------------------
     -- Component Declarations
     ------------------------------------------------------------------------
