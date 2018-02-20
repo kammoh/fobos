@@ -160,6 +160,7 @@ port map(
 	keySize => keySize,
 	noOfTriggerWaitCycles => noOfTriggerWaitCycles,
 	triggerLength => triggerLength,
+	trigger_mode => trigger_mode,
 	sys_rst_reg => sys_rst_reg,
 	rst_dutComm_reg => rst_dutComm_reg,
 	rst_dut_reg => rst_dut_reg,
@@ -265,33 +266,7 @@ dutInterface_4bit :  entity work.dutInterface_4bit(struct)
 			  clr_dout_r_cnt => system_reset --reset dout read counter
 			  
 );
-----------------------------------------------------------------------------
-------- DISPLAY LEDs for Debugging
-------------------------------------------------------------------------------
--- display_byte <= dataBlockSize when displayReg = x"01" else
---			  keySize when displayReg = x"02" else
---			  stateMachineLeds when displayReg = x"03" else
---			  plainTextForTarget(15 downto 8) when displayReg = x"04" else
---			  plainTextForTarget(7 downto 0) when displayReg = x"05" else
---			  "0000" & keyTextTodut(3 downto 0) when displayReg = x"06" else
---			  "0000" & plainTextTodut(3 downto 0) when displayReg = x"07" else
---			  --"0000" & dataout(3 downto 0) when displayReg = x"08" else
---			  --"0000" & datain(3 downto 0) when displayReg = x"09" else
---			  commandToTargetControl when displayReg = x"0A" else
---			  stateMachineLedsTarget when displayReg = x"0B" else
---			  "0000000" & EndPCDataComm when displayReg = x"0C" else
---			  dataToCtrlBrd(7 downto 0) when displayReg = x"0D" else
---			  dataToCtrlBrd(15 downto 8) when displayReg = x"0E" else
---			  displayReg;
-			  
---display_data <= x"00" & dataToCtrlBrd;
---display_data <= dataFromCtrlBrd;
-display_data <= x"00" & state_debug;
---display_data <= x"00" & debug_ram;
---display_data <= x"00" & debug_dout_ram;
 
---display_data <= "00000" & d_write_pointer;
---display_data<= x"0123";
 debug_seven_seg : entity work.display(behav) 
 port map (clk => clk,  d0 => display_data(3 downto 0) , d1 => display_data(7 downto 4), d2 => display_data(11 downto 8) , 
 d3=> display_data(15 downto 12), seven_seg=> seven_seg);

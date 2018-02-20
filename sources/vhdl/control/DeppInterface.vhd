@@ -46,6 +46,7 @@ port (
 	keySize : out std_logic_vector(7 downto 0);
 	noOfTriggerWaitCycles : out std_logic_vector(31 downto 0);
 	triggerLength : out std_logic_vector(31 downto 0);
+	trigger_mode : out std_logic_vector(7 downto 0);
 	sys_rst_reg : out std_logic_vector(7 downto 0);
 	rst_dutComm_reg : out std_logic_vector(7 downto 0);
 	rst_dut_reg : out std_logic_vector(7 downto 0);
@@ -97,6 +98,7 @@ architecture Behav of DeppInterface is
 	signal keySize_s :  std_logic_vector(7 downto 0);
 	signal noOfTriggerWaitCycles_s :  std_logic_vector(31 downto 0);
 	signal triggerLength_s :  std_logic_vector(31 downto 0);
+	signal trigger_mode_s :  std_logic_vector(7 downto 0);
 	signal sys_rst_reg_s :  std_logic_vector(7 downto 0);
 	signal rst_dutComm_reg_s :  std_logic_vector(7 downto 0);
 	signal pc_comm_done_reg_s : std_logic_vector(7 downto 0);
@@ -378,6 +380,15 @@ process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
 	if clk = '1' and clk'Event then
 		if ctlEppDwrOut = '1' and regEppAdrOut = x"EE" then
 			debug_addr_s <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"EF" then
+			trigger_mode_s <= hosttofpga_data;
 		end if;
 	end if;
 end process;

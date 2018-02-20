@@ -57,7 +57,8 @@ constant DIN_W : integer := 8; --ram data bus width width
 signal din_ram_dout : std_logic_vector(DIN_W - 1 downto 0);
 signal din_ram_addr : std_logic_vector(DIN_ADD_W - 1 downto 0);
 ---
-signal din_w_cnt_out, din_r_cnt_out : std_logic_vector(DIN_ADD_W -1 downto 0);
+signal din_w_cnt_out : std_logic_vector(DIN_ADD_W -1 downto 0);
+signal  din_r_cnt_out : std_logic_vector(DIN_ADD_W downto 0);
 signal clr_din_w_cnt, clr_din_r_cnt, en_din_w_cnt, en_din_r_cnt : std_logic;
 
 signal sel_din_addr : std_logic;
@@ -142,7 +143,7 @@ din_write_cnt : entity work.counter(Behavioral)
    );
  -- a counter running at the dut clock.			
 din_read_cnt : entity work.counter(Behavioral)
-	generic map( N => DIN_ADD_W)
+	generic map( N => (DIN_ADD_W + 1))
 	port map( 
 			clk => dut_clk,
 			reset => clr_din_r_cnt,
@@ -151,7 +152,7 @@ din_read_cnt : entity work.counter(Behavioral)
 	);
 
 --din ram address mux
-din_ram_addr <= din_w_cnt_out when sel_din_addr = '0' else ('0' & din_r_cnt_out(DIN_ADD_W - 1 downto 1));
+din_ram_addr <= din_w_cnt_out when sel_din_addr = '0' else (din_r_cnt_out(DIN_ADD_W downto 1));
 --mux to send 4 bit at a time to dut
 din <= din_ram_dout(7 downto 4) when din_r_cnt_out(0) = '0' else din_ram_dout(3 downto 0);
 ----DOUT	
@@ -189,6 +190,7 @@ dout_read_cnt : entity work.counter(Behavioral)
 			counter_out => dout_r_cnt_out
 	);
 --dout ram address mux
-dout_ram_addr <= dout_w_cnt_out when sel_dout_addr = '0' else dout_r_cnt_out(DOUT_ADD_W -2 downto 0) & '0'; --need to jump to byte boundry
+dout_ram_addr <= dout_w_cnt_out when sel_dout_addr = '0' 
+          else dout_r_cnt_out(DOUT_ADD_W -2 downto 0) & '0'; --need to jump to byte boundry
 
 end struct;
