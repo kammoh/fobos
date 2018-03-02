@@ -1,0 +1,34 @@
+################################################################################
+	Starting FOBOS - Flexible Opensource workBench fOr Sidechannel Analysis
+################################################################################
+	Data Acquisition Module Initialized
+	Configuring Workspace ..
+
+Obtaining oscilloscope attributes
+	Number of Encryption: 5
+	Reading data from /home/aabdulga/fobos/sources/dinFile.txt file
+	Connected to Oscilloscope ID :AGILENT TECHNOLOGIES,DSO6054A,MY44008139,05.20.0003
+
+
+	Setting Oscilloscope Attributes
+	:CHANNEL1:IMPEDANCE ONEMEG
+	:CHANNEL1:RANGE 0.500V
+	:CHANNEL2:RANGE 6V
+	:CHANNEL3:RANGE OFF
+	:CHANNEL4:RANGE OFF
+	:TIM:RANG 0.000500
+	:TIMEBASE:REFERENCE LEFT
+	:TRIGger:EDGE:SOURce CHANNEL2
+	:TRIGGER:MODE EDGE
+	:TRIGGER:SWEEP NORM
+	:TRIGGER:EDGE:LEVEL 1
+	:TRIGGER:EDGE:SLOPE POSITIVE
+	:ACQUIRE:TYPE NORM
+	:ACQUIRE:MODE RTIM
+	:ACQUIRE:COMPLETE 100
+	Starting PC-FPGA Communication via USB
+	Control Board -> Nexys3
+	Version -> 0.2
+
+	Initializing USB - FPGA Communication...
+	Depp protocol not enabled. Exiting Program

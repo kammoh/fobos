@@ -103,7 +103,7 @@ BEGIN
       -- insert stimulus here 
       trigger_length <= x"00000004";
 		trigger_wait <=   x"00000002";
-		trigger_mode <= TRG_NORM_CLK;
+		trigger_mode <= TRG_NORM;
 		
 		dut_working <= '1';
 		wait for clk_period*15;

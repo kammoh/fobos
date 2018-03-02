@@ -1,0 +1,347 @@
+################################################################################
+	Starting FOBOS - Flexible Opensource workBench fOr Sidechannel Analysis
+################################################################################
+	Data Acquisition Module Initialized
+	Configuring Workspace ..
+
+Obtaining oscilloscope attributes
+	Number of Encryption: 10
+	Reading data from /home/aabdulga/fobos/sources/dinFile.txt file
+	Connected to Oscilloscope ID :AGILENT TECHNOLOGIES,DSO6054A,MY44008139,05.20.0003
+
+
+	Setting Oscilloscope Attributes
+	:CHANNEL1:IMPEDANCE ONEMEG
+	:CHANNEL1:RANGE 0.500V
+	:CHANNEL2:RANGE 6V
+	:CHANNEL3:RANGE OFF
+	:CHANNEL4:RANGE OFF
+	:TIM:RANG 0.000500
+	:TIMEBASE:REFERENCE LEFT
+	:TRIGger:EDGE:SOURce CHANNEL2
+	:TRIGGER:MODE EDGE
+	:TRIGGER:SWEEP NORM
+	:TRIGGER:EDGE:LEVEL 1
+	:TRIGGER:EDGE:SLOPE POSITIVE
+	:ACQUIRE:TYPE NORM
+	:ACQUIRE:MODE RTIM
+	:ACQUIRE:COMPLETE 100
+	Starting PC-FPGA Communication via USB
+	Control Board -> Nexys3
+	Version -> 0.2
+
+	Initializing USB - FPGA Communication...
+		Depp protocol enabled at Port 0
+		Nexys3 - Main Clock Frequency ->100.0 - MHz
+		Nexys3 - Victim Clock Frequency ->0.999993 - MHz
+Channels to Digitize -> CHAN1, CHAN2
+	Started Encryption/Decryption No - 1
+	Getting data from Oscilloscope for Trace No ->1
+	Oscilloscope Says .. Acquiring  ->CHAN1
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL1
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL1
+		Volts per Division = 0.063
+		Offset = -0.06535
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL1
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+	Oscilloscope Says .. Acquiring  ->CHAN2
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL2
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL2
+		Volts per Division = 0.75
+		Offset = 0.60975
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL2
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+Channels to Digitize -> CHAN1, CHAN2
+	Started Encryption/Decryption No - 2
+	Getting data from Oscilloscope for Trace No ->2
+	Oscilloscope Says .. Acquiring  ->CHAN1
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL1
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL1
+		Volts per Division = 0.063
+		Offset = -0.06535
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL1
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+	Oscilloscope Says .. Acquiring  ->CHAN2
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL2
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL2
+		Volts per Division = 0.75
+		Offset = 0.60975
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL2
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+Channels to Digitize -> CHAN1, CHAN2
+	Started Encryption/Decryption No - 3
+	Getting data from Oscilloscope for Trace No ->3
+	Oscilloscope Says .. Acquiring  ->CHAN1
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL1
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL1
+		Volts per Division = 0.063
+		Offset = -0.06535
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL1
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+	Oscilloscope Says .. Acquiring  ->CHAN2
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL2
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL2
+		Volts per Division = 0.75
+		Offset = 0.60975
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL2
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+Channels to Digitize -> CHAN1, CHAN2
+	Started Encryption/Decryption No - 4
+	Getting data from Oscilloscope for Trace No ->4
+	Oscilloscope Says .. Acquiring  ->CHAN1
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL1
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL1
+		Volts per Division = 0.063
+		Offset = -0.06535
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL1
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+	Oscilloscope Says .. Acquiring  ->CHAN2
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL2
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL2
+		Volts per Division = 0.75
+		Offset = 0.60975
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL2
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+Channels to Digitize -> CHAN1, CHAN2
+	Started Encryption/Decryption No - 5
+	Getting data from Oscilloscope for Trace No ->5
+	Oscilloscope Says .. Acquiring  ->CHAN1
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL1
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL1
+		Volts per Division = 0.063
+		Offset = -0.06535
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL1
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+	Oscilloscope Says .. Acquiring  ->CHAN2
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL2
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL2
+		Volts per Division = 0.75
+		Offset = 0.60975
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL2
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+Channels to Digitize -> CHAN1, CHAN2
+	Started Encryption/Decryption No - 6
+	Getting data from Oscilloscope for Trace No ->6
+	Oscilloscope Says .. Acquiring  ->CHAN1
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL1
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL1
+		Volts per Division = 0.063
+		Offset = -0.06535
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL1
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+	Oscilloscope Says .. Acquiring  ->CHAN2
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL2
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL2
+		Volts per Division = 0.75
+		Offset = 0.60975
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL2
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+Channels to Digitize -> CHAN1, CHAN2
+	Started Encryption/Decryption No - 7
+	Getting data from Oscilloscope for Trace No ->7
+	Oscilloscope Says .. Acquiring  ->CHAN1
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL1
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL1
+		Volts per Division = 0.063
+		Offset = -0.06535
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL1
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+	Oscilloscope Says .. Acquiring  ->CHAN2
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL2
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL2
+		Volts per Division = 0.75
+		Offset = 0.60975
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL2
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+Channels to Digitize -> CHAN1, CHAN2
+	Started Encryption/Decryption No - 8
+	Getting data from Oscilloscope for Trace No ->8
+	Oscilloscope Says .. Acquiring  ->CHAN1
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL1
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL1
+		Volts per Division = 0.063
+		Offset = -0.06535
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL1
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+	Oscilloscope Says .. Acquiring  ->CHAN2
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL2
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL2
+		Volts per Division = 0.75
+		Offset = 0.60975
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL2
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+Channels to Digitize -> CHAN1, CHAN2
+	Started Encryption/Decryption No - 9
+	Getting data from Oscilloscope for Trace No ->9
+	Oscilloscope Says .. Acquiring  ->CHAN1
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL1
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL1
+		Volts per Division = 0.063
+		Offset = -0.06535
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL1
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+	Oscilloscope Says .. Acquiring  ->CHAN2
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL2
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL2
+		Volts per Division = 0.75
+		Offset = 0.60975
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL2
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+Channels to Digitize -> CHAN1, CHAN2
+	Started Encryption/Decryption No - 10
+	Getting data from Oscilloscope for Trace No ->10
+	Oscilloscope Says .. Acquiring  ->CHAN1
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL1
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL1
+		Volts per Division = 0.063
+		Offset = -0.06535
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL1
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+	Oscilloscope Says .. Acquiring  ->CHAN2
+
+	Oscillopscope Says .. Obtaining # point -> +20000
+
+	Reading Preamble of CHANNEL2
+	Total Number of Points to Receive: 20000
+		Scope Settings for -> CHANNEL2
+		Volts per Division = 0.75
+		Offset = 0.60975
+		Seconds per Division = 5e-05
+		Delay = 0.000200001
+	Reading Data of CHANNEL2
+Got the entire data. Moving on..!
+	Adjusting Sample Size to ->20000
+	Saving the data from Control Board

@@ -111,8 +111,10 @@ def readVictimClockFreq() :
 
 	
 def sendTriggerParamsToControlBoard():
-  noOfTriggerWaitCycles = [((cfg.config_attributes['TRIGGER_WAIT_CYCLES'] - 1) >> i & 0xFF) for i in (24, 16, 8, 0)]
-  noOfTriggerLengthCycles = [((cfg.config_attributes['TRIGGER_LENGTH_CYCLES'] - 1) >> i & 0xFF) for i in (24, 16, 8, 0)]  
+  noOfTriggerWaitCycles = [((cfg.config_attributes['TRIGGER_WAIT_CYCLES'] ) >> i & 0xFF) for i in (24, 16, 8, 0)]
+  print "WAIT CYCLES=" , noOfTriggerWaitCycles
+  noOfTriggerLengthCycles = [((cfg.config_attributes['TRIGGER_LENGTH_CYCLES'] ) >> i & 0xFF) for i in (24, 16, 8, 0)]  
+  print "WAIT LENGTH=" , noOfTriggerLengthCycles
   triggerType = cfg.config_attributes['TRIGGER_TYPE']
   print "Setting trigger type to: " , str(globals.TRIGGER_TYPE[triggerType])
   status = putRegByte(0x89, globals.TRIGGER_TYPE[triggerType])
