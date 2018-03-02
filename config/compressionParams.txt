@@ -1,5 +1,5 @@
 ####################################################
 ######## Compression Module Parameters #############
 ####################################################
-COMPRESSION_LENGTH = 20
+COMPRESSION_LENGTH = 10
 COMPRESSION_TYPE = MEAN # MAX|MIN|MEAN

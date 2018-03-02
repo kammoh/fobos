@@ -21,9 +21,9 @@
 # =============================================
 # =============================================
 
-WORK_DIR      = FOBOSWorkspace
+WORK_DIR      = workspace
 SOURCE_DIR    = sources
-PROJECT_NAME = testing
+PROJECT_NAME =  ketje
 TAG = counter 
 
 

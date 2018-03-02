@@ -43,6 +43,10 @@ YES = True
 NO = False
 
 DATA = 'data'
+MASK1 = 'mask1'
+MASK2 = 'mask2'
+MASK3 = 'mask3'
+MASK4 = 'mask4'
 CIPHERTEXT = 'ciphertext'
 KEY = 'key'
 
@@ -182,7 +186,12 @@ ANALYSIS_CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME = "channel4TriggerData.npy"
 CAPTURE_MODE_SINGLE = "single"
 CAPTURE_MODE_MULTI = "multi"
 
-
+#TRIGGER TYPES
+TRIGGER_TYPE = { 'TRG_NORM'     : 0x0,
+                 'TRG_FULL'     : 0x1,
+                 'TRG_NORM_CLK' : 0x2,
+                 'TRG_FULL_CLK' : 0x3}
+ 
 #Analysis globals
 ANALYSIS_FOLDER_NAME = "analysis"
 TESTDIRNAME = "testing"

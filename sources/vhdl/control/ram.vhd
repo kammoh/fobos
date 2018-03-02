@@ -40,9 +40,11 @@ architecture Behav of ram is
 type ram_array is array(0 to 2**ADD_W - 1 ) of STD_LOGIC_VECTOR(W - 1 downto 0);
 signal my_ram : ram_array;
 begin
+--process (clk, regEppAdrOut, ctlEppDwrOut, din)
 process(clk)
 begin
 	if rising_edge(clk) then
+	   --if ctlEppDwrOut = '1' and regEppAdrOut = x"7A" then
 		if we = '1' then
 			my_ram(to_integer(unsigned(addr))) <= din;
 		end if;

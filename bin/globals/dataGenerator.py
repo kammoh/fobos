@@ -87,7 +87,104 @@ def getPlainText():
 		printFunctions.printToScreenAndLog("\tReading " + str(TOTAL_DATA) + " bytes from "+ cfg.config_attributes['DATA_FILE'] +" file")
 		printFunctions.printToOutputFile(dataToEncrypt, globals.DATA)
 	return dataToEncrypt	
+	dataToEncrypt = []
+	if(cfg.config_attributes['PLAINTEXT_GENERATION'] == globals.RANDOM):
+		dataToEncrypt = generateRandomData()
+	elif(cfg.config_attributes['PLAINTEXT_GENERATION'] == globals.USER):
+		printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['NUMBER_OF_TRACES']))
+		printFunctions.printToScreenAndLog("\tBlock Size: " + str(cfg.config_attributes['BLOCK_SIZE']))
+		rawData = support.readFile(cfg.config_attributes['DATA_FILE'])
+		for count in range(0, len(rawData)):
+			temp = support.convertToByteArray(rawData[count])
+			for x in temp: 
+				if (x!='\n'): 
+					dataToEncrypt.append(x)
+		TOTAL_DATA = 	cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['BLOCK_SIZE'] * cfg.config_attributes['NUMBER_OF_TRACES']
+		printFunctions.printToScreenAndLog("\tReading " + str(TOTAL_DATA) + " bytes from "+ cfg.config_attributes['DATA_FILE'] +" file")
+		printFunctions.printToOutputFile(dataToEncrypt, globals.DATA)
+	return dataToEncrypt	
 		
+def getData():
+        data = []
+        printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['NUMBER_OF_TRACES']))
+        f = open(cfg.config_attributes['DATA_FILE'])
+        data = f.readlines()
+	f.close()   
+        printFunctions.printToScreenAndLog("\tReading data from "+ cfg.config_attributes['DATA_FILE'] +" file")
+        return data
+
+
+def getMask1():
+	maskToEncrypt1 = []
+	if(cfg.config_attributes['MASK_GENERATION1'] == globals.RANDOM):
+		maskToEncrypt1 = generateRandomData()
+	elif(cfg.config_attributes['MASK_GENERATION1'] == globals.USER):
+		printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['NUMBER_OF_TRACES']))
+		printFunctions.printToScreenAndLog("\tBlock Size: " + str(cfg.config_attributes['BLOCK_SIZE']))
+		rawData = support.readFile(cfg.config_attributes['MASK_FILE1'])
+		for count in range(0, len(rawData)):
+			temp = support.convertToByteArray(rawData[count])
+			for x in temp: 
+				if (x!='\n'): 
+					maskToEncrypt1.append(x)
+		TOTAL_DATA = 	cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['BLOCK_SIZE'] * cfg.config_attributes['NUMBER_OF_TRACES']
+		printFunctions.printToScreenAndLog("\tReading " + str(TOTAL_DATA) + " bytes from "+ cfg.config_attributes['MASK_FILE1'] +" file")
+		printFunctions.printToOutputFile(maskToEncrypt1, globals.MASK1)
+	return maskToEncrypt1	
+
+def getMask2():
+	maskToEncrypt2 = []
+	if(cfg.config_attributes['MASK_GENERATION2'] == globals.RANDOM):
+		maskToEncrypt2 = generateRandomData()
+	elif(cfg.config_attributes['MASK_GENERATION2'] == globals.USER):
+		printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['NUMBER_OF_TRACES']))
+		printFunctions.printToScreenAndLog("\tBlock Size: " + str(cfg.config_attributes['BLOCK_SIZE']))
+		rawData = support.readFile(cfg.config_attributes['MASK_FILE2'])
+		for count in range(0, len(rawData)):
+			temp = support.convertToByteArray(rawData[count])
+			for x in temp: 
+				if (x!='\n'): 
+					maskToEncrypt2.append(x)
+		TOTAL_DATA = 	cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['BLOCK_SIZE'] * cfg.config_attributes['NUMBER_OF_TRACES']
+		printFunctions.printToScreenAndLog("\tReading " + str(TOTAL_DATA) + " bytes from "+ cfg.config_attributes['MASK_FILE2'] +" file")
+		printFunctions.printToOutputFile(maskToEncrypt2, globals.MASK2)
+	return maskToEncrypt2	
+
+def getMask3():
+	maskToEncrypt3 = []
+	if(cfg.config_attributes['MASK_GENERATION3'] == globals.RANDOM):
+		maskToEncrypt3 = generateRandomData()
+	elif(cfg.config_attributes['MASK_GENERATION3'] == globals.USER):
+		printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['NUMBER_OF_TRACES']))
+		printFunctions.printToScreenAndLog("\tBlock Size: " + str(cfg.config_attributes['BLOCK_SIZE']))
+		rawData = support.readFile(cfg.config_attributes['MASK_FILE3'])
+		for count in range(0, len(rawData)):
+			temp = support.convertToByteArray(rawData[count])
+			for x in temp: 
+				if (x!='\n'): 
+					maskToEncrypt3.append(x)
+		TOTAL_DATA = 	cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['BLOCK_SIZE'] * cfg.config_attributes['NUMBER_OF_TRACES']
+		printFunctions.printToScreenAndLog("\tReading " + str(TOTAL_DATA) + " bytes from "+ cfg.config_attributes['MASK_FILE3'] +" file")
+		printFunctions.printToOutputFile(maskToEncrypt3, globals.MASK3)
+	return maskToEncrypt3	
+
+def getMask4():
+	maskToEncrypt4 = []
+	if(cfg.config_attributes['MASK_GENERATION4'] == globals.RANDOM):
+		maskToEncrypt = generateRandomData()
+	elif(cfg.config_attributes['MASK_GENERATION4'] == globals.USER):
+		printFunctions.printToScreenAndLog("\tNumber of Encryption: " + str(cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['NUMBER_OF_TRACES']))
+		printFunctions.printToScreenAndLog("\tBlock Size: " + str(cfg.config_attributes['BLOCK_SIZE']))
+		rawData = support.readFile(cfg.config_attributes['MASK_FILE4'])
+		for count in range(0, len(rawData)):
+			temp = support.convertToByteArray(rawData[count])
+			for x in temp: 
+				if (x!='\n'): 
+					maskToEncrypt4.append(x)
+		TOTAL_DATA = 	cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['BLOCK_SIZE'] * cfg.config_attributes['NUMBER_OF_TRACES']
+		printFunctions.printToScreenAndLog("\tReading " + str(TOTAL_DATA) + " bytes from "+ cfg.config_attributes['MASK_FILE4'] +" file")
+		printFunctions.printToOutputFile(maskToEncrypt4, globals.MASK4)
+	return maskToEncrypt4	
 def getKey():		
 	keyToEncrypt = []
 	if(cfg.config_attributes['KEY_GENERATION'] == globals.USER):

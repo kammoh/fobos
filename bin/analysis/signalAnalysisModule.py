@@ -235,20 +235,28 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 			triggerSampleCount = 0
 			for sampleNo in range(0, len(measuredTriggerData)):
 				if(measuredTriggerData[sampleNo] > cfg.config_attributes['TRIGGER_THRESHOLD'] and firstTriggerHigh == False):
-					firstTriggerHigh = True
-					if (traceSet == 0):
-						tempArray = measuredPowerData[sampleNo:]
-						t = tempArray.shape
-						traceLength = t[0]
-						alignedData = tempArray
-						tempArray = numpy.zeros(0)
-						break;
-					elif(traceSet > 0):
-						tempArray = measuredPowerData[sampleNo:]
-						tempArray = adjustSampleSize(traceLength, tempArray)
-						alignedData = numpy.vstack((alignedData, tempArray))
-						tempArray = numpy.zeros(0)
-						break;
+                                        ###
+                                        start = sampleNo
+                                        firstTriggerHigh = True
+                                elif(measuredTriggerData[sampleNo] < cfg.config_attributes['TRIGGER_THRESHOLD']  and firstTriggerHigh == True):
+                                        end = sampleNo
+					break
+			print "Cutting trace : start= " + str(start) + " end=" + str(end)
+
+ 
+			if (traceSet == 0):
+				tempArray = measuredPowerData[start:end]
+				t = tempArray.shape
+				traceLength = t[0]
+				alignedData = tempArray
+				tempArray = numpy.zeros(0)
+				#break;
+			elif(traceSet > 0):
+				tempArray = measuredPowerData[start:end]
+				tempArray = adjustSampleSize(traceLength, tempArray)
+				alignedData = numpy.vstack((alignedData, tempArray))
+				tempArray = numpy.zeros(0)
+				#break;
 						
 		return (alignedData)
 		

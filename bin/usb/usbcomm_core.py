@@ -35,7 +35,6 @@ def arrayToString(array):
     r += '%02X' % num
   return r
   
-
 def initializeControlBoardConnection():
     status = dmgr.DmgrOpen(cfg.USB_HANDLE, cfg.config_attributes['CONTROL_BOARD'])
     if (status == SUCCESS):
@@ -51,18 +50,17 @@ def initializeControlBoardConnection():
       printFunctions.printToScreenAndLog("\tUSB Communication Failure. Exiting Program")
       sys.exit(0)
 
-      
 def getRegByte(regByte):
   if (depp.DeppGetReg(cfg.USB_HANDLE[0], regByte, dataBYTEP, 0)) :
-    printFunctions.printToLog("\tRead Data from Reg ->  " + str(regByte) + "Data -> " + str(dataBYTEP[0]))
+    #printFunctions.printToLog("\tRead Data from Reg ->  " + str(regByte) + "Data -> " + str(dataBYTEP[0]))
     return (dataBYTEP[0])
   else :
-    printFunctins.printToScreenAndLog("\tCould not read register -> " + regByte)
+    printFunctions.printToScreenAndLog("\tCould not read register -> " + regByte)
     return (0)
     
 def putRegByte(regByte, dataBYTE):
     if (depp.DeppPutReg(cfg.USB_HANDLE[0], regByte, dataBYTE, 0)) :
-      printFunctions.printToLog("\tSending Data to Reg ->  " + str(regByte) + "Data -> " + str(dataBYTE))
+      #printFunctions.printToLog("\tSending Data to Reg ->  " + str(regByte) + "Data -> " + str(dataBYTE))
       return (1)
     else :
       printFunctions.printToScreenAndLog("\tCould not write to register -> " + str(regByte))
@@ -115,6 +113,9 @@ def readVictimClockFreq() :
 def sendTriggerParamsToControlBoard():
   noOfTriggerWaitCycles = [((cfg.config_attributes['TRIGGER_WAIT_CYCLES'] - 1) >> i & 0xFF) for i in (24, 16, 8, 0)]
   noOfTriggerLengthCycles = [((cfg.config_attributes['TRIGGER_LENGTH_CYCLES'] - 1) >> i & 0xFF) for i in (24, 16, 8, 0)]  
+  triggerType = cfg.config_attributes['TRIGGER_TYPE']
+  print "Setting trigger type to: " , str(globals.TRIGGER_TYPE[triggerType])
+  status = putRegByte(0x89, globals.TRIGGER_TYPE[triggerType])
   status = putRegByte(0x80, noOfTriggerWaitCycles[0])
   status = putRegByte(0x81, noOfTriggerWaitCycles[1])
   status = putRegByte(0x82, noOfTriggerWaitCycles[2])
@@ -125,28 +126,41 @@ def sendTriggerParamsToControlBoard():
   status = putRegByte(0x87, noOfTriggerLengthCycles[3])
   return status
 
-def sendBlockOfDataToControlBoard(traceCount):
+def sendDataToControlBoard(traceCount):
+	##read file
+	data_to_send = cfg.dataToControlBoard[traceCount]
 	status = putRegByte(0x30, 0x00)
-	status = putRegByte(0x30, 0x04)
-	status = putRegByte(0x30, 0x06)
-	for count in range(cfg.dataToCtrlBrdByteNum, ((traceCount+1)*cfg.config_attributes['BLOCK_SIZE'])):
-		status = putRegByte(0x7A, int(cfg.dataToControlBoard[cfg.dataToCtrlBrdByteNum], 16))
-		cfg.dataToCtrlBrdByteNum += 1
-	status = putRegByte(0x30, 0x00)
-	return status
+	i = 0
+	while i < len(data_to_send) -1:
+		bytes_to_send = data_to_send[i:i+2]
+		lsb = bytes_to_send[0:2]
+		status = putRegByte(0x7A, int(lsb, 16))
+		i += 2
 	
-def sendKeyToControlBoard():
-	status = putRegByte(0x30, 0x00)
-	status = putRegByte(0x30, 0x08)
-	status = putRegByte(0x30, 0x09)
-	for count in range(0, cfg.config_attributes['KEY_SIZE']):
+def readOutput(traceCount):
+	#read output (ciphertxt) from HW
+	out_list = str()
+	if (traceCount == 0):
+		cfg.dataFromControlBoard = []
+	support.goToSleep(0.1)
+	print "Reading Output: "
+	expected_output_size = cfg.config_attributes["EXPECTED_OUTPUT"]
+	print "Expected output size in :" + str(expected_output_size) + " bytes"
+	for i in range(0,int(expected_output_size)): #Configurable parameter
+        	
+                x = "%02X" % getRegByte(0x71)
+	
+			
+		bytes_to_save = str(x)
+		#print bytes_to_save
+		out_list += bytes_to_save
 		
-		print str(count) + str(cfg.keyToControlBoard[count])
-		status = putRegByte(0x7A, int(cfg.keyToControlBoard[count], 16))
-	status = putRegByte(0x30, 0x00)
-	return status
+        cfg.dataFromControlBoard.append(out_list)
+	print out_list		
+        status = putRegByte(0xDD, 0x00) ## deassert snd_to_dut signal
+
 	
-def populateControlBoardOutputDataStorage(traceCount):
+def populateControlBoardOutputDataStorage_old(traceCount):
 	printFunctions.printToLog("\tGetting data from Control Board for Trace No ->" + str(traceCount+1))
 	status = putRegByte(0x30, 0x00)
 	status = putRegByte(0x30, 0x05)
@@ -180,113 +194,39 @@ def runEncrytionOnControlBoard (traceCount):
 		#status = putRegByte(0x01, 0x00) # End
 		return status
 	elif (cfg.config_attributes['DUMMY_RUN'] == 'NO'):
-		status = putRegByte(0x01, 0x02) # Initialize
+		
+        	status = putRegByte(0xDD, 0x00) ## deassert snd_to_dut signal
+		status = putRegByte(0xAA, 0xFF) # Initialize - system_reset
+		support.goToSleep(0.1)
+		status = putRegByte(0xAA, 0x00) # Initialize
+		status = putRegByte(0xBB, 0xFF) # Initialize -- reset dut interfce and dut
+		support.goToSleep(0.1)
+		status = putRegByte(0xBB, 0x00) # Initialize
+		status = putRegByte(0xCC, 0xFF) # Initialize -target_module_reset
+		
+		#support.goToSleep(0.1)
+		status = putRegByte(0xCC, 0x00) # Initialize
+		print "init done"
+		#support.goToSleep(3)	
 		printFunctions.printToScreenAndLog("\tStarted Encryption/Decryption No - " + str(traceCount+1))	
-		if (traceCount == 0):
-			printFunctions.printToScreenAndLog("\t\tFirst Run - Setting the key for Encryption/Decryption")
-			sendKeyToControlBoard()
-			
-		sendBlockOfDataToControlBoard(traceCount)
-		status = putRegByte(0x01, 0x00) # Initialize
-		#support.goToSleep(1)		
-		status = putRegByte(0x01, 0xFF) # Run
-		#support.goToSleep(1)
-		#status = putRegByte(0x01, 0x00) # End
+	        sendDataToControlBoard(traceCount)		
+		status = putRegByte(0xDD, 0xFF) # Run
+                print "start command sent"
 		return status
 
-def saveControlBoardOutputDataStorage():
+
+def saveOutput():
 	printFunctions.printToScreenAndLog("\tSaving the data from Control Board")
-	printFunctions.printToOutputFile(cfg.dataFromControlBoard, globals.CIPHERTEXT)
+	f = open(globals.CIPHERTEXT, 'wb')
+	for line in cfg.dataFromControlBoard:
+		f.write("%s\n" % line)
+	f.close()
+
 	return True
 
 def displayReg(regByte):
 	status = putRegByte(0x40, regByte)
 	return status
-# def streamDataFromBRAM(cfg.USB_HANDLE, nosBytes, logfile, dataToStream, debug):
-
-  
-  # lbyteValue = [0]*(nosBytes)
-  # hbyteValue = [0]*(nosBytes)
-  # streamdataV = [0]*(nosBytes)
-  # if(debug == 2):
-    # i = 0
-    # log = open(logfile, 'w')
-    # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x01, debug) # Reset High
-    # if (dataToStream == COUNTER):
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x00, debug) # Reset Low|Counter input
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x80, debug)
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x40, debug)
-      # while(i<nosBytes):
-        # hbyteValue[i] = getRegByte(cfg.USB_HANDLE, 0x10, debug)
-        # i = i+1
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x80, debug)
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x40, debug)
-      # i =0
-      # while(i<nosBytes):
-        # lbyteValue[i] = getRegByte(cfg.USB_HANDLE, 0x11, debug)
-        # i = i+1
-      # i=0
-      # while(i<nosBytes):
-        # streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
-        # log.write(str(streamdataV[i]))
-        # log.write('\n')
-        # i = i+1
-    # if (dataToStream == OPENADC):
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x20, debug) # Reset Low|Counter input
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0xA0, debug)
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x60, debug)
-      # while(i<nosBytes):
-        # hbyteValue[i] = getRegByte(cfg.USB_HANDLE, 0x10, debug)
-        # i = i+1
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0xA0, debug)
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x60, debug)  
-      # i =0
-      # while(i<nosBytes):
-        # lbyteValue[i] = getRegByte(cfg.USB_HANDLE, 0x11, debug)
-        # i = i+1
-      # i=0 
-      # while(i<nosBytes):
-        # streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
-        # log.write(str(streamdataV[i]))
-        # log.write('\n')
-        # i = i+1
-    # log.close() 
-    
-  # if(debug == 3):
-    # i=0
-    # log = open(logfile, 'w')
-    # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x01, debug) # Reset High
-    # if (dataToStream == COUNTER):
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x00, debug) # Reset Low|Counter input
-      # time.sleep(1)
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x80, debug)
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x40, debug)
-      # hbyteValue = streamBytes(cfg.USB_HANDLE, nosBytes, 0x10, debug)
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x80, debug)
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x40, debug)
-      # lbyteValue = streamBytes(cfg.USB_HANDLE, nosBytes, 0x11, debug)
-      # while(i<nosBytes):
-        # streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
-        # log.write(str(streamdataV[i]))
-        # log.write('\n')
-        # i = i+1
-      # log.close()
-    # elif(dataToStream == OPENADC):
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x20, debug) # Reset Low|Counter input
-      # time.sleep(1)
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0xA0, debug)
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x60, debug)
-      # hbyteValue = streamBytes(cfg.USB_HANDLE, nosBytes, 0x10, debug)
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0xA0, debug)
-      # status = putRegByte(cfg.USB_HANDLE, 0x00, 0x60, debug)
-      # lbyteValue = streamBytes(cfg.USB_HANDLE, nosBytes, 0x11, debug)
-      # while(i<nosBytes):
-        # streamdataV[i] = getIntValue(hbyteValue[i], lbyteValue[i])
-        # log.write(str(streamdataV[i]))
-        # log.write('\n')
-        # i = i+1
-      # log.close()    
-  # return streamdataV
 
 def resetControlBoard():
 	status = putRegByte(0x30, 0x01)
@@ -296,6 +236,10 @@ def resetControlBoard():
 def setControlBoardConfigAttributes():
 	status = sendTriggerParamsToControlBoard()
 	cfg.dataToCtrlBrdByteNum = 0
+	cfg.maskToCtrlBrdByteNum1 = 0
+	cfg.maskToCtrlBrdByteNum2 = 0
+	cfg.maskToCtrlBrdByteNum3 = 0
+	cfg.maskToCtrlBrdByteNum4 = 0
 	return status
 	
 def openControlBoardConnection():

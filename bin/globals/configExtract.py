@@ -53,7 +53,6 @@ def configureWorkspace():
 	cfg.CIPHER_TEXT_FILE = os.path.join(cfg.OUTPUT_FOLDER,globals.CIPHER_TEXT_FILE_NAME)
 	cfg.KEY_FILE = os.path.join(cfg.OUTPUT_FOLDER,globals.KEY_FILE_NAME)
 	cfg.config_attributes['DATA_FILE'] = os.path.join(cfg.ROOTDIR,cfg.config_attributes['SOURCE_DIR'],cfg.config_attributes['DATA_FILE'])	
-	cfg.config_attributes['KEY_FILE'] = os.path.join(cfg.ROOTDIR,cfg.config_attributes['SOURCE_DIR'],cfg.config_attributes['KEY_FILE'])
 	support.createDirectory(cfg.OUTPUT_FOLDER)
 	support.createDirectory(cfg.MEASUREMENT_FOLDER)
 	shutil.copy(cfg.PLOT_SCRIPT, cfg.MEASUREMENT_FOLDER)
@@ -113,9 +112,6 @@ def extractConfigAttributes():
 		if re.match('^DATA_FILE', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['DATA_FILE'] = value[1].strip(" ")
-		if re.match('^KEY_FILE', object) :
-			value = re.split("=", object)
-			cfg.config_attributes['KEY_FILE'] = value[1].strip(" ")
 		if re.match('^INPUT_FORMAT', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['INPUT_FORMAT'] = value[1].strip(" ")
@@ -125,6 +121,9 @@ def extractConfigAttributes():
 		if re.match('^TRIGGER_LENGTH_CYCLES', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['TRIGGER_LENGTH_CYCLES'] = int(value[1].strip(" "))
+		if re.match('^TRIGGER_TYPE', object) :
+			value = re.split("=", object)
+			cfg.config_attributes['TRIGGER_TYPE'] = value[1].strip(" ")
 		if re.match('^OUTPUT_FORMAT', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['OUTPUT_FORMAT'] = value[1].strip(" ")
@@ -152,12 +151,6 @@ def extractConfigAttributes():
 		if re.match('^NUMBER_OF_TRACES', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['NUMBER_OF_TRACES'] = int(value[1].strip(" "))
-		if re.match('^PLAINTEXT_GENERATION', object) :
-			value = re.split("=", object)
-			cfg.config_attributes['PLAINTEXT_GENERATION'] = value[1].strip(" ")
-		if re.match('^KEY_GENERATION', object) :
-			value = re.split("=", object)
-			cfg.config_attributes['KEY_GENERATION'] = value[1].strip(" ")			
 		if re.match('^DUMMY_RUN', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['DUMMY_RUN'] = value[1].strip(" ")
@@ -167,7 +160,9 @@ def extractConfigAttributes():
 		if re.match('^CAPTURE_MODE', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['CAPTURE_MODE'] = value[1].strip(" ")
-
+		if re.match('^EXPECTED_OUTPUT', object) :
+			value = re.split("=", object)
+			cfg.config_attributes['EXPECTED_OUTPUT'] = value[1].strip(" ")
 			
 def updatePowerAndTriggerFileNames():
 	powerFileExistsFlag = False
@@ -232,7 +227,7 @@ def configureAnalysisWorkspace():
 		printFunctions.printToScreenBold("\tMeasurement Directory @\n\t"+cfg.MEASUREMENT_FOLDER+"\n\tdoes not exits. Please re-run the FOBOS Analysis again\n")
 		support.exitProgram()
 	cfg.ALIGNED_DATA_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, globals.ALIGNED_DATA_FILE_NAME)
-	updatePowerAndTriggerFileNames()
+	#updatePowerAndTriggerFileNames()
 	cfg.RAW_UNALIGNED_POWER_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, cfg.RAW_UNALIGNED_POWER_FILE_NAME)
 	cfg.RAW_UNALIGNED_TRIGGER_FILE = os.path.join(cfg.MEASUREMENT_FOLDER, cfg.RAW_UNALIGNED_TRIGGER_FILE_NAME)
 	cfg.POWERMODELDIR = os.path.join(cfg.ROOTDIR, globals.POWERMODELS_DIRNAME)

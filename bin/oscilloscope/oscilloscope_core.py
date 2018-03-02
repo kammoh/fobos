@@ -17,6 +17,7 @@
 #                                                                           #
 #############################################################################
 import os
+import time
 import re
 from sys import argv
 from socket import *
@@ -273,6 +274,7 @@ def get_waveform_trigger() :
   return (measuredTriggerData)  
 
 def getDataFromOscilloscope(channelName) :
+  t1 = time.time()
   if(channelName == 'CHANNEL1'):
 	chanType = 'CHAN1'
   if(channelName == 'CHANNEL2'):
@@ -344,6 +346,7 @@ def getDataFromOscilloscope(channelName) :
     #count += len(temp)
     #rData = tData - count
   #print wavedata
+  t2 = time.time()
   
   printFunctions.printToLog("Got the entire data. Moving on..!")
   fileId = open(cfg.TEMP_MEASUREMENT_FILE, "wb")
@@ -356,6 +359,7 @@ def getDataFromOscilloscope(channelName) :
 	#print "\t\tFirst run"
 	cfg.SAMPLE_LENGTH_FROM_OSC = len(measuredChannelData)
   print "\tSAmple Length --> " + str(cfg.SAMPLE_LENGTH_FROM_OSC)
+  print "++++++++++++++++++++++++++++++++++++++++t2-t1=%s" % str(t2-t1)
   return (measuredChannelData)
 
 def initializeOscilloscopeDataStorage():

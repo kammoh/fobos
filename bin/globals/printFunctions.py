@@ -138,17 +138,18 @@ def printToOutputFile(data, type):
 			file.write(output)
 	
 	if(type == globals.CIPHERTEXT):
-		TOTAL_DATA = cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['BLOCK_SIZE'] * cfg.config_attributes['NUMBER_OF_TRACES']
-		for count in range (0, TOTAL_DATA):
-			output += str(data[count]) + " "
-			if ((count+1) % cfg.config_attributes['BLOCK_SIZE']  == 0):
-				output += "\n"	
-		with open(cfg.CIPHER_TEXT_FILE, 'a') as file:
-			file.write(output)
-			
+		#TOTAL_DATA = cfg.config_attributes['NUMBER_OF_ENCRYPTIONS_PER_TRACE'] * cfg.config_attributes['BLOCK_SIZE'] * cfg.config_attributes['NUMBER_OF_TRACES']
+		f = open(cfg.CIPHER_TEXT_FILE, 'wb')
+        	for line in cfg.dataFromControlBoard:
+                	f.write("%s\n" % line)
+        	f.close()
+	
 	if(type == globals.KEY):
+                print "d=" + str(data)
 		TOTAL_DATA = cfg.config_attributes['KEY_SIZE']
+                print TOTAL_DATA
 		for count in range (0, TOTAL_DATA):
+                        print "c=" + str(count)
 			output += str(data[count]) + " "
 		output += "\n"	
 		with open(cfg.KEY_FILE, 'a') as file:

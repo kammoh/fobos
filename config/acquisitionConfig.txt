@@ -20,71 +20,58 @@
 # Global Settings
 # =============================================
 # =============================================
-
 MEASUREMENT_FORMAT = dat # Default => dat
 LOGGING = INFO # INFO|DEBUG
-
 # =============================================
 # =============================================
 # Control Board Settings
 # =============================================
 # =============================================
-
-CONTROL_BOARD = Nexys2
-VICTIM_RESET = 11
-TIME_OUT = 50000
-TRIGGER_WAIT_CYCLES = 1 #@VICTIM CLOCK must be >0
-TRIGGER_LENGTH_CYCLES = 1 #@VICTIM CLOCK
+CONTROL_BOARD = Nexys3
+VICTIM_RESET = 100
+TIME_OUT = 5000
+TRIGGER_WAIT_CYCLES = 300 #@VICTIM CLOCK must be >0
+TRIGGER_LENGTH_CYCLES = 100 #@VICTIM CLOCK
+TRIGGER_TYPE = TRG_FULL #TRG_NORM | TRG_FULL | TRG_NORM_CLK | TRG_FULL_CLK
 # =============================================
 # =============================================
 # Test Data Generation Settings
 # =============================================
 # =============================================
-
-PLAINTEXT_GENERATION = RANDOM # USER | RANDOM
-DATA_FILE     = plaintexts.txt
-KEY_GENERATION = USER # USER | RANDOM 
-KEY_FILE      = keys.txt
-INPUT_FORMAT  = hex # Default => hex
+DATA_FILE     = dinFile.txt
+EXPECTED_OUTPUT = 128 # Expected output size in bytes
 OUTPUT_FORMAT = hex # Default => hex
 NUMBER_OF_ENCRYPTIONS_PER_TRACE = 1
 BLOCK_SIZE = 16 # In Bytes
-KEY_SIZE = 16 # In Bytes
-
 # =============================================
 # =============================================
 # FOBOS Capture Settings
 # =============================================
 # =============================================
 DUMMY_RUN = NO  #YES/NO
-NUMBER_OF_TRACES = 2000
-
-
+NUMBER_OF_TRACES = 5
 ####################################################
 ######## Signal Alignment Module Parameters ########
 ####################################################
 CAPTURE_MODE = SINGLE # MULTI|SINGLE
 TRIGGER_THRESHOLD = 1.0
-
 # =============================================
 # =============================================
 # FOBOS Oscilloscope Settings
 # =============================================
 # =============================================
-
-
 # INTIALIZATION OPTIONS
 OSCILLOSCOPE = AGILENT #AGILENT|OPENADC
 OSCILLOSCOPE_IP = 192.168.0.10
 OSCILLOSCOPE_PORT = 5025
 AUTOSCALE = NO   # YES|NO    
-IMPEDANCE = FIFTY #FIFTY|ONEMEG
+IMPEDANCE = ONEMEG #FIFTY|ONEMEG
 # VOLTAGE AND TIME RANGE OPTIONS        
-CHANNEL1_RANGE = 0.12V
+CHANNEL1_RANGE = 0.500V
 CHANNEL2_RANGE = 6V
 CHANNEL3_RANGE = OFF # ON|OFF|voltage range
 CHANNEL4_RANGE = OFF # ON|OFF|voltage range
-TIME_RANGE = 0.000020
+TIME_RANGE = 0.000500
 TIMEBASE_REF = LEFT    
 # TRIGGER OPTIONS
 TRIGGER_SOURCE =  CHANNEL2

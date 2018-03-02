@@ -18,7 +18,7 @@
 #############################################################################
 import os
 import time
-from globals import cfg, globals,support, printFunctions, configExtract
+from globals import cfg,support,globals, printFunctions, configExtract
 from oscilloscope.oscilloscope_core import *
 from analysis import plottingModule
 import pickle
@@ -45,8 +45,7 @@ def main():
 	configExtract.configureWorkspace()	
 	printFunctions.printHeaderToScreenAndLog()
 	extractOscilloscopeConfigAttributes()
-	cfg.dataToControlBoard = getPlainText()
-	cfg.keyToControlBoard = getKey()
+	cfg.dataToControlBoard = getData()
 	openOscilloscopeConnection()
 	setOscilloscopeConfigAttributes()
 	initializeOscilloscopeDataStorage()
@@ -55,11 +54,19 @@ def main():
 	traceCount = 0
 	while (traceCount < cfg.config_attributes['NUMBER_OF_TRACES']):
 		armOscilloscope()
+		t1 = time.time()
 		runEncrytionOnControlBoard(traceCount)
+		t2 = time.time()
+		#print "It took %s to run enc" % str(t2-t1)
+		#support.goToSleep(0.1)
+		readOutput(traceCount)
+		t3 = time.time()
 		populateOscilloscopeDataStorageAndAlign(traceCount)
-		populateControlBoardOutputDataStorage(traceCount)
+		t4 = time.time()
+		#print "It took %s to read oscillscope" % str(t4-t3)
 		traceCount += 1
-	saveControlBoardOutputDataStorage()
+	
+	saveOutput()
 	closeOscilloscopeConnection()
 	closeControlBoardConnection()
 #############################################################################

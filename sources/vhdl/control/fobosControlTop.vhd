@@ -96,8 +96,9 @@ signal dataFromTarget : std_logic_vector(15 downto 0); -- address 71,72
 signal commandToTargetControl, stateMachineLeds,stateMachineLedsTarget : std_logic_vector(7 downto 0); -- address 77
 signal dataBlockSize : std_logic_vector(7 downto 0); -- address 78
 signal keySize : std_logic_vector(7 downto 0); -- address 79
-signal noOfTriggerWaitCycles, triggerLength : std_logic_vector( 31 downto 0); -- address 80,81,82,83,84,85,86,87
-signal trigger_mode : std_logic_vector(7 downto 0);
+signal noOfTriggerWaitCycles, triggerLength : std_logic_vector( 31 downto 0); -- address 80,81,82,83,84,85,86,87\
+signal triggerMode : std_logic_vector(7 downto 0);
+signal dutWorking : std_logic;
 ------------------------------------------------------------------------
 -- Display (LED) Registers Declarations
 ------------------------------------------------------------------------
@@ -120,8 +121,7 @@ signal read_reg,strobe_reg,rst_dut_reg,rst_dutComm_reg ,sys_rst_reg ,
 signal dut_done : std_logic;
 --debug
 signal debug_ram, debug_dout_ram, debug_addr :	STD_LOGIC_VECTOR(7 downto 0);
---
-signal dut_working : std_logic;
+
 begin
 ------------------------------------------------------------------------
 -- CERG Banner Display
@@ -137,63 +137,286 @@ begin
 --generic map (N => NEXYS3_7SEGRR)
 --port map (clk => clk, cergbanner_segment => cergbanner);
 --end generate;
+
+EPP_Controller : EppCtrl port map (
+		  clk => clk,
+		  EppAstb => EppAstb,
+		  EppDstb => EppDstb,
+		  EppWr => EppWrite,
+		  EppRst => active,
+		  EppDB => EppDB,
+		  EppWait => EppWait,
+		  busEppOut => hosttofpga_data,
+		  busEppIn => fpgatohost_data,
+		  regEppAdrOut => regEppAdrOut,
+		  ctlEppDwrOut => ctlEppDwrOut,
+		  ctlEppRdCycleOut => ctlEppRdCycleOut,
+		  HandShakeReqIn => inactive,
+		  ctlEppStartOut => ctlEppStartOut,
+		  ctlEppDoneIn => ctlEppDoneIn
+		  );
 ------------------------------------------------------------------------
---Depp Interface to connect to host PC
-depp : entity work.DeppInterface(Behav)
-port map(
-   --Interface to host PC
-   clk => clk,  
-   EppAstb => EppAstb,
-   EppDstb => EppDstb,
-   EppWrite => EppWrite,
-   EppDB => EppDB,
-   EppWait => Eppwait,
-	-----Fobos config parameters. Signals to other Fobos units
-	dataReg0 => dataReg0,
-	dataReg1 => dataReg1,
-	adcGain => adcGain,
-	adcAmp => adcAmp,
-	controlReg => controlReg,
-	DisplayReg => DisplayReg,
-	commandToTargetControl => commandToTargetControl,
-	dataBlockSize => dataBlockSize,
-	keySize => keySize,
-	noOfTriggerWaitCycles => noOfTriggerWaitCycles,
-	triggerLength => triggerLength,
-	trigger_mode => trigger_mode,
-	sys_rst_reg => sys_rst_reg,
-	rst_dutComm_reg => rst_dutComm_reg,
-	rst_dut_reg => rst_dut_reg,
-	pc_comm_done_reg => pc_comm_done_reg,
-	debug_addr => debug_addr,
-	hosttofpga_data_o => hosttofpga_data,
-	--EppDstb => EppDstb_s,
-   ---Inputs from other Fobos units -- to be read by host PC
-   bram_output => bram_output,
-   mainclockfrequency => mainclockfrequency,
-   dutClockFrequency => dutClockFrequency,
-   statusReg => statusReg,
-	programOK => programOK,
-   dataToPc => dataToPC,
-	---ctrl signals
-	system_reset => system_reset,
-   frequency_counter_reset => frequency_counter_reset,
-   push_to_dut_int => push_to_dut_int,
-   pop_from_dut_int => pop_from_dut_int,
-   EndPCDataComm => EndPCDataComm,
-   resetdutCommunicationController => resetdutCommunicationController
-);
+-- fpga to host data output mux
 ------------------------------------------------------------------------
+fpgatohost_data <=  dataReg0 when regEppAdrOut = x"00" else
+		    dataReg1 when regEppAdrOut = x"01" else
+		    ---------------------------------------
+		    bram_output(15 downto 8) when regEppAdrOut = x"10" else
+		    bram_output(7 downto 0) when regEppAdrOut = x"11" else
+		    ---------------------------------------
+			mainclockfrequency(31 downto 24) when regEppAdrOut = x"20" else
+		    mainclockfrequency(23 downto 16) when regEppAdrOut = x"21" else			 
+			mainclockfrequency(15 downto 8)  when regEppAdrOut = x"22" else
+		    mainclockfrequency(7 downto 0)   when regEppAdrOut = x"23" else
+			dutClockFrequency(31 downto 24) when regEppAdrOut = x"24" else
+		    dutClockFrequency(23 downto 16) when regEppAdrOut = x"25" else			 
+			dutClockFrequency(15 downto 8)  when regEppAdrOut = x"26" else
+		    dutClockFrequency(7 downto 0)   when regEppAdrOut = x"27" else			
+		    ---------------------------------------
+		    controlReg when regEppAdrOut = x"30" else
+		    statusReg  when regEppAdrOut = x"31" else
+		    ----------------------------------------
+		    displayReg when regEppAdrOut = x"40" else
+		    ----------------------------------------
+		    programOK  when regEppAdrOut = x"50" else
+			----------------------------------------
+			adcGain when regEppAdrOut = x"60" else
+			adcAmp when regEppAdrOut = x"61" else
+			----------------------------------------
+			dataToPc when regEppAdrOut = x"71" else
+			
+			----------------------------------------
+		    x"00";
+	
+------------------------------------------------------------------------
+-- Data Registers
+------------------------------------------------------------------------
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"00" then
+			dataReg0 <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"01" then
+			dataReg1 <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"60" then
+			adcGain <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"61" then
+			adcAmp <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+------------------------------------------------------------------------
+-- Control and Status Register
+------------------------------------------------------------------------
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"30" then
+			controlReg <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+------------------------------------------------------------------------
+-- Display (LED) Register
+------------------------------------------------------------------------
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"40" then
+			displayReg <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+------------------------------------------------------------------------
+-- Target Registers
+------------------------------------------------------------------------
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"77" then
+			commandToTargetControl <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"78" then
+			dataBlockSize <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"79" then
+			keySize <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+------------------------------------------------------------------------
+-- Trigger signal registers
+------------------------------------------------------------------------
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"80" then
+			noOfTriggerWaitCycles(31 downto 24) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"81" then
+			noOfTriggerWaitCycles(23 downto 16) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"82" then
+			noOfTriggerWaitCycles(15 downto 8) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"83" then
+			noOfTriggerWaitCycles(7 downto 0) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"84" then
+			triggerLength(31 downto 24) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"85" then
+			triggerLength(23 downto 16) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"86" then
+			triggerLength(15 downto 8) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"87" then
+			triggerLength(7 downto 0) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"89" then
+			triggerMode(7 downto 0) <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"AA" then
+			sys_rst_reg <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"BB" then
+			rst_dutComm_reg <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"CC" then
+			rst_dut_reg <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"DD" then
+			pc_comm_done_reg <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+process (clk, regEppAdrOut, ctlEppDwrOut, hosttofpga_data)
+	begin
+	if clk = '1' and clk'Event then
+		if ctlEppDwrOut = '1' and regEppAdrOut = x"EE" then
+			debug_addr <= hosttofpga_data;
+		end if;
+	end if;
+end process;
+
+
 ------------------------------------------------------------------------
 -- Control Signals
 ------------------------------------------------------------------------
 
---system_reset <= '1' when sys_rst_reg = x"FF" else '0';
---frequency_counter_reset <= '1' when controlReg = x"02" else '0';
---push_to_dut_int <= '1' when regEppAdrOut = x"7A" and ctlEppDwrOut = '1' else '0'; 
---pop_from_dut_int <= '1' when regEppAdrOut = x"71"  else '0'; 
---EndPCDataComm <= '1' when pc_comm_done_reg = x"FF" else '0';
---resetdutCommunicationController <= '1' when rst_dutComm_reg = x"FF" else '0';
+system_reset <= '1' when sys_rst_reg = x"FF" else '0';
+frequency_counter_reset <= '1' when controlReg = x"02" else '0';
+dlEnb <= '1' when controlReg = x"06" else '0';
+push_to_dut_int <= '1' when regEppAdrOut = x"7A" and ctlEppDwrOut = '1' else '0'; 
+pop_from_dut_int <= '1' when regEppAdrOut = x"71"  else '0'; 
+EndPCDataComm <= '1' when pc_comm_done_reg = x"FF" else '0';
+resetdutCommunicationController <= '1' when rst_dutComm_reg = x"FF" else '0';
 ------------------------------------------------------------------------
 -- Control Signals
 ------------------------------------------------------------------------
@@ -252,7 +475,7 @@ dutInterface_4bit :  entity work.dutInterface_4bit(struct)
            do_valid => do_valid,
            do_ready => do_ready,
 			  trigger => triggerCheck,
-			  long_trigger => dut_working,
+			  long_trigger => dutWorking,
            din => din,
            dout => dout,
            data_to_dut => hosttofpga_data,
@@ -267,24 +490,49 @@ dutInterface_4bit :  entity work.dutInterface_4bit(struct)
 			  
 );
 
+trig_unit: entity work.trigger_module
+   port map(
+		clk => dutClk,
+		rst => system_reset,
+		dut_working => dutWorking,
+		trigger_length => triggerLength,
+		trigger_wait => noOfTriggerWaitCycles,
+	   trigger_mode => triggerMode,
+		trigger_out => trigger
+   );
+----------------------------------------------------------------------------
+------- DISPLAY LEDs for Debugging
+------------------------------------------------------------------------------
+-- display_byte <= dataBlockSize when displayReg = x"01" else
+--			  keySize when displayReg = x"02" else
+--			  stateMachineLeds when displayReg = x"03" else
+--			  plainTextForTarget(15 downto 8) when displayReg = x"04" else
+--			  plainTextForTarget(7 downto 0) when displayReg = x"05" else
+--			  "0000" & keyTextTodut(3 downto 0) when displayReg = x"06" else
+--			  "0000" & plainTextTodut(3 downto 0) when displayReg = x"07" else
+--			  --"0000" & dataout(3 downto 0) when displayReg = x"08" else
+--			  --"0000" & datain(3 downto 0) when displayReg = x"09" else
+--			  commandToTargetControl when displayReg = x"0A" else
+--			  stateMachineLedsTarget when displayReg = x"0B" else
+--			  "0000000" & EndPCDataComm when displayReg = x"0C" else
+--			  dataToCtrlBrd(7 downto 0) when displayReg = x"0D" else
+--			  dataToCtrlBrd(15 downto 8) when displayReg = x"0E" else
+--			  displayReg;
+			  
+--display_data <= x"00" & dataToCtrlBrd;
+--display_data <= dataFromCtrlBrd;
+display_data <= x"00" & state_debug;
+--display_data <= x"00" & debug_ram;
+--display_data <= x"00" & debug_dout_ram;
+
+--display_data <= "00000" & d_write_pointer;
+--display_data<= x"0123";
 debug_seven_seg : entity work.display(behav) 
-port map (clk => clk,  d0 => display_data(3 downto 0) , d1 => display_data(7 downto 4), d2 => display_data(11 downto 8) , 
+port map (clk => clk,  d0 => display_data(3 downto 0) , 
+d1 => display_data(7 downto 4), d2 => display_data(11 downto 8) , 
 d3=> display_data(15 downto 12), seven_seg=> seven_seg);
-trigger <= dut_working;			  
+--trigger <= triggerCheck;			  
 --Commented out to get direct clock
 DUTClock <=   dutClk;
 reset <= resetdutCommunicationController;
-
---------Trigger module
-trigger_unit : entity work.trigger_module(Behav) port map(
-	 clk => dutClk,
-    rst => system_reset,
-    dut_working => dut_working, 
-    trigger_length => triggerLength,
-    trigger_wait => noOfTriggerWaitCycles,
-	 trigger_mode => trigger_mode
-    --trigger_out => trigger
-  ); 
 end Behavioral;
-
-
