@@ -16,3 +16,6 @@
 .directory
 .DS_Store
 __MACOSX
+FOBOSWorkspace
+temp
+_impact.cmd

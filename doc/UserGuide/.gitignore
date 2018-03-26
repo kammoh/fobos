@@ -4,5 +4,12 @@
 *.bak
 *.dvi
 *.toc
+*.lot
+*.lof
+*.ist
+*.glg
+*.gls
+*.glo
+*.orig
 .directory
 
