@@ -1,1 +1,704 @@
-/nhome/aabdulga/Documents/docs/UserGuide/functions.tex
+\chapter{Function Descriptions}
+
+\section{FOBOS - Analysis Module}
+FOBOS's analysis module uses a set of python scripts to post process the raw measurement data obtained from the oscilloscope and perform analysis on the obtained data.Various functions implemented in the Analysis module is described below:\newline
+
+\begin{table}[H]
+\caption{getAlignedMeasuredPowerData Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.getAlignedMeasuredPowerData}} \\
+ \hline
+ Usage & \texttt{signalAnalysisModule.getAlignedMeasuredPowerData()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs & M x N Numpy matrix that holds aligned traces. Where M is the number of traces and N is the number of samples per trace.\\ \hline
+ Description & Reads aligned traces from the \$Workspace/\$projectName/\$attempt/Measurements directory and loads it to an M x N Numpy matrix.
+This function calls signalAnalysisModule.readAlignedDataFromFile(). \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{readAlignedDataFromFile Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.readAlignedDataFromFile}} \\
+ \hline
+ Usage & \texttt{signalAnalysisModule.readAlignedDataFromFile()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs & M x N Numpy matrix that holds aligned traces. Where M is the number of traces and N is number of samples per trace.\\ \hline
+ Description & Reads aligned data from file and returns M x N Numpy matrix. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{detectSampleSize Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.detectSampleSize}} \\
+ \hline
+ Usage & \texttt{signalAnalysisModule.detectSampleSize(fileName)}\\ \hline
+ Inputs & Aligned traces file name. \\ \hline
+ Outputs & Number of samples in a trace. \\ \hline
+ Description & Reads the first 10 traces and returns the number of samples in the largest trace.
+If the number of traces is less than 10 all traces are read.
+This is done to be able to adjust all traces to the same number of samples if some do not have the same size due to acquisition timing. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{adjustSampleSize Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.adjustSampleSize}} \\
+ \hline
+ Usage & \texttt{signalAnalysisModule.adjustSampleSize(sampleLength, dataArray)}\\ \hline
+ Inputs & \begin{itemize} \item sample length to adjust to. 		   
+         \item N x 1 nympy array that represents one trace where N is the number of samples in the trace. 
+		\end{itemize}\\ \hline
+ Outputs & SampleLenght x 1 Numpy array that represents the adjusted trace. \\ \hline
+ Description & Used to modify the number of samples in a trace. If the number of samples is less than SampleLength, the array is padded with zeros. If the number of samples is more than SampleLength, the array is truncated. The function does nothing if the number of samples is equal to SampleLength.
+ \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{acquirePowerModel Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.acquirePowerModel}} \\
+ \hline
+ Usage & \texttt{signalAnalysisModule.acquirePowerModel
+ (HyptheticalDataFileName,globals.ADAPTIVE\_CPA)}\\ \hline
+ Inputs & \begin{itemize}
+ 			\item Power model file name
+ 			\item  Correlation type 
+ 			\end{itemize}
+ 			\\ \hline
+ Outputs & M x N Numpy array that holds the hypothetical power traces. Where N is the number of encryptions/decryptions and M is the number of key guesses. \\ \hline
+ Description & Reads the hypothetical power data from file in \$fobos/data. Returns M x N Numpy array that holds the hypothetical power traces. Where N is the number of encryptions/decryptions and M is the number of key guesses.
+ \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{updatePowerModelUsingBCPA Function ***********revise}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.updatePowerModelUsingBCPA}} \\
+ \hline
+ Usage & \texttt{signalAnalysisModule.updatePowerModelUsingBCPA(array1, array2, rowA)}\\ \hline
+ Inputs & \begin{itemize}
+ 			\item Array1
+ 			\item Array2
+ 			\item rowA
+ 			\end{itemize}
+  \\ \hline
+ Outputs & \\ \hline
+ Description & Called from signalAnalysisModule.acquirePowerModel().
+ \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{computeAlignedData Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.computeAlignedData}} \\
+ \hline
+ Usage & \texttt{signalAnalysisModule.computeAlignedData(powerData, triggerData)}\\ \hline
+ Inputs &  \begin{itemize}
+ 		    \item N x 1 Numpy array that holds measured power data. Where N is the number of samples.
+ 		    \item N x 1 Numpy array that holds trigger power data. Where N is the number of samples.
+ 		    \end{itemize} \\ \hline
+ Outputs & Aligned power trace (K x 1 Numpy array where K is the number of samples). \\ \hline
+ Description & Uses powerData and triggerData to generate the aligned trace.
+The function looks for the rising edge of the trigger signal to determine the start of the trace. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{correlation\_pearson Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{sca.correlation\_pearson}} \\
+ \hline
+ Usage & \texttt{sca.correlation\_pearson(measuredPowerData, hypotheticalPowerData)}\\ \hline
+ Inputs &  \begin{itemize}
+ 		    \item M x N Numpy matrix for power traces. Where M is the number of encryptions/decryptions, N the number of samples per trace.
+            \item L x M array the represents the hypothetical power values. Where M is the number of encryptions/decryptions and L is the number of key guesses (i.e for byte guess, L=256).
+            \end{itemize}\\ \hline
+ Outputs & N x L Numpy correlation matrix where N is the number of samples per trace. \\ \hline
+ Description & Calculates Pearson correlation between the hypothetical data and measured data. Returns an N x L correlation matrix.
+When we guess byte values L = 256.
+ \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\caption{findMinimumGuessingEntropy Function*********revise}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{sca.findMinimumGuessingEntropy}} \\
+ \hline
+ Usage & \texttt{signalAnalysisModule.computeAlignedData(measuredPowerData, triggerData)}\\ \hline
+ Inputs &  \begin{itemize}
+ 		   \item measured power data.
+ 		   \item hypotheticalPowerData.
+ 		   \end{itemize}\\ \hline
+ Outputs &  \\ \hline
+ Description &  \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{calculate\_autocorrelation Function ***** revise}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{sca.calculate\_autocorrelation}} \\
+ \hline
+ Usage & \texttt{sca.calculate\_autocorrelation(alignedData)}\\ \hline
+ Inputs &  M x N Numpy matrix that holds aligned power data. Where M is the number of traces and N is
+ the number of samples per trace. \\ \hline
+ Outputs &  \\ \hline
+ Description &  \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{plotTrace Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{plottingModule.plotTrace}} \\
+ \hline
+ Usage & \texttt{plottingModule.plotTrace(dataToPlot, traceNos, plotType)}\\ \hline
+ Inputs &  \begin{itemize}
+ 		   \item M x N Numpy matrix that holds traces to plot. Where M is the number of traces and N is the number of samples.
+ 		   \item Trace number
+ 		   \item Plot type
+ 		   \end{itemize}
+per trace.
+The traces to be plotted.
+  \\ \hline
+ Outputs & None \\ \hline
+ Description & Plots the traces represented by the Numpy matrix. The x-axis represents time and the y-axis represents voltage. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{plotHist Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{plottingModule.plotHist}} \\
+ \hline
+ Usage & \texttt{plottingModule.plotHist(corrMatrix, corrType)}\\ \hline
+ Inputs &  \begin{itemize}
+ 		   \item M x N Correlation Numpy matrix. 
+ 		   \item Correlation type.
+ 		   \end{itemize}  \\ \hline
+ Outputs & None \\ \hline
+ Description & Plots a histogram. The x-axis represents the key guess and the y-axis represenst the number of occurrences.
+ \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{plotCorr Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{plottingModule.plotCorr}} \\
+ \hline
+ Usage & \texttt{plottingModule.plotCorr(corrMatrix, corrType)}\\ \hline
+ Inputs & \begin{itemize}
+ 		  \item M x N Numpy correlation matrix
+ 		  \item Correlation type 
+ 		  \end{itemize} \\ \hline
+ Outputs & None \\ \hline
+ Description & Plots correlation data. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{sampleSpaceDisp Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{postProcessingModule.sampleSpaceDisp}} \\
+ \hline
+ Usage & \texttt{postProcessingModule.sampleSpaceDisp(alignedData)}\\ \hline
+ Inputs & M x N Numpy matrix that holds aligned data. Where M is the number of traces and N is the number of samples per trace. \\ \hline
+ Outputs & M x Window\_Size Numpy array that holds the aligned data after removing samples  \\ \hline
+ Description & Removes samples before WINDOW\_START and after WINDOW\_START + WINDOW\_SIZE - 1 from each trace. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{compressData Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{compressData}} \\
+ \hline
+ Usage & \texttt{compressData(measuredPowerData)}\\ \hline
+ Inputs & M x N Numpy array that represents traces. Where M is the number of traces and N is the number of samples per trace. \\ \hline
+ Outputs & M x K Numpy array that represents compressed traces. Where M is the number of traces and $K = \frac{N}{COMPRESSION\_LENGTH}$.  \\ \hline
+ Description & Summarizes COMPRESSION\_LENGTH samples into one sample. The summarization type depends on the COMPRESSION\_TYPE configuration parameter which can be MEAN, MIN or Max. \\ \hline
+\end{tabular}
+\end{table}
+\begin{table}[H]
+\caption{compress Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{postProcessingModule.compress}} \\
+ \hline
+ Usage & \texttt{postProcessingModule.compress (a, compressionLenght, compressionType)}\\ \hline
+ Inputs & \begin{itemize}
+ 		  \item M x N Numpy array that represents traces. Where M is the number of traces and N is the number of samples per trace.
+ 		  \item Number of samples to compress into one sample.
+          \item Compression type.
+          \end{itemize} \\ \hline
+ Outputs &  M x K Numpy array that represents compressed traces. Where M is the number of traces and $K = \frac{N}{COMPRESSION\_LENGTH}$.  \\ \hline
+ Description & This function is called by postProcessingModule.compressData() to do the compression. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{traceExpunge Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{postProcessingModule.traceExpunge}} \\
+ \hline
+ Usage & \texttt{postProcessingModule.traceExpunge(measuredPowerData)}\\ \hline
+ Inputs & M x N Numpy array that represents traces. Where M is the number of traces and N is the number of samples per trace. \\ \hline
+ Outputs & L x N Numpy array that represents traces after removing the traces that do not fall in acceptable range. Where L is the number of traces and N is the number of samples per trace.  \\ \hline
+ Description & Removes traces that do not fall in acceptable range. \\ \hline
+\end{tabular}
+\end{table}
+
+
+\section{FOBOS - Capture Module}
+
+The Capture module is used to run encryptions on hardware and capture traces from the ocsilloscope.
+
+\begin{table}[H]
+\caption{openOscilloscopeConnection Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core.openOscilloscopeConnection}} \\
+ \hline
+ Usage & \texttt{Oscilloscope\_core.openOscilloscopeConnection()}\\ \hline
+ Inputs & None  \\ \hline
+ Outputs &  None \\ \hline
+ Description & Connects to oscilloscope. It opens a socket using the IP address OSCILLOSCOPE\_IP and port number OSCILLOSCPOE\_PORT. Also gets the oscilloscope identifier. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{setOscilloscopeConfigAttributes Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core.setOscilloscopeConfigAttributes}} \\
+ \hline
+ Usage & \texttt{Oscilloscope\_core.setOscilloscopeConfigAttributes()}\\ \hline
+ Inputs & None  \\ \hline
+ Outputs &  None \\ \hline
+ Description & Configures the oscilloscope by sending commands (in text format) to the oscilloscope. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{initializeOscilloscopeDataStorage Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core.initializeOscilloscopeDataStorage}} \\
+ \hline
+ Usage & \texttt{Oscilloscope\_core.initializeOscilloscopeDataStorage()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Creates empty Numpy arrays for each enabled oscilloscope channel. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{armOscilloscope Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core armOscilloscope}} \\
+ \hline
+ Usage & \texttt{Oscilloscope\_core.armOscilloscope()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Instructs the oscilloscope to digitize channels specified in FOBOS configuration. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{populateOscilloscopeDataStorageAndAlign Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core.populateOscilloscopeDataStorageAndAlign}} \\
+ \hline
+ Usage & \texttt{Oscilloscope\_core.populateOscilloscopeDataStorageAndAlign(traceCount)}\\ \hline
+ Inputs & The number of current trace. \\ \hline
+ Outputs &  None \\ \hline
+ Description & Reads power data trace from oscilloscope and trigger signal trace. It then aligns the trace to the trigger signal and saves the aligned trace to file. \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\caption{closeOscilloscopeConnection Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core.closeOscilloscopeConnection}} \\
+ \hline
+ Usage & \texttt{Oscilloscope\_core.closeOscilloscopeConnection()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Closes socket that connects to oscilloscope. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{openControlBoardConnection Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core.openControlBoardConnection}} \\
+ \hline
+ Usage & \texttt{usbcomm\_core.openControlBoardConnection()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Initializes connection to control board, resets control board and reads control board and victim clocks. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{initializeControlBoardConnection Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{usbcomm\_core.initializeControlBoardConnection}} \\
+ \hline
+ Usage & \texttt{usbcomm\_core.initializeControlBoardConnection()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Initializes the USB connection to the board.
+Called from OpenControlBoardConnection(). \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\caption{sendTriggerParamsToControlBoard Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{usbcomm\_core.sendTriggerParamsToControlBoard}} \\
+ \hline
+ Usage & \texttt{usbcomm\_core.sendTriggerParamsToControlBoard()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Sends the trigger parameters to the control boards. Parameters are: TRIGGER\_WAIT\_CYCLES and TRIGGER\_LENGTH\_CYCLES. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{runEncrytionOnControlBoard Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{usbcomm\_core.runEncrytionOnControlBoard}} \\
+ \hline
+ Usage & \texttt{usbcomm\_core.runEncrytionOnControlBoard(traceCount)}\\ \hline
+ Inputs & The number of block used in encryption. \\ \hline
+ Outputs &  None \\ \hline
+ Description & Sends a block of data to control board to do encryption. 
+ The key is sent before sending the frist block. \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\caption{sendKeyToControlBoard Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{usbcomm\_core.sendKeyToControlBoard()}} \\
+ \hline
+ Usage & \texttt{usbcomm\_core.sendKeyToControlBoard()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Sends the key to control board. 
+ This function is called from usbcomm\_core.runEncrytionOnControlBoard().\\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{sendBlockOfDataToControlBoard Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{usbcomm\_core.sendBlockOfDataToControlBoard}} \\
+ \hline
+ Usage & \texttt{usbcomm\_core.usbcomm\_core.sendBlockOfDataToControlBoard
+ (traceCount)}\\ \hline
+ Inputs & The number of block used in encryption \\ \hline
+ Outputs &  None \\ \hline
+ Description & Sends a block of data to the control board. 
+ This function is called from usbcomm\_core.runEncrytionOnControlBoard(). \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{saveControlBoardOutputDataStorage Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{usbcomm\_core\_core.saveControlBoardOutputDataStorage}} \\
+ \hline
+ Usage & \texttt{Oscilloscope\_core.saveControlBoardOutputDataStorage()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Saves output from control board (cipher text) to file. File is stored in \$Workspace/\$projectName/\$attempt/output/ \\ \hline
+\end{tabular}
+\end{table}
+
+
+\section{FOBOS - Other Functions}
+
+Here we list helper functions that are used by the Analysis and Capture modules.
+
+\begin{table}[H]
+\caption{getKeyForAnalysis Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{dataGenerator.getKeyForAnalysis}} \\
+ \hline
+ Usage & \texttt{dataGenerator.getKeyForAnalysis()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs & Key formated as a list of hexadecimal bytes.  \\ \hline
+ Description & Reads the key from file in \$Workspace/\$project/\$attempt/output/ directory. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{getPlainText Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{dataGenerator.getPlainText}} \\
+ \hline
+ Usage & \texttt{dataGenerator.getPlainText()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs & A list of blocks that represents plain text.  \\ \hline
+ Description & Generates random plain text or reads from file depending on configuration.
+ Plain text file is located in \$fobos/\$sources/ directory. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{generateRandomKey Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{dataGenerator.generateRandomKey}} \\
+ \hline
+ Usage & \texttt{dataGenerator.generateRandomKey()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs & A list of key bytes. Each byte is represented as a hexadecimal string. \\ \hline
+ Description & Generates a random key in hexadecimal format. Key size is read form the KEY\_SIZE configuration parameter. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{convertToHex Function**********revise}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{dataGenerator.convertToHex}} \\
+ \hline
+ Usage & \texttt{dataGenerator.convertToHex(hexString)}\\ \hline
+ Inputs & Hexadecimal string  \\ \hline
+ Outputs &  \\ \hline
+ Description &  \\ \hline
+\end{tabular}
+\end{table}
+\begin{table}[H]
+\caption{configureWorkspace Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{configExtract.configureWorkspace()}} \\
+ \hline
+ Usage & \texttt{configExtract.configureWorkspace()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Creates the project directory in the workspace and creates directories to store measured power data, cipher text and plain text etc.
+ It also copies some configuration files and other files into the project directory. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{extractConfigAttributes Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{configExtract.extractConfigAttributes()}} \\
+ \hline
+ Usage & \texttt{configExtract.extractConfigAttributes()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Reads the main configuration file to get configuration attributes. It also reads the acquisition configuration file and extracts configuration attributes. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{updatePowerAndTriggerFileNames Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{configExtract.updatePowerAndTriggerFileNames}} \\
+ \hline
+ Usage & \texttt{configExtract.updatePowerAndTriggerFileNames()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Checks for the existance of measured data files and trigger data file and sets variables to the file names.  \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{configureAnalysisWorkspace Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{configExtract.configureAnalysisWorkspace}} \\
+ \hline
+ Usage & \texttt{configExtract.configureAnalysisWorkspace()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Configures the analysis workspace directory by creating directories to store analysis results and copies configuration files. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{extractAnalysisConfigAttributes Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{configExtract.extractAnalysisConfigAttributes}} \\
+ \hline
+ Usage & \texttt{configExtract.extractAnalysisConfigAttributes(fileName)}\\ \hline
+ Inputs & Configuration file name. \\ \hline
+ Outputs &  None \\ \hline
+ Description & Reads the file provided and gets configuration attributes. Also, copies the file to the project’s local configuration directory for future reference. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{goToSleep Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.goToSleep}} \\
+ \hline
+ Usage & \texttt{support.goToSleep(value)}\\ \hline
+ Inputs & Time to sleep in seconds. \\ \hline
+ Outputs &  None \\ \hline
+ Description & Sleep for number of seconds. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{exitProgram Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.exitProgram}} \\
+ \hline
+ Usage & \texttt{support.exitProgram()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Self-explanatory \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{wait Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.wait}} \\
+ \hline
+ Usage & \texttt{support.wait()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Waits for the user to press Enter to continue program execution. \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\caption{clear\_screen Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.clear\_screen}} \\
+ \hline
+ Usage & \texttt{support.clear\_screen()}\\ \hline
+ Inputs & None \\ \hline
+ Outputs &  None \\ \hline
+ Description & Self-explanatory. \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\caption{convertToByteArray Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.convertToByteArray}} \\
+ \hline
+ Usage & \texttt{support.convertToByteArray(hexString)}\\ \hline
+ Inputs & Hexadecimal string \\ \hline
+ Outputs &  A byte array \\ \hline
+ Description & Converts a hexadecimal string to a byte array. \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\caption{arrayToString Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.arrayToString(array)}} \\
+ \hline
+ Usage & \texttt{support.arrayToString(array)}\\ \hline
+ Inputs & Array to convert \\ \hline
+ Outputs &  A string that consist of array elements \\ \hline
+ Description & Self-explanatory. \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\caption{readFile Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.readFile}} \\
+ \hline
+ Usage & \texttt{support.readFile(fileName)}\\ \hline
+ Inputs & File name \\ \hline
+ Outputs &  A string that holds file content.  \\ \hline
+ Description & Self-explanatory. \\ \hline
+\end{tabular}
+\end{table}
+
+
+
+\begin{table}[H]
+\caption{removeFile Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Support.removeFile}} \\
+ \hline
+ Usage & \texttt{Support.removeFile(fileName)} \\ \hline
+ Inputs & File name \\ \hline
+ Outputs &  None  \\ \hline
+ Description & Self-explanatory. \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{removeComments Function}
+\begin{tabular}{ |p{2cm}||p{11cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Support.removeComments(datalist)}} \\
+ \hline
+ Usage & \texttt{Support.removeComments(datalist)}\\ \hline
+ Inputs & Data list \\ \hline
+ Outputs &  ???  \\ \hline
+ Description & Removes comments (anything after a '\#' sign) from a list of strings. \\ \hline
+\end{tabular}
+\end{table}
+
+ 
