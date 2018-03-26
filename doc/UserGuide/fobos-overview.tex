@@ -1,1 +1,172 @@
-/nhome/aabdulga/Documents/docs/UserGuide/fobos-overview.tex
+\chapter{FOBOS Overview}
+\section{Introduction}
+FOBOS is a side-channel analysis tool that is flexible, open-source and includes tools needed for power data acqusition and analysis.
+In this section we describe how to download and install FOBOS and describe the general procedure for using it to perform DPA attacks.
+
+\section{Requirements}
+
+\subsection{Linux Requirements}
+The following items are requirements to running FOBOS on Linux machines:
+\begin{enumerate}
+\item Python need to be installed on the system. Installer can be downloaded from https://www.python.org.
+\item Network configuration must allow the PC to be able to communicate to the Oscilloscope via IP network.
+\end{enumerate}
+
+\subsection{Windows Requirements}
+The following items are requirements to running FOBOS on Windows machines:
+\begin{enumerate}
+\item Python need to be installed on the system. Installer can be downloaded from https://www.python.org/.
+\item Network configuration must allow the PC to be able to communicate to the Oscilloscope via IP network.
+\end{enumerate}
+
+
+\section{Installation}
+To install FOBOS software follow these steps:
+\begin{enumerate}
+\item Download FOBOS from https://cryptography.gmu.edu/fobos/.
+\item Extract the file as follows: \newline
+\texttt{tar xvzf fobos.tar.gz}
+\end{enumerate}
+
+\clearpage
+\section{File Structure}
+After FOBOS is extracted from the compressed file, its file structure looks like the following:
+
+\tikzstyle{every node}=[thick,anchor=west, rounded corners, font={\scriptsize\ttfamily}, inner sep=2.5pt]
+\tikzstyle{selected}=[draw=blue,fill=red!10]
+\tikzstyle{root}=[selected, fill=blue!30]
+%underscore should be written as "\_"
+%No empty lines allowed
+\begin{tikzpicture}[%
+    scale=.7,
+    grow via three points={one child at (0.5,-0.65) and
+    two children at (0.5,-0.65) and (0.5,-1.1)},
+    edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+  \node [root] {fobos}
+    child { node [selected] {bin}
+        child { node [selected] {analysis}
+                child { node {\texttt{\underline{{ }{ }}init\underline{{ }{ }}.py}}}
+                child { node {plottingModule.py}}
+                child { node {postProcessingModule.py}}
+                child { node {sca.py}}
+                child { node {signalAnalysisModule.py}}
+                child { node {statisticsModule.py}}
+        }
+        child { node at (10.5,-3.0) [selected] {globals}
+                child { node {\texttt{\underline{{ }{ }}init\underline{{ }{ }}.py}}}
+                child { node {cfg.py}}
+                child { node {configExtract.py}}
+                child { node {dataGenerator.py}}
+                child { node {globals.py}}
+                child { node {oscilloscopeFunctions.py}}
+                child { node {printFunctions.py}}
+        }
+         child { node at (5.0,-3.5) [selected] {oscilloscope}
+                 child { node {\texttt{\underline{{ }{ }}init\underline{{ }{ }}.py}}}
+                 child { node {agilent\-socket.py}}
+                 child { node {oscilloscope\_agilent.py}}
+                 child { node {oscilloscope\_core.py}}
+                 child { node {oscilloscope\_global.py}}
+                 child { node {oscilloscope\_sockets.py}}
+                 child { node {oscilloscope\_visa.py}}
+                 child { node {viewPlots.py}}
+                 child { node at (6.0,0.0)[selected]{testing}
+                     child { node {channel1.dat}}
+                     child { node {channel1.png}}
+                     child { node {oscilloscope\_config.txt}}
+                     child { node {oscilloscope\_core.py}}
+                     child { node {oscilloscope\_sockets.py}}
+                     child { node {preambleChannel1.dat}}
+                     child { node {rawDataProcess.py}}
+                }
+         }
+         child { node at (0,-4.0) [selected] {usb}
+                 child { node {\texttt{\underline{{ }{ }}init\underline{{ }{ }}.py}}}
+                 child { node {\texttt{\underline{{ }{ }}init\underline{{ }{ }}.pyc}}}
+                 child { node {usbcomm\_core.py}}
+                 child { node {usbcomm\_core.pyc}}
+                 child { node {usbcomm\_global.py}}
+                 child { node {usbcomm\_global.pyc}}
+                 child { node [selected]{test}
+                     child { node {contains the code for testing the usb setup}}
+         }
+                 }
+         child { node at (0,-7.9) {.dataAnalysis.py}}
+         child { node at (0,-7.9) {.dataAcquisition.py}}
+    }
+    child { node at (9.0,-10.7) [selected] {config}
+        child { node {aquisitionConfig.txt}}
+        child { node {compressionParams.txt}}
+        child { node {config.txt}}
+        child { node {dataAnalysisParams.txt}}
+        child { node {postProcessesParams.txt}}
+        child { node {projectPath.txt}}
+        child { node {sampleSpaceDispParams.txt}}
+        child { node {signalAlignmentParams.txt}}
+        child { node {traceExpungeParams.txt}}
+    }
+    child { node at (0,-10.8) [selected] {data}
+        child { node {connectiontest.txt}}
+        child { node {keys.txt}}
+        child { node {plaintext.txt}}
+        child { node {others files}}
+    }
+    child { node at (0,-13.0) [selected] {doc}
+        child { node at (3.0,0.0)[selected] {PmodConnector}
+            child { node {pmod\_connector.pdf}}
+            child { node {pmod\_connector.tex}}
+        }
+        child { node at (0.0,0.0)[selected] {UserGudie}
+            child { node {Userguide.pdf}}
+            child { node {pmod\_connector.tex}}
+        }    
+    }
+    child { node at (0,-15.0) [selected] {sources}
+        child { node at (4.0,0.0)[selected] {bridgeconnector}
+            child { node {pmod\_connector.pdf}}
+            child { node {pmod\_connector.tex}}
+        }
+        child { node at (0.0,0.0)[selected] {vhdl}
+            child { node {Userguide.pdf}}
+            child { node {pmod\_connector.tex}}
+        }
+        child { node {pmod\_connector.tex}}
+    }
+    child { node at (0,-20) {\dots}};
+\end{tikzpicture}
+
+
+\section{Hardware Setup}
+FOBOS hardware consist of the following components:
+\begin{enumerate}
+\item FOBOS Control board.
+\item FOBOS Victim board a.k.a DUT.
+\item Control PC.
+\item Power trace capturing device (e.g oscilloscope).
+\end{enumerate}
+
+FOBOS control and victim boards are standard FPGA boards that need to be configured. FOBOS control board harware description is provided along with a victim wrapper. Victim cipher is user provided.
+FPGA boards need to be connected to other components. For details, please refer to Chapter ~\ref{chap:hardware-config}.
+
+\section{Trace Acquisition}
+After FOBOS software and hardware are setup, encryptions can be run on the victim board and traces collected.
+This is refered to as Data Acquisition.
+To perform data acquisiton, two steps need to be done:
+\begin{enumerate}
+\item Edit the configuration file \texttt{\$fobos/cofig/acquisitionConfig.txt}. Configuration parameters description provided in Chapter ~ \ref{chap:dataAcquisition}.
+\item Run the dataAcquistion script as follows: \newline
+\texttt{cd \$fobos} \newline
+\texttt{python dataAcquisition.py}
+\end{enumerate}
+ 
+\section{Data Analysis}
+Running DPA attack on the traces collected in the Data Aquisition phase is refered to as Data Analysis.
+Data Analysis uses two inputs; measured power traces and hypothetical power traces.
+To perform Data Analysis, Three steps need to be done:
+\begin{enumerate}
+\item Generate hypothetical power traces.
+\item Edit configuration files at \$fobos/config. Details on configuration parameters provided in Chapter ~ \ref{chap:dataAnalysis}.
+\item Run the the dataAnalysis script as follows: \newline
+\texttt{cd \$fobos} \newline
+\texttt{python dataAnalysis.py}
+\end{enumerate}
