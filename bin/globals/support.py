@@ -87,7 +87,7 @@ def readFile(file_name) :
 		file_pt = open(file_name, "r")
 	except IOError, (ErrorNumber, ErrorMessage):
 		if(ErrorNumber == 2):
-			printFunctions.printToScreen("\n\nWhoa! File -> " + file_name + "\n joined FOBOS invisible. As FOBOS does not have X-Ray Vision, Please make it visible (present) in the folder\n->"+ cfg.CONFIGDIR)
+			printFunctions.printToScreen("File:  " + file_name + " not found. Expected to be found in the folder\n->"+ cfg.CONFIGDIR)
 			exitProgram()
 		else:
 			printFunctions.printToScreen("Hmmm!! You have managed to trigger -> " + str(ErrorNumber) +" Error Number")
@@ -112,41 +112,29 @@ def removeComments(data_list) :
 
 	
 def getProjectPath():
-	cfg.MEASUREMENT_PROJECT_PATH_FILE = os.path.join(cfg.ANALYSISCONFIGDIR, globals.PROJECTPATH_FILENAME)
-	if os.path.isfile(cfg.MEASUREMENT_PROJECT_PATH_FILE) == False :
-		printFunctions.printToScreen("\tListing Project directories under Workspace folder @\n\t" +
-		os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME']))		
-		directoryList = os.listdir(os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME']))
-		directoryCount = 1
-		for item in directoryList:
-			printFunctions.printToScreen("\t"+ str(directoryCount)+": "+item)
-			directoryCount += 1	
-		while True:
-			try:
-				t = int(raw_input("\tPlease select the Project folder from the above list by entering correspond directory number:"))
-			except ValueError:
-				printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount-1))
-				continue
-			if (t > (directoryCount-1)):
-				printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount-1))
-				continue
-			if (t == 0):
-				printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount-1))
-				continue				
-			else:
-				break
-			
-		projectPath = os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME'], directoryList[t-1])
-		fileName = os.path.join(cfg.ANALYSISCONFIGDIR, "projectPath.txt")
-		fid = open(cfg.MEASUREMENT_PROJECT_PATH_FILE, "w")
-		fid.write(projectPath)
-		fid.close()
-	else:
-		temp = readFile(cfg.MEASUREMENT_PROJECT_PATH_FILE)
-		projectPath = temp[0]
-		printFunctions.printToScreenBold("\tNote: Current Analysis is scheduled to run on traces located @\n\t"
-		+ projectPath +"\n\tIf you want to change the trace set/project directory,  Please delete the file @\n\t"+
-		cfg.MEASUREMENT_PROJECT_PATH_FILE +"\n\tand re-run the FOBOS Analysis again\n")
+	printFunctions.printToScreen("\tListing Project directories under Workspace folder @\n\t" +
+	os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME']))		
+	directoryList = os.listdir(os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME']))
+	directoryCount = 1
+	for item in directoryList:
+		printFunctions.printToScreen("\t"+ str(directoryCount)+": "+item)
+		directoryCount += 1	
+	while True:
+		try:
+			t = int(raw_input("\tPlease select the Project folder from the above list by entering correspond directory number:"))
+		except ValueError:
+			printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount-1))
+			continue
+		if (t > (directoryCount-1)):
+			printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount-1))
+			continue
+		if (t == 0):
+			printFunctions.printToScreen("\t\tSorry! Wrong Choice please try again. Enter the values between 1 to " + str(directoryCount-1))
+			continue				
+		else:
+			break
+		
+	projectPath = os.path.join(cfg.ROOTDIR, cfg.analysisConfigAttributes['WORK_DIR'], cfg.analysisConfigAttributes['PROJECT_NAME'], directoryList[t-1])
 	return projectPath
 
 def shiftPathToGraphFolder(path):

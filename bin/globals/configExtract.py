@@ -236,7 +236,7 @@ def configureAnalysisWorkspace():
 	cfg.LOCAL_CONFIGDIR = os.path.join(cfg.ANALYSIS_WORKSPACE, globals.ANALYSIS_CONFIG_DIRNAME)
 	cfg.KEY_FILE = os.path.join(cfg.OUTPUT_FOLDER,globals.KEY_FILE_NAME)
 
-	cfg.KEYARRAY = [0]* (cfg.config_attributes['KEY_SIZE'] + 1)
+	#cfg.KEYARRAY = [0]* (cfg.config_attributes['KEY_SIZE'] + 1)
 	if (cfg.analysisConfigAttributes['GENERATE_EPS_PDF_GRAPHS'] == 'YES'):
 		support.createDirectory(cfg.GRAPHS_FOLDER)	
 	support.createDirectory(cfg.LOCAL_CONFIGDIR)
