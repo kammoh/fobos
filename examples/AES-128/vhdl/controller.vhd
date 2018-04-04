@@ -32,12 +32,16 @@ signal pr_state, nx_state: state;
 
 begin
 	-- section 1: fsm register
-	process (start,clock)
+	--process (start,clock)
+	process (clock) --make it synchronous
 	begin
-		if (start ='1') then
-			pr_state <= s0;
-		elsif (clock'event and clock='1') then
-			pr_state <= nx_state;
+		
+		if (clock'event and clock='1') then
+		   if (start ='1') then
+		       pr_state <= s0;
+		   else
+			    pr_state <= nx_state;
+		   end if;
 		end if;
 	end process;
 
