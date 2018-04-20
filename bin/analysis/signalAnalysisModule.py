@@ -291,20 +291,23 @@ def readAlignedDataFromFile():
 	sampleSize = detectSampleSize(measurementFile)
 	#need to reset file handle since we used it 
 	measurementFile.seek(0)
+        print "Number of samples=" + str(int(cfg.config_attributes['NUMBER_OF_TRACES']))
+        cfg.RAW_POWER_DATA = numpy.zeros([int(cfg.config_attributes['NUMBER_OF_TRACES']), sampleSize]),
 	for traceCount in range (0,cfg.config_attributes['NUMBER_OF_TRACES']):
-		print "traceCount= " + str(traceCount)
+		#print "traceCount= " + str(traceCount)
 		tempArrayMeasurement = numpy.load(measurementFile)
 		tempArrayMeasurement = adjustSampleSize(sampleSize, tempArrayMeasurement)
-		if (traceCount == 0):
-			cfg.RAW_POWER_DATA  = tempArrayMeasurement
-			print 'array length' + str(len(cfg.RAW_POWER_DATA))
-			print 'array length' + str(len(tempArrayMeasurement))
-		elif (traceCount > 0):
-			print "DEBUG shape: " + str(tempArrayMeasurement.shape)
-			#print 'array length cfg: ' + str(len(cfg.RAW_POWER_DATA)) 
-			#print 'array length tmp: ' + str(len(tempArrayMeasurement)) + ' count= ' + str(traceCount)
-			cfg.RAW_POWER_DATA  = numpy.vstack((cfg.RAW_POWER_DATA,tempArrayMeasurement))
-	
+		#if (traceCount == 0):
+		#	cfg.RAW_POWER_DATA  = tempArrayMeasurement
+		#	print 'array length' + str(len(cfg.RAW_POWER_DATA))
+		#	print 'array length' + str(len(tempArrayMeasurement))
+		#elif (traceCount > 0):
+		#	print "DEBUG shape: " + str(tempArrayMeasurement.shape)
+		#	#print 'array length cfg: ' + str(len(cfg.RAW_POWER_DATA)) 
+		#	#print 'array length tmp: ' + str(len(tempArrayMeasurement)) + ' count= ' + str(traceCount)
+		#	cfg.RAW_POWER_DATA  = numpy.vstack((cfg.RAW_POWER_DATA,tempArrayMeasurement))
+	        cfg.RAW_POWER_DATA[traceCount, :] = tempArrayMeasurement
+
 	printFunctions.printToScreenAndAnalysisLog("..DONE")	
 	return (cfg.RAW_POWER_DATA)
 
