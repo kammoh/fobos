@@ -27,7 +27,7 @@ import matplotlib.pyplot as plt
 ######## SUB MACROS ####################################################
 ########################################################################
 
-CHANNEL1_MEASUREMENT_FILE_NAME = "channel1Data.npy"
+CHANNEL1_MEASUREMENT_FILE_NAME = "rawDataAligned.npy"
 CHANNEL2_MEASUREMENT_FILE_NAME = "channel2Data.npy"
 CHANNEL3_MEASUREMENT_FILE_NAME = "channel3Data.npy"
 CHANNEL4_MEASUREMENT_FILE_NAME = "channel4Data.npy"

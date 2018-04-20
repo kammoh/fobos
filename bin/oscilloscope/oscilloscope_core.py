@@ -273,6 +273,7 @@ def get_waveform_trigger() :
   support.removeFile(cfg.TRIGGER_MEASUREMENT_FILE)
   return (measuredTriggerData)  
 
+
 def getDataFromOscilloscope(channelName) :
   t1 = time.time()
   if(channelName == 'CHANNEL1'):
@@ -282,85 +283,36 @@ def getDataFromOscilloscope(channelName) :
   if(channelName == 'CHANNEL3'):
 	chanType = 'CHAN3'
   if(channelName == 'CHANNEL4'):
-	chanType = 'CHAN4'	
-  cfg.Oscilloscope.send(":WAVEFORM:SOURCE " + chanType + '\n')
-  cfg.Oscilloscope.send(":WAVEFORM:SOURCE?" + '\n')
-  printFunctions.printToLog("\tOscilloscope Says .. Acquiring  ->" + cfg.Oscilloscope.recv(200))
-  cfg.Oscilloscope.send(":WAVEFORM:POINTS:MODE BYTE" + '\n')
-  cfg.Oscilloscope.send(":WAVEFORM:POINTS 16000" + '\n')#changed from 8,000,000 panci  
-  cfg.Oscilloscope.send("WAVEFORM:POINTS?" + '\n')
-  printFunctions.printToLog("\tOscillopscope Says .. Obtaining # point -> " + cfg.Oscilloscope.recv(200))
-
-  #cmdString = ":WAVEFORM:POINTS " + str(cfg.osc_attributes['WAVE_DATA_SIZE'])
-  #print cmdString
-  #cfg.Oscilloscope.send(cmdString + '\n') 
-  #printFunctions.printToLog("\t# of samples requested -> " + cfg.Oscilloscope.recv(200))    
-  printFunctions.printToLog("\tReading Preamble of " + channelName)
+	chanType = 'CHAN4'
+  cfg.Oscilloscope.send(":WAVEFORM:SOURCE " + chanType + ";MODE BYTE" + ";POINTS 16000" + '\n')
   cfg.Oscilloscope.send(":WAVEFORM:PREAMBLE?" + '\n')
   preamble = cfg.Oscilloscope.recv(400)
-  #print "first"
-  print "\tpreamble as per oscilloscope - " + preamble
-  fileId = open(cfg.TEMP_PREAMBLE_FILE, "wb")
-  fileId.write(preamble)
-  fileId.close()
-  fid = open(cfg.TEMP_PREAMBLE_FILE, "rb")
-  preamble = numpy.fromfile(fid, dtype= numpy.float64, count = 10, sep = ",")
-  fid.close()
-  #print "second"
-  #print preamble
-  #print str(int(preamble[2]))
-  printFunctions.printToLog("\tTotal Number of Points to Receive: " + str(int(preamble[2])))
-  #cfg.SAMPLE_LENGTH_FROM_OSC = int(preamble[2])
-  vdiv = 32 * preamble[7]
-  off = preamble[8]
-  sdiv = preamble[2] * preamble[4] / 10
-  delay = (preamble[2] / 2) * preamble[4] + preamble[5]
-  printFunctions.printToLog("\t\tScope Settings for -> " + channelName)
-  printFunctions.printToLog("\t\tVolts per Division = " + str(vdiv))
-  printFunctions.printToLog("\t\tOffset = " + str(off))
-  printFunctions.printToLog("\t\tSeconds per Division = " + str(sdiv))
-  printFunctions.printToLog("\t\tDelay = " + str(delay))  
-  printFunctions.printToLog("\tReading Data of " + channelName)
-  cfg.Oscilloscope.send(":WAVEFORM:DATA?" + '\n') 
+  preamble= preamble.split(',')
+  vdiv = 32 * float(preamble[7])
+  off = float(preamble[8])
+  sdiv = float(preamble[2]) * float(preamble[4]) / 10
+  delay = (float(preamble[2]) / 2) * float(preamble[4]) + float(preamble[5])
+  cfg.Oscilloscope.send(":WAVEFORM:DATA?" + '\n')
   tData = int(preamble[2])
   wavedata = ""
   temp = cfg.Oscilloscope.recv(11)
-  print temp
   temp = cfg.Oscilloscope.recv(tData)
-  #print len(temp)
   wavedata = wavedata+temp
-  #support.goToSleep(2)
   while (len(wavedata) < tData):
   	temp = cfg.Oscilloscope.recv(tData)
   	#print len(temp)
         wavedata = wavedata + temp
-  #print "\tLength of obtained data - " + str(len(wavedata))
-  #lowerBound = tData - len(temp)
-  #rData = lowerBound
-  #temp = temp[10:]
-  #while(count < lowerBound):
-    #printFunctions.printToLog("\tNo. of Bytes transferred : " + str(count))
-    #printFunctions.printToLog("\tNo. of Bytes to be transferred : " + str(rData))	
-    #wavedata = wavedata + temp
-    #temp = cfg.Oscilloscope.recv(rData)
-    #count += len(temp)
-    #rData = tData - count
-  #print wavedata
-  t2 = time.time()
   
-  printFunctions.printToLog("Got the entire data. Moving on..!")
-  fileId = open(cfg.TEMP_MEASUREMENT_FILE, "wb")
-  fileId.write(str(wavedata))
-  fileId.close()
-  measuredChannelData = signalAnalysisModule.acquireDataValues(cfg.TEMP_PREAMBLE_FILE, cfg.TEMP_MEASUREMENT_FILE)
-  support.removeFile(cfg.TEMP_PREAMBLE_FILE)
-  support.removeFile(cfg.TEMP_MEASUREMENT_FILE)
+  rawImg = numpy.fromstring(wavedata, dtype = numpy.ubyte, count = int(preamble[2]), sep = "")
+  imgY1 = (rawImg - float(preamble[9])) * float(preamble[7]) + float(preamble[8])
+  measuredData = numpy.array(imgY1, dtype = numpy.float64)
   if (cfg.SAMPLE_LENGTH_FROM_OSC == None):
 	#print "\t\tFirst run"
-	cfg.SAMPLE_LENGTH_FROM_OSC = len(measuredChannelData)
-  print "\tSAmple Length --> " + str(cfg.SAMPLE_LENGTH_FROM_OSC)
+	cfg.SAMPLE_LENGTH_FROM_OSC = len(measuredData)
+  t2 = time.time()
   print "++++++++++++++++++++++++++++++++++++++++t2-t1=%s" % str(t2-t1)
-  return (measuredChannelData)
+  #numpy.save('data.npy', measuredData)
+  return (measuredData)
 
 def initializeOscilloscopeDataStorage():
 	cfg.channel1Data = numpy.zeros(0) if(cfg.osc_attributes['CHANNEL_RANGE1'] != 'OFF') else None

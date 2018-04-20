@@ -66,7 +66,7 @@ def main():
 		#print "It took %s to read oscillscope" % str(t4-t3)
 		traceCount += 1
 	
-	saveOutput()
+        saveControlBoardOutputDataStorage()
 	closeOscilloscopeConnection()
 	closeControlBoardConnection()
 #############################################################################
