@@ -23,7 +23,7 @@
 
 WORK_DIR      = workspace
 SOURCE_DIR    = sources
-PROJECT_NAME =  ketje
+PROJECT_NAME =  aes
 TAG = counter 
 
 

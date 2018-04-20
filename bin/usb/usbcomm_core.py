@@ -216,8 +216,12 @@ def runEncrytionOnControlBoard (traceCount):
                 print "start command sent"
 		return status
 
+def saveControlBoardOutputDataStorage():
+	printFunctions.printToScreenAndLog("\tSaving the data from Control Board")
+	printFunctions.printToOutputFile(cfg.dataFromControlBoard, globals.CIPHERTEXT)
+	return True
 
-def saveOutput():
+def saveOutput_old():
 	printFunctions.printToScreenAndLog("\tSaving the data from Control Board")
 	f = open(globals.CIPHERTEXT, 'wb')
 	for line in cfg.dataFromControlBoard:

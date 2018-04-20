@@ -112,7 +112,7 @@ NET "DUTClock"     LOC = "H3"  | IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name 
 NET "EXTClock"   LOC = "K2" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L37P_GCLK13,                    Sch name = EXP_IO11_P
 #NET "victimClockSelector"LOC = "F7";    # Bank = 0, Pin name = IO_L19P_0, Type = I/O,                        Sch name = R-IO8
 
-NET "trigger"         LOC = "V12" | IOSTANDARD = "LVCMOS33";   #Bank = 2, Pin name = IO_L19N,                           Sch name = JA2
+NET "trigger"         LOC = "N10" | IOSTANDARD = "LVCMOS33";   #Bank = 2, Pin name = IO_L19N,                           Sch name = JA2
 NET "EXTClock" CLOCK_DEDICATED_ROUTE = FALSE;
 PIN "dutClockSelectingMux.O" CLOCK_DEDICATED_ROUTE = FALSE;
 PIN "clk_IBUFG_BUFG.O" CLOCK_DEDICATED_ROUTE = FALSE;

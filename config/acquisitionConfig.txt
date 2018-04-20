@@ -30,16 +30,16 @@ LOGGING = INFO # INFO|DEBUG
 CONTROL_BOARD = Nexys3
 VICTIM_RESET = 100
 TIME_OUT = 5000
-TRIGGER_WAIT_CYCLES = 50 #@VICTIM CLOCK
-TRIGGER_LENGTH_CYCLES = 1 #@VICTIM CLOCK
+TRIGGER_WAIT_CYCLES = 5 #@VICTIM CLOCK
+TRIGGER_LENGTH_CYCLES = 5 #@VICTIM CLOCK
 TRIGGER_TYPE = TRG_NORM #TRG_NORM | TRG_FULL | TRG_NORM_CLK | TRG_FULL_CLK
 # =============================================
 # =============================================
 # Test Data Generation Settings
 # =============================================
 # =============================================
-DATA_FILE     = dinFile.txt
-EXPECTED_OUTPUT = 128 # Expected output size in bytes
+DATA_FILE     = dinFile_aes_20000.txt
+EXPECTED_OUTPUT = 16 # Expected output size in bytes
 OUTPUT_FORMAT = hex # Default => hex
 NUMBER_OF_ENCRYPTIONS_PER_TRACE = 1
 BLOCK_SIZE = 16 # In Bytes
@@ -67,11 +67,11 @@ OSCILLOSCOPE_PORT = 5025
 AUTOSCALE = NO   # YES|NO    
 IMPEDANCE = ONEMEG #FIFTY|ONEMEG
 # VOLTAGE AND TIME RANGE OPTIONS        
-CHANNEL1_RANGE = 0.500V
+CHANNEL1_RANGE = 0.100V
 CHANNEL2_RANGE = 6V
 CHANNEL3_RANGE = OFF # ON|OFF|voltage range
 CHANNEL4_RANGE = OFF # ON|OFF|voltage range
-TIME_RANGE = 0.000500
+TIME_RANGE = 0.000050
 TIMEBASE_REF = LEFT    
 # TRIGGER OPTIONS
 TRIGGER_SOURCE =  CHANNEL2
