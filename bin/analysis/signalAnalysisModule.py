@@ -233,15 +233,22 @@ def computeAlignedData(totalMeasuredPowerData, totalMeasuredTriggerData):
 			sampleCount = 0
 			sampleLength = 0
 			triggerSampleCount = 0
+                        cutMode = cfg.config_attributes['CUT_MODE'] 
+                        print "Cut mode = " + cutMode
+                        start = 0 
+                        end = len(measuredTriggerData)
 			for sampleNo in range(0, len(measuredTriggerData)):
 				if(measuredTriggerData[sampleNo] > cfg.config_attributes['TRIGGER_THRESHOLD'] and firstTriggerHigh == False):
                                         ###
                                         start = sampleNo
                                         firstTriggerHigh = True
+                                        if cutMode != "TRIG_HIGH":
+                                           break
                                 elif(measuredTriggerData[sampleNo] < cfg.config_attributes['TRIGGER_THRESHOLD']  and firstTriggerHigh == True):
                                         end = sampleNo
 					break
-			print "Cutting trace : start= " + str(start) + " end=" + str(end)
+			
+                        print "Cutting trace : start= " + str(start) + " end=" + str(end)
 
  
 			if (traceSet == 0):

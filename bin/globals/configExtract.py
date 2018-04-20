@@ -163,6 +163,9 @@ def extractConfigAttributes():
 		if re.match('^EXPECTED_OUTPUT', object) :
 			value = re.split("=", object)
 			cfg.config_attributes['EXPECTED_OUTPUT'] = value[1].strip(" ")
+		if re.match('^CUT_MODE', object) :
+			value = re.split("=", object)
+			cfg.config_attributes['CUT_MODE'] = value[1].strip(" ")
 			
 def updatePowerAndTriggerFileNames():
 	powerFileExistsFlag = False
