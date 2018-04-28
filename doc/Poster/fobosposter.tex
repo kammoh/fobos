@@ -18,6 +18,8 @@
 \usepackage{lmodern}
 \usepackage{multirow}
 \usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{lipsum}
 \usetikzlibrary{fit,arrows,calc,positioning}
 %\usepackage{wrapfig}
 %%%%%%%%%%% Additional packages-Panci
@@ -31,7 +33,7 @@
      
 \graphicspath{{figures/}}
 \title{\LARGE Flexible, Opensource workBench fOr Side-channel analysis\\ \vspace{0.5ex}(FOBOS)}
-\author{Rajesh Velegalati, Panasayya Yalla, Jens-Peter Kaps}%\vspace{-2ex}
+\author{Abubakr Abdulgadir, William Diehl, Rajesh Velegalati, Jens-Peter Kaps}%\vspace{-2ex}
 \institute{\vspace{-1ex}Department of Electrical and Computer Engineering, George Mason University, Fairfax, Virginia 22030, USA
            %\{pyalla, ehomsiri, jkaps\}@gmu.edu \url{http://cryptography.gmu.edu}
           } %this should be GMU etc. 
@@ -82,165 +84,8 @@ an ideal teaching tool.
 	 
 %---------------------------------------------------------------------------------
 
-      \begin{block}{Side Channel Analysis (SCA)}
-          %\vspace{-1ex}
-        \begin{itemize}
-          \item {\color{red}Danger:} Implementations are susceptible to Side Channel Analysis (SCA).
-        \end{itemize}
+     
 
-        \vspace{-2ex}
-        \begin{minipage}[t]{0.62\linewidth}
-          %\vspace{-5cm}%\small
-          \begin{itemize}
-            \item Key~space~256-bit,~$2^{256} = 1.2 \cdot 10^{77}$keys
-            \item Atoms in Universe {\tiny(wikipedia)} $9.4 \cdot 10^{79}$
-            \item SCA allows to attack 8-bit at a time
-            \item SCA complexity $\frac{256}{8} \cdot 2^{8} = 8192$
-          \end{itemize}
-        \end{minipage}%
-        %\hspace{-0.5cm}
-        \begin{minipage}[t]{0.38\linewidth}  
-          \vspace{-1ex}%
-          \hspace{-1ex}\includegraphics[width=\linewidth]{../figures/sidechannel2}
-        \end{minipage}
-        
-        \begin{center}
-        \begin{minipage}[t]{0.9\linewidth}  
-        \setbeamercolor{padding}{fg=white, bg=cergbg1}
-        \begin{beamercolorbox}[rounded=true]{padding}
-          %\begin{block}{Danger}
-          %\small%
-          \begin{itemize}
-            \item These are passive, non invasive attacks.
-            \item They are difficult to detect.
-            \item The measurement setup is not very expensive.
-            \item Applies to Software as well as Hardware implementations.
-          \end{itemize}
-          %\end{block}
-        \end{beamercolorbox}
-        \end{minipage}
-        \end{center}
-      \end{block}
-%-----------------------------------------------------------------------------------
-      \begin{block}{Current SCA Evaluation Solutions}
-        {\large\textbf{Hardware (FPGAs)}}%\vspace{1ex}
-        \begin{itemize}
-          \item Homegrown platforms or 
-          \item SAKURA Boards (starting at \$1,500, or donation)
-        \end{itemize}
-        \begin{center}
-        { \small%
-          \renewcommand\tabcolsep{4pt}% 
-          \rowcolors{3}{RoyalBlue!5}{RoyalBlue!20}%
-          \begin{tabular}{|r||c|c|c|c||c|c}\hline
-            \rowcolor{RoyalBlue!20}%
-              & \multicolumn{4}{>{\columncolor{RoyalBlue!20}}c||}{\textbf{SASEBO}} 
-              & \multicolumn{2}{>{\columncolor{RoyalBlue!20}}c}{\textbf{SAKURA}}      \\ 
-            \rowcolor{RoyalBlue!20}%
-            \rb{\textbf{Board}}   &          & \textbf{G} & \textbf{GII}  & \textbf{B}   & \textbf{X}   & \textbf{G}    \\ \hline
-            \textbf{Control}      & Virtex-2 & Virtex-2   &               &              &              &               \\
-            \rowcolor{RoyalBlue!5}%
-            \textbf{FPGA}         & Pro      & Pro        &\rb{Spartan-3A}&\rb{Stratix-2}&\rb{Spartan-6}&\rb{Spartan-6} \\
-            \rowcolor{RoyalBlue!20}%
-            \textbf{DUT}          & Virtex-2 & Virtex-2   &               &              &              &               \\
-            \textbf{FPGA}         & Pro      & Pro        &\rb{Virtex-5}  &\rb{Stratix-2}&\rb{Kintex-7} &\rb{Spartan-6} \\ 
-            \textbf{Techn.}       
-              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r|}{130\,nm}  
-              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r|}{130\,nm}  
-              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r|}{65\,nm}        
-              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r||}{90\,nm}       
-              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r|}{28\,nm}    
-              & \multicolumn{1}{>{\columncolor{RoyalBlue!5}}r}{45\,nm} \\       
-                                  &          & RS232,     &               & RS232,       &              &               \\
-            \rowcolor{RoyalBlue!20}%
-            \rb{\textbf{PC Data}} &RS232     &FT245RL     &\rb{FT2232D}   & FT245RL      & USB          & USB           \\ 
-            \rb{\textbf{Comms.}}  &          &(USB)       &\rb{(USB)}     & (USB)        &              &               \\ 
-                                  &Discon-   &Discon-     &Discon-        &              &              &               \\ 
-            \rowcolor{RoyalBlue!5}%
-            \rb{\textbf{Status}}  &tinued    &tinued      &tinued         &              &              &               \\ \hline
-          \end{tabular}
-        }
-        \end{center}
-        {\large\textbf{Software}}%\vspace{1ex}
-        \begin{itemize}
-            \item The DUT is driven and power data acquired by
-            \begin{itemize}
-                \item Homegrown data acquisition software,
-                \item Modified SASEBO software written in C\#, or
-            \end{itemize}
-        \end{itemize}
-        \begin{center}
-        \begin{minipage}[t]{0.9\linewidth}  
-        \setbeamercolor{padding}{fg=white, bg=cergbg1}
-        \begin{beamercolorbox}[rounded=true]{padding}
-          \textbf{IA Meter}
-          {\small
-          \begin{itemize}
-            \item Opensource set of Python scripts for acquisition and storage.
-            \item Mostly independent of hardware platform and oscilloscope.
-          \end{itemize}
-          }
-        \end{beamercolorbox}
-        \end{minipage}
-        \end{center}
-
-        \begin{itemize}
-            \item The data is analyzed either by
-            \begin{itemize}
-                \item Homegrown analysis software or
-            \end{itemize}
-        \end{itemize}
-        \begin{center}
-        \begin{minipage}[t]{0.9\linewidth}  
-        \setbeamercolor{padding}{fg=white, bg=cergbg1}
-        \begin{beamercolorbox}[rounded=true]{padding}
-          \textbf{OpenSCA Toolbox}
-          {\small
-          \begin{itemize}
-            \item Opensouce Matlab codes to perform DPA attacks.
-            \item Supports first, higher order, and template attacks.
-          \end{itemize}
-        }
-        \end{beamercolorbox}
-        \end{minipage}
-        \end{center}
-        {\large\textbf{Commercial Solutions}}%\vspace{1ex}
-        \begin{itemize}
-          \item Cryptography Research: DPA Workstation\texttrademark
-          \item Riscure: Inspector
-          \item Secure IC: Smart SIC Analyzer 
-        \end{itemize}
-      \end{block}
-%------------------------------------------------------------------------------------
-          \begin{block}{Drawbacks of Current Solutions}   
-          %\vspace{-1ex}
-            \begin{itemize}
-              \item Commercial Solutions are too expensive for educational use and for
-                    many research groups
-
-              \item IA Meter only performs acquisition using Python.
-              \item OpenSCA Toolbox performs only analysis using Matlab.
-              \item SAKURA has very limited FPGA support and uses C\#.
-              \begin{itemize}
-                \item DPA resistance depends on FPGA family.
-                \item DPA resistance depends on FPGA packaging (e.g., w/ or w/o capacitances).
-              \end{itemize}
-              \item Currently only a patchwork of scripts and tools exist.
-              \item No complete, free, and open-source solution is available.
-              \item No inexpensive out-of-the-box solution for education.
-            \end{itemize}
-	    \vspace{0.8ex}
-          \end{block}
-        
-%---------------------------------------------------------------------------------
-    \end{column}
-% ---------------------------------------------------------------------------
-%   SECOND COLUMN
-% ---------------------------------------------------------------------------
-    \begin{column}{.31\linewidth}
-   
-% ---------------------------------------------------------------------------
-      
 % ---------------------------------------------------------------------------
       \begin{block}{FOBOS}
         {\color{red}F}lexible {\color{red}O}pen-source work{\color{red}B}ench 
@@ -269,7 +114,7 @@ an ideal teaching tool.
 % ---------------------------------------------------------------------------
       \begin{block}{FOBOS Acquisition}
         \begin{center}
-          \includegraphics[scale=1.5]{../figures/fobos-dac}
+          \includegraphics[scale=1.7]{../figures/fobos-dac}
         \end{center} 
 
           \begin{itemize}
@@ -288,7 +133,7 @@ an ideal teaching tool.
           \end{itemize}
        \end{block}
      
-% ---------------------------------------------------------------------------
+ % ---------------------------------------------------------------------------
       \begin{block}{FOBOS Hardware}
         \vspace{-1ex}
         \begin{center}
@@ -300,6 +145,17 @@ an ideal teaching tool.
         \vspace{-0.2ex}
        \end{block}
      
+%---------------------------------------------------------------------------------
+    \end{column}
+% ---------------------------------------------------------------------------
+%   SECOND COLUMN
+% ---------------------------------------------------------------------------
+    \begin{column}{.31\linewidth}
+   
+% ---------------------------------------------------------------------------
+      
+
+
 % ---------------------------------------------------------------------------
       \begin{block}{Acquisition Control}
         \begin{center}
@@ -312,17 +168,7 @@ an ideal teaching tool.
                 and initiates capture of data by the oscilloscope.
         \end{itemize}
        \end{block}
-     
-% ---------------------------------------------------------------------------
-          
-% ---------------------------------------------------------------------------
-    \end{column}
-% ---------------------------------------------------------------------------
-%   THIRD COLUMN
-% ---------------------------------------------------------------------------
-   \begin{column}{.31\linewidth}
-    
-% ---------------------------------------------------------------------------
+     % ---------------------------------------------------------------------------
        \begin{block}{FOBOS Analysis}
         \begin{minipage}{0.69\linewidth}
 		\includegraphics[scale=1.5]{../figures/fobos-dan}
@@ -340,7 +186,7 @@ an ideal teaching tool.
 	\end{minipage} 
        \end{block}
 % ---------------------------------------------------------------------------
-       \begin{block}{Analysis Workflow}
+       \begin{block}{DPA Workflow}
         \vspace{-1ex}
         \begin{center}
           \includegraphics[scale=1.5]{../figures/data_anl}
@@ -365,66 +211,7 @@ an ideal teaching tool.
         \end{enumerate}
 
        \end{block}
-% ---------------------------------------------------------------------------
-       \begin{block}{Signal Alignment}
-        \begin{minipage}[t]{0.49\linewidth}
-          \includegraphics[scale=2.4]{../figures/tracealingment}
-        \end{minipage}%
-        \begin{minipage}[t]{0.49\linewidth}
-         \vspace{-4cm}
-         \begin{itemize}
-          \item The recorded trigger signal is used by FOBOS Analysis to align the
-                power traces.
-         \end{itemize} 
-        \end{minipage}
-       \end{block}
-% ---------------------------------------------------------------------------
-       \begin{block}{Sample Space Disposition}
-        \begin{minipage}[t]{0.49\linewidth}%
-		\includegraphics[width=0.9\linewidth]{../figures/oscilloscope-sample-window}
-        \end{minipage}%
-        \begin{minipage}[t]{0.49\linewidth}%
-          \vspace{-6.5cm}% 
-          \begin{itemize}
-            \item User can select any part of the trace for further analysis.
-            \item Reduces computation time.
-          \end{itemize} 
-          \begin{center}
-            \setbeamercolor{padding}{fg=white, bg=cergbg3}
-            \begin{beamercolorbox}[rounded=true]{padding}%
-               \footnotesize%
-              \begin{lstlisting}
-WINDOW_START_POINT = 100
-SAMPLE_WINDOW = 1000
-              \end{lstlisting}
-            \end{beamercolorbox}
-          \end{center}
-        \end{minipage}
-       \end{block}
-% ---------------------------------------------------------------------------
-       \begin{block}{Compression}
-        \begin{minipage}[t]{0.49\linewidth}
-		\includegraphics[width=0.9\linewidth]{../figures/oscilloscope-compression-window}
-        \end{minipage}%
-        \begin{minipage}[t]{0.49\linewidth}%
-          \vspace{-6.5cm}% 
-         \begin{itemize}
-           \item Compresses length to MAXimum, MINimum, or MEAN.
-%           \item Further reduces number of points for correlation.
-         \end{itemize} 
-          \begin{center}
-            \setbeamercolor{padding}{fg=white, bg=cergbg3}
-            \begin{beamercolorbox}[rounded=true]{padding}%
-               \footnotesize%
-              \begin{lstlisting}
-COMPRESSION_LENGTH = 40
-COMPRESSION_TYPE = MAX
-              \end{lstlisting}
-            \end{beamercolorbox}
-          \end{center}
-        \end{minipage}
-       \end{block}
-% ---------------------------------------------------------------------------
+       
        \begin{block}{Example: Attack on AES}
         \vspace{-1ex}
          \begin{center}
@@ -457,6 +244,107 @@ COMPRESSION_TYPE = MAX
         \end{minipage}
         \vspace{-3.8ex}
        \end{block}
+% ---------------------------------------------------------------------------
+          
+% ---------------------------------------------------------------------------
+    \end{column}
+% ---------------------------------------------------------------------------
+%   THIRD COLUMN
+% ---------------------------------------------------------------------------
+   \begin{column}{.31\linewidth}
+    
+
+%----------------------------------------------------------------------------
+      \begin{block}{Power measurement}
+         \vspace{-1ex}
+         \begin{itemize}
+          \item An add-on module is used to measures power. It measures voltage drop across a shunt resistor.
+          \item Oscilloscope collects traces then a script calculates power consumption.
+        \begin{center}
+          \includegraphics[scale=0.8]{images/power.png}
+        \end{center}
+        \item Sample results:
+
+
+\begin{Verbatim}[fontsize=\small]
+Source File: rawDataAligned.npy
+Number of Traces: 20
+Start sample (for truncated traces): 1
+...
+XBXX resistance (ohms): 1
+...
+Mean voltage for truncated traces is: 0.67885V
+Mean power for truncated traces is: 0.0326W
+\end{Verbatim}
+         \end{itemize}
+
+
+      \end{block}
+%----------------------------------------------------------------------------
+      \begin{block}{T-Test Flow}
+         \vspace{-1ex}
+         \begin{itemize}
+      \item Welch's T-test is used to evaluate DPA resistance.
+      $$ \frac{\mu_0 - \mu_1}{\sqrt{\frac{s_0^2}{n_0}+ \frac{s_0^2}{n_0}}}$$
+      {\small
+          Where $\mu_0$ and $\mu_1$ are means of distributions 0 and 1, s0 and s1 are standard deviations, and n0 and n1 are the cardinality of the distributions, or the number of samples.
+          }
+         \end{itemize}
+        \begin{center}
+     \includegraphics[scale=1.0]{images/t_test_flow.png}
+        \end{center} 
+         
+      \end{block}
+%----------------------------------------------------------------------------
+      \begin{block}{Example T-Test - AES-GCM implementation}
+         \vspace{-1ex}
+         \begin{minipage}{0.5\linewidth}
+             \begin{center}
+               Fail: Unprotected
+            \includegraphics[scale=0.6]{images/aes_gcm_unprotected.png}
+        \end{center} 
+        \end{minipage}
+        \hspace{-5ex}
+       \begin{minipage}{0.5\linewidth}
+
+        \begin{center}
+             Pass: Protected
+            \includegraphics[scale=0.6]{images/aes_gcm_protected.png}
+            \end{center} 
+         
+        \end{minipage}
+        
+         
+      \end{block}
+
+%----------------------------------------------------------------------------
+      \begin{block}{Profiler}
+         \vspace{-1ex}
+         A set of scripts used to map DUT state to samples in power traces. This can help to spot points of leakage. \newline
+         \textbf{Example}: Determining leakage points in AES-CLOC implementation t-test result:
+         \begin{itemize}
+         \item T-test detects leakage at discrete points:
+          \begin{center}
+          \includegraphics[scale=0.5]{images/profiler_1.png}
+          \end{center}
+          \item After zooming into a spike, we can see the DUT state at that time:
+     \begin{center}
+          \includegraphics[scale=0.5]{images/profiler_2.png}
+          \end{center}
+          \item Reason for the spike: CLOC has a data-dependent branch condition(from the CLOC specification).
+          \newline
+          \begin{center}
+          \includegraphics[scale=1.5]{images/cloc_aes_branch.png}
+           \end{center}
+
+
+         \end{itemize}
+       
+       
+          
+    
+         
+      \end{block}
 % ---------------------------------------------------------------------------
 % ---------------------------------------------------------------------------
 %      \begin{block}{References}
