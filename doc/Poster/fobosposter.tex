@@ -171,7 +171,7 @@ an ideal teaching tool.
      % ---------------------------------------------------------------------------
        \begin{block}{FOBOS Analysis}
         \begin{minipage}{0.69\linewidth}
-		\includegraphics[scale=1.5]{../figures/fobos-dan}
+		%\includegraphics[scale=1.5]{../figures/fobos-dan}
         \end{minipage}
 	\hspace{-5ex}
 	\begin{minipage}{0.31\linewidth}
@@ -268,7 +268,6 @@ an ideal teaching tool.
 
 \begin{Verbatim}[fontsize=\small]
 Source File: rawDataAligned.npy
-Number of Traces: 20
 Start sample (for truncated traces): 1
 ...
 XBXX resistance (ohms): 1
@@ -325,16 +324,16 @@ Mean power for truncated traces is: 0.0326W
          \begin{itemize}
          \item T-test detects leakage at discrete points:
           \begin{center}
-          \includegraphics[scale=0.3]{images/profiler_1.png}
+          \includegraphics[scale=0.25]{images/profiler_1.png}
           \end{center}
           \item After zooming into a spike, we can see the DUT state at that time:
      \begin{center}
-          \includegraphics[scale=0.3]{images/profiler_2.png}
+          \includegraphics[scale=0.25]{images/profiler_2.png}
           \end{center}
           \item Reason for the spike: CLOC has a data-dependent branch condition(from the CLOC specification).
           \newline
           \begin{center}
-          \includegraphics[scale=1.5]{images/cloc_aes_branch.png}
+          \includegraphics[scale=1.2]{images/cloc_aes_branch.png}
            \end{center}
 
 
