@@ -23,7 +23,10 @@
 \usetikzlibrary{fit,arrows,calc,positioning}
 %\usepackage{wrapfig}
 %%%%%%%%%%% Additional packages-Panci
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{amssymb,amsmath}
+\usepackage{ concrete }   
 
 \definecolor{ocean}{RGB}{0,205,255}
 \definecolor{beamerbackground}{rgb}{0.5,0.5,0.3}
@@ -58,28 +61,24 @@
 
 % ---------------------------------------------------------------------------
       \begin{block}{Abstract}
-Side-channel analysis (SCA) attacks pose a growing threat to the
-implementations of cryptographic algorithms in software as well as in
-hardware. Current standard side-channel evaluation boards with Field
-Programmable Gate Arrays (FPGAs), that allow for exploring the
-vulnerability of cryptographic implementations on FPGAs, are expensive
-and available only for a few FPGA devices. Furthermore, a complete
-open source software package that includes drivers which run test cases
-on the board, control the measurement equipment, and contain several
-SCA techniques, are not readily available. Each user has to assemble
-his/her own setup based on software packages from multiple sources,
-written in multiple languages and/or write parts of the code
-themselves. Additionally, this complexity and cost makes it very
-difficult, if not impossible, to educate students on SCA through
-hands-on laboratory exercises. 
-FOBOS is an open-source framework for
-conducting SCA attacks on FPGAs which supports multiple FPGA devices
-and includes all necessary software to run Differential Power Analysis
-(DPA) attacks, which are the most prominent kind of SCA attacks.
-Through its completeness and support for educational FPGA boards it is
-an ideal teaching tool.
-
-
+Side-channel analysis attacks pose a grave threat to implementations of cryptographic 
+Algorithms implemented in software as well as in hardware. 
+FOBOS, an ``acquisition to analysis'' solution, includes all necessary software to control the device 
+under test (attack) (DUT), trigger 
+the oscilloscope, obtain the measurements and analyze them using several power analysis techniques. 
+%The components of FOBOS are build in a modular fashion so that it can easily be adapted for new FPGA 
+%boards, oscilloscopes, and attack techniques.
+Our latest release of FOBOS has significant enhancements over
+the last release announced at HOST 2016. 
+The most prominent one is the capability of 
+performing Test Vector Leakage Assessment (TVLA) based on Welch's t-test. This is an industry-standard
+method to evaluate the effectiveness of side-channel countermeasures. 
+This assessment is especially valuable in conjunction with our new profiler which ties each t-test
+evaluation to the state of the cryptographic function under evaluation. This allows a user to 
+pin-point during which operation information is leaking. Furthermore, FOBOS is now compatible with 
+the CAESAR API, enabling evaluation of implementations on FPGAs of candidates of the 
+Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR) without 
+changes to FOBOS.
       \end{block}
 	 
 %---------------------------------------------------------------------------------
@@ -107,10 +106,22 @@ an ideal teaching tool.
 % ---------------------------------------------------------------------------
       \begin{block}{Main Components of FOBOS}
         \begin{center}
-          \includegraphics[scale=1.5]{../figures/fobos-top}
+          \includegraphics[scale=1.6]{../figures/fobos-top}
         \end{center} 
       \end{block}
      
+ % ---------------------------------------------------------------------------
+      \begin{block}{FOBOS Hardware}
+        \vspace{-1ex}
+        \begin{center}
+          \includegraphics[width=0.9\linewidth]{../figures/FOBOSv2}
+        \end{center} 
+%        \begin{itemize}
+%          \item FOBOS Control can be Digilent Nexys2 or Nexys3.
+%        \end{itemize}
+        \vspace{-0.2ex}
+       \end{block}
+
 % ---------------------------------------------------------------------------
       \begin{block}{FOBOS Acquisition}
         \begin{center}
@@ -131,18 +142,6 @@ an ideal teaching tool.
               \item Stores measurements and setup information.
             \end{itemize}
           \end{itemize}
-       \end{block}
-     
- % ---------------------------------------------------------------------------
-      \begin{block}{FOBOS Hardware}
-        \vspace{-1ex}
-        \begin{center}
-          \includegraphics[width=0.9\linewidth]{images/fobos_setup.jpg}
-        \end{center} 
-        \begin{itemize}
-          \item FOBOS Control can be Digilent Nexys2 or Nexys3, soon Nexys4.
-        \end{itemize}
-        \vspace{-0.2ex}
        \end{block}
      
 %---------------------------------------------------------------------------------
@@ -171,7 +170,7 @@ an ideal teaching tool.
      % ---------------------------------------------------------------------------
        \begin{block}{FOBOS Analysis}
         \begin{minipage}{0.69\linewidth}
-		%\includegraphics[scale=1.5]{../figures/fobos-dan}
+		\includegraphics[scale=1.5]{../figures/fobos-dan}
         \end{minipage}
 	\hspace{-5ex}
 	\begin{minipage}{0.31\linewidth}
@@ -244,8 +243,24 @@ an ideal teaching tool.
         \end{minipage}
         \vspace{-3.8ex}
        \end{block}
-% ---------------------------------------------------------------------------
+%----------------------------------------------------------------------------
+       \begin{block}{Power Measurement}
+        \begin{minipage}{0.45\linewidth}
+         \vspace{-0.7ex}
+		\includegraphics[scale=0.9]{../figures/xbp-no-xbh}
+         \vspace{-1ex}
+        \end{minipage}%
+%	\hspace{-5ex}
+	\begin{minipage}{0.48\linewidth}
+          \begin{itemize}
+            \item XXBX Power Shim XBP
+            \item Contains current shunt and current shunt amplifier
+            \item Selectable gain: 25, 50, 100, 200
+          \end{itemize}
+	\end{minipage} 
+       \end{block}
           
+% ---------------------------------------------------------------------------
 % ---------------------------------------------------------------------------
     \end{column}
 % ---------------------------------------------------------------------------
@@ -255,60 +270,74 @@ an ideal teaching tool.
     
 
 %----------------------------------------------------------------------------
-      \begin{block}{Power measurement}
+      \begin{block}{Example: Power Measurement}
          \vspace{-1ex}
          \begin{itemize}
-          \item An add-on module is used to measure power. It measures voltage drop across a shunt resistor.
           \item Oscilloscope collects traces then a script calculates power consumption.
         \begin{center}
-          \includegraphics[scale=0.8]{images/power.png}
+          \includegraphics[scale=0.8]{../figures/power.png}
         \end{center}
         \item Sample results:
-
-
+         \end{itemize}
+        \begin{center}
+        \begin{minipage}[t]{0.9\linewidth}  
+        \setbeamercolor{padding}{fg=white, bg=cergbg1}
+        \begin{beamercolorbox}[rounded=true]{padding}
 \begin{Verbatim}[fontsize=\small]
 Source File: rawDataAligned.npy
 Start sample (for truncated traces): 1
 ...
-XBXX resistance (ohms): 1
+XBP Shunt Resistance (ohms): 1
 ...
 Mean voltage for truncated traces is: 0.67885V
 Mean power for truncated traces is: 0.0326W
 \end{Verbatim}
-         \end{itemize}
+        \end{beamercolorbox}
+        \end{minipage}
+        \end{center}
 
 
       \end{block}
 %----------------------------------------------------------------------------
-      \begin{block}{T-Test Flow}
+      \begin{block}{Welch's T-Test}
          \vspace{-1ex}
          \begin{itemize}
       \item Welch's T-test is used to evaluate DPA resistance.
-      $$ \frac{\mu_0 - \mu_1}{\sqrt{\frac{s_0^2}{n_0}+ \frac{s_0^2}{n_0}}}$$
+      $$\frac{\mu_0 - \mu_1}{\sqrt{\frac{s_0^2}{n_0}+ \frac{s_0^2}{n_0}}} 
+         \quad p = 2 \int_{|t|}^\infty f(t,v) \mathrm{d}t $$
+      $$ p = 2F(-4.5,v > 10000) < -0.00001$$
+         \end{itemize}
+         \begin{minipage}{0.4\linewidth}
+        \begin{center}
+     \includegraphics[scale=1.5]{../figures/t-test-flow}
+        \end{center} 
+        \end{minipage}
+         \begin{minipage}{0.5\linewidth}
       {\small
           Where $\mu_0$ and $\mu_1$ are means of distributions 0 and 1, s0 and s1 are standard deviations, and n0 and n1 are the cardinality of the distributions, or the number of samples.
           }
+         \begin{itemize}
+           \item Finds leakage without attack.
+           \item T-test fails if $|t| > 4.5$\\ $\Rightarrow$ {\color{red}design leaks}.
+           \item No power model needed.
+           \item No knowledge of architecture needed.
          \end{itemize}
-        \begin{center}
-     \includegraphics[scale=1.0]{images/t_test_flow.png}
-        \end{center} 
+        \end{minipage}
          
       \end{block}
 %----------------------------------------------------------------------------
-      \begin{block}{Example T-Test - AES-GCM implementation}
-         \vspace{-1ex}
-         \begin{minipage}{0.5\linewidth}
+      \begin{block}{Example: T-Test on AES-GCM Implementation}
+         \begin{minipage}{0.45\linewidth}
              \begin{center}
                Fail: Unprotected
-            \includegraphics[scale=0.6]{images/aes_gcm_unprotected.png}
+            \includegraphics[scale=0.6]{../figures/aes_gcm_unprotected.png}
         \end{center} 
         \end{minipage}
-        \hspace{-5ex}
-       \begin{minipage}{0.5\linewidth}
+       \begin{minipage}{0.45\linewidth}
 
         \begin{center}
              Pass: Protected
-            \includegraphics[scale=0.6]{images/aes_gcm_protected.png}
+            \includegraphics[scale=0.6]{../figures/aes_gcm_protected.png}
             \end{center} 
          
         \end{minipage}
@@ -318,24 +347,26 @@ Mean power for truncated traces is: 0.0326W
 
 %----------------------------------------------------------------------------
       \begin{block}{Profiler}
-         \vspace{-1ex}
-         A set of scripts used to map DUT state to samples in power traces. This can help to spot points of leakage. \newline
-         \textbf{Example}: Determining leakage points in AES-CLOC implementation t-test result:
+         \begin{itemize}
+           \item \textbf{Problem:} It is difficult to correlate leakage points to operations on the DUT.
+           \item \textbf{Solution:} \emph{Profiler} maps DUT state to samples in power trace.
+           \item \textbf{Example}: Determining leakage points in AES-CLOC implementation's t-test result:
          \begin{itemize}
          \item T-test detects leakage at discrete points:
           \begin{center}
-          \includegraphics[scale=0.25]{images/profiler_1.png}
+          \includegraphics[scale=0.254]{../figures/profiler_1.png}
           \end{center}
           \item After zooming into a spike, we can see the DUT state at that time:
      \begin{center}
-          \includegraphics[scale=0.25]{images/profiler_2.png}
+          \includegraphics[scale=0.254]{../figures/profiler_2.png}
           \end{center}
-          \item Reason for the spike: CLOC has a data-dependent branch condition(from the CLOC specification).
+          \item Reason for the spike: CLOC has a data-dependent branch condition (from the CLOC specification).
           \newline
           \begin{center}
-          \includegraphics[scale=1.2]{images/cloc_aes_branch.png}
+          \includegraphics[scale=1.2]{../figures/cloc_aes_branch.png}
            \end{center}
 
+         \end{itemize}
 
          \end{itemize}
        

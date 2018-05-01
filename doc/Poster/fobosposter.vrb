@@ -7,141 +7,29 @@
 
 % ---------------------------------------------------------------------------
       \begin{block}{Abstract}
-Side-channel analysis (SCA) attacks pose a growing threat to implementations of cryptographic
-algorithms implemented in software as well as in hardware. Current standard
-side-channel evaluation boards with Field Programmable Gate Arrays (FPGAs), that allow
-for exploring the vulnerability of cryptographic implementations on FPGAs, are expensive
-and available only for a few FPGA devices. Furthermore, a complete open source
-software package that includes drivers that run test cases on the board,
-control the measurement equipment, and contain several side-channel analysis
-techniques is not readily available. Each user has to assemble their own setup
-based on software packages from multiple sources, written in multiple languages
-and write parts themselves. Additionally, this complexity and cost makes it very difficult,
-if not impossible, to educate students on side-channel analysis
-through hands-on laboratory exercises.
-FOBOS is an open-source framework for conducting side-channel attacks on FPGAs
-which supports multiple FPGA devices and includes all necessary software to run
-differential power analysis attacks, which are the most prominent kind of side-channel attacks.
-Through its completeness and support for educational FPGA boards it is an ideal
-teaching tool.
+Side-channel analysis attacks pose a grave threat to implementations of cryptographic
+Algorithms implemented in software as well as in hardware.
+FOBOS, an ``acquisition to analysis'' solution, includes all necessary software to control the device
+under test (attack) (DUT), trigger
+the oscilloscope, obtain the measurements and analyze them using several power analysis techniques.
+%The components of FOBOS are build in a modular fashion so that it can easily be adapted for new FPGA
+%boards, oscilloscopes, and attack techniques.
+Our latest release of FOBOS has significant enhancements over
+the last release announced at HOST 2016.
+The most prominent one is the capability of
+performing Test Vector Leakage Assessment (TVLA) based on Welch's t-test. This is an industry-standard
+method to evaluate the effectiveness of side-channel countermeasures.
+This assessment is especially valuable in conjunction with our new profiler which ties each t-test
+evaluation to the state of the cryptographic function under evaluation. This allows a user to
+pin-point during which operation information is leaking. Furthermore, FOBOS is now compatible with
+the CAESAR API, enabling evaluation of implementations on FPGAs of candidates of the
+Competition for Authenticated Encryption: Security, Applicability, and Robustness (CAESAR) without
+changes to FOBOS.
       \end{block}
 
 %---------------------------------------------------------------------------------
 
-      \begin{block}{Side Channel Analysis (SCA)}
-        \begin{itemize}
-          \item {\color{red}Danger:} Implementations are susceptible to Side Channel Analysis (SCA).
-        \end{itemize}
 
-        \vspace{-2ex}
-        \begin{minipage}[t]{0.62\linewidth}
-          %\vspace{-5cm}%\small
-          \begin{itemize}
-            \item Key~space~256-bit,~$2^{256} = 1.2 \cdot 10^{77}$keys
-            \item Atoms in Universe {\tiny(wikipedia)} $9.4 \cdot 10^{79}$
-            \item SCA allows to attack 8-bit at a time
-            \item SCA complexity $\frac{256}{8} \cdot 2^{8} = 8192$
-          \end{itemize}
-        \end{minipage}%
-        %\hspace{-0.5cm}
-        \begin{minipage}[t]{0.38\linewidth}
-          \vspace{-1ex}%
-          \hspace{-1ex}\includegraphics[width=\linewidth]{../figures/sidechannel2}
-        \end{minipage}
-
-        \begin{center}
-        \begin{minipage}[t]{0.9\linewidth}
-        \setbeamercolor{padding}{fg=white, bg=cergbg1}
-        \begin{beamercolorbox}[rounded=true]{padding}
-          %\begin{block}{Danger}
-          %\small%
-          \begin{itemize}
-            \item These are passive, non invasive attacks.
-            \item They are difficult to detect.
-            \item The measurement setup is not very expensive.
-            \item Applies to Software as well as Hardware implementations.
-          \end{itemize}
-          %\end{block}
-        \end{beamercolorbox}
-        \end{minipage}
-        \end{center}
-      \end{block}
-%-----------------------------------------------------------------------------------
-      \begin{block}{Current SCA Evaluation Solutions}
-        \begin{minipage}[t]{0.49\linewidth}
-          {\large\textbf{AES}}%\vspace{1ex}
-          \begin{itemize}
-            \item NIST standard for block ciphers.
-             \item Based on Rijndael block cipher.
-            %\item Traditional block cipher.
-            \item 128-bit block size.
-            \item 128/192/256-bit key size.
-          \end{itemize}
-        \end{minipage}%
-        \begin{minipage}[t]{0.49\linewidth}
-          {\large\textbf{Keccak-$p$[1600,$n_r$]}}%\vspace{1ex} %permutation
-          \begin{itemize}
-            \item Permutation based on Keccak, winner of competition for next Secure Hash Algorithm (SHA-3).
-            \item 1600-bit state size.
-            %\item Keccak is based on Sponge construction.
-          \end{itemize}
-        \end{minipage}
-      \end{block}
-%------------------------------------------------------------------------------------
-          \begin{block}{Drawbacks of Current Solutions}
-            \begin{itemize}
-              \item IA Meter only performs acquisition using Python.
-              \item OpenSCA Toolbox performs only analysis using Matlab.
-              \item SASEBO has very limited FPGA support und uses C\#.
-              \begin{itemize}
-                \item DPA resistance depends on FPGA family.
-                \item DPA resistance depends on FPGA packaging (e.g., w/ or w/o capacitances).
-              \end{itemize}
-              \item Currently only a patchwork of scripts and tools exist.
-              \item No complete, free, and open-source solution is available.
-              \item No inexpensive out-of-the-box solution for education.
-            \end{itemize}
-          \end{block}
-
-%---------------------------------------------------------------------------------
-      \begin{block}{Modes of Operation Summary}
-        \begin{table}[t]\setlength{\tabcolsep}{2.0pt}
-         \centering
-          \vspace{-2ex}%\large
-          %\footnotesize
-          \caption{AES / Rijndael* and Keccak Modes \small (Rd. = Number of rounds)}\label{tab:aesmodes}
-          \begin{tabular}{|l|l|l|llll|l|l|}\hline
-            &Operation  &  Mode         & Block & Key & Rd.    &\hspace{1ex}$\rho$& Inputs                    & Outputs \\ \hline
-            \parbox[t]{9mm}{\multirow{6}{*}{\rotatebox[]{90}{\textbf{AES}}}}
-            &Hash*      &  AES-Hash     & 256   & N/A & 14     &      &  $|M|$, $M$             & $H$       \\
-            &MAC        &  CMAC         & 128   & 128 & 10     &      &  $|M|$, $M$, $K$, $IV$  & $T$       \\
-            &AEAD       &  GCM          & 128   & 128 & 10     &      &  $|M|$, $M$, $K$, $IV$, & $T$, $C$  \\
-            &           &               &       &     &        &      &  $|AD|$, $AD$           &           \\
-            &PRNG       &  Fortuna      & 128   & N/A & 14     &      &  $S$                    & $R$       \\ \hline
-            \parbox[t]{9mm}{\multirow{6}{*}{\rotatebox[]{90}{\textbf{Keccak}}}}
-            &Hash       & Sponge        & 1600  & N/A & 24     & 1088 &  $|M|$, $M$             & $H$      \\
-            &MAC        & Sponge        & 1600  & 128 & 24     & 1088 &  $|M|$, $M$, $K$, $IV$  & $T$      \\
-            &AEAD       & Duplex        & 1600  & 128 & 12     & 1344 &  $|M|$, $M$, $K$, $IV$, & $T$, $C$ \\
-            &           &               &       &     &        &      &  $|AD|$, $AD$           &          \\
-            &PRNG       & Duplex        & 1600  & N/A & 12     & 1344 &  $S$                    & $R$      \\ \hline
-          \end{tabular}
-        \end{table}
-        \hspace{1ex}
-        {
-          \footnotesize $M$--Message, $K$--Key, $AD$--Associated Data, $S$--Seed, $IV$--Initialization Value,
-                        $H$--Hash, $T$--Tag, \\ \hspace{3.5ex}$C$--Cipher-text, $R$--Random Number, $|X|$--Length of $X$
-        }
-        \\
-       \end{block}
-
-%---------------------------------------------------------------------------------
-    \end{column}
-% ---------------------------------------------------------------------------
-%   SECOND COLUMN
-% ---------------------------------------------------------------------------
-    \begin{column}{.31\linewidth}
-
-% ---------------------------------------------------------------------------
 
 % ---------------------------------------------------------------------------
       \begin{block}{FOBOS}
@@ -162,36 +50,163 @@ teaching tool.
         \end{itemize}
       \end{block}
 % ---------------------------------------------------------------------------
-      \begin{block}{Top Level Diagram}
+      \begin{block}{Main Components of FOBOS}
         \begin{center}
-          \includegraphics[scale=1.5]{../figures/fobos-top}
+          \includegraphics[scale=1.6]{../figures/fobos-top}
         \end{center}
+      \end{block}
+
+ % ---------------------------------------------------------------------------
+      \begin{block}{FOBOS Hardware}
+        \vspace{-1ex}
+        \begin{center}
+          \includegraphics[width=0.9\linewidth]{../figures/FOBOSv2}
+        \end{center}
+%        \begin{itemize}
+%          \item FOBOS Control can be Digilent Nexys2 or Nexys3.
+%        \end{itemize}
+        \vspace{-0.2ex}
        \end{block}
 
 % ---------------------------------------------------------------------------
       \begin{block}{FOBOS Acquisition}
         \begin{center}
-          \includegraphics[scale=1.5]{../figures/fobos-dac}
+          \includegraphics[scale=1.7]{../figures/fobos-dac}
         \end{center}
+
+          \begin{itemize}
+            \item FOBOS Acquisition Hardware contains
+            \begin{itemize}
+              \item VHDL for the \textbf{Control Board} to interface with DUT,
+              \item VHDL-wrapper for the \textbf{DUT board} to instantiate a user provided algorithm, and
+              \item Connector description.
+            \end{itemize}
+            \item FOBOS Acquisition Software is written in Python and
+            \begin{itemize}
+              \item Controls FOBOS Acquisition Hardware,
+              \item Controls measurement equipment, and
+              \item Stores measurements and setup information.
+            \end{itemize}
+          \end{itemize}
        \end{block}
 
+%---------------------------------------------------------------------------------
+    \end{column}
 % ---------------------------------------------------------------------------
-      \begin{block}{FOBOS Hardware}
-        \vspace{-2ex}
-        \begin{center}
-          \includegraphics[width=0.9\linewidth]{../figures/FOBOS-label}
-        \end{center}
-       \end{block}
+%   SECOND COLUMN
+% ---------------------------------------------------------------------------
+    \begin{column}{.31\linewidth}
+
+% ---------------------------------------------------------------------------
+
+
 
 % ---------------------------------------------------------------------------
       \begin{block}{Acquisition Control}
         \begin{center}
           \includegraphics[scale=1.5]{../figures/data_acq}
         \end{center}
+        \begin{itemize}
+          \item Control Board sends Key and Plaintext to the DUT.
+          \item After DUT receives all data, the Control Board generates the trigger.
+          \item The trigger indicates that the cryptographic algorithm has started
+                and initiates capture of data by the oscilloscope.
+        \end{itemize}
+       \end{block}
+     % ---------------------------------------------------------------------------
+       \begin{block}{FOBOS Analysis}
+        \begin{minipage}{0.69\linewidth}
+		\includegraphics[scale=1.5]{../figures/fobos-dan}
+        \end{minipage}
+	\hspace{-5ex}
+	\begin{minipage}{0.31\linewidth}
+          {\small
+          \begin{itemize}
+            \item Minimum Guessing Entropy shows how many guesses (possible keys) are
+                  remaining for a given number of traces.
+            \item Autocorrelation indicates repeating patterns in a trace such as round
+                  operations which help in identifying where to attack.
+          \end{itemize}
+          }
+	\end{minipage}
+       \end{block}
+% ---------------------------------------------------------------------------
+       \begin{block}{DPA Workflow}
+        \vspace{-1ex}
+        \begin{center}
+          \includegraphics[scale=1.5]{../figures/data_anl}
+        \end{center}
+        \vspace{-1ex}
+        \begin{enumerate}
+          \item Statistics Module
+          \begin{itemize}
+            \item Statistics can identify outliers in traces and samples across traces.
+          \end{itemize}
+          \item Post-Processing Module
+          \begin{itemize}
+            \item The main goal of these modules is to reduce the amount of data that
+                  has to be analyzed by the SCA Module.
+          \end{itemize}
+          \item SCA Module
+          \begin{itemize}
+            \item User can test his/her own power model using a library of state-of-the art side channel
+                  distinguishers.
+            \item FOBOS supports CPA using Spearman, Pearson, ANOVA \& MIA.
+          \end{itemize}
+        \end{enumerate}
+
+       \end{block}
+
+       \begin{block}{Example: Attack on AES}
+        \vspace{-1ex}
+         \begin{center}
+           \includegraphics[width=0.9\linewidth]{../figures/aes128}
+
+           {\small $PowerGuess_{i, j}$ = HD(SBOX($CT_{i-1}$), SBOX($PT_{i}$ $\oplus$ $KeyGuess_{j}$) )}
+         \end{center}
+	 \begin{minipage}[t]{0.49\linewidth}
+		 %\begin{center}
+			~~\includegraphics[width=0.80\linewidth]{../figures/oscilloscope-all-4ch}
+		%\end{center}
+
+	 \end{minipage}%
+	 \begin{minipage}[t]{0.49\linewidth}
+		 \hspace{-5ex}\vspace{-6cm}{\small
+		 \begin{itemize}
+		  \item First round attack on AES-128.
+		  \item Key (0x16) recovered after 1 hour.
+                  \item Requires 2000 encryptions.
+                  \item Pearson's Correlation.
+                  \item Sometimes histogram is more clear than correlation plot.
+		 \end{itemize}}
+         \end{minipage}
+
+        \begin{minipage}[t]{0.49\linewidth}
+           \includegraphics[width=1.0\linewidth]{../figures/pearsonsCoActual}
+        \end{minipage}%
+        \begin{minipage}[t]{0.49\linewidth}
+		\includegraphics[width=1.0\linewidth]{../figures/histPearsonsCoActual}
+        \end{minipage}
+        \vspace{-3.8ex}
+       \end{block}
+%----------------------------------------------------------------------------
+       \begin{block}{Power Measurement}
+        \begin{minipage}{0.45\linewidth}
+         \vspace{-0.7ex}
+		\includegraphics[scale=0.9]{../figures/xbp-no-xbh}
+         \vspace{-1ex}
+        \end{minipage}%
+%	\hspace{-5ex}
+	\begin{minipage}{0.48\linewidth}
+          \begin{itemize}
+            \item XXBX Power Shim XBP
+            \item Contains current shunt and current shunt amplifier
+            \item Selectable gain: 25, 50, 100, 200
+          \end{itemize}
+	\end{minipage}
        \end{block}
 
 % ---------------------------------------------------------------------------
-
 % ---------------------------------------------------------------------------
     \end{column}
 % ---------------------------------------------------------------------------
@@ -199,103 +214,113 @@ teaching tool.
 % ---------------------------------------------------------------------------
    \begin{column}{.31\linewidth}
 
-% ---------------------------------------------------------------------------
-       \begin{block}{FOBOS Analysis}
-        \begin{center}
-          \includegraphics[scale=1.5]{../figures/fobos-dan}
-        \end{center}
-       \end{block}
-% ---------------------------------------------------------------------------
-       \begin{block}{Analysis Workflow}
-        \begin{center}
-          \includegraphics[scale=1.5]{../figures/data_anl}
-        \end{center}
-       \end{block}
-% ---------------------------------------------------------------------------
-       \begin{block}{Signal Alignment}
-        \begin{minipage}[t]{0.49\linewidth}
-          \includegraphics[scale=0.5]{../figures/signalAlignment}
-        \end{minipage}%
-        \begin{minipage}[t]{0.49\linewidth}
-         \begin{itemize}
-           \item bla
-           \item bla
-         \end{itemize}
-        \end{minipage}
-       \end{block}
-% ---------------------------------------------------------------------------
-       \begin{block}{Sample Space Disposition}
-        \begin{minipage}[t]{0.49\linewidth}%
-          \includegraphics[width=0.9\linewidth]{../figures/oscilloscope-sample-window}\hspace{-2ex}
-        \end{minipage}%
-        \begin{minipage}[t]{0.49\linewidth}%
-          \vspace{-8cm}%
-          \begin{itemize}
-            \item User can select any part of the trace for further analysis.
-            \item Reduces computation time.
-          \end{itemize}
-          \begin{center}
-            \setbeamercolor{padding}{fg=white, bg=cergbg3}
-            \begin{beamercolorbox}[rounded=true]{padding}%
-               \footnotesize%
-              \begin{lstlisting}
-WINDOW_START_POINT = 100
-SAMPLE_WINDOW = 1000
-              \end{lstlisting}
-            \end{beamercolorbox}
-          \end{center}
-        \end{minipage}
-       \end{block}
-% ---------------------------------------------------------------------------
-       \begin{block}{Compression}
-        \begin{minipage}[t]{0.49\linewidth}
-\includegraphics[width=0.9\linewidth]{../figures/oscilloscope-compression-window}
-        \end{minipage}%
-        \begin{minipage}[t]{0.49\linewidth}%
-          \vspace{-8cm}%
-         \begin{itemize}
-           \item Compress to MAXimum, MINimum, or MEAN of given sample set.
-           \item Further reduces number of points for correlation.
-         \end{itemize}
-          \begin{center}
-            \setbeamercolor{padding}{fg=white, bg=cergbg3}
-            \begin{beamercolorbox}[rounded=true]{padding}%
-               \footnotesize%
-              \begin{lstlisting}
-COMPRESSION_LENGTH = 40
-COMPRESSION_TYPE = MAX
-              \end{lstlisting}
-            \end{beamercolorbox}
-          \end{center}
-        \end{minipage}
-       \end{block}
-% ---------------------------------------------------------------------------
-       \begin{block}{Example: Attack on AES}
-         \begin{center}
-           \includegraphics[width=0.9\linewidth]{../figures/aes128}
-         \end{center}
-         \begin{itemize}
- \item {\small $Power_{guess}$ = HD(SBOX($CT_{i-1}$), SBOX($PT_{i}$ $\oplus$ $Key_{guess}$) )}
- \item
-         \end{itemize}
- \begin{minipage}[t]{0.49\linewidth}
- \includegraphics[width=0.80\linewidth]{../figures/oscilloscope-all-4ch}
- \end{minipage}%
- \begin{minipage}[t]{0.49\linewidth}
- \begin{itemize}
-  \item
-  \item
- \end{itemize}
-         \end{minipage}
 
-        \begin{minipage}[t]{0.49\linewidth}
-           \includegraphics[width=0.9\linewidth]{../figures/pearsonsCoActual}
-        \end{minipage}%
-        \begin{minipage}[t]{0.49\linewidth}
-\includegraphics[width=0.9\linewidth]{../figures/histPearsonsCoActual}
+%----------------------------------------------------------------------------
+      \begin{block}{Example: Power Measurement}
+         \vspace{-1ex}
+         \begin{itemize}
+          \item Oscilloscope collects traces then a script calculates power consumption.
+        \begin{center}
+          \includegraphics[scale=0.8]{../figures/power.png}
+        \end{center}
+        \item Sample results:
+         \end{itemize}
+        \begin{center}
+        \begin{minipage}[t]{0.9\linewidth}
+        \setbeamercolor{padding}{fg=white, bg=cergbg1}
+        \begin{beamercolorbox}[rounded=true]{padding}
+\begin{Verbatim}[fontsize=\small]
+Source File: rawDataAligned.npy
+Start sample (for truncated traces): 1
+...
+XBP Shunt Resistance (ohms): 1
+...
+Mean voltage for truncated traces is: 0.67885V
+Mean power for truncated traces is: 0.0326W
+\end{Verbatim}
+        \end{beamercolorbox}
+        \end{minipage}
+        \end{center}
+
+
+      \end{block}
+%----------------------------------------------------------------------------
+      \begin{block}{Welch's T-Test}
+         \vspace{-1ex}
+         \begin{itemize}
+      \item Welch's T-test is used to evaluate DPA resistance.
+      $$\frac{\mu_0 - \mu_1}{\sqrt{\frac{s_0^2}{n_0}+ \frac{s_0^2}{n_0}}}
+         \quad p = 2 \int_{|t|}^\infty f(t,v) \mathrm{d}t $$
+      $$ p = 2F(-4.5,v > 10000) < -0.00001$$
+         \end{itemize}
+         \begin{minipage}{0.4\linewidth}
+        \begin{center}
+     \includegraphics[scale=1.5]{../figures/t-test-flow}
+        \end{center}
+        \end{minipage}
+         \begin{minipage}{0.5\linewidth}
+      {\small
+          Where $\mu_0$ and $\mu_1$ are means of distributions 0 and 1, s0 and s1 are standard deviations, and n0 and n1 are the cardinality of the distributions, or the number of samples.
+          }
+         \begin{itemize}
+           \item Finds leakage without attack.
+           \item T-test fails if $|t| > 4.5$\\ $\Rightarrow$ {\color{red}design leaks}.
+           \item No power model needed.
+           \item No knowledge of architecture needed.
+         \end{itemize}
         \end{minipage}
 
-       \end{block}
+      \end{block}
+%----------------------------------------------------------------------------
+      \begin{block}{Example: T-Test on AES-GCM Implementation}
+         \begin{minipage}{0.45\linewidth}
+             \begin{center}
+               Fail: Unprotected
+            \includegraphics[scale=0.6]{../figures/aes_gcm_unprotected.png}
+        \end{center}
+        \end{minipage}
+       \begin{minipage}{0.45\linewidth}
+
+        \begin{center}
+             Pass: Protected
+            \includegraphics[scale=0.6]{../figures/aes_gcm_protected.png}
+            \end{center}
+
+        \end{minipage}
+
+
+      \end{block}
+
+%----------------------------------------------------------------------------
+      \begin{block}{Profiler}
+         \begin{itemize}
+           \item \textbf{Problem:} It is difficult to correlate leakage points to operations on the DUT.
+           \item \textbf{Solution:} \emph{Profiler} maps DUT state to samples in power trace.
+           \item \textbf{Example}: Determining leakage points in AES-CLOC implementation's t-test result:
+         \begin{itemize}
+         \item T-test detects leakage at discrete points:
+          \begin{center}
+          \includegraphics[scale=0.254]{../figures/profiler_1.png}
+          \end{center}
+          \item After zooming into a spike, we can see the DUT state at that time:
+     \begin{center}
+          \includegraphics[scale=0.254]{../figures/profiler_2.png}
+          \end{center}
+          \item Reason for the spike: CLOC has a data-dependent branch condition (from the CLOC specification).
+          \newline
+          \begin{center}
+          \includegraphics[scale=1.2]{../figures/cloc_aes_branch.png}
+           \end{center}
+
+         \end{itemize}
+
+         \end{itemize}
+
+
+
+
+
+      \end{block}
 % ---------------------------------------------------------------------------
 % ---------------------------------------------------------------------------
 %      \begin{block}{References}
