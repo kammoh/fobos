@@ -1,0 +1,22 @@
+ 
+
+TRIGGER_WAIT_CYCLES : The number of clock cycles after which the trigger is asserted (after di_ready goes to zero).
+TRIGGER_LENGTH_CYCLES : The time the trigger signal is asserted.
+TRIGGER_TYPE : possible values: TRG_NORM | TRG_FULL | TRG_NORM_CLK | TRG_FULL_CLK
+        TRG_NORM : normal trigger mode. in this mode the TRIGGER_WAIT_CYCLES and TRIGGER_LENGTH_CYCLES are applied.
+        TRG_FULL : Full trigger mode. While DUT is running (between di_ready = 0 and do_valid = 1) the trigger is asserted.
+        TRG_NORM_CLK : same as TRG_NORM but the trigger signal is anded with the clock.
+        TRG_FULL_CLK : same as TRG_FULL but the trigger signal is anded with the clock.
+        
+CUT_MODE : Controls how the trace retreived from the scope will be processed.
+        possible values: FULL | TRIG_HIGH
+        FULL : The trace is cut starting at the rising edge of the trigger to the end of the screen.
+        TRIG_HIGH : the trace is cut from the rising edge to the falling edge of the trigger ie. the trace where the trigger is high will be saved.
+        
+        
+        
+        
+        
+        
+        
+        
