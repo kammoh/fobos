@@ -30,15 +30,16 @@ LOGGING = INFO # INFO|DEBUG
 CONTROL_BOARD = Nexys3
 VICTIM_RESET = 100
 TIME_OUT = 5000
-TRIGGER_WAIT_CYCLES = 5 #@VICTIM CLOCK
-TRIGGER_LENGTH_CYCLES = 5 #@VICTIM CLOCK
-TRIGGER_TYPE = TRG_NORM #TRG_NORM | TRG_FULL | TRG_NORM_CLK | TRG_FULL_CLK
+TRIGGER_WAIT_CYCLES = 0 #@VICTIM CLOCK
+TRIGGER_LENGTH_CYCLES = 1 #@VICTIM CLOCK
+TRIGGER_TYPE = TRG_FULL #TRG_NORM | TRG_FULL | TRG_NORM_CLK | TRG_FULL_CLK
+CUT_MODE = TRIG_HIGH #FULL | TRIG_HIGH
 # =============================================
 # =============================================
 # Test Data Generation Settings
 # =============================================
 # =============================================
-DATA_FILE     = dinFile_aes_20000.txt
+DATA_FILE     = dinFile.txt
 EXPECTED_OUTPUT = 16 # Expected output size in bytes
 OUTPUT_FORMAT = hex # Default => hex
 NUMBER_OF_ENCRYPTIONS_PER_TRACE = 1
@@ -49,7 +50,7 @@ BLOCK_SIZE = 16 # In Bytes
 # =============================================
 # =============================================
 DUMMY_RUN = NO  #YES/NO
-NUMBER_OF_TRACES = 10
+NUMBER_OF_TRACES = 50000
 ####################################################
 ######## Signal Alignment Module Parameters ########
 ####################################################
@@ -62,12 +63,12 @@ TRIGGER_THRESHOLD = 1.0
 # =============================================
 # INTIALIZATION OPTIONS
 OSCILLOSCOPE = AGILENT #AGILENT|OPENADC
-OSCILLOSCOPE_IP = 192.168.0.10
+OSCILLOSCOPE_IP = 192.168.10.10
 OSCILLOSCOPE_PORT = 5025
 AUTOSCALE = NO   # YES|NO    
 IMPEDANCE = ONEMEG #FIFTY|ONEMEG
 # VOLTAGE AND TIME RANGE OPTIONS        
-CHANNEL1_RANGE = 0.100V
+CHANNEL1_RANGE = 0.060V
 CHANNEL2_RANGE = 6V
 CHANNEL3_RANGE = OFF # ON|OFF|voltage range
 CHANNEL4_RANGE = OFF # ON|OFF|voltage range

@@ -1,9 +1,22 @@
--------------------------------------------------------------------------------
---! @file       FOBOS_DUTv4_3.vhd
---! @author     William Diehl
---! @brief      
---! @date       22 Jan 2018
--------------------------------------------------------------------------------
+--##############################################################################
+--#                                                                            #
+--#	Copyright 2018 Cryptographic Engineering Research Group (CERG)           #
+--#	George Mason University							                         #	
+--#   http://cryptography.gmu.edu/fobos                                        #                            
+--#									                                         #
+--#	Licensed under the Apache License, Version 2.0 (the "License");        	 #
+--#	you may not use this file except in compliance with the License.       	 #
+--#	You may obtain a copy of the License at                                	 #
+--#	                                                                       	 #
+--#	    http://www.apache.org/licenses/LICENSE-2.0                         	 #
+--#	                                                                       	 #
+--#	Unless required by applicable law or agreed to in writing, software    	 #
+--#	distributed under the License is distributed on an "AS IS" BASIS,      	 #
+--#	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. #
+--#	See the License for the specific language governing permissions and      #
+--#	limitations under the License.                                           #
+--#                                                                          	 #
+--##############################################################################
 
 -- v4 is prototype that supports N = 4 (designed for Spartan 6 or Artix 7)
 -- FOBOS_DUT(din) and FOBOS_DUT(dout) are 4 bit interfaces
@@ -23,8 +36,8 @@ use work.fobos_dut_pkg.all;
 entity FOBOS_DUT is
 
 generic(       
-    W : integer:=16; -- pdi and do width (mulltiple of 4)
-    SW: integer:=16  -- sdi width (multiple of 4)                                    
+    W : integer:=128; -- pdi and do width (mulltiple of 4)
+    SW: integer:=128  -- sdi width (multiple of 4)                                    
 );
 port(
 	clk : in std_logic;
@@ -106,6 +119,42 @@ begin
 --! Caution: "Reinit" commands not yet supported
 --! Until supported, the complete expected pdi and sdi contents must be transmitted to FOBOS DUT for each trace
 
+-- insert victim algorithm here
+
+victim: entity work.aes_axi(behav)
+
+-- Choices for W and SW are independently any multiple of 4, defined in generics above
+
+--    generic map  (
+--        G_W          => W,
+--        G_SW         => SW
+--    )
+
+port map(
+	clk => clk,
+	rst => start,  --! The FOBOS_DUT start signal meets requirements for synchronous resets used in 
+		       --! CAESAR HW Development Package AEAD
+
+-- data signals
+
+	pdi_data  => pdi_data,
+	pdi_valid => pdi_valid,
+	pdi_ready => pdi_ready,
+
+   sdi_data => sdi_data,
+	sdi_valid => sdi_valid,
+	sdi_ready => sdi_ready,
+
+	do_data => result_data,
+	do_ready => result_ready,
+	do_valid => result_valid
+
+----! if rdi_interface for side-channel protected versions is required, uncomment the rdi interface
+--   ,rdi_data => rdi_data,
+--   rdi_ready => rdi_ready,
+--	rdi_valid => rdi_valid
+
+);
 
 in_rg0: entity work.dut_regn(behavioral)
     generic map(N=> 4)
@@ -621,43 +670,7 @@ with do_rd_cnt select
         
 end generate do_w128;          
 
--- insert victim algorithm here
 
-victim: entity work.AEAD(structure)
-
--- Choices for W and SW are independently any multiple of 4, defined in generics above
-
-    generic map  (
-        G_ASYNC_RSTN => False,
-        G_W          => W,
-        G_SW         => SW
-    )
-
-port map(
-	clk => clk,
-	rst => start,  --! The FOBOS_DUT start signal meets requirements for synchronous resets used in 
-		       --! CAESAR HW Development Package AEAD
-
--- data signals
-
-	pdi_data  => pdi_data,
-	pdi_valid => pdi_valid,
-	pdi_ready => pdi_ready,
-
-        sdi_data => sdi_data,
-	sdi_valid => sdi_valid,
-	sdi_ready => sdi_ready,
-
-	do_data => result_data,
-	do_ready => result_ready,
-	do_valid => result_valid
-
---! if rdi_interface for side-channel protected versions is required, uncomment the rdi interface
-   ,rdi_data => rdi_data,
-   rdi_ready => rdi_ready,
-	rdi_valid => rdi_valid
-
-);
 
 fobos_ctrl: entity work.fobos_controller(behavioral)
     port map(

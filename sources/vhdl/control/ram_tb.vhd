@@ -1,29 +1,22 @@
---------------------------------------------------------------------------------
--- Company: 
--- Engineer:
---
--- Create Date:   18:14:38 09/24/2017
--- Design Name:   
--- Module Name:   C:/Users/bakry/Documents/project/fobos_ctrl_v1/ram_tb.vhd
--- Project Name:  fobos_ctrl_v1
--- Target Device:  
--- Tool versions:  
--- Description:   
--- 
--- VHDL Test Bench Created by ISE for module: ram
--- 
--- Dependencies:
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
---
--- Notes: 
--- This testbench has been automatically generated using types std_logic and
--- std_logic_vector for the ports of the unit under test.  Xilinx recommends
--- that these types always be used for the top-level I/O of a design in order
--- to guarantee that the testbench will bind correctly to the post-implementation 
--- simulation model.
+--##############################################################################
+--#                                                                            #
+--#	Copyright 2018 Cryptographic Engineering Research Group (CERG)           #
+--#	George Mason University							                         #	
+--#   http://cryptography.gmu.edu/fobos                                        #                            
+--#									                                         #
+--#	Licensed under the Apache License, Version 2.0 (the "License");        	 #
+--#	you may not use this file except in compliance with the License.       	 #
+--#	You may obtain a copy of the License at                                	 #
+--#	                                                                       	 #
+--#	    http://www.apache.org/licenses/LICENSE-2.0                         	 #
+--#	                                                                       	 #
+--#	Unless required by applicable law or agreed to in writing, software    	 #
+--#	distributed under the License is distributed on an "AS IS" BASIS,      	 #
+--#	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. #
+--#	See the License for the specific language governing permissions and      #
+--#	limitations under the License.                                           #
+--#                                                                          	 #
+--##############################################################################
 --------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;

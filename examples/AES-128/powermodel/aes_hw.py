@@ -122,7 +122,7 @@ if __name__ == "__main__":
     
     #Calcuation of hamming distance 
     for byte in range(0, 16):#Loop for each of the 16 bytes
-        file_hw = open("./%s/HW_of_%sSamples_with_byte_%s.txt" %(newpath1, NoS, byte), "w")
+        file_hw = open("./%s/HPower_byte_%s.txt" %(newpath1, NoS, byte), "w")
         file_im3 = open("./%s/Intermediate_data_for_%sSamples_with_byte_%s.txt" %(newpath2, NoS, byte),'w')
         file_im3.write('Intermediate Values for verification HW(sbox(PT[i] xor KeyGuess),sbox(CT[i-1]')
         file_im3.write('\n=========================================================================================================\n')

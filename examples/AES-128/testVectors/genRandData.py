@@ -22,7 +22,7 @@ import re
 import binascii
 from Crypto import Random
 
-numBlocks = 20000
+numBlocks = 2000
 blockSize = 16
 
 def convertToHex(hexString):

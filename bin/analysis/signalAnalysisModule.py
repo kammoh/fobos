@@ -299,7 +299,11 @@ def readAlignedDataFromFile():
 	#need to reset file handle since we used it 
 	measurementFile.seek(0)
         print "Number of samples=" + str(int(cfg.config_attributes['NUMBER_OF_TRACES']))
-        cfg.RAW_POWER_DATA = numpy.zeros([int(cfg.config_attributes['NUMBER_OF_TRACES']), sampleSize]),
+        cfg.RAW_POWER_DATA = numpy.zeros([int(cfg.config_attributes['NUMBER_OF_TRACES']), sampleSize])
+        print "DEBUUUG"
+        print cfg.config_attributes['NUMBER_OF_TRACES']
+	print  sampleSize
+	print type(cfg.RAW_POWER_DATA)
 	for traceCount in range (0,cfg.config_attributes['NUMBER_OF_TRACES']):
 		#print "traceCount= " + str(traceCount)
 		tempArrayMeasurement = numpy.load(measurementFile)

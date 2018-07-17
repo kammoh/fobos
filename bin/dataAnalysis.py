@@ -69,118 +69,14 @@ def main():
 	#plottingModule.plotTrace(compressedData, 'ALL', 'OVERLAY')
 	#autoCorrelatedData = sca.calculate_autocorrelation(alignedData)
 	#plottingModule.plotCorr(autoCorrelatedData, globals.AUTOCORR)
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_0.txt", globals.ADAPTIVE_CPA)
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,20,cfg.KEYARRAY[cfg.KEY_INDEX])
-	#50 is the factor(major bins increment values) in the plot
-        #either use cfg.KEYARRAY[cfg.KEY_INDEX] or cfg.EXPECTED_KEY[cfg.KEY_INDEX]
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_1.txt", globals.ADAPTIVE_CPA)
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-	
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_2.txt", globals.ADAPTIVE_CPA)
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_3.txt", globals.ADAPTIVE_CPA)
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_4.txt", globals.ADAPTIVE_CPA)
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 	
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_5.txt", globals.ADAPTIVE_CPA)
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_6.txt", globals.ADAPTIVE_CPA)
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 	
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_7.txt", globals.ADAPTIVE_CPA)
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_8.txt", globals.ADAPTIVE_CPA)	
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_9.txt", globals.ADAPTIVE_CPA)		
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_10.txt", globals.ADAPTIVE_CPA)	
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_11.txt", globals.ADAPTIVE_CPA)	
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_12.txt", globals.ADAPTIVE_CPA)
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_13.txt", globals.ADAPTIVE_CPA)
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_14.txt", globals.ADAPTIVE_CPA)	
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
-
-	hypotheticalPowerData = signalAnalysisModule.acquirePowerModel("HW_of_2000Samples_with_byte_15.txt", globals.ADAPTIVE_CPA)
-	correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
-	plottingModule.plotCorr(correlationData, globals.PEARSON)	
-	plottingModule.plotHist(correlationData, globals.PEARSON)
-	cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
-	mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,50,cfg.KEYARRAY[cfg.KEY_INDEX])
+	for byteNum in range(0, 16):
+		fileName = 'HPower_byte' + str(byteNum) + '.txt'
+		hypotheticalPowerData = signalAnalysisModule.acquirePowerModel(fileName, globals.ADAPTIVE_CPA)
+		correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
+		plottingModule.plotCorr(correlationData, globals.PEARSON)
+		plottingModule.plotHist(correlationData, globals.PEARSON)
+		cfg.KEYARRAY[cfg.KEY_INDEX] = cfg.KEY_BYTE_CORR # cfg.KEY_BYTE_HIST|| cfg.KEY_BYTE_CORR
+		#mge = sca.findMinimumGuessingEntropy(compressedData, hypotheticalPowerData,globals.PEARSON,20,cfg.KEYARRAY[cfg.KEY_INDEX])
 
 	printFunctions.printKeyFound(cfg.KEYARRAY)
         #m1 = statisticsModule.calculate_mean(alignedData, globals.SAMPLE_WISE)
