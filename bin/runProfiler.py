@@ -18,6 +18,9 @@
 #	limitations under the License.                                           #
 #                                                                           	 #
 ##################################################################################
+from analysis import readtrace
+from analysis import welch
+from analysis import splitter
 from analysis import profiler
 import os
 import time
@@ -28,7 +31,6 @@ from analysis import plottingModule
 from analysis import statisticsModule
 from analysis import sca
 import configparser
-import subprocess
 
 def init():
     (cfg.ROOTDIR, temp) = os.path.split(os.getcwd())
@@ -45,24 +47,24 @@ def main():
     support.clear_screen()
     config = configparser.ConfigParser()
     config.read(os.path.join(cfg.ROOTDIR, globals.CONFIG_DIRNAME, 'analysis.ini'))
-    print os.path.join(cfg.ROOTDIR, globals.CONFIG_DIRNAME, 'analysis.ini')
+    #print os.path.join(cfg.ROOTDIR, globals.CONFIG_DIRNAME, 'analysis.ini')
     #print config.sections()	
     configExtract.extractConfigAttributes()
     configExtract.configureAnalysisWorkspace()
     #print support.getProjectPath()
     measurDir = cfg.MEASUREMENT_FOLDER
-    analysisDir =  cfg.ANALYSIS_WORKSPACE
-    alignedTraceFile = cfg.ALIGNED_DATA_FILE
-    #Run power_traces.py
-    srcFile =  os.path.join(measurDir, config['power']['srcFile'])
-    dstFile =  os.path.join(analysisDir, config['power']['dstFile'])
-    numTraces =  config['power']['numTraces']
-    startSample =  config['power']['startSample']
-    endSample =  config['power']['endSample']
-    Vcc =  config['power']['Vcc']
-    Gain =  config['power']['Gain']
-    R =  config['power']['R']
-    subprocess.call(['python', 'analysis/power_traces.py', srcFile, dstFile, numTraces, startSample, endSample, Vcc, Gain, R]) 
+    analysisDir =  cfg.ANALYSIS_WORKSPACE       
+    ####Profiler
+    display_clk = config['profiler']['display_clk']
+    num_of_clks = int(config['profiler']['num_of_clks'])
+    clk_high  = float(config['profiler']['clk_high'])
+    clk_low = float(config['profiler']['clk_low'])
+    profilerPlot = config['profiler']['profilerPlot']
+        
+    srcFile = os.path.join(measurDir, config['profiler']['srcFile'])
+    profilerPlotFile = os.path.join(analysisDir, profilerPlot)
+    stateFile = os.path.join(cfg.ROOTDIR, 'sources' ,config['profiler']['stateFile'])
+    profiler.plotTValues(srcFile, profilerPlotFile, stateFile, display_clk, num_of_clks, clk_high,clk_low)
 
 if __name__ == "__main__": 
     start_time=time.time()

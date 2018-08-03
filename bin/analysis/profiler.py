@@ -23,10 +23,10 @@ start_ylim  = -40  #Plot ymlim range
 end_ylim    = 40
 ##########END GENERAL SETTINGS
 ###########CLK GRAPH SETTINGS
-display_clk = 'YES' #Enable/Disable clock plotting
-num_of_clks = 10   #num of clocks to in trace
-clk_high    = 5   #high clock voltage for plotting
-clk_low     = -5  #low clock voltage for plotting
+#display_clk = 'YES' #Enable/Disable clock plotting
+#num_of_clks = 10   #num of clocks to in trace
+#clk_high    = 5   #high clock voltage for plotting
+#clk_low     = -5  #low clock voltage for plotting
 #state_file  = 'state_file.txt' #text file that includes states. One state in each line.
 ###END CLK GRAPH SETTINGS
 
@@ -35,7 +35,8 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import argparse
 
-def plotTValues(t_values_file, plot_file, state_file):
+def plotTValues(t_values_file, plot_file, state_file, display_clk, num_of_clks, clk_high,clk_low):
+   #print display_clk, num_of_clks, clk_high, clk_low
 
    t_values = np.load(t_values_file)
    print t_values.shape

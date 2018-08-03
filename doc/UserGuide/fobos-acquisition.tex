@@ -1,75 +1,203 @@
-\chapter{FOBOS Data Acquisition} \label{chap:dataAcquisition}
+\chapter{Data Acquisition} \label{chap:dataAcquisition}
 
-\section{FOBOS Acquisition}
-Data Acquisition module is used to run encryptions on FOBOS hardware and collect traces. Plain text and key can be randomly generated or read from file. The output from this phase is a Numpy array file (.npy) that holds power traces.
+After test vectors have been generated, user can run dataAcquisition.py. The PC will send one test vector at a time to the control board, which sends it to DUT. 
+The control board will trigger the oscilloscope to capture the power trace. The process will be repeated unitl all traces are collected.
+ 
 
-\section{Requirements}
-This module uses an osciloscpoe to measure and capture traces. Current version connects to oscilloscope using IP network.
-The acqusition module runs on a Windows or Linux PC and connected to the FOBOS control board via USB cable.
-FOBOS software and hardware need to be setup before Data Acqusition is run.
+The DUT Wrapper uses the header information in the test vector to put the data (plaintext, key etc.) into the correct FIFOs. 
+The DUT Wrapper then allows the DUT (victim) algorithm to run by setting the victim reset to zero. The victim then drains the FIFOs (sdi,pdi and rdi FIFOs) and stores the output in the dout FIFO. 
+Once the dout FIFO accumulates the expected amount of data, the DUT wrapper sends data to the controller which sends it to the PC.
 
-\section{FOBOS Acquisition Configuration}
+Figure~\ref{fig:fobos-capture} shows the components of FOBOS including the handshake signals used.
+Before running the \texttt{dataAcquisstion.py} script, the  user must  modify the configuration files at \texttt{config/config.txt} and \texttt{confi/acquisitionconfig.txt}.
+Here is sample for \texttt{acquisitionConfig.txt} file.
 
-Data Acquisition need to be configured. The configuration file is located at \texttt{\$fobos/config/dataAcquisitionConfig.txt}.
-Table ~ \ref{acquisition-config} lists all configuration parameter needed to configure Data Acquisition.
+\section{Data Aquisition Configuration}
+
+\subsection{General Settings}
+\begin{itemize}
+ \item MEASUREMENT\_FORMAT \newline
+ Possible values: dat \newline
+ The format to store power measurements. Only dat is supported.
+ \item LOGGING \newline 
+ Possible values: INFO$|$DEBUG \newline
+ The logging level. DEBUG is more verbose.
+\end{itemize}
+
+\subsection{Control Board Settings}
+\begin{itemize}
+ \item CONTROL\_BOARD \newline
+ Possible values: Nexys3$|$Nexys2 \newline
+ The Control Board type. 
+ \item VICTIM\_RESET \newline
+ Possible values: Integer \newline
+ Reset the DUT after the specified clock cycles.
+ \item TIME\_OUT \newline
+ Possible values: Integer \newline
+ If the DUT will not return data after the specified clock cycles, a time-out signal is returned to the PC.
+\end{itemize}
 
 
-\begin{table}[ht]
-\begin{center}
-\caption{\label{acquisition-config}acquisitionConfig.txt}
-\begin{tabular}{|p{4cm}|p{2cm}|p{7cm}|} \hline 
-Parameter & Possible Values  & Description \\ \hline   
-Global Settings & & \\ \hline
-MEASUREMENT\_FORMAT & dat & \\ \hline
-LOGGING & INFO|DEBUG & Specifies log detail level. DEBUG is more verbose \\ \hline
-CONTROL\_BOARD & Nexys2|Nexys3 & Control Board model\\ \hline
-VICTIM\_RESET & Integer (e.g 11) & Number of DUT clock cycles before resetting the DUT \\ \hline
-TIME\_OUT & Integer (e.g. 50000) & If DUT is not returning data after the number of clock cycles specified, a time out signal is sent to the PC \\ \hline
-TRIGGER\_WAIT\_CYCLES & Integer (e.g 1) &  Number of DUT clock cycles before sending trigger signal to oscilloscope \\ \hline
-TRIGGER\_LENGTH\_CYCLES & Integer (e.g 1) & Number of DUT clock cycles the trigger signal remains high\\ \hline
-PLAINTEXT\_GENERATION &  USER|RANDOM  & Specifies if plain text is read from file or randomly generated \\ \hline
-DATA\_FILE & File name (e.g. plaintext.txt) & Specifies the plain text file name. File is saved in the sources directory \\ \hline
-KEY\_GENERATION & USER|RANDOM & Specifies if the key is read from file or randomly generated \\ \hline 
-KEY\_FILE &  File name (e.g keys.txt) & Specifies the key file name. File is saved in the sources directory \\ \hline
-INPUT\_FORMAT  & hex & Specifies input data format. Currently, only hexadecimal is supported \\ \hline
-OUTPUT\_FORMAT & hex & Specifies output data format. Currently, only hexadecimal is supported \\ \hline
-NUMBER\_OF\_ENCRYPTIONS\_PER\_TRACE & Integer (e.g 1) & Specifies the number of encryptions in each trace collected from the oscilloscope\\ \hline
-BLOCK\_SIZE & Integer (e.g 16) & Cipher block size in bytes \\ \hline
-KEY\_SIZE & Integer (e.g 16) & Cipher key size in bytes \\ \hline
-DUMMY\_RUN & YES|NO & \\ \hline
-NUMBER\_OF\_TRACES & Integer (e.g. 2000) & Number of encryptions/traces to be done/collected \\ \hline
-CAPTURE\_MODE & MULTI|SINGLE & Specifies single encryption or multiple per trace\\ \hline
-TRIGGER\_THRESHOLD & Float (e.g 1.0)  & Minimum trigger signal voltage to be considered a valid trigger \\  \hline
-OSCILLOSCOPE & AGILENT|OPENADC & Oscilloscope model \\ \hline
-OSCILLOSCOPE\_IP & IP address (e.g 192.168.0.10) & Oscilloscope IP address \\ \hline
-OSCILLOSCOPE\_PORT & port number (e.g 5025) & Osciloscope port number \\ \hline
-AUTOSCALE & YES|NO &  \\ \hline    
-IMPEDANCE & FIFTY|ONEMEG & Oscilloscope impedance \\ \hline
-VOLTAGE AND TIME RANGE OPTIONS & & \\ \hline       
-CHANNEL1\_RANGE & ON|OFF|voltage range & Channel 1 vlotage range (full page) \\ \hline
-CHANNEL2\_RANGE & ON|OFF|voltage range & Channel 2 vlotage range (full page) \\ \hline
-CHANNEL3\_RANGE & ON|OFF|voltage range & Channel 3 vlotage range (full page) \\ \hline
-CHANNEL4\_RANGE & ON|OFF|voltage range & Channel 4 vlotage range (full page) \\ \hline
-TIME\_RANGE & Float (e.g 0.000028) & Trace time range (full page) \\ \hline
-TIMEBASE\_REF & LEFT & \\ \hline    
-TRIGGER\_SOURCE & & Cahnnel name (e.g CHANNEL2) &  Channed connect to trigger signal\\ \hline
-TRIGGER\_MODE &  EDGE & Oscilloscope trigger mode \\ \hline   
-TRIGGER\_SWEEP & NORM & \\ \hline
-TRIGGER\_LEVEL & (e.g 1) & \\ \hline
-TRIGGER\_SLOPE & POSITIVE & \\ \hline
-ACQUIRE OPTIONS & & \\hline
-ACQUIRE\_TYPE & NORM|PEAK|HRES|AVER & \\ \hline
-ACQUIRE\_MODE & RTIM|ETIM|SEG & \\ \hline
-\end{tabular}
-\end{center}
-\end{table}
+\subsection{Trigger Settings}
+
+The Control Board can send a trigger to the Oscilloscope once the DUT starts processing the data (ie. di\_ready = 0). Or it can be configured to trigger any number of clock cycles after this event occurs.
+\begin{itemize}
+ \item TRIGGER\_WAIT\_CYCLES \newline
+ The number of clock cycles after which the trigger is asserted (after di\_ready goes to zero).
+ \item TRIGGER\_LENGTH\_CYCLES \newline
+ The time the trigger signal is asserted.
+ \item TRIGGER\_TYPE \newline 
+ possible values: TRG\_NORM, TRG\_FULL, TRG\_NORM\_CLK, TRG\_FULL\_CLK
+        \begin{itemize}
+          \item TRG\_NORM \newline Normal trigger mode. in this mode the TRIGGER\_WAIT\_CYCLES and TRIGGER\_LENGTH\_CYCLES are applied.
+          \item TRG\_FULL \newline Full trigger mode. While DUT is running (between di\_ready = 0 and do\_valid = 1) the trigger is asserted.
+          \item TRG\_NORM\_CLK \newline Similar to TRG\_NORM but the trigger signal is anded with the clock.
+          \item TRG\_FULL\_CLK \newline Similar to TRG\_FULL but the trigger signal is anded with the clock.
+       \end{itemize}
+
+ \item CUT\_MODE \newline Controls how the trace retreived from the scope will be processed.
+        possible values: FULL, TRIG\_HIGH
+        \begin{itemize}
+          \item FULL \newline The trace is cut starting at the rising edge of the trigger to the end of the screen.
+          \item TRIG\_HIGH \newline the trace is cut from the rising edge to the falling edge of the trigger ie. the trace where the trigger is high will be saved.
+        \end{itemize}
+\end{itemize}  
+
+\subsection{Data Settings}
+\begin{itemize}
+ \item DATA\_FILE \newline
+ Possible values: file name (string) \newline
+ The test-vector file name.
+ \item EXPECTED\_OUTPUT \newline
+ Possible values: Integer \newline
+ Expected output size in bytes.
+ \item OUTPUT\_FORMAT \newline
+ Possible values: hex \newline
+ Output format. 'hex' is the only supported format.
+\end{itemize}
+
+\subsection{Capture Settings}
+\begin{itemize}
+  \item NUMBER\_OF\_TRACES \newline
+ Number of traces to collect.
+ \item CAPTURE\_MODE  \newline
+ Possible values: MULTI$|$SINGLE \newline
+ Sigle encryption per traces or mutiple encryptions per trace.
+\end{itemize}
+
+\subsection{Oscilloscope Settings}
+\begin{itemize}
+ \item OSCILLOSCOPE \newline
+ Possible values: AGILENT$|$OPENADC \newline
+ Oscilloscope type.
+ \item OSCILLOSCOPE\_IP \newline
+ Possible values: IP address \newline
+ Oscilloscope IP address.
+ \item OSCILLOSCOPE\_PORT \newline
+ Oscilloscope port number.
+ \item AUTOSCALE = YES$|$NO \newline
+ 
+ \item IMPEDANCE \newline
+ Possible values: FIFTY$|$ONEMEG \newline
+ Oscilloscope input impedance.
+ \item CHANNELx\_RANGE  \newline
+ Possible values: ON$|$OFF$|$voltage range \newline
+ Oscilloscope channel voltage range (Full screen range) in Volts.
+ \item TIME\_RANGE \newline
+ Possible values: float (seconds)
+ Oscilloscope time range in seconds (full screen time).
+ \item TIMEBASE\_REF = LEFT    \newline
+ \item TRIGGER\_THRESHOLD \newline
+ Minimum voltage for valid trigger.
+ \item TRIGGER\_SOURCE \newline
+ Possible values: CHANNEL1$|$CHANNEL2$|$CHANNEL3$|$CHANNEL4 \newline
+ Specifies the rigger channel.
+ \item TRIGGER\_MODE =  EDGE
+ \item TRIGGER\_SWEEP = NORM
+ \item TRIGGER\_LEVEL = 1
+ \item TRIGGER\_SLOPE = POSITIVE
+ \item ACQUIRE\_TYPE = NORM$|$PEAK$|$HRES$|$AVER
+ \item ACQUIRE\_MODE =  RTIM$|$ETIM$|$SEG
+
+\end{itemize}
+
+\section{Sample Configuration File}
+
+\begin{verbatim}
+ # ============================================= 
+# Global Settings 
+# ============================================= 
+# ============================================= 
+MEASUREMENT_FORMAT = dat # Default => dat 
+LOGGING = INFO # INFO|DEBUG 
+# ============================================= 
+# ============================================= 
+# Control Board Settings 
+# ============================================= 
+# ============================================= 
+CONTROL_BOARD = Nexys3 
+TRIGGER_WAIT_CYCLES = 0 #@VICTIM CLOCK 
+TRIGGER_LENGTH_CYCLES = 1 #@VICTIM CLOCK 
+TRIGGER_TYPE = TRG_FULL #TRG_NORM | TRG_FULL | TRG_NORM_CLK | TRG_FULL_CLK 
+CUT_MODE = TRIG_HIGH #FULL | TRIG_HIGH 
+# ============================================= 
+# ============================================= 
+# Test Data Generation Settings 
+# ============================================= 
+# ============================================= 
+DATA_FILE     = dinFile.txt 
+EXPECTED_OUTPUT = 16 # Expected output size in bytes 
+OUTPUT_FORMAT = hex # Default => hex 
+NUMBER_OF_ENCRYPTIONS_PER_TRACE = 1 
+BLOCK_SIZE = 16 # In Bytes 
+# ============================================= 
+# ============================================= 
+# FOBOS Capture Settings 
+# ============================================= 
+# ============================================= 
+DUMMY_RUN = NO #YES/NO 
+NUMBER_OF_TRACES = 50000 
+#################################################### 
+######## Signal Alignment Module Parameters ######## 
+#################################################### 
+CAPTURE_MODE = SINGLE # MULTI|SINGLE 
+TRIGGER_THRESHOLD = 1.0 
+# ============================================= 
+# ============================================= 
+# FOBOS Oscilloscope Settings 
+# ============================================= 
+# ============================================= 
+# INTIALIZATION OPTIONS 
+OSCILLOSCOPE = AGILENT #AGILENT|OPENADC 
+OSCILLOSCOPE_IP = 192.168.10.10 
+OSCILLOSCOPE_PORT = 5025 
+AUTOSCALE = NO # YES|NO
+IMPEDANCE = ONEMEG #FIFTY|ONEMEG 
+# VOLTAGE AND TIME RANGE OPTIONS
+CHANNEL1_RANGE = 0.060V 
+CHANNEL2_RANGE = 6V 
+CHANNEL3_RANGE = OFF # ON|OFF|voltage range 
+CHANNEL4_RANGE = OFF # ON|OFF|voltage range 
+TIME_RANGE = 0.000050 
+TIMEBASE_REF = LEFT
+# TRIGGER OPTIONS 
+TRIGGER_SOURCE = CHANNEL2 
+TRIGGER_MODE = EDGE
+TRIGGER_SWEEP = NORM 
+TRIGGER_LEVEL = 1 
+TRIGGER_SLOPE = POSITIVE 
+# ACQUIRE OPTIONS 
+ACQUIRE_TYPE = NORM # NORM|PEAK|HRES|AVER 
+ACQUIRE_MODE = RTIM # RTIM | ETIM| SEG
+\end{verbatim}
 
 \section{Running Data Acquisition}
+Once the configuration is done, user can run 
 
-Data Acquisition can be run as follows: \newline
-\texttt{cd \$fobos} \newline
-\texttt{python dataAcquisition.py} \newline
-Once this is done, the script will run encryptions on hardware, collect traces from the oscilloscope and save traces into a file.
-The script will create a new directory each time it runs. This directory is created in the project directory.
-Traces will be save in \newline \texttt{\$fobos/\$workspace/\$project/\$attempt/Measurements/rawDataAligned.npy}.
-Where \$attempt is a folder with a unique name created each time the script runs.
+\texttt{python dataAcquisition.py }
+
+The output will be saved in \texttt{workspace/$<$projectName$>$/measurements}. The traces are stored in a Numpy array called \texttt{rawDataAligned.npy}.
+
+
+
+

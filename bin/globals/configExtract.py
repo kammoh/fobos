@@ -226,6 +226,7 @@ def configureAnalysisWorkspace():
 	cfg.OUTPUT_FOLDER= os.path.join(tempFolderName, globals.OUTPUT_FOLDERNAME)
 	printFunctions.printToScreen("This Analysis uses data from - " + cfg.MEASUREMENT_FOLDER)
 	if (os.path.isdir(cfg.MEASUREMENT_FOLDER) == False):
+		print cfg.MEASUREMENT_FOLDER
 		os.remove(cfg.MEASUREMENT_PROJECT_PATH_FILE)
 		printFunctions.printToScreenBold("\tMeasurement Directory @\n\t"+cfg.MEASUREMENT_FOLDER+"\n\tdoes not exits. Please re-run the FOBOS Analysis again\n")
 		support.exitProgram()

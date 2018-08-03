@@ -48,33 +48,39 @@ def main():
         config = configparser.ConfigParser()
         config.read(os.path.join(cfg.ROOTDIR, globals.CONFIG_DIRNAME, 'analysis.ini'))
         print os.path.join(cfg.ROOTDIR, globals.CONFIG_DIRNAME, 'analysis.ini')
-        print config.sections()	
+        #print config.sections()	
 	configExtract.extractConfigAttributes()
         configExtract.configureAnalysisWorkspace()
         #print support.getProjectPath()
 	measurDir = cfg.MEASUREMENT_FOLDER
 	analysisDir =  cfg.ANALYSIS_WORKSPACE
 	alignedTraceFile = cfg.ALIGNED_DATA_FILE
-	cleanTraceFile =  os.path.join(analysisDir, config['tTest']['cleanTraceFile'])
-	readtrace.readTraces(alignedTraceFile, cleanTraceFile,int(config['tTest']['cleanTraceNum']))
+	cleanTraceFile =  os.path.join(analysisDir, 'cleanTrace.npy')
+	traceCount = int(config['tTest']['traceCount'])
+	readtrace.readTraces(alignedTraceFile, cleanTraceFile,traceCount)
         #####now split to Q0 and Q1
         #NEED TO GET THESE FROM CONFIG FILES
-        MAX_TRACE=2000
         traceFile0 = os.path.join(analysisDir, config['tTest']['Q0File'])
         traceFile1 = os.path.join(analysisDir, config['tTest']['Q1File'])
         fvrFile = os.path.join(cfg.ROOTDIR, 'sources' , config['tTest']['fvrFile'])
         
-        splitter.splitTrace(MAX_TRACE, traceFile0, traceFile1, fvrFile, cleanTraceFile)
+        splitter.splitTrace(traceCount, traceFile0, traceFile1, fvrFile, cleanTraceFile)
 
         ###calculate t values
         plotFile = os.path.join(analysisDir, config['tTest']['tValuesPlotFile'])
         dstFile = os.path.join(analysisDir, config['tTest']['tValuesFile'])
         welch.createTFile(traceFile0, traceFile1, plotFile, dstFile)
         ####Profiler
-        tValuesFile = os.path.join(analysisDir, config['tTest']['tValuesFile'])
-        plotFile = os.path.join(analysisDir, config['tTest']['profilerPlot'])
-        stateFile = os.path.join(cfg.ROOTDIR, 'sources' ,config['tTest']['stateFile'])
-        profiler.plotTValues(tValuesFile, plotFile, stateFile)
+        display_clk = config['profiler']['display_clk']
+        num_of_clks = int(config['profiler']['num_of_clks'])
+        clk_high  = float(config['profiler']['clk_high'])
+        clk_low = float(config['profiler']['clk_low'])
+        profilerPlot = config['profiler']['profilerPlot']
+        
+        tValuesFile = os.path.join(analysisDir, config['profiler']['tValuesFile'])
+        profilerPlotFile = os.path.join(analysisDir, profilerPlot)
+        stateFile = os.path.join(cfg.ROOTDIR, 'sources' ,config['profiler']['stateFile'])
+        profiler.plotTValues(tValuesFile, profilerPlotFile, stateFile, display_clk, num_of_clks, clk_high,clk_low)
 
 if __name__ == "__main__": 
 	start_time=time.time()

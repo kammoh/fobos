@@ -27,12 +27,7 @@ import matplotlib.pyplot as plt
 import argparse
 
 # Get values from XXBX and FOBOS test bench
-# set Vcc voltage of DUT
-Vcc = 1.2
-# set gain on XXBX chip
-Gain = 25
-# set resistor value (ohms)
-R = 1
+
 
 # compute power in watts = Vcc * Vs/Gain/R 
 def computePower(Vs):
@@ -119,6 +114,10 @@ parser.add_argument("destination_file", help="Mean and average power report", ty
 parser.add_argument("num_of_traces", help="Total number of traces in this run", type=int)
 parser.add_argument("start_sample", help="Sample on which power calculation starts for truncated traces", type=int)
 parser.add_argument("end_sample", help="Sample on which power calculation ends for truncated traces", type=int)
+parser.add_argument("vcc", help="DUT supply voltage", type=float)
+parser.add_argument("gain", help="Amplifier gain", type=int)
+parser.add_argument("r", help="Shunt resistor value in ohms", type=int)
+
 
 args = parser.parse_args()
 source_file = args.source_file
@@ -126,6 +125,10 @@ num_of_traces = args.num_of_traces
 destination_file = args.destination_file
 start_sample = args.start_sample
 end_sample = args.end_sample
+Vcc = args.vcc
+Gain = args.gain
+R = args.r
+
 
 writeFile = open(destination_file, 'w') 
 ostr = "Max and mean power computer"

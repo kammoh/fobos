@@ -1,0 +1,114 @@
+\chapter{Correlation Power Analysis} \label{chap:fobos-cpa}
+
+Once acquisition is complete, Correlation Power Analysis CPA can be performed.
+User must provide their own power model and calculate hypothetical power for each key guess.
+FOBOS takes the hypothetical power for each key guess and use a correlation method e.g. Pearson’s coefficient and calculates the correlation values.
+The key guess that achieves the highest correlation is a candidate for correct key.
+
+The Analysis module is used to perform DPA attack on power traces collected by the Acquisition
+module. To Perform CPA, two inputs are needed, the power traces and and hypothetical power.
+
+
+\section{Steps to perform CPA using FOBOS}
+\subsection{Hypothetical power calculation}
+Note: This description uses an example case where key is guessed one byte at a time. \newline
+Power model or hypothetical power data is user provided. FOBOS uses a text file for each key
+byte. This file includes a line for each key guess value (i.e. 0-255). Each line inculdes hypothetical
+power value for the specific key guess for all encryptions. Each value is an integer and separated
+from the next value by a space. The text below is an example for one key byte. The first number is the
+hypthetical power when the byte equals zero for the frist encryption, first value in the second line is
+the estimated power when the key byte equals one for the first encryption and so on.
+FOBOS expects to find these files at \texttt{\$fobos/data/}. File names should be HPower\_byte\_$<$BYTE NUMBER$>$.txt.
+
+Here is sample of \texttt{Hpower\_byte\_0.txt}
+
+\begin{verbatim}
+6 4 4 2 5 4 3 5 7 4 5 5 7 3 4 6 5 2 4 5 3 4 3 4 7 4 ….
+5 3 4 5 4 2 5 7 4 4 2 4 3 2 4 4 3 4 2 4 3 6 3 2 1 5 ….
+.
+.
+.
+\end{verbatim}
+
+\section{CPA configuration}
+
+There are few configuration files that controls the CPA analysis.
+Here we list all the configuration parameters used in the FOBOS Analysis and description of their usage.
+\subsection{Data Analysis Parameters}
+
+File: \texttt{fobos/config/dataAnalysisParams.txt}
+\begin{itemize}
+ \item WORK\_DIR \newline
+ Directory to save analysis files(Inside the measurements directory). \newline
+ Possible Values: file name \newline
+ Example: analysis 
+ \item MEASUREMENT\_WORK\_DIR \newline
+ The name of the measurement directory. \newline
+ Possible Values: directory name. \newline
+ Example: workspace
+ \item TAG \newline
+ The type of prefix for the directory name. Used to distinguish different runs. \newline
+ Possible Values: counter \newline
+ Example: counter
+\end{itemize}
+
+\subsection{Sample Space Disposition}
+
+File: samplesSpacesDisp.txt
+\begin{itemize}
+ \item SAMPLE\_WINDOW\_SIZE \newline
+  Number of samples (per trace) to be used in analysis. \newline
+  Possible values : Number (e.g. 2000)
+ \item SAMPLE\_WINDOW\_START \newline
+ The number of the first sample in the window.\newline
+ Possible values: Number (e.g. 100)
+\end{itemize}
+
+\subsection{Compression Parameters}
+File: signalAlignmentParams.txt
+\begin{itemize}
+ \item COMPRESSION\_LENGTH \newline
+ Number of samples to be compressed into one samples. \newline 
+ Possible values : Number (e.g. 10)
+ \item COMPRESSION\_TYPE \newline 
+ The operation to be performed to generate the compressed sample.\newline
+ Possible values : MEAN $|$ MAX $|$ MIN
+\end{itemize}
+
+\subsection{Sample Analysis Configuration Files}
+
+\begin{verbatim}
+dataAnalysisParams.txt 
+####################################################
+WORK_DIR = FOBOSAnalysis 
+MEASUREMENT_WORK_DIR = FOBOSWorkspace 
+TAG = counter
+
+
+compressionParams.txt 
+#################################################### 
+######## Compression Module Parameters ############# 
+#################################################### 
+COMPRESSION_LENGTH = 10 
+COMPRESSION_TYPE = MEAN # MAX|MIN|MEAN 
+
+sampleSpaceDispParams.txt 
+#################################################### 
+#### Sample Space Disposition Module Parameters #### 
+#################################################### 
+SAMPLE_WINDOW_SIZE = 3000 
+SAMPLE_WINDOW_START = 3000
+
+\end{verbatim}
+
+
+\section{Running Data Analysis}
+
+Data Analysis can be run as follows: \newline
+\texttt{\$cd \$fobos} \newline
+\texttt{\$python dataAnalysis.py} \newline
+
+Once this is done, the script reads the measured and hypothetical power data, runs CPA and
+produces several output files. The script prompts the user for the directory that contains the traces
+and then uses the power data in the measurements directory as input.  The script
+will create a new directory each time it runs. This directory is created in the project directory. Output files will be save in \texttt{fobos/$<$workspace$>$/$<$projectDir$>$/analysis/}.

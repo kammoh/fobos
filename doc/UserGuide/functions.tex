@@ -1,13 +1,14 @@
 \chapter{Function Descriptions}
 
 \section{FOBOS - Analysis Module}
-FOBOS's analysis module uses a set of python scripts to post process the raw measurement data obtained from the oscilloscope and perform analysis on the obtained data.Various functions implemented in the Analysis module is described below:\newline
+FOBOS's analysis module uses a set of python scripts to post process the raw measurement data obtained from the oscilloscope and perform analysis on the obtained data.
+Various functions implemented in the Analysis module is described below:\newline
 
-\begin{table}[H]
+\begin{table}
 \caption{getAlignedMeasuredPowerData Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.getAlignedMeasuredPowerData}} \\
+ \multicolumn{2}{|c|}{\textbf{signalAnalysisModule.getAlignedMeasuredPowerData}} \\
  \hline
  Usage & \texttt{signalAnalysisModule.getAlignedMeasuredPowerData()}\\ \hline
  Inputs & None \\ \hline
@@ -17,11 +18,11 @@ This function calls signalAnalysisModule.readAlignedDataFromFile(). \\ \hline
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{readAlignedDataFromFile Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.readAlignedDataFromFile}} \\
+ \multicolumn{2}{|c|}{\textbf{signalAnalysisModule.readAlignedDataFromFile}} \\
  \hline
  Usage & \texttt{signalAnalysisModule.readAlignedDataFromFile()}\\ \hline
  Inputs & None \\ \hline
@@ -30,11 +31,11 @@ This function calls signalAnalysisModule.readAlignedDataFromFile(). \\ \hline
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{detectSampleSize Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.detectSampleSize}} \\
+ \multicolumn{2}{|c|}{\textbf{signalAnalysisModule.detectSampleSize}} \\
  \hline
  Usage & \texttt{signalAnalysisModule.detectSampleSize(fileName)}\\ \hline
  Inputs & Aligned traces file name. \\ \hline
@@ -45,11 +46,11 @@ This is done to be able to adjust all traces to the same number of samples if so
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{adjustSampleSize Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.adjustSampleSize}} \\
+ \multicolumn{2}{|c|}{\textbf{signalAnalysisModule.adjustSampleSize}} \\
  \hline
  Usage & \texttt{signalAnalysisModule.adjustSampleSize(sampleLength, dataArray)}\\ \hline
  Inputs & \begin{itemize} \item sample length to adjust to. 		   
@@ -61,11 +62,11 @@ This is done to be able to adjust all traces to the same number of samples if so
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{acquirePowerModel Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.acquirePowerModel}} \\
+ \multicolumn{2}{|c|}{\textbf{signalAnalysisModule.acquirePowerModel}} \\
  \hline
  Usage & \texttt{signalAnalysisModule.acquirePowerModel
  (HyptheticalDataFileName,globals.ADAPTIVE\_CPA)}\\ \hline
@@ -80,30 +81,12 @@ This is done to be able to adjust all traces to the same number of samples if so
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
-\caption{updatePowerModelUsingBCPA Function ***********revise}
-\begin{tabular}{ |p{2cm}||p{11cm}|  }
- \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.updatePowerModelUsingBCPA}} \\
- \hline
- Usage & \texttt{signalAnalysisModule.updatePowerModelUsingBCPA(array1, array2, rowA)}\\ \hline
- Inputs & \begin{itemize}
- 			\item Array1
- 			\item Array2
- 			\item rowA
- 			\end{itemize}
-  \\ \hline
- Outputs & \\ \hline
- Description & Called from signalAnalysisModule.acquirePowerModel().
- \\ \hline
-\end{tabular}
-\end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{computeAlignedData Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{signalAnalysisModule.computeAlignedData}} \\
+ \multicolumn{2}{|c|}{\textbf{signalAnalysisModule.computeAlignedData}} \\
  \hline
  Usage & \texttt{signalAnalysisModule.computeAlignedData(powerData, triggerData)}\\ \hline
  Inputs &  \begin{itemize}
@@ -116,11 +99,11 @@ The function looks for the rising edge of the trigger signal to determine the st
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{correlation\_pearson Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{sca.correlation\_pearson}} \\
+ \multicolumn{2}{|c|}{\textbf{sca.correlation\_pearson}} \\
  \hline
  Usage & \texttt{sca.correlation\_pearson(measuredPowerData, hypotheticalPowerData)}\\ \hline
  Inputs &  \begin{itemize}
@@ -135,41 +118,29 @@ When we guess byte values L = 256.
 \end{table}
 
 
-\begin{table}[H]
-\caption{findMinimumGuessingEntropy Function*********revise}
+\begin{table}
+\caption{findMinimumGuessingEntropy Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{sca.findMinimumGuessingEntropy}} \\
+ \multicolumn{2}{|c|}{\textbf{sca.findMinimumGuessingEntropy}} \\
  \hline
  Usage & \texttt{signalAnalysisModule.computeAlignedData(measuredPowerData, triggerData)}\\ \hline
  Inputs &  \begin{itemize}
  		   \item measured power data.
  		   \item hypotheticalPowerData.
  		   \end{itemize}\\ \hline
- Outputs &  \\ \hline
- Description &  \\ \hline
+ Outputs &  Minimum Guessing Entropy graph \\ \hline
+ Description &  calculates the find Minimum Guessing Entropy \\ \hline
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
-\caption{calculate\_autocorrelation Function ***** revise}
-\begin{tabular}{ |p{2cm}||p{11cm}|  }
- \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{sca.calculate\_autocorrelation}} \\
- \hline
- Usage & \texttt{sca.calculate\_autocorrelation(alignedData)}\\ \hline
- Inputs &  M x N Numpy matrix that holds aligned power data. Where M is the number of traces and N is
- the number of samples per trace. \\ \hline
- Outputs &  \\ \hline
- Description &  \\ \hline
-\end{tabular}
-\end{table}
 
-\begin{table}[H]
+
+\begin{table}
 \caption{plotTrace Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{plottingModule.plotTrace}} \\
+ \multicolumn{2}{|c|}{\textbf{plottingModule.plotTrace}} \\
  \hline
  Usage & \texttt{plottingModule.plotTrace(dataToPlot, traceNos, plotType)}\\ \hline
  Inputs &  \begin{itemize}
@@ -185,11 +156,11 @@ The traces to be plotted.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{plotHist Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{plottingModule.plotHist}} \\
+ \multicolumn{2}{|c|}{\textbf{plottingModule.plotHist}} \\
  \hline
  Usage & \texttt{plottingModule.plotHist(corrMatrix, corrType)}\\ \hline
  Inputs &  \begin{itemize}
@@ -202,11 +173,11 @@ The traces to be plotted.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{plotCorr Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{plottingModule.plotCorr}} \\
+ \multicolumn{2}{|c|}{\textbf{plottingModule.plotCorr}} \\
  \hline
  Usage & \texttt{plottingModule.plotCorr(corrMatrix, corrType)}\\ \hline
  Inputs & \begin{itemize}
@@ -218,11 +189,11 @@ The traces to be plotted.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{sampleSpaceDisp Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{postProcessingModule.sampleSpaceDisp}} \\
+ \multicolumn{2}{|c|}{\textbf{postProcessingModule.sampleSpaceDisp}} \\
  \hline
  Usage & \texttt{postProcessingModule.sampleSpaceDisp(alignedData)}\\ \hline
  Inputs & M x N Numpy matrix that holds aligned data. Where M is the number of traces and N is the number of samples per trace. \\ \hline
@@ -231,11 +202,11 @@ The traces to be plotted.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{compressData Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{compressData}} \\
+ \multicolumn{2}{|c|}{\textbf{compressData}} \\
  \hline
  Usage & \texttt{compressData(measuredPowerData)}\\ \hline
  Inputs & M x N Numpy array that represents traces. Where M is the number of traces and N is the number of samples per trace. \\ \hline
@@ -243,11 +214,11 @@ The traces to be plotted.
  Description & Summarizes COMPRESSION\_LENGTH samples into one sample. The summarization type depends on the COMPRESSION\_TYPE configuration parameter which can be MEAN, MIN or Max. \\ \hline
 \end{tabular}
 \end{table}
-\begin{table}[H]
+\begin{table}
 \caption{compress Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{postProcessingModule.compress}} \\
+ \multicolumn{2}{|c|}{\textbf{postProcessingModule.compress}} \\
  \hline
  Usage & \texttt{postProcessingModule.compress (a, compressionLenght, compressionType)}\\ \hline
  Inputs & \begin{itemize}
@@ -260,11 +231,11 @@ The traces to be plotted.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{traceExpunge Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{postProcessingModule.traceExpunge}} \\
+ \multicolumn{2}{|c|}{\textbf{postProcessingModule.traceExpunge}} \\
  \hline
  Usage & \texttt{postProcessingModule.traceExpunge(measuredPowerData)}\\ \hline
  Inputs & M x N Numpy array that represents traces. Where M is the number of traces and N is the number of samples per trace. \\ \hline
@@ -278,11 +249,11 @@ The traces to be plotted.
 
 The Capture module is used to run encryptions on hardware and capture traces from the ocsilloscope.
 
-\begin{table}[H]
+\begin{table}
 \caption{openOscilloscopeConnection Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core.openOscilloscopeConnection}} \\
+ \multicolumn{2}{|c|}{\textbf{Oscilloscope\_core.openOscilloscopeConnection}} \\
  \hline
  Usage & \texttt{Oscilloscope\_core.openOscilloscopeConnection()}\\ \hline
  Inputs & None  \\ \hline
@@ -291,11 +262,11 @@ The Capture module is used to run encryptions on hardware and capture traces fro
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{setOscilloscopeConfigAttributes Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core.setOscilloscopeConfigAttributes}} \\
+ \multicolumn{2}{|c|}{\textbf{Oscilloscope\_core.setOscilloscopeConfigAttributes}} \\
  \hline
  Usage & \texttt{Oscilloscope\_core.setOscilloscopeConfigAttributes()}\\ \hline
  Inputs & None  \\ \hline
@@ -304,11 +275,11 @@ The Capture module is used to run encryptions on hardware and capture traces fro
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{initializeOscilloscopeDataStorage Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core.initializeOscilloscopeDataStorage}} \\
+ \multicolumn{2}{|c|}{\textbf{Oscilloscope\_core.initializeOscilloscopeDataStorage}} \\
  \hline
  Usage & \texttt{Oscilloscope\_core.initializeOscilloscopeDataStorage()}\\ \hline
  Inputs & None \\ \hline
@@ -317,11 +288,11 @@ The Capture module is used to run encryptions on hardware and capture traces fro
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{armOscilloscope Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core armOscilloscope}} \\
+ \multicolumn{2}{|c|}{\textbf{Oscilloscope\_core armOscilloscope}} \\
  \hline
  Usage & \texttt{Oscilloscope\_core.armOscilloscope()}\\ \hline
  Inputs & None \\ \hline
@@ -330,11 +301,11 @@ The Capture module is used to run encryptions on hardware and capture traces fro
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{populateOscilloscopeDataStorageAndAlign Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core.populateOscilloscopeDataStorageAndAlign}} \\
+ \multicolumn{2}{|c|}{\textbf{Oscilloscope\_core.populateOscilloscopeDataStorageAndAlign}} \\
  \hline
  Usage & \texttt{Oscilloscope\_core.populateOscilloscopeDataStorageAndAlign(traceCount)}\\ \hline
  Inputs & The number of current trace. \\ \hline
@@ -344,11 +315,11 @@ The Capture module is used to run encryptions on hardware and capture traces fro
 \end{table}
 
 
-\begin{table}[H]
+\begin{table}
 \caption{closeOscilloscopeConnection Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core.closeOscilloscopeConnection}} \\
+ \multicolumn{2}{|c|}{\textbf{Oscilloscope\_core.closeOscilloscopeConnection}} \\
  \hline
  Usage & \texttt{Oscilloscope\_core.closeOscilloscopeConnection()}\\ \hline
  Inputs & None \\ \hline
@@ -357,11 +328,11 @@ The Capture module is used to run encryptions on hardware and capture traces fro
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{openControlBoardConnection Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Oscilloscope\_core.openControlBoardConnection}} \\
+ \multicolumn{2}{|c|}{\textbf{Oscilloscope\_core.openControlBoardConnection}} \\
  \hline
  Usage & \texttt{usbcomm\_core.openControlBoardConnection()}\\ \hline
  Inputs & None \\ \hline
@@ -370,11 +341,11 @@ The Capture module is used to run encryptions on hardware and capture traces fro
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{initializeControlBoardConnection Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{usbcomm\_core.initializeControlBoardConnection}} \\
+ \multicolumn{2}{|c|}{\textbf{usbcomm\_core.initializeControlBoardConnection}} \\
  \hline
  Usage & \texttt{usbcomm\_core.initializeControlBoardConnection()}\\ \hline
  Inputs & None \\ \hline
@@ -385,11 +356,11 @@ Called from OpenControlBoardConnection(). \\ \hline
 \end{table}
 
 
-\begin{table}[H]
+\begin{table}
 \caption{sendTriggerParamsToControlBoard Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{usbcomm\_core.sendTriggerParamsToControlBoard}} \\
+ \multicolumn{2}{|c|}{\textbf{usbcomm\_core.sendTriggerParamsToControlBoard}} \\
  \hline
  Usage & \texttt{usbcomm\_core.sendTriggerParamsToControlBoard()}\\ \hline
  Inputs & None \\ \hline
@@ -398,11 +369,11 @@ Called from OpenControlBoardConnection(). \\ \hline
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{runEncrytionOnControlBoard Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{usbcomm\_core.runEncrytionOnControlBoard}} \\
+ \multicolumn{2}{|c|}{\textbf{usbcomm\_core.runEncrytionOnControlBoard}} \\
  \hline
  Usage & \texttt{usbcomm\_core.runEncrytionOnControlBoard(traceCount)}\\ \hline
  Inputs & The number of block used in encryption. \\ \hline
@@ -413,11 +384,11 @@ Called from OpenControlBoardConnection(). \\ \hline
 \end{table}
 
 
-\begin{table}[H]
+\begin{table}
 \caption{sendKeyToControlBoard Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{usbcomm\_core.sendKeyToControlBoard()}} \\
+ \multicolumn{2}{|c|}{\textbf{usbcomm\_core.sendKeyToControlBoard()}} \\
  \hline
  Usage & \texttt{usbcomm\_core.sendKeyToControlBoard()}\\ \hline
  Inputs & None \\ \hline
@@ -427,11 +398,11 @@ Called from OpenControlBoardConnection(). \\ \hline
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{sendBlockOfDataToControlBoard Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{usbcomm\_core.sendBlockOfDataToControlBoard}} \\
+ \multicolumn{2}{|c|}{\textbf{usbcomm\_core.sendBlockOfDataToControlBoard}} \\
  \hline
  Usage & \texttt{usbcomm\_core.usbcomm\_core.sendBlockOfDataToControlBoard
  (traceCount)}\\ \hline
@@ -442,11 +413,11 @@ Called from OpenControlBoardConnection(). \\ \hline
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{saveControlBoardOutputDataStorage Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{usbcomm\_core\_core.saveControlBoardOutputDataStorage}} \\
+ \multicolumn{2}{|c|}{\textbf{usbcomm\_core\_core.saveControlBoardOutputDataStorage}} \\
  \hline
  Usage & \texttt{Oscilloscope\_core.saveControlBoardOutputDataStorage()}\\ \hline
  Inputs & None \\ \hline
@@ -460,11 +431,11 @@ Called from OpenControlBoardConnection(). \\ \hline
 
 Here we list helper functions that are used by the Analysis and Capture modules.
 
-\begin{table}[H]
+\begin{table}
 \caption{getKeyForAnalysis Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{dataGenerator.getKeyForAnalysis}} \\
+ \multicolumn{2}{|c|}{\textbf{dataGenerator.getKeyForAnalysis}} \\
  \hline
  Usage & \texttt{dataGenerator.getKeyForAnalysis()}\\ \hline
  Inputs & None \\ \hline
@@ -473,11 +444,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{getPlainText Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{dataGenerator.getPlainText}} \\
+ \multicolumn{2}{|c|}{\textbf{dataGenerator.getPlainText}} \\
  \hline
  Usage & \texttt{dataGenerator.getPlainText()}\\ \hline
  Inputs & None \\ \hline
@@ -487,11 +458,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{generateRandomKey Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{dataGenerator.generateRandomKey}} \\
+ \multicolumn{2}{|c|}{\textbf{dataGenerator.generateRandomKey}} \\
  \hline
  Usage & \texttt{dataGenerator.generateRandomKey()}\\ \hline
  Inputs & None \\ \hline
@@ -500,11 +471,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
-\caption{convertToHex Function**********revise}
+\begin{table}
+\caption{convertToHex Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{dataGenerator.convertToHex}} \\
+ \multicolumn{2}{|c|}{\textbf{dataGenerator.convertToHex}} \\
  \hline
  Usage & \texttt{dataGenerator.convertToHex(hexString)}\\ \hline
  Inputs & Hexadecimal string  \\ \hline
@@ -512,11 +483,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
  Description &  \\ \hline
 \end{tabular}
 \end{table}
-\begin{table}[H]
+\begin{table}
 \caption{configureWorkspace Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{configExtract.configureWorkspace()}} \\
+ \multicolumn{2}{|c|}{\textbf{configExtract.configureWorkspace()}} \\
  \hline
  Usage & \texttt{configExtract.configureWorkspace()}\\ \hline
  Inputs & None \\ \hline
@@ -526,11 +497,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{extractConfigAttributes Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{configExtract.extractConfigAttributes()}} \\
+ \multicolumn{2}{|c|}{\textbf{configExtract.extractConfigAttributes()}} \\
  \hline
  Usage & \texttt{configExtract.extractConfigAttributes()}\\ \hline
  Inputs & None \\ \hline
@@ -539,11 +510,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{updatePowerAndTriggerFileNames Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{configExtract.updatePowerAndTriggerFileNames}} \\
+ \multicolumn{2}{|c|}{\textbf{configExtract.updatePowerAndTriggerFileNames}} \\
  \hline
  Usage & \texttt{configExtract.updatePowerAndTriggerFileNames()}\\ \hline
  Inputs & None \\ \hline
@@ -552,11 +523,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{configureAnalysisWorkspace Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{configExtract.configureAnalysisWorkspace}} \\
+ \multicolumn{2}{|c|}{\textbf{configExtract.configureAnalysisWorkspace}} \\
  \hline
  Usage & \texttt{configExtract.configureAnalysisWorkspace()}\\ \hline
  Inputs & None \\ \hline
@@ -565,11 +536,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{extractAnalysisConfigAttributes Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{configExtract.extractAnalysisConfigAttributes}} \\
+ \multicolumn{2}{|c|}{\textbf{configExtract.extractAnalysisConfigAttributes}} \\
  \hline
  Usage & \texttt{configExtract.extractAnalysisConfigAttributes(fileName)}\\ \hline
  Inputs & Configuration file name. \\ \hline
@@ -578,11 +549,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{goToSleep Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.goToSleep}} \\
+ \multicolumn{2}{|c|}{\textbf{support.goToSleep}} \\
  \hline
  Usage & \texttt{support.goToSleep(value)}\\ \hline
  Inputs & Time to sleep in seconds. \\ \hline
@@ -591,11 +562,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{exitProgram Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.exitProgram}} \\
+ \multicolumn{2}{|c|}{\textbf{support.exitProgram}} \\
  \hline
  Usage & \texttt{support.exitProgram()}\\ \hline
  Inputs & None \\ \hline
@@ -604,11 +575,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{wait Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.wait}} \\
+ \multicolumn{2}{|c|}{\textbf{support.wait}} \\
  \hline
  Usage & \texttt{support.wait()}\\ \hline
  Inputs & None \\ \hline
@@ -618,11 +589,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{table}
 
 
-\begin{table}[H]
+\begin{table}
 \caption{clear\_screen Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.clear\_screen}} \\
+ \multicolumn{2}{|c|}{\textbf{support.clear\_screen}} \\
  \hline
  Usage & \texttt{support.clear\_screen()}\\ \hline
  Inputs & None \\ \hline
@@ -632,11 +603,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{table}
 
 
-\begin{table}[H]
+\begin{table}
 \caption{convertToByteArray Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.convertToByteArray}} \\
+ \multicolumn{2}{|c|}{\textbf{support.convertToByteArray}} \\
  \hline
  Usage & \texttt{support.convertToByteArray(hexString)}\\ \hline
  Inputs & Hexadecimal string \\ \hline
@@ -646,11 +617,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{table}
 
 
-\begin{table}[H]
+\begin{table}
 \caption{arrayToString Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.arrayToString(array)}} \\
+ \multicolumn{2}{|c|}{\textbf{support.arrayToString(array)}} \\
  \hline
  Usage & \texttt{support.arrayToString(array)}\\ \hline
  Inputs & Array to convert \\ \hline
@@ -660,11 +631,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{table}
 
 
-\begin{table}[H]
+\begin{table}
 \caption{readFile Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{support.readFile}} \\
+ \multicolumn{2}{|c|}{\textbf{support.readFile}} \\
  \hline
  Usage & \texttt{support.readFile(fileName)}\\ \hline
  Inputs & File name \\ \hline
@@ -675,11 +646,11 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 
 
 
-\begin{table}[H]
+\begin{table}
 \caption{removeFile Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Support.removeFile}} \\
+ \multicolumn{2}{|c|}{\textbf{Support.removeFile}} \\
  \hline
  Usage & \texttt{Support.removeFile(fileName)} \\ \hline
  Inputs & File name \\ \hline
@@ -688,15 +659,15 @@ Here we list helper functions that are used by the Analysis and Capture modules.
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}
 \caption{removeComments Function}
 \begin{tabular}{ |p{2cm}||p{11cm}|  }
  \hline
- \multicolumn{2}{|c|}{\cellcolor{teal}\textbf{Support.removeComments(datalist)}} \\
+ \multicolumn{2}{|c|}{\textbf{Support.removeComments(datalist)}} \\
  \hline
  Usage & \texttt{Support.removeComments(datalist)}\\ \hline
  Inputs & Data list \\ \hline
- Outputs &  ???  \\ \hline
+ Outputs &   \\ \hline
  Description & Removes comments (anything after a '\#' sign) from a list of strings. \\ \hline
 \end{tabular}
 \end{table}

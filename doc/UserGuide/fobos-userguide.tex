@@ -2,6 +2,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{tikz}
+\usepackage{enumitem}
 
 \begin{document}
 
@@ -12,21 +13,21 @@
 \affiliation{George Mason University\\
   Fairfax, Virginia}
 \topicpic{fobos-slide}
-
 \maketitle
-
 \tableofcontents
-
 % -----------------------------------------------------------------------------
 \include{fobos-overview}
+\include{fobos-installation}
+\include{dut-development}
 \include{fobos-hardware-config}
+\include{test-vector-gen}
 \include{fobos-acquisition}
-\include{fobos-analysis}
-\include{functions}
+\include{fobos-cpa}
+\include{fobos-t-test}
+\include{fobos-profiler}
+\include{fobos-power-measurement}
 % -----------------------------------------------------------------------------
 \begin{appendix}
-\chapter{Maybe Something}
+\include{functions}
 \end{appendix}
-
-
 \end{document}

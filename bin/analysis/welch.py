@@ -28,19 +28,17 @@ import argparse
 start_ylim = -40
 end_ylim = 40
 
-start_xlim = 0
-end_xlim = 15000
-
-
+#start_xlim = 0
+#end_xlim = 15000
 #load trace file
 #use simple array first
 #samples_per_trace = 25000
-num_of_traces = 1929
+#num_of_traces = 987
 #raw_traces0 = numpy.array([[1,2,3,4],[5,6,7,8],[9,10,11,12]])
 #raw_traces1 = numpy.array([[13,24,35,45],[15,61,71,18],[19,110,131,12]])
 
 	
-def get_mean(raw_traces):
+def get_mean(raw_traces, num_of_traces):
 #Takes trace array (each row is a trace)
 #returns a one dimention array with each elemen = the mean of a column of the input 
    samples_per_trace = raw_traces.shape[1]
@@ -54,9 +52,9 @@ def get_mean(raw_traces):
    return mean_array
 
 
-def get_variance(raw_traces, mean_array):
+def get_variance(raw_traces, mean_array, num_of_traces):
 #Takes trace array (each row is a trace)
-#returns a one dimention array wi`th each element = the variance of a column of the input 
+#returns a one dimention array with each element = the variance of a column of the input 
    samples_per_trace = raw_traces.shape[1]
    var_array = []
    for sample_no in range(0, samples_per_trace):
@@ -90,14 +88,15 @@ def createTFile(traceFile0, traceFile1, plotFile, dstFile):
    
    raw_traces0 = numpy.load(traceFile0)
    raw_traces1 = numpy.load(traceFile1)
-   #num_of_traces = raw_traces0.shape[0]
+   num_of_traces = min(raw_traces0.shape[0], raw_traces1.shape[0])
+   print "Number of traces for t-test =" + str(num_of_traces)
    samples_per_trace = raw_traces0.shape[1]
    #print "num_of_traces=", num_of_traces
    print "samples_per_trace=", samples_per_trace
-   mean_array0 =  get_mean(raw_traces0)
-   mean_array1 =  get_mean(raw_traces1)
-   var_array0 = get_variance(raw_traces0, mean_array0)
-   var_array1 = get_variance(raw_traces1, mean_array1)
+   mean_array0 =  get_mean(raw_traces0,num_of_traces)
+   mean_array1 =  get_mean(raw_traces1, num_of_traces)
+   var_array0 = get_variance(raw_traces0, mean_array0, num_of_traces)
+   var_array1 = get_variance(raw_traces1, mean_array1, num_of_traces)
    t_array = get_t_values(mean_array0,var_array0, mean_array1, var_array1, num_of_traces)
    #fig1 = plt.figure()
    #fig1.plot(mean_array0)
@@ -111,7 +110,7 @@ def createTFile(traceFile0, traceFile1, plotFile, dstFile):
    plt.plot(minus_threshold, color='b')
 
    plt.ylim(start_ylim, end_ylim)
-   plt.xlim(start_xlim, end_xlim)
+   #plt.xlim(start_xlim, end_xlim)
    plt.xlabel("Sample No.")
    plt.ylabel("t-value")
    plt.plot(t_array, color='r')

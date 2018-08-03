@@ -1,0 +1,29 @@
+ \chapter{Software Installation}
+
+FOBOS consists of Python scripts for acquisition and analysis and hardware for controller and DUT.
+This chapter describes installation of the software part (the Python scripts).
+Since Python is used, the software can run in Linux, Windows and other operating systems.
+
+The following installation procedure was tested on Linux Ubuntu 16.04. It is assumed that Pytho2.7 is already installed.
+\begin{enumerate}
+\item Download FOBOS from \url{https://cryptography.gmu.edu/fobos/getfobos.php}
+\item Extract the archive into the directory of your choice
+
+\texttt{\$ tar xvfz fobos-v1.0.tgz }
+
+\item Use the following commands to install the necessary Python packages:
+
+\texttt{\$ sudo apt-get install python-pip} \newline
+\texttt{\$ sudo pip install pycrypto} \newline
+\texttt{\$ sudo pip install numpy} \newline
+\texttt{\$ sudo pip install matplotlib} \newline
+\texttt{\$ sudo apt-get install python-tk} \newline
+\texttt{\$ sudo pip install scipy} \newline
+\texttt{\$ sudo pip install configparser} \newline
+\item Install Digilent Adept from
+\url{https://reference.digilentinc.com/reference/software/adept/start?redirect=1#software_downloads}
+This will install libraries needed for the Digilent DEP protocol used for PC - Control Board communication.
+\item Install Xilinx ISE. Make sure to install Cable Drivers in Xilinx ISE installation. If not installed, you will encounter issues using Impact to program the boards.
+\end{enumerate}
+
+  
