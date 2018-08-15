@@ -52,7 +52,7 @@ L Device:C C53
 U 1 1 5BC6CBAC
 P 4550 2550
 F 0 "C53" H 4665 2596 50  0000 L CNN
-F 1 "C" H 4665 2505 50  0000 L CNN
+F 1 "10uF" H 4665 2505 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 4588 2400 50  0001 C CNN
 F 3 "~" H 4550 2550 50  0001 C CNN
 	1    4550 2550
@@ -172,8 +172,6 @@ F 3 "~" H 5300 2150 50  0001 C CNN
 	1    5300 2150
 	0    -1   -1   0   
 $EndComp
-Wire Wire Line
-	4550 2400 5050 2400
 Connection ~ 4550 2400
 Wire Wire Line
 	2350 2300 2350 1700
@@ -241,42 +239,17 @@ Wire Wire Line
 	6050 2750 6050 2850
 Wire Wire Line
 	5400 2150 5650 2150
-Connection ~ 5650 2150
-Text GLabel 6500 2150 2    50   Input ~ 0
+Text GLabel 7150 2450 0    50   Input ~ 0
 CW_5V
+Text GLabel 7550 2700 2    50   Input ~ 0
+TVolt
+Text GLabel 9600 2250 2    50   Input ~ 0
+TCur
 Wire Wire Line
-	5650 2150 6500 2150
-$Comp
-L Analog_ADC:INA226 U10
-U 1 1 5B6D3D3D
-P 8900 3400
-F 0 "U10" H 8900 4078 50  0000 C CNN
-F 1 "INA226" H 8900 3987 50  0000 C CNN
-F 2 "Package_SO:MSOP-10_3x3mm_P0.5mm" H 8950 3500 50  0001 C CNN
-F 3 "http://www.ti.com/lit/ds/symlink/ina226.pdf" H 9250 3300 50  0001 C CNN
-	1    8900 3400
-	1    0    0    -1  
-$EndComp
-Text GLabel 5200 2650 2    50   Input ~ 0
-A0
-Text GLabel 9600 3100 2    50   Input ~ 0
-A1
-Wire Wire Line
-	9300 3100 9600 3100
-$Comp
-L Device:Jumper_NC_Dual JP2
-U 1 1 5B6D9A52
-P 10250 3250
-F 0 "JP2" V 10296 3352 50  0000 L CNN
-F 1 "0.1 or 1 Ohm" V 10205 3352 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 10250 3250 50  0001 C CNN
-F 3 "~" H 10250 3250 50  0001 C CNN
-	1    10250 3250
-	0    -1   -1   0   
-$EndComp
-Text GLabel 7850 3050 0    50   Input ~ 0
+	9300 2250 9600 2250
+Text GLabel 9550 2650 2    50   Input ~ 0
 Gain0
-Text GLabel 7850 3200 0    50   Input ~ 0
+Text GLabel 9550 2550 2    50   Input ~ 0
 Gain1
 Wire Wire Line
 	3200 2900 3200 2950
@@ -300,18 +273,6 @@ Entry Wire Line
 	3800 3650 3900 3550
 Text GLabel 4300 3650 2    50   Input ~ 0
 PWR[5..0]
-Wire Wire Line
-	7850 3050 8300 3050
-Wire Wire Line
-	8300 3050 8300 3500
-Wire Wire Line
-	8300 3500 8500 3500
-Wire Wire Line
-	7850 3200 8150 3200
-Wire Wire Line
-	8150 3200 8150 3600
-Wire Wire Line
-	8150 3600 8500 3600
 Wire Wire Line
 	3300 3550 3300 2900
 Wire Wire Line
@@ -1554,17 +1515,124 @@ F 3 "" H 1250 5750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Connection ~ 1250 5750
-Wire Wire Line
-	5200 2650 5050 2650
-Wire Wire Line
-	5050 2650 5050 2400
-Connection ~ 5050 2400
-Wire Wire Line
-	5050 2400 5300 2400
-Text GLabel 8900 4050 0    50   Input ~ 0
+Text GLabel 8900 3150 0    50   Input ~ 0
 XADCGND
 Wire Wire Line
-	8900 4050 8900 3900
+	8900 3150 8900 2950
+$Comp
+L cerg:INA225 U10
+U 1 1 5B740E69
+P 8900 2450
+F 0 "U10" H 8900 3028 50  0000 C CNN
+F 1 "INA225" H 8900 2937 50  0000 C CNN
+F 2 "Package_SO:MSOP-8_3x3mm_P0.65mm" H 8950 2450 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/ina226.pdf" H 9250 2250 50  0001 C CNN
+	1    8900 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9300 2550 9550 2550
+Wire Wire Line
+	9300 2650 9550 2650
+$Comp
+L power:+5V #PWR0161
+U 1 1 5B7611C1
+P 8900 1700
+F 0 "#PWR0161" H 8900 1550 50  0001 C CNN
+F 1 "+5V" H 8915 1873 50  0000 C CNN
+F 2 "" H 8900 1700 50  0001 C CNN
+F 3 "" H 8900 1700 50  0001 C CNN
+	1    8900 1700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8900 2050 8900 1900
+Wire Wire Line
+	8500 2650 8400 2650
+Wire Wire Line
+	8400 2650 8400 2950
+Wire Wire Line
+	8400 2950 8900 2950
+Connection ~ 8900 2950
+Wire Wire Line
+	8900 2950 8900 2850
+$Comp
+L Device:C C54
+U 1 1 5B7735C2
+P 8150 2800
+F 0 "C54" H 8265 2846 50  0000 L CNN
+F 1 "100n" H 8265 2755 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 8188 2650 50  0001 C CNN
+F 3 "~" H 8150 2800 50  0001 C CNN
+	1    8150 2800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8400 2950 8150 2950
+Connection ~ 8400 2950
+Wire Wire Line
+	8150 2650 8150 1900
+Wire Wire Line
+	8150 1900 8900 1900
+Connection ~ 8900 1900
+Wire Wire Line
+	8900 1900 8900 1700
+$Comp
+L Device:R R28
+U 1 1 5B789A51
+P 7950 2300
+F 0 "R28" H 8020 2346 50  0000 L CNN
+F 1 "0R1" H 8020 2255 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 7880 2300 50  0001 C CNN
+F 3 "~" H 7950 2300 50  0001 C CNN
+	1    7950 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7950 2150 8300 2150
+Wire Wire Line
+	8300 2150 8300 2250
+Wire Wire Line
+	8300 2250 8500 2250
+Wire Wire Line
+	7950 2450 8300 2450
+Wire Wire Line
+	8300 2450 8300 2350
+Wire Wire Line
+	8300 2350 8500 2350
+Connection ~ 7950 2150
+Wire Wire Line
+	7150 2450 7350 2450
+Connection ~ 7950 2450
+$Comp
+L Device:R R21
+U 1 1 5B7B353E
+P 7700 2300
+F 0 "R21" H 7770 2346 50  0000 L CNN
+F 1 "optional" H 7770 2255 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 7630 2300 50  0001 C CNN
+F 3 "~" H 7700 2300 50  0001 C CNN
+	1    7700 2300
+	1    0    0    -1  
+$EndComp
+Connection ~ 7700 2150
+Wire Wire Line
+	7700 2150 7950 2150
+Connection ~ 7700 2450
+Wire Wire Line
+	7700 2450 7950 2450
+Wire Wire Line
+	5650 2150 7700 2150
+Connection ~ 5650 2150
+Wire Wire Line
+	4550 2400 5300 2400
+Wire Wire Line
+	7550 2700 7350 2700
+Wire Wire Line
+	7350 2700 7350 2450
 Wire Bus Line
 	2300 3650 4300 3650
+Connection ~ 7350 2450
+Wire Wire Line
+	7350 2450 7700 2450
 $EndSCHEMATC

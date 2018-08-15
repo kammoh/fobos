@@ -17,12 +17,12 @@ $EndDescr
 $Comp
 L Connector_Generic:Conn_02x06_Odd_Even J3
 U 1 1 5B5BA551
-P 1650 1450
-F 0 "J3" H 1700 1867 50  0000 C CNN
-F 1 "Analog" H 1700 1776 50  0000 C CNN
-F 2 "cerg:PinHeader_2x06_P2.54mm_Vertical_flipped" H 1650 1450 50  0001 C CNN
-F 3 "~" H 1650 1450 50  0001 C CNN
-	1    1650 1450
+P 3100 1450
+F 0 "J3" H 3150 1867 50  0000 C CNN
+F 1 "Analog" H 3150 1776 50  0000 C CNN
+F 2 "cerg:PinHeader_2x06_P2.54mm_Vertical_flipped" H 3100 1450 50  0001 C CNN
+F 3 "~" H 3100 1450 50  0001 C CNN
+	1    3100 1450
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -117,30 +117,26 @@ Wire Wire Line
 	4950 2800 4650 2800
 Wire Wire Line
 	4650 2700 4950 2700
-Text GLabel 1100 1250 0    50   Input ~ 0
-A0
-Text GLabel 1100 1350 0    50   Input ~ 0
-A1
-Text GLabel 1100 1450 0    50   Input ~ 0
+Text GLabel 1650 1250 0    50   Input ~ 0
+TVolt
+Text GLabel 1650 1350 0    50   Input ~ 0
+TCur
+Text GLabel 2550 1450 0    50   Input ~ 0
 A2
-Text GLabel 1100 1550 0    50   Input ~ 0
+Text GLabel 2550 1550 0    50   Input ~ 0
 A3
-Text GLabel 1100 1650 0    50   Input ~ 0
+Text GLabel 2550 1650 0    50   Input ~ 0
 A4
-Text GLabel 1100 1750 0    50   Input ~ 0
+Text GLabel 2550 1750 0    50   Input ~ 0
 A5
 Wire Wire Line
-	1100 1250 1450 1250
+	2550 1450 2900 1450
 Wire Wire Line
-	1100 1350 1450 1350
+	2550 1550 2900 1550
 Wire Wire Line
-	1100 1450 1450 1450
+	2900 1650 2550 1650
 Wire Wire Line
-	1100 1550 1450 1550
-Wire Wire Line
-	1450 1650 1100 1650
-Wire Wire Line
-	1450 1750 1100 1750
+	2900 1750 2550 1750
 Text GLabel 1150 5750 0    50   Input ~ 0
 Gain0
 Text GLabel 1150 5850 0    50   Input ~ 0
@@ -169,17 +165,17 @@ Text GLabel 5950 3950 2    50   Input ~ 0
 CW_HS2
 Text GLabel 5950 4350 2    50   Input ~ 0
 ADC_CLK
-Text GLabel 2300 1250 2    50   Input ~ 0
-A6
-Text GLabel 2300 1350 2    50   Input ~ 0
+Text GLabel 3750 1250 2    50   Input ~ 0
+PWR_EN
+Text GLabel 3750 1350 2    50   Input ~ 0
 A7
-Text GLabel 2300 1450 2    50   Input ~ 0
+Text GLabel 3750 1450 2    50   Input ~ 0
 A8
-Text GLabel 2300 1550 2    50   Input ~ 0
+Text GLabel 3750 1550 2    50   Input ~ 0
 A9
-Text GLabel 2250 1650 2    50   Input ~ 0
+Text GLabel 3700 1650 2    50   Input ~ 0
 A10
-Text GLabel 2250 1750 2    50   Input ~ 0
+Text GLabel 3700 1750 2    50   Input ~ 0
 A11
 Text GLabel 1400 3350 0    50   Input ~ 0
 XADC_V_P
@@ -230,17 +226,17 @@ Wire Wire Line
 Wire Wire Line
 	1500 3350 1400 3350
 Wire Wire Line
-	1950 1250 2300 1250
+	3400 1250 3750 1250
 Wire Wire Line
-	1950 1350 2300 1350
+	3400 1350 3750 1350
 Wire Wire Line
-	1950 1450 2300 1450
+	3400 1450 3750 1450
 Wire Wire Line
-	1950 1550 2300 1550
+	3400 1550 3750 1550
 Wire Wire Line
-	1950 1650 2250 1650
+	3400 1650 3700 1650
 Wire Wire Line
-	1950 1750 2250 1750
+	3400 1750 3700 1750
 Wire Wire Line
 	5450 3950 5950 3950
 Wire Wire Line
@@ -1088,29 +1084,29 @@ EndData
 $EndBitmap
 Text GLabel 4550 4350 0    50   Input ~ 0
 PWR_PG
-Text Label 1250 1250 0    50   ~ 0
+Text Label 2700 1250 0    50   ~ 0
 A0
-Text Label 1250 1350 0    50   ~ 0
+Text Label 2700 1350 0    50   ~ 0
 A1
-Text Label 1250 1450 0    50   ~ 0
+Text Label 2700 1450 0    50   ~ 0
 A2
-Text Label 1250 1550 0    50   ~ 0
+Text Label 2700 1550 0    50   ~ 0
 A3
-Text Label 1250 1650 0    50   ~ 0
+Text Label 2700 1650 0    50   ~ 0
 A4
-Text Label 1250 1750 0    50   ~ 0
+Text Label 2700 1750 0    50   ~ 0
 A5
-Text Label 2050 1250 0    50   ~ 0
+Text Label 3500 1250 0    50   ~ 0
 A6
-Text Label 2050 1350 0    50   ~ 0
+Text Label 3500 1350 0    50   ~ 0
 A7
-Text Label 2050 1450 0    50   ~ 0
+Text Label 3500 1450 0    50   ~ 0
 A8
-Text Label 2050 1550 0    50   ~ 0
+Text Label 3500 1550 0    50   ~ 0
 A9
-Text Label 2050 1650 0    50   ~ 0
+Text Label 3500 1650 0    50   ~ 0
 A10
-Text Label 2050 1750 0    50   ~ 0
+Text Label 3500 1750 0    50   ~ 0
 A11
 Text Notes 6300 7150 0    157  ~ 0
 PYNQ Chip Kit Connector\n
@@ -1164,6 +1160,36 @@ Wire Wire Line
 Connection ~ 8500 4000
 Wire Wire Line
 	8500 4000 8250 4000
+$Comp
+L Device:R R30
+U 1 1 5B7DE70C
+P 2100 1350
+F 0 "R30" V 2100 1350 50  0000 C CNN
+F 1 "1k68 1%" V 2200 1350 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1350 50  0001 C CNN
+F 3 "~" H 2100 1350 50  0001 C CNN
+	1    2100 1350
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R29
+U 1 1 5B7DE862
+P 2100 1250
+F 0 "R29" V 2100 1250 50  0000 C CNN
+F 1 "1k68 1%" V 2000 1250 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1250 50  0001 C CNN
+F 3 "~" H 2100 1250 50  0001 C CNN
+	1    2100 1250
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2250 1350 2900 1350
+Wire Wire Line
+	1650 1250 1950 1250
+Wire Wire Line
+	2250 1250 2900 1250
+Wire Wire Line
+	1950 1350 1650 1350
 Wire Bus Line
 	6900 3450 6900 3850
 Wire Bus Line
