@@ -246,7 +246,7 @@ TVolt
 Text GLabel 9600 2250 2    50   Input ~ 0
 TCur
 Wire Wire Line
-	9300 2250 9600 2250
+	9300 2250 9400 2250
 Text GLabel 9550 2650 2    50   Input ~ 0
 Gain0
 Text GLabel 9550 2550 2    50   Input ~ 0
@@ -1630,9 +1630,25 @@ Wire Wire Line
 	7550 2700 7350 2700
 Wire Wire Line
 	7350 2700 7350 2450
-Wire Bus Line
-	2300 3650 4300 3650
 Connection ~ 7350 2450
 Wire Wire Line
 	7350 2450 7700 2450
+$Comp
+L Connector_Generic:Conn_01x01 J15
+U 1 1 5B830A55
+P 9600 1850
+F 0 "J15" H 9679 1892 50  0000 L CNN
+F 1 "TCur" H 9679 1801 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 9600 1850 50  0001 C CNN
+F 3 "~" H 9600 1850 50  0001 C CNN
+	1    9600 1850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9400 1850 9400 2250
+Connection ~ 9400 2250
+Wire Wire Line
+	9400 2250 9600 2250
+Wire Bus Line
+	2300 3650 4300 3650
 $EndSCHEMATC

@@ -17,14 +17,14 @@ $EndDescr
 $Comp
 L Connector:Conn_Coaxial_Power J?
 U 1 1 5B6D6458
-P 6300 1800
+P 7550 2250
 AR Path="/5B60048C/5B6D6458" Ref="J?"  Part="1" 
 AR Path="/5B6C87CC/5B6D6458" Ref="J13"  Part="1" 
-F 0 "J13" H 6388 1796 50  0000 L CNN
-F 1 "Clock" H 6388 1705 50  0000 L CNN
-F 2 "cerg:SMA-JOHNSON-142-0701-801" H 6300 1750 50  0001 C CNN
-F 3 "~" H 6300 1750 50  0001 C CNN
-	1    6300 1800
+F 0 "J13" H 7638 2246 50  0000 L CNN
+F 1 "Clock" H 7638 2155 50  0000 L CNN
+F 2 "cerg:SMA-JOHNSON-142-0701-801" H 7550 2200 50  0001 C CNN
+F 3 "~" H 7550 2200 50  0001 C CNN
+	1    7550 2250
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -309,8 +309,6 @@ F 3 "~" H 2400 1500 50  0001 C CNN
 $EndComp
 Text GLabel 1600 1100 0    50   Input ~ 0
 CW_5V
-Text GLabel 1600 1200 0    50   Input ~ 0
-CW_3V3
 Text GLabel 1600 1300 0    50   Input ~ 0
 CW_RST
 Text GLabel 1600 1400 0    50   Input ~ 0
@@ -337,8 +335,6 @@ Text GLabel 3300 1700 2    50   Input ~ 0
 CW_TARG3
 Text GLabel 3300 1800 2    50   Input ~ 0
 CW_TARG4
-Text GLabel 3300 1900 2    50   Input ~ 0
-CW_3V3
 Text GLabel 3300 2000 2    50   Input ~ 0
 CW_5V
 $Comp
@@ -389,8 +385,6 @@ Wire Wire Line
 Wire Wire Line
 	1600 1400 2200 1400
 Wire Wire Line
-	1600 1200 2200 1200
-Wire Wire Line
 	1600 1100 2200 1100
 Wire Wire Line
 	2700 1200 3300 1200
@@ -406,8 +400,6 @@ Wire Wire Line
 	2700 1700 3300 1700
 Wire Wire Line
 	2700 1800 3300 1800
-Wire Wire Line
-	2700 1900 3300 1900
 Wire Wire Line
 	2700 2000 3300 2000
 Text Label 2050 1300 2    50   ~ 0
@@ -1022,4 +1014,82 @@ EndData
 $EndBitmap
 Text Notes 6350 7150 0    157  ~ 0
 DUT Connections, Glitch
+$Comp
+L power:GND #PWR0162
+U 1 1 5B83906E
+P 7550 2550
+F 0 "#PWR0162" H 7550 2300 50  0001 C CNN
+F 1 "GND" H 7555 2377 50  0000 C CNN
+F 2 "" H 7550 2550 50  0001 C CNN
+F 3 "" H 7550 2550 50  0001 C CNN
+	1    7550 2550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7550 2550 7550 2450
+$Comp
+L Jumper:Jumper_3_Open JP2
+U 1 1 5B84169E
+P 7550 1850
+F 0 "JP2" H 7550 2074 50  0000 C CNN
+F 1 "ExtClkSel" H 7550 1983 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 7550 1850 50  0001 C CNN
+F 3 "~" H 7550 1850 50  0001 C CNN
+	1    7550 1850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7550 2150 7550 2000
+Text GLabel 7150 1850 0    50   Input ~ 0
+CW_HS1
+Text GLabel 7950 1850 2    50   Input ~ 0
+CW_HS2
+Wire Wire Line
+	7150 1850 7300 1850
+Wire Wire Line
+	7800 1850 7950 1850
+$Comp
+L power:+3.3V #PWR0163
+U 1 1 5B846C79
+P 1150 1150
+F 0 "#PWR0163" H 1150 1000 50  0001 C CNN
+F 1 "+3.3V" H 1165 1323 50  0000 C CNN
+F 2 "" H 1150 1150 50  0001 C CNN
+F 3 "" H 1150 1150 50  0001 C CNN
+	1    1150 1150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1150 1200 1150 1150
+Wire Wire Line
+	1150 1200 2200 1200
+$Comp
+L power:+3.3V #PWR0164
+U 1 1 5B848492
+P 4000 1850
+F 0 "#PWR0164" H 4000 1700 50  0001 C CNN
+F 1 "+3.3V" H 4015 2023 50  0000 C CNN
+F 2 "" H 4000 1850 50  0001 C CNN
+F 3 "" H 4000 1850 50  0001 C CNN
+	1    4000 1850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4000 1850 4000 1900
+Wire Wire Line
+	2700 1900 4000 1900
+$Comp
+L Connector_Generic:Conn_01x01 J16
+U 1 1 5B84A46F
+P 6500 2100
+F 0 "J16" H 6580 2142 50  0000 L CNN
+F 1 "Conn_01x01" H 6580 2051 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 6500 2100 50  0001 C CNN
+F 3 "~" H 6500 2100 50  0001 C CNN
+	1    6500 2100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6300 2100 6300 2200
+Connection ~ 6300 2200
 $EndSCHEMATC
