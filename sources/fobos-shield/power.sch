@@ -1604,25 +1604,6 @@ Connection ~ 7950 2150
 Wire Wire Line
 	7150 2450 7350 2450
 Connection ~ 7950 2450
-$Comp
-L Device:R R21
-U 1 1 5B7B353E
-P 7700 2300
-F 0 "R21" H 7770 2346 50  0000 L CNN
-F 1 "optional" H 7770 2255 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 7630 2300 50  0001 C CNN
-F 3 "~" H 7700 2300 50  0001 C CNN
-	1    7700 2300
-	1    0    0    -1  
-$EndComp
-Connection ~ 7700 2150
-Wire Wire Line
-	7700 2150 7950 2150
-Connection ~ 7700 2450
-Wire Wire Line
-	7700 2450 7950 2450
-Wire Wire Line
-	5650 2150 7700 2150
 Connection ~ 5650 2150
 Wire Wire Line
 	4550 2400 5300 2400
@@ -1631,8 +1612,6 @@ Wire Wire Line
 Wire Wire Line
 	7350 2700 7350 2450
 Connection ~ 7350 2450
-Wire Wire Line
-	7350 2450 7700 2450
 $Comp
 L Connector_Generic:Conn_01x01 J15
 U 1 1 5B830A55
@@ -1649,6 +1628,31 @@ Wire Wire Line
 Connection ~ 9400 2250
 Wire Wire Line
 	9400 2250 9600 2250
+Wire Wire Line
+	5650 2150 7550 2150
+Wire Wire Line
+	7350 2450 7550 2450
+$Comp
+L Connector_Generic:Conn_01x02 J18
+U 1 1 5B86CE2F
+P 7750 2250
+F 0 "J18" H 7830 2242 50  0000 L CNN
+F 1 "Conn_01x02" H 7830 2151 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 7750 2250 50  0001 C CNN
+F 3 "~" H 7750 2250 50  0001 C CNN
+	1    7750 2250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7550 2250 7550 2150
+Connection ~ 7550 2150
+Wire Wire Line
+	7550 2150 7950 2150
+Wire Wire Line
+	7550 2350 7550 2450
 Wire Bus Line
 	2300 3650 4300 3650
+Connection ~ 7550 2450
+Wire Wire Line
+	7550 2450 7950 2450
 $EndSCHEMATC

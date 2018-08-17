@@ -1113,12 +1113,12 @@ PYNQ Chip Kit Connector\n
 $Comp
 L power:+5V #PWR0128
 U 1 1 5B7DC66E
-P 8750 3650
-F 0 "#PWR0128" H 8750 3500 50  0001 C CNN
-F 1 "+5V" H 8765 3823 50  0000 C CNN
-F 2 "" H 8750 3650 50  0001 C CNN
-F 3 "" H 8750 3650 50  0001 C CNN
-	1    8750 3650
+P 9150 3150
+F 0 "#PWR0128" H 9150 3000 50  0001 C CNN
+F 1 "+5V" H 9165 3323 50  0000 C CNN
+F 2 "" H 9150 3150 50  0001 C CNN
+F 3 "" H 9150 3150 50  0001 C CNN
+	1    9150 3150
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1132,8 +1132,6 @@ F 3 "" H 8850 4600 50  0001 C CNN
 	1    8850 4600
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	8750 3650 8750 4100
 Connection ~ 8750 4100
 Wire Wire Line
 	8850 4600 8850 4400
@@ -1190,6 +1188,57 @@ Wire Wire Line
 	2250 1250 2900 1250
 Wire Wire Line
 	1950 1350 1650 1350
+$Comp
+L Jumper:Jumper_3_Open JP3
+U 1 1 5B85663A
+P 8750 3200
+F 0 "JP3" V 8796 3286 50  0000 L CNN
+F 1 "Jumper_3_Open" V 8705 3286 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 8750 3200 50  0001 C CNN
+F 3 "~" H 8750 3200 50  0001 C CNN
+	1    8750 3200
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	8750 3450 8750 4100
+Wire Wire Line
+	8900 3200 9150 3200
+Wire Wire Line
+	9150 3200 9150 3150
+$Comp
+L power:GND #PWR0165
+U 1 1 5B8640D2
+P 8950 2800
+F 0 "#PWR0165" H 8950 2550 50  0001 C CNN
+F 1 "GND" H 8955 2627 50  0000 C CNN
+F 2 "" H 8950 2800 50  0001 C CNN
+F 3 "" H 8950 2800 50  0001 C CNN
+	1    8950 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Barrel_Jack_Switch J17
+U 1 1 5B86417F
+P 8250 2550
+F 0 "J17" H 8305 2867 50  0000 C CNN
+F 1 "Barrel_Jack_Switch" H 8305 2776 50  0000 C CNN
+F 2 "Connector_BarrelJack:BarrelJack_CUI_PJ-102AH_Horizontal" H 8300 2510 50  0001 C CNN
+F 3 "~" H 8300 2510 50  0001 C CNN
+	1    8250 2550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8750 2450 8550 2450
+Wire Wire Line
+	8750 2450 8750 2950
+Wire Wire Line
+	8550 2550 8650 2550
+Wire Wire Line
+	8950 2550 8950 2800
+Wire Wire Line
+	8550 2650 8650 2650
+Wire Wire Line
+	8650 2650 8650 2550
 Wire Bus Line
 	6900 3450 6900 3850
 Wire Bus Line
@@ -1202,4 +1251,7 @@ Wire Bus Line
 	6800 4150 6800 4850
 Wire Bus Line
 	6900 3000 6900 3450
+Connection ~ 8650 2550
+Wire Wire Line
+	8650 2550 8950 2550
 $EndSCHEMATC
