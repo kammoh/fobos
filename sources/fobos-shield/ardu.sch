@@ -118,29 +118,25 @@ Wire Wire Line
 Wire Wire Line
 	4650 2700 4950 2700
 Text GLabel 1650 1250 0    50   Input ~ 0
-TVolt
+CSM5V
 Text GLabel 1650 1350 0    50   Input ~ 0
-TCur
-Text GLabel 2550 1450 0    50   Input ~ 0
-A2
-Text GLabel 2550 1550 0    50   Input ~ 0
-A3
+CSM5VCur
+Text GLabel 1650 1450 0    50   Input ~ 0
+CSM3V3
+Text GLabel 1650 1550 0    50   Input ~ 0
+CSM3V3Cur
 Text GLabel 2550 1650 0    50   Input ~ 0
 A4
 Text GLabel 2550 1750 0    50   Input ~ 0
 A5
 Wire Wire Line
-	2550 1450 2900 1450
-Wire Wire Line
-	2550 1550 2900 1550
-Wire Wire Line
 	2900 1650 2550 1650
 Wire Wire Line
 	2900 1750 2550 1750
 Text GLabel 1150 5750 0    50   Input ~ 0
-Gain0
+CSM5VGain0
 Text GLabel 1150 5850 0    50   Input ~ 0
-Gain1
+CSM5VGain1
 Wire Wire Line
 	1150 5750 1500 5750
 Wire Wire Line
@@ -170,9 +166,9 @@ PWR_EN
 Text GLabel 3750 1350 2    50   Input ~ 0
 A7
 Text GLabel 3750 1450 2    50   Input ~ 0
-A8
+CSM3V3Gain0
 Text GLabel 3750 1550 2    50   Input ~ 0
-A9
+CSM3V3Gain1
 Text GLabel 3700 1650 2    50   Input ~ 0
 A10
 Text GLabel 3700 1750 2    50   Input ~ 0
@@ -1239,6 +1235,39 @@ Wire Wire Line
 	8550 2650 8650 2650
 Wire Wire Line
 	8650 2650 8650 2550
+Connection ~ 8650 2550
+Wire Wire Line
+	8650 2550 8950 2550
+$Comp
+L Device:R R21
+U 1 1 5B7936F6
+P 2100 1450
+F 0 "R21" V 2100 1450 50  0000 C CNN
+F 1 "1k68 1%" V 2200 1450 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1450 50  0001 C CNN
+F 3 "~" H 2100 1450 50  0001 C CNN
+	1    2100 1450
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R31
+U 1 1 5B793722
+P 2100 1550
+F 0 "R31" V 2100 1550 50  0000 C CNN
+F 1 "1k68 1%" V 2200 1550 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1550 50  0001 C CNN
+F 3 "~" H 2100 1550 50  0001 C CNN
+	1    2100 1550
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1950 1450 1650 1450
+Wire Wire Line
+	1950 1550 1650 1550
+Wire Wire Line
+	2250 1450 2900 1450
+Wire Wire Line
+	2250 1550 2900 1550
 Wire Bus Line
 	6900 3450 6900 3850
 Wire Bus Line
@@ -1251,7 +1280,4 @@ Wire Bus Line
 	6800 4150 6800 4850
 Wire Bus Line
 	6900 3000 6900 3450
-Connection ~ 8650 2550
-Wire Wire Line
-	8650 2550 8950 2550
 $EndSCHEMATC

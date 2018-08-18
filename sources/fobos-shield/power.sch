@@ -242,15 +242,15 @@ Wire Wire Line
 Text GLabel 7150 2450 0    50   Input ~ 0
 CW_5V
 Text GLabel 7550 2700 2    50   Input ~ 0
-TVolt
+CSM5V
 Text GLabel 9600 2250 2    50   Input ~ 0
-TCur
+CSM5VCur
 Wire Wire Line
 	9300 2250 9400 2250
 Text GLabel 9550 2650 2    50   Input ~ 0
-Gain0
+CSM5VGain0
 Text GLabel 9550 2550 2    50   Input ~ 0
-Gain1
+CSM5VGain1
 Wire Wire Line
 	3200 2900 3200 2950
 Wire Wire Line
@@ -1617,7 +1617,7 @@ L Connector_Generic:Conn_01x01 J15
 U 1 1 5B830A55
 P 9600 1850
 F 0 "J15" H 9679 1892 50  0000 L CNN
-F 1 "TCur" H 9679 1801 50  0000 L CNN
+F 1 "CSM5VCur" H 9679 1801 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 9600 1850 50  0001 C CNN
 F 3 "~" H 9600 1850 50  0001 C CNN
 	1    9600 1850
@@ -1650,9 +1650,169 @@ Wire Wire Line
 	7550 2150 7950 2150
 Wire Wire Line
 	7550 2350 7550 2450
-Wire Bus Line
-	2300 3650 4300 3650
 Connection ~ 7550 2450
 Wire Wire Line
 	7550 2450 7950 2450
+Text GLabel 7100 4950 0    50   Input ~ 0
+CW_3V3
+Text GLabel 7500 5200 2    50   Input ~ 0
+CSM3V3
+Text GLabel 9550 4750 2    50   Input ~ 0
+CSM3V3Cur
+Wire Wire Line
+	9250 4750 9350 4750
+Text GLabel 9500 5150 2    50   Input ~ 0
+CSM3V3Gain0
+Text GLabel 9500 5050 2    50   Input ~ 0
+CSM3V3Gain1
+Text GLabel 8850 5650 0    50   Input ~ 0
+XADCGND
+Wire Wire Line
+	8850 5650 8850 5450
+$Comp
+L cerg:INA225 U11
+U 1 1 5B776773
+P 8850 4950
+F 0 "U11" H 8850 5528 50  0000 C CNN
+F 1 "INA225" H 8850 5437 50  0000 C CNN
+F 2 "Package_SO:MSOP-8_3x3mm_P0.65mm" H 8900 4950 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/ina226.pdf" H 9200 4750 50  0001 C CNN
+	1    8850 4950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9250 5050 9500 5050
+Wire Wire Line
+	9250 5150 9500 5150
+Wire Wire Line
+	8850 4550 8850 4400
+Wire Wire Line
+	8450 5150 8350 5150
+Wire Wire Line
+	8350 5150 8350 5450
+Wire Wire Line
+	8350 5450 8850 5450
+Connection ~ 8850 5450
+Wire Wire Line
+	8850 5450 8850 5350
+$Comp
+L Device:C C55
+U 1 1 5B776788
+P 8100 5300
+F 0 "C55" H 8215 5346 50  0000 L CNN
+F 1 "100n" H 8215 5255 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 8138 5150 50  0001 C CNN
+F 3 "~" H 8100 5300 50  0001 C CNN
+	1    8100 5300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8350 5450 8100 5450
+Connection ~ 8350 5450
+Wire Wire Line
+	8100 5150 8100 4400
+Wire Wire Line
+	8100 4400 8850 4400
+Connection ~ 8850 4400
+Wire Wire Line
+	8850 4400 8850 4200
+$Comp
+L Device:R R32
+U 1 1 5B776795
+P 7900 4800
+F 0 "R32" H 7970 4846 50  0000 L CNN
+F 1 "0R1" H 7970 4755 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 7830 4800 50  0001 C CNN
+F 3 "~" H 7900 4800 50  0001 C CNN
+	1    7900 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7900 4650 8250 4650
+Wire Wire Line
+	8250 4650 8250 4750
+Wire Wire Line
+	8250 4750 8450 4750
+Wire Wire Line
+	7900 4950 8250 4950
+Wire Wire Line
+	8250 4950 8250 4850
+Wire Wire Line
+	8250 4850 8450 4850
+Connection ~ 7900 4650
+Wire Wire Line
+	7100 4950 7300 4950
+Connection ~ 7900 4950
+Wire Wire Line
+	7500 5200 7300 5200
+Wire Wire Line
+	7300 5200 7300 4950
+Connection ~ 7300 4950
+$Comp
+L Connector_Generic:Conn_01x01 J20
+U 1 1 5B7767A8
+P 9550 4350
+F 0 "J20" H 9629 4392 50  0000 L CNN
+F 1 "CSM3V3Cur" H 9629 4301 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 9550 4350 50  0001 C CNN
+F 3 "~" H 9550 4350 50  0001 C CNN
+	1    9550 4350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9350 4350 9350 4750
+Connection ~ 9350 4750
+Wire Wire Line
+	9350 4750 9550 4750
+Wire Wire Line
+	7500 4400 7500 4650
+Wire Wire Line
+	7300 4950 7500 4950
+$Comp
+L Connector_Generic:Conn_01x02 J19
+U 1 1 5B7767B4
+P 7700 4750
+F 0 "J19" H 7780 4742 50  0000 L CNN
+F 1 "Conn_01x02" H 7780 4651 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 7700 4750 50  0001 C CNN
+F 3 "~" H 7700 4750 50  0001 C CNN
+	1    7700 4750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7500 4750 7500 4650
+Connection ~ 7500 4650
+Wire Wire Line
+	7500 4650 7900 4650
+Wire Wire Line
+	7500 4850 7500 4950
+Connection ~ 7500 4950
+Wire Wire Line
+	7500 4950 7900 4950
+$Comp
+L power:+5V #PWR0163
+U 1 1 5B77677C
+P 8850 4200
+F 0 "#PWR0163" H 8850 4050 50  0001 C CNN
+F 1 "+5V" H 8865 4373 50  0000 C CNN
+F 2 "" H 8850 4200 50  0001 C CNN
+F 3 "" H 8850 4200 50  0001 C CNN
+	1    8850 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR0164
+U 1 1 5B7807C6
+P 7500 4400
+F 0 "#PWR0164" H 7500 4250 50  0001 C CNN
+F 1 "+3.3V" H 7515 4573 50  0000 C CNN
+F 2 "" H 7500 4400 50  0001 C CNN
+F 3 "" H 7500 4400 50  0001 C CNN
+	1    7500 4400
+	1    0    0    -1  
+$EndComp
+Wire Bus Line
+	2300 3650 4300 3650
+Text Notes 2500 4300 0    50   ~ 0
+Add 5V, 4A regulator for external power
 $EndSCHEMATC
