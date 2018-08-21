@@ -1811,8 +1811,229 @@ F 3 "" H 7500 4400 50  0001 C CNN
 	1    7500 4400
 	1    0    0    -1  
 $EndComp
-Wire Bus Line
-	2300 3650 4300 3650
 Text Notes 2500 4300 0    50   ~ 0
 Add 5V, 4A regulator for external power
+Text Notes 4600 1600 0    50   ~ 0
+Power Good LED in green would be nice
+Text Notes 2500 4400 0    50   ~ 0
+Check Atrix7 Target board
+$Comp
+L Regulator_Linear:LD1117S33TR_SOT223 U12
+U 1 1 5B7CEF72
+P 5500 4150
+F 0 "U12" H 5500 4392 50  0000 C CNN
+F 1 "LD1117S33TR_SOT223" H 5500 4301 50  0000 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-223-3_TabPin2" H 5500 4350 50  0001 C CNN
+F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00000544.pdf" H 5600 3900 50  0001 C CNN
+	1    5500 4150
+	1    0    0    -1  
+$EndComp
+Text Notes 5100 3800 0    50   ~ 0
+Our own 3.3 V from 5V
+$Comp
+L Device:C C58
+U 1 1 5B7CF0F3
+P 5950 4350
+F 0 "C58" H 6065 4396 50  0000 L CNN
+F 1 "100n" H 6065 4305 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5988 4200 50  0001 C CNN
+F 3 "~" H 5950 4350 50  0001 C CNN
+	1    5950 4350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C59
+U 1 1 5B7CF187
+P 6300 4350
+F 0 "C59" H 6415 4396 50  0000 L CNN
+F 1 "10uF" H 6415 4305 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6338 4200 50  0001 C CNN
+F 3 "~" H 6300 4350 50  0001 C CNN
+	1    6300 4350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 5B7CF603
+P 6750 4400
+AR Path="/5B7CF603" Ref="D?"  Part="1" 
+AR Path="/5B6DA40D/5B7CF603" Ref="D10"  Part="1" 
+F 0 "D10" V 6788 4282 50  0000 R CNN
+F 1 "green" V 6697 4282 50  0000 R CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 6750 4400 50  0001 C CNN
+F 3 "~" H 6750 4400 50  0001 C CNN
+	1    6750 4400
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R33
+U 1 1 5B7CF68D
+P 6750 4050
+F 0 "R33" H 6820 4096 50  0000 L CNN
+F 1 "1k" H 6820 4005 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 6680 4050 50  0001 C CNN
+F 3 "~" H 6750 4050 50  0001 C CNN
+	1    6750 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Jumper_NC_Dual JP4
+U 1 1 5B7CF80D
+P 6450 3850
+F 0 "JP4" V 6496 3952 50  0000 L CNN
+F 1 "3V ext or pynq" V 6405 3952 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 6450 3850 50  0001 C CNN
+F 3 "~" H 6450 3850 50  0001 C CNN
+	1    6450 3850
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:GND #PWR0156
+U 1 1 5B7CF9F4
+P 6750 4650
+F 0 "#PWR0156" H 6750 4400 50  0001 C CNN
+F 1 "GND" H 6755 4477 50  0000 C CNN
+F 2 "" H 6750 4650 50  0001 C CNN
+F 3 "" H 6750 4650 50  0001 C CNN
+	1    6750 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0166
+U 1 1 5B7CFA67
+P 5500 4650
+F 0 "#PWR0166" H 5500 4400 50  0001 C CNN
+F 1 "GND" H 5505 4477 50  0000 C CNN
+F 2 "" H 5500 4650 50  0001 C CNN
+F 3 "" H 5500 4650 50  0001 C CNN
+	1    5500 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C56
+U 1 1 5B7CFADA
+P 4600 4350
+F 0 "C56" H 4715 4396 50  0000 L CNN
+F 1 "10uF" H 4715 4305 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 4638 4200 50  0001 C CNN
+F 3 "~" H 4600 4350 50  0001 C CNN
+	1    4600 4350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C57
+U 1 1 5B7CFB86
+P 5000 4350
+F 0 "C57" H 5115 4396 50  0000 L CNN
+F 1 "100n" H 5115 4305 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5038 4200 50  0001 C CNN
+F 3 "~" H 5000 4350 50  0001 C CNN
+	1    5000 4350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4450 4150 4600 4150
+Wire Wire Line
+	5000 4200 5000 4150
+Connection ~ 5000 4150
+Wire Wire Line
+	5000 4150 5200 4150
+Wire Wire Line
+	4600 4200 4600 4150
+Connection ~ 4600 4150
+Wire Wire Line
+	4600 4150 5000 4150
+Wire Wire Line
+	4600 4500 4600 4600
+Wire Wire Line
+	4600 4600 5000 4600
+Wire Wire Line
+	6300 4600 6300 4500
+Wire Wire Line
+	5950 4500 5950 4600
+Connection ~ 5950 4600
+Wire Wire Line
+	5950 4600 6300 4600
+Wire Wire Line
+	5500 4450 5500 4600
+Connection ~ 5500 4600
+Wire Wire Line
+	5500 4600 5950 4600
+Wire Wire Line
+	5500 4600 5500 4650
+Wire Wire Line
+	5000 4500 5000 4600
+Connection ~ 5000 4600
+Wire Wire Line
+	5000 4600 5500 4600
+Wire Wire Line
+	5800 4150 5950 4150
+Wire Wire Line
+	5950 4150 5950 4200
+Wire Wire Line
+	5950 4150 6300 4150
+Wire Wire Line
+	6300 4150 6300 4200
+Connection ~ 5950 4150
+Wire Wire Line
+	6300 4150 6450 4150
+Wire Wire Line
+	6450 4150 6450 4100
+Connection ~ 6300 4150
+Wire Wire Line
+	6550 3850 6750 3850
+Wire Wire Line
+	6750 3850 6750 3900
+Wire Wire Line
+	6750 4200 6750 4250
+Wire Wire Line
+	6750 4650 6750 4550
+Wire Wire Line
+	6750 3850 6900 3850
+Wire Wire Line
+	6900 3850 6900 3750
+Connection ~ 6750 3850
+$Comp
+L power:+3.3V #PWR0167
+U 1 1 5B88C887
+P 6900 3750
+F 0 "#PWR0167" H 6900 3600 50  0001 C CNN
+F 1 "+3.3V" H 6915 3923 50  0000 C CNN
+F 2 "" H 6900 3750 50  0001 C CNN
+F 3 "" H 6900 3750 50  0001 C CNN
+	1    6900 3750
+	1    0    0    -1  
+$EndComp
+Text GLabel 6400 3500 0    50   Input ~ 0
+VCC3V3
+Wire Wire Line
+	6400 3500 6450 3500
+Wire Wire Line
+	6450 3500 6450 3600
+Wire Bus Line
+	2300 3650 4300 3650
+$Comp
+L Switch:SW_DPDT_x2 SW1
+U 2 1 5B89F5E5
+P 7250 1550
+F 0 "SW1" H 7250 1835 50  0000 C CNN
+F 1 "SW_DPDT_x2" H 7250 1744 50  0000 C CNN
+F 2 "" H 7250 1550 50  0001 C CNN
+F 3 "" H 7250 1550 50  0001 C CNN
+	2    7250 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_DPDT_x2 SW1
+U 1 1 5B89F6D5
+P 7250 1050
+F 0 "SW1" H 7250 1335 50  0000 C CNN
+F 1 "SW_DPDT_x2" H 7250 1244 50  0000 C CNN
+F 2 "cerg:JS202011SCQN" H 7250 1050 50  0001 C CNN
+F 3 "" H 7250 1050 50  0001 C CNN
+	1    7250 1050
+	1    0    0    -1  
+$EndComp
+Text Notes 7550 1100 0    50   ~ 0
+only 0.3A per switch
 $EndSCHEMATC

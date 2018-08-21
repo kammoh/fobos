@@ -45,7 +45,7 @@ Wire Wire Line
 Wire Wire Line
 	6300 2200 6000 2200
 Wire Wire Line
-	6300 2650 6300 2900
+	6300 2650 6300 2750
 $Comp
 L power:GND #PWR0154
 U 1 1 5B6C3A2E
@@ -1070,4 +1070,34 @@ Text GLabel 1600 1200 0    50   Input ~ 0
 CW_3V3
 Text GLabel 3300 1900 2    50   Input ~ 0
 CW_3V3
+$Comp
+L Connector_Generic:Conn_01x01 J22
+U 1 1 5B899B87
+P 6600 2750
+F 0 "J22" H 6680 2792 50  0000 L CNN
+F 1 "GND" H 6680 2701 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 6600 2750 50  0001 C CNN
+F 3 "~" H 6600 2750 50  0001 C CNN
+	1    6600 2750
+	1    0    0    -1  
+$EndComp
+Connection ~ 6300 2750
+Wire Wire Line
+	6300 2750 6300 2900
+Wire Wire Line
+	6300 2750 6400 2750
+$Comp
+L Connector_Generic:Conn_01x01 J21
+U 1 1 5B89C960
+P 4050 950
+F 0 "J21" H 4130 992 50  0000 L CNN
+F 1 "GND" H 4130 901 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4050 950 50  0001 C CNN
+F 3 "~" H 4050 950 50  0001 C CNN
+	1    4050 950 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3850 950  3850 1100
+Connection ~ 3850 1100
 $EndSCHEMATC

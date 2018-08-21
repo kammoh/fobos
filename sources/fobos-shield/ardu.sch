@@ -199,8 +199,6 @@ Wire Wire Line
 	8850 3800 8850 4000
 Connection ~ 8850 4000
 Wire Wire Line
-	8850 4000 8500 4000
-Wire Wire Line
 	9300 3900 8250 3900
 Wire Wire Line
 	9300 4100 8750 4100
@@ -1136,24 +1134,8 @@ Wire Wire Line
 Connection ~ 8850 4400
 Wire Wire Line
 	8850 4400 9300 4400
-$Comp
-L power:+3.3V #PWR0156
-U 1 1 5B7E0EC6
-P 8500 3650
-F 0 "#PWR0156" H 8500 3500 50  0001 C CNN
-F 1 "+3.3V" H 8515 3823 50  0000 C CNN
-F 2 "" H 8500 3650 50  0001 C CNN
-F 3 "" H 8500 3650 50  0001 C CNN
-	1    8500 3650
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	8250 4100 8750 4100
-Wire Wire Line
-	8500 3650 8500 4000
-Connection ~ 8500 4000
-Wire Wire Line
-	8500 4000 8250 4000
 $Comp
 L Device:R R30
 U 1 1 5B7DE70C
@@ -1268,6 +1250,8 @@ Wire Wire Line
 	2250 1450 2900 1450
 Wire Wire Line
 	2250 1550 2900 1550
+Wire Wire Line
+	8250 4000 8850 4000
 Wire Bus Line
 	6900 3450 6900 3850
 Wire Bus Line
