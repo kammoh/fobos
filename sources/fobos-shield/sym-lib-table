@@ -1,3 +1,3 @@
 (sym_lib_table
-  (lib (name cerg)(type Legacy)(uri /home/jkaps/projects/FOBOS/fobos/sources/test/test/cerg.lib)(options "")(descr ""))
+  (lib (name cerg)(type Legacy)(uri ${KIPRJMOD}/cerg.lib)(options "")(descr ""))
 )
