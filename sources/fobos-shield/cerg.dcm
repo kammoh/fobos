@@ -18,7 +18,13 @@ K Power MOSFET
 F https://www.infineon.com/dgdl/irf7807z.pdf?fileId=5546d462533600a4015356085b231ce6
 $ENDCMP
 #
-$CMP TPS7A7100_VQFN16
+$CMP TPS7A7100_VQFN16_0
+D 1-A, Fast-Transient, Low-Dropout Voltage Regulator
+K LDO, Voltage Regulator
+F http://www.ti.com/lit/ds/symlink/tps7a7100.pdf
+$ENDCMP
+#
+$CMP TPS7A7100_VQFN20
 D 1-A, Fast-Transient, Low-Dropout Voltage Regulator
 K LDO, Voltage Regulator
 F http://www.ti.com/lit/ds/symlink/tps7a7100.pdf
