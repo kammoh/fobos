@@ -117,13 +117,13 @@ Wire Wire Line
 	7200 1250 6900 1250
 Wire Wire Line
 	6900 1150 7200 1150
-Text GLabel 1650 1150 0    50   Input ~ 0
-CSM5V
-Text GLabel 1650 1250 0    50   Input ~ 0
-CSM5VCur
-Text GLabel 1650 1350 0    50   Input ~ 0
-CSM3V3
 Text GLabel 1650 1450 0    50   Input ~ 0
+CSM5V
+Text GLabel 1650 1350 0    50   Input ~ 0
+CSM5VCur
+Text GLabel 1650 1150 0    50   Input ~ 0
+CSM3V3
+Text GLabel 1650 1250 0    50   Input ~ 0
 CSM3V3Cur
 Text GLabel 2550 1550 0    50   Input ~ 0
 A4
@@ -133,9 +133,9 @@ Wire Wire Line
 	2900 1550 2550 1550
 Wire Wire Line
 	2900 1650 2550 1650
-Text GLabel 3750 1150 2    50   Input ~ 0
+Text GLabel 3750 1450 2    50   Input ~ 0
 CSM5VGain0
-Text GLabel 3750 1250 2    50   Input ~ 0
+Text GLabel 3750 1350 2    50   Input ~ 0
 CSM5VGain1
 Wire Wire Line
 	2600 5450 2950 5450
@@ -163,9 +163,9 @@ Text GLabel 8200 2800 2    50   Input ~ 0
 ADC_CLK
 Text GLabel 2600 5450 0    50   Input ~ 0
 PWR_EN
-Text GLabel 3750 1350 2    50   Input ~ 0
+Text GLabel 3750 1250 2    50   Input ~ 0
 CSM3V3Gain0
-Text GLabel 3750 1450 2    50   Input ~ 0
+Text GLabel 3750 1150 2    50   Input ~ 0
 CSM3V3Gain1
 Text GLabel 3700 1550 2    50   Input ~ 0
 A10
@@ -1121,23 +1121,23 @@ Wire Wire Line
 $Comp
 L Device:R R30
 U 1 1 5B7DE70C
-P 2100 1250
-F 0 "R30" V 2100 1250 50  0000 C CNN
-F 1 "1k68 1%" V 2050 1550 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1250 50  0001 C CNN
-F 3 "~" H 2100 1250 50  0001 C CNN
-	1    2100 1250
+P 2100 1350
+F 0 "R30" V 2100 1350 50  0000 C CNN
+F 1 "1k68 1%" V 2050 1650 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1350 50  0001 C CNN
+F 3 "~" H 2100 1350 50  0001 C CNN
+	1    2100 1350
 	0    1    1    0   
 $EndComp
 $Comp
 L Device:R R29
 U 1 1 5B7DE862
-P 2100 1150
-F 0 "R29" V 2100 1150 50  0000 C CNN
-F 1 "1k68 1%" V 2050 1450 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1150 50  0001 C CNN
-F 3 "~" H 2100 1150 50  0001 C CNN
-	1    2100 1150
+P 2100 1450
+F 0 "R29" V 2100 1450 50  0000 C CNN
+F 1 "1k68 1%" V 2050 1750 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1450 50  0001 C CNN
+F 3 "~" H 2100 1450 50  0001 C CNN
+	1    2100 1450
 	0    1    1    0   
 $EndComp
 Wire Wire Line
@@ -1151,23 +1151,23 @@ Wire Wire Line
 $Comp
 L Device:R R21
 U 1 1 5B7936F6
-P 2100 1350
-F 0 "R21" V 2100 1350 50  0000 C CNN
-F 1 "1k68 1%" V 2050 1650 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1350 50  0001 C CNN
-F 3 "~" H 2100 1350 50  0001 C CNN
-	1    2100 1350
+P 2100 1150
+F 0 "R21" V 2100 1150 50  0000 C CNN
+F 1 "1k68 1%" V 2050 1450 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1150 50  0001 C CNN
+F 3 "~" H 2100 1150 50  0001 C CNN
+	1    2100 1150
 	0    1    1    0   
 $EndComp
 $Comp
 L Device:R R31
 U 1 1 5B793722
-P 2100 1450
-F 0 "R31" V 2100 1450 50  0000 C CNN
-F 1 "1k68 1%" V 2050 1750 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1450 50  0001 C CNN
-F 3 "~" H 2100 1450 50  0001 C CNN
-	1    2100 1450
+P 2100 1250
+F 0 "R31" V 2100 1250 50  0000 C CNN
+F 1 "1k68 1%" V 2050 1550 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1250 50  0001 C CNN
+F 3 "~" H 2100 1250 50  0001 C CNN
+	1    2100 1250
 	0    1    1    0   
 $EndComp
 Wire Wire Line
