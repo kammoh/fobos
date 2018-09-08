@@ -1185,15 +1185,15 @@ Wire Wire Line
 Text GLabel 2600 5550 0    50   Input ~ 0
 SCL
 Wire Bus Line
-	9150 1450 9150 1900
-Wire Bus Line
-	9050 2600 9050 3300
-Wire Bus Line
-	6150 2500 6150 3300
-Wire Bus Line
-	6050 1900 6050 2400
-Wire Bus Line
 	6050 1750 6050 1900
 Wire Bus Line
 	9150 1900 9150 2300
+Wire Bus Line
+	6050 1900 6050 2400
+Wire Bus Line
+	6150 2500 6150 3300
+Wire Bus Line
+	9050 2600 9050 3300
+Wire Bus Line
+	9150 1450 9150 1900
 $EndSCHEMATC
