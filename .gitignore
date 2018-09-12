@@ -18,5 +18,9 @@
 __MACOSX
 FOBOSWorkspace
 workspace
+data
+sources
+!sources/vhdl/*
+!sources/blockCipherTVGen.py
 temp
 _impact.cmd
