@@ -41,7 +41,7 @@
 ./fobos/bin/usb/usbcomm_core.py
 ./fobos/bin/usb/usbcomm_global.py
 
-./fobos/config/aquisitionConfig.txt
+./fobos/config/acquisitionConfig.txt
 ./fobos/config/analysis.ini
 ./fobos/config/compressionParams.txt
 ./fobos/config/config.txt
@@ -67,7 +67,7 @@
 ./fobos/sources/vhdl/control/fobos_tb.vhd
 ./fobos/sources/vhdl/control/fobosControlTop.vhd
 ./fobos/sources/vhdl/control/frequency_counter.vhd
-./fobos/sources/vhdl/control/Nexys3.vhd
+./fobos/sources/vhdl/control/Nexys3.ucf
 ./fobos/sources/vhdl/control/ram_tb.vhd
 ./fobos/sources/vhdl/control/ram.vhd
 ./fobos/sources/vhdl/control/trigger_module.vhd
@@ -78,7 +78,7 @@
 ./fobos/sources/vhdl/dut/fifo.vhd
 ./fobos/sources/vhdl/dut/fobos_controller.vhd
 ./fobos/sources/vhdl/dut/fobos_dut_pkg.vhd
-./fobos/sources/vhdl/dut/fobos_dut_tb.vhdl
+./fobos/sources/vhdl/dut/fobos_dut_tb.vhd
 ./fobos/sources/vhdl/dut/FOBOS_DUT.vhd
 ./fobos/sources/vhdl/dut/Nexys2.ucf
 ./fobos/sources/vhdl/dut/Nexys3.ucf
