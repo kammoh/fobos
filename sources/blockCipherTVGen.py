@@ -10,14 +10,15 @@ import binascii
 from Crypto import Random
 
 ############user defined settings
-TRACE_NUM = 1000            #Number of traces
+TRACE_NUM = 50000            #Number of traces
 PDI_LENGTH = 16            #In byets
 SDI_LENGTH = 16           #In bytes
 EXPECTED_OUT = 16          #expected output in bytes
 DIN_FILE = 'dinFile.txt'  #desitination file name
 PLAINTEXT_FILE = 'plaintext.txt'  #desitination file name
 FIXED_KEY = 'yes'          #Fixed key = yes | no
-KEY =  '00112233445566778899AABBCCDDEEFF' # Fixed key (if needed)
+#KEY =  '00112233445566778899AABBCCDDEEFF' # Fixed key (if needed)
+KEY = '123456789009876ABCDFE12456789ABF'
 
 ####header data - See Fobos protocol
 PDI_HEADER = '00C0'

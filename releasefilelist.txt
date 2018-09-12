@@ -1,27 +1,35 @@
 # use with tar czvf fobos-0.1.tgz -T releasefilelist.txt
 ./fobos/LICENSE.txt
+./fobos/releasefilelist.txt
+
+./fobos/bin/calcPower.py
 ./fobos/bin/dataAcquisition.py
 ./fobos/bin/dataAnalysis.py
+./fobos/bin/runProfiler.py
+./fobos/bin/tTest.py
 
 ./fobos/bin/analysis/__init__.py
+./fobos/bin/analysis/plot_power.py
 ./fobos/bin/analysis/plottingModule.py
 ./fobos/bin/analysis/postProcessingModule.py
+./fobos/bin/analysis/power_traces.py
+./fobos/bin/analysis/profiler.py
+./fobos/bin/analysis/read_traces.py
+./fobos/bin/analysis/readtrace.py
 ./fobos/bin/analysis/sca.py
 ./fobos/bin/analysis/signalAnalysisModule.py
+./fobos/bin/analysis/splitter.py
 ./fobos/bin/analysis/statisticsModule.py
+./fobos/bin/analysis/welch.py
 
 ./fobos/bin/globals/__init__.py
 ./fobos/bin/globals/cfg.py
 ./fobos/bin/globals/configExtract.py
 ./fobos/bin/globals/dataGenerator.py
 ./fobos/bin/globals/globals.py
-./fobos/bin/globals/printFunctions.py
 ./fobos/bin/globals/oscilloscopeFunctions.py
+./fobos/bin/globals/printFunctions.py
 ./fobos/bin/globals/support.py
-
-./fobos/bin/usb/__init__.py
-./fobos/bin/usb/usbcomm_core.py
-./fobos/bin/usb/usbcomm_global.py
 
 ./fobos/bin/oscilloscope/__init__.py
 ./fobos/bin/oscilloscope/oscilloscope_core.py
@@ -29,38 +37,52 @@
 ./fobos/bin/oscilloscope/oscilloscope_agilent.py
 ./fobos/bin/oscilloscope/viewPlots.py
 
+./fobos/bin/usb/__init__.py
+./fobos/bin/usb/usbcomm_core.py
+./fobos/bin/usb/usbcomm_global.py
+
 ./fobos/config/aquisitionConfig.txt
-./fobos/config/config.txt
+./fobos/config/analysis.ini
 ./fobos/config/compressionParams.txt
+./fobos/config/config.txt
 ./fobos/config/dataAnalysisParams.txt
 ./fobos/config/postProcessesParams.txt
 ./fobos/config/sampleSpaceDispParams.txt
 ./fobos/config/signalAlignmentParams.txt
 ./fobos/config/traceExpungeParams.txt
 
-./fobos/sources/vhdl/common/integerCounter.vhd
+./fobos/sources/blockCipherTVGen.py
+
 ./fobos/sources/vhdl/common/fobos_package.vhd
 
-./fobos/sources/vhdl/control/Nexys2.ucf
-./fobos/sources/vhdl/control/Nexys3.ucf
-./fobos/sources/vhdl/control/cerg_banner.vhd
 ./fobos/sources/vhdl/control/counter.vhd
-./fobos/sources/vhdl/control/EppCtrl.vhd
-./fobos/sources/vhdl/control/fobosControlTop.vhd
-./fobos/sources/vhdl/control/frequency_counter.vhd
-./fobos/sources/vhdl/control/shiftregDataFromPC.vhd
-./fobos/sources/vhdl/control/shiftregDataFromDut.vhd
-./fobos/sources/vhdl/control/shiftregDataToPC.vhd
-./fobos/sources/vhdl/control/shiftregDataToDut.vhd
-./fobos/sources/vhdl/control/trigger_module.vhd
+./fobos/sources/vhdl/control/display_rom.vhd
+./fobos/sources/vhdl/control/display.vhd
+./fobos/sources/vhdl/control/dout_ram.vhd
 ./fobos/sources/vhdl/control/dutComm.vhd
 ./fobos/sources/vhdl/control/dutDCM.vhd
+./fobos/sources/vhdl/control/dutInterface_4bit_tb.vhd
+./fobos/sources/vhdl/control/dutInterface_4bit.vhd
+./fobos/sources/vhdl/control/EppCtrl.vhd
+./fobos/sources/vhdl/control/fobos_tb.vhd
+./fobos/sources/vhdl/control/fobosControlTop.vhd
+./fobos/sources/vhdl/control/frequency_counter.vhd
+./fobos/sources/vhdl/control/Nexys3.vhd
+./fobos/sources/vhdl/control/ram_tb.vhd
+./fobos/sources/vhdl/control/ram.vhd
+./fobos/sources/vhdl/control/trigger_module.vhd
+./fobos/sources/vhdl/control/trigger_tb.vhd
 
+./fobos/sources/vhdl/dut/dut_reg1.vhd
+./fobos/sources/vhdl/dut/dut_regn.vhd
+./fobos/sources/vhdl/dut/fifo.vhd
+./fobos/sources/vhdl/dut/fobos_controller.vhd
+./fobos/sources/vhdl/dut/fobos_dut_pkg.vhd
+./fobos/sources/vhdl/dut/fobos_dut_tb.vhdl
+./fobos/sources/vhdl/dut/FOBOS_DUT.vhd
 ./fobos/sources/vhdl/dut/Nexys2.ucf
 ./fobos/sources/vhdl/dut/Nexys3.ucf
+./fobos/sources/vhdl/dut/Nexys4.ucf
 ./fobos/sources/vhdl/dut/Spartan3E.ucf
-./fobos/sources/vhdl/dut/shiftregDataFromControl.vhd
-./fobos/sources/vhdl/dut/shiftregDataToControl.vhd
-./fobos/sources/vhdl/dut/dut.vhd
-./fobos/sources/vhdl/dut/dut_ctrl.vhd
+./fobos/sources/vhdl/dut/test_controller.vhd
 

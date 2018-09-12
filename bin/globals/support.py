@@ -90,7 +90,7 @@ def readFile(file_name) :
 			printFunctions.printToScreen("File:  " + file_name + " not found. Expected to be found in the folder\n->"+ cfg.CONFIGDIR)
 			exitProgram()
 		else:
-			printFunctions.printToScreen("Hmmm!! You have managed to trigger -> " + str(ErrorNumber) +" Error Number")
+			printFunctions.printToScreen("Error -> " + str(ErrorNumber) +".")
 			printFunctions.printToScreen(ErrorMessage)
 	indata = file_pt.readlines()
 	#temp =  "Number of Lines read : %d" % len(indata)

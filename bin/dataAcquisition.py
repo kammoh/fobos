@@ -35,9 +35,7 @@ def init():
 	cfg.OSC_CONFIGFILE = os.path.join(cfg.CONFIGDIR, globals.OSC_CONFIGFILENAME)
 
 
-#############################################
-###### Version 0.9 Beta of FOBOS Capture ####
-#############################################
+
 def main():	
 	support.clear_screen()                                     
 	init()

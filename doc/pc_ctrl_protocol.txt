@@ -1,0 +1,19 @@
+
+
+ 
+1- To send data
+
+ D000 Length DATA 
+ e.g
+ D000 0002 1234
+ 
+ 
+2- To send config
+ CXXX Legth CONFIG
+ e.g.
+ 
+ C000 0002  0001 //set trigger wait to 1 cycle
+ C001 0002  0002 //set trigger length to 2 cycles
+ 
+ 
+ 

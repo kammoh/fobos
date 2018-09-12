@@ -37,11 +37,11 @@ def acquireDataValues_old(rawDataFile):
 		fid = open(rawDataFile, "r")
 	except IOError, (ErrorNumber, ErrorMessage):
 		if(ErrorNumber == 2):
-			printFunctions.printToScreen("\n\nWhoa! File -> " + rawDataFile + "\n joined FOBOS Analysis invisible. As FOBOS Analysis does not have X-Ray Vision, Please make it visible (present) in the folder\n->"+ cfg.MEASUREMENTDIR)
+			printFunctions.printToScreen("\n\nError: File -> " + rawDataFile + "\n not found. Expected location:\n->"+ cfg.MEASUREMENTDIR)
 			os.remove(cfg.MEASUREMENT_PROJECT_PATH_FILE)
 			support.exitProgram()
 		else:
-			printFunctions.printToScreen("Hmmm!! You have managed to trigger -> " + str(ErrorNumber) +" Error Number")
+			printFunctions.printToScreen("Error " + str(ErrorNumber) + ".")
 			printFunctions.printToScreen(ErrorMessage)
 			os.remove(cfg.MEASUREMENT_PROJECT_PATH_FILE)
 			support.exitProgram()
@@ -60,11 +60,11 @@ def acquireDataValues(preambleFile, rawDataFile):
 		fid = open(preambleFile , "r")
 	except IOError, (ErrorNumber, ErrorMessage):
 		if(ErrorNumber == 2):
-			printFunctions.printToScreen("\n\nWhoa! File -> " + preambleFile + "\n joined FOBOS Analysis invisible. As FOBOS Analysis does not have X-Ray Vision, Please make it visible (present) in the folder\n->"+ cfg.MEASUREMENTDIR)
+			printFunctions.printToScreen("\n\nError: File -> " + preambleFile + "\n not found. Expected location:\n->"+ cfg.MEASUREMENTDIR)
 			os.remove(cfg.MEASUREMENT_PROJECT_PATH_FILE)
 			support.exitProgram()
 		else:
-			printFunctions.printToScreen("Hmmm!! You have managed to trigger -> " + str(ErrorNumber) +" Error Number")
+			printFunctions.printToScreen("Error  " + str(ErrorNumber) +".")
 			printFunctions.printToScreen(ErrorMessage)
 			os.remove(cfg.MEASUREMENT_PROJECT_PATH_FILE)
 			support.exitProgram()
@@ -75,10 +75,10 @@ def acquireDataValues(preambleFile, rawDataFile):
 		fid = open(rawDataFile, "r")
 	except IOError, (ErrorNumber, ErrorMessage):
 		if(ErrorNumber == 2):
-			printFunctions.printToScreen("\n\nWhoa! File -> " + rawDataFile + "\n joined FOBOS Analysis invisible. As FOBOS Analysis does not have X-Ray Vision, Please make it visible (present) in the folder\n->"+ cfg.MEASUREMENTDIR)
+			printFunctions.printToScreen("\n\nError: File -> " + rawDataFile + "\n not found. Expected location:\n->"+ cfg.MEASUREMENTDIR)
 			support.exitProgram()
 		else:
-			printFunctions.printToScreen("Hmmm!! You have managed to trigger -> " + str(ErrorNumber) +" Error Number")
+			printFunctions.printToScreen("Error -> " + str(ErrorNumber) +".")
 			printFunctions.printToScreen(ErrorMessage)
 			support.exitProgram()
 	

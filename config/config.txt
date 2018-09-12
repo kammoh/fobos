@@ -23,7 +23,7 @@
 
 WORK_DIR      = workspace
 SOURCE_DIR    = sources
-PROJECT_NAME =  aes_cloc_protected_1_1
+PROJECT_NAME =  aes_protected_sbox
 TAG = counter 
 
 

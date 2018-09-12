@@ -70,7 +70,7 @@ def main():
 	#autoCorrelatedData = sca.calculate_autocorrelation(alignedData)
 	#plottingModule.plotCorr(autoCorrelatedData, globals.AUTOCORR)
 	for byteNum in range(0, 16):
-		fileName = 'HPower_byte' + str(byteNum) + '.txt'
+		fileName = 'HW_byte_' + str(byteNum) + '.txt'
 		hypotheticalPowerData = signalAnalysisModule.acquirePowerModel(fileName, globals.ADAPTIVE_CPA)
 		correlationData = sca.correlation_pearson(compressedData, hypotheticalPowerData) 
 		plottingModule.plotCorr(correlationData, globals.PEARSON)
