@@ -1327,8 +1327,8 @@ $Comp
 L cerg:AD9215 U9
 U 1 1 5B6E6370
 P 7600 3000
-F 0 "U9" H 7600 3978 50  0000 C CNN
-F 1 "AD9215" H 7600 3887 50  0000 C CNN
+F 0 "U9" H 7600 3250 50  0000 C CNN
+F 1 "AD9215" H 7600 3150 50  0000 C CNN
 F 2 "Package_SO:TSSOP-28_4.4x9.7mm_P0.65mm" H 7600 2700 50  0001 C CNN
 F 3 "http://www.analog.com/media/en/technical-documentation/data-sheets/AD9215.pdf" H 7600 2700 50  0001 C CNN
 	1    7600 3000

@@ -2269,10 +2269,10 @@ Power Inputs
 Connection ~ 4550 1950
 Wire Wire Line
 	4100 1950 4550 1950
-Wire Bus Line
-	2700 2850 3500 2850
 Text Notes 5450 3300 0    79   ~ 0
 3.3 V, 800mA Supply for Target
 Text Notes 1500 1100 0    79   ~ 0
 0.9 - 3.5 V, 1A Supply for Target
+Wire Bus Line
+	2700 2850 3500 2850
 $EndSCHEMATC
