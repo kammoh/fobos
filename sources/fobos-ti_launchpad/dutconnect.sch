@@ -98,8 +98,8 @@ U 1 1 5B6D7D95
 P 2400 1700
 AR Path="/5B6C87CC/5B6D7D95" Ref="J1"  Part="1" 
 AR Path="/5B5AB131/5B6D7D95" Ref="J?"  Part="1" 
-AR Path="/5BE3725D/5B6D7D95" Ref="J1"  Part="1" 
-F 0 "J1" H 2450 2317 50  0000 C CNN
+AR Path="/5BE3725D/5B6D7D95" Ref="J5"  Part="1" 
+F 0 "J5" H 2450 2317 50  0000 C CNN
 F 1 "Target" H 2450 2226 50  0000 C CNN
 F 2 "Connector_IDC:IDC-Header_2x10_P2.54mm_Horizontal" H 2400 1700 50  0001 C CNN
 F 3 "~" H 2400 1700 50  0001 C CNN
@@ -1135,7 +1135,7 @@ F 3 "http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF" H 5150 3800 50  0001 C 
 	1    0    0    -1  
 $EndComp
 Text GLabel 5100 2950 0    50   Input ~ 0
-CV_VREF
+CW_3V3
 $Comp
 L power:GND #PWR0103
 U 1 1 5BE503FB
@@ -1149,22 +1149,22 @@ F 3 "" H 5150 4400 50  0001 C CNN
 $EndComp
 Text GLabel 4500 3700 0    50   Input ~ 0
 RST
-Text GLabel 4500 3900 0    50   Input ~ 0
+Text GLabel 3950 3900 0    50   Input ~ 0
 SCL
-Text GLabel 5850 3700 2    50   Input ~ 0
+Text GLabel 6050 3700 2    50   Input ~ 0
 SDA
 Text GLabel 5850 3900 2    50   Input ~ 0
 TF
 Wire Wire Line
-	5150 3300 5150 2950
+	5150 3300 5150 3050
 Wire Wire Line
 	5150 2950 5100 2950
 Wire Wire Line
 	4500 3700 4650 3700
 Wire Wire Line
-	4500 3900 4650 3900
+	3950 3900 4150 3900
 Wire Wire Line
-	5650 3700 5850 3700
+	5650 3700 5800 3700
 Wire Wire Line
 	5650 3900 5850 3900
 Wire Wire Line
@@ -1334,4 +1334,91 @@ Wire Wire Line
 	7000 4150 6900 4150
 Text GLabel 6900 4150 0    50   Input ~ 0
 TFD
+$Comp
+L Device:R R?
+U 1 1 5BE62EF9
+P 5800 3500
+F 0 "R?" H 5870 3546 50  0000 L CNN
+F 1 "10k" H 5870 3455 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 5730 3500 50  0001 C CNN
+F 3 "~" H 5800 3500 50  0001 C CNN
+	1    5800 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 5BE62F9F
+P 4150 3500
+F 0 "R?" H 4220 3546 50  0000 L CNN
+F 1 "10k" H 4220 3455 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 4080 3500 50  0001 C CNN
+F 3 "~" H 4150 3500 50  0001 C CNN
+	1    4150 3500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5800 3700 5800 3650
+Connection ~ 5800 3700
+Wire Wire Line
+	5800 3700 6050 3700
+Wire Wire Line
+	4150 3650 4150 3900
+Connection ~ 4150 3900
+Wire Wire Line
+	4150 3900 4650 3900
+Wire Wire Line
+	4150 3350 4150 3050
+Wire Wire Line
+	4150 3050 5150 3050
+Connection ~ 5150 3050
+Wire Wire Line
+	5150 3050 5150 2950
+Wire Wire Line
+	5150 3050 5800 3050
+Wire Wire Line
+	5800 3050 5800 3350
+$Comp
+L Connector_Generic:Conn_01x10 J?
+U 1 1 5BE6E9F1
+P 3950 5550
+F 0 "J?" H 4030 5542 50  0000 L CNN
+F 1 "Conn_01x10" H 4030 5451 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 3950 5550 50  0001 C CNN
+F 3 "~" H 3950 5550 50  0001 C CNN
+	1    3950 5550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x10 J?
+U 1 1 5BE6EB50
+P 4150 5550
+F 0 "J?" H 4367 5496 50  0000 C CNN
+F 1 "Conn_01x10" V 4276 5496 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 4150 5550 50  0001 C CNN
+F 3 "~" H 4150 5550 50  0001 C CNN
+	1    4150 5550
+	-1   0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x10 J?
+U 1 1 5BE6EC06
+P 5000 5550
+F 0 "J?" H 4920 6167 50  0000 C CNN
+F 1 "Conn_01x10" H 4920 6076 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 5000 5550 50  0001 C CNN
+F 3 "~" H 5000 5550 50  0001 C CNN
+	1    5000 5550
+	-1   0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x10 J?
+U 1 1 5BE6EC70
+P 4800 5550
+F 0 "J?" H 4880 5542 50  0000 L CNN
+F 1 "Conn_01x10" H 4880 5451 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 4800 5550 50  0001 C CNN
+F 3 "~" H 4800 5550 50  0001 C CNN
+	1    4800 5550
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
