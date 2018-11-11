@@ -16,60 +16,13 @@ Comment4 ""
 $EndDescr
 $Comp
 L Connector:Conn_Coaxial_Power J?
-U 1 1 5B6D6458
-P 2350 6050
-AR Path="/5B60048C/5B6D6458" Ref="J?"  Part="1" 
-AR Path="/5B6C87CC/5B6D6458" Ref="J13"  Part="1" 
-AR Path="/5BE3725D/5B6D6458" Ref="J13"  Part="1" 
-F 0 "J13" H 2438 6046 50  0000 L CNN
-F 1 "Clock" H 2438 5955 50  0000 L CNN
-F 2 "cerg:SMA-JOHNSON-142-0701-801" H 2350 6000 50  0001 C CNN
-F 3 "~" H 2350 6000 50  0001 C CNN
-	1    2350 6050
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:Conn_Coaxial_Power J?
-U 1 1 5B6C39A8
-P 2150 3600
-AR Path="/5B60048C/5B6C39A8" Ref="J?"  Part="1" 
-AR Path="/5B6C87CC/5B6C39A8" Ref="J14"  Part="1" 
-AR Path="/5BE3725D/5B6C39A8" Ref="J14"  Part="1" 
-F 0 "J14" H 2238 3596 50  0000 L CNN
-F 1 "Trigger" H 2238 3505 50  0000 L CNN
-F 2 "cerg:SMA-JOHNSON-142-0701-801" H 2150 3550 50  0001 C CNN
-F 3 "~" H 2150 3550 50  0001 C CNN
-	1    2150 3600
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2150 3500 2150 3350
-Wire Wire Line
-	2150 3350 1850 3350
-Wire Wire Line
-	2150 3800 2150 3900
-$Comp
-L power:GND #PWR0154
-U 1 1 5B6C3A2E
-P 2150 4050
-F 0 "#PWR0154" H 2150 3800 50  0001 C CNN
-F 1 "GND" H 2155 3877 50  0000 C CNN
-F 2 "" H 2150 4050 50  0001 C CNN
-F 3 "" H 2150 4050 50  0001 C CNN
-	1    2150 4050
-	1    0    0    -1  
-$EndComp
-Text GLabel 1850 3350 0    50   Input ~ 0
-TF
-$Comp
-L Connector:Conn_Coaxial_Power J?
 U 1 1 5B6C7A55
 P 8850 2300
 AR Path="/5B60048C/5B6C7A55" Ref="J?"  Part="1" 
 AR Path="/5B6C87CC/5B6C7A55" Ref="J2"  Part="1" 
 AR Path="/5B6DA40D/5B6C7A55" Ref="J?"  Part="1" 
-AR Path="/5BE3725D/5B6C7A55" Ref="J2"  Part="1" 
-F 0 "J2" H 8938 2296 50  0000 L CNN
+AR Path="/5BE3725D/5B6C7A55" Ref="J9"  Part="1" 
+F 0 "J9" H 8938 2296 50  0000 L CNN
 F 1 "Glitch" H 8938 2205 50  0000 L CNN
 F 2 "cerg:SMA-JOHNSON-142-0701-801" H 8850 2250 50  0001 C CNN
 F 3 "~" H 8850 2250 50  0001 C CNN
@@ -815,83 +768,21 @@ EndData
 $EndBitmap
 Text Notes 6350 7150 0    157  ~ 0
 FOBOS - TI Launchpad - Connector
-$Comp
-L power:GND #PWR0162
-U 1 1 5B83906E
-P 2350 6350
-F 0 "#PWR0162" H 2350 6100 50  0001 C CNN
-F 1 "GND" H 2355 6177 50  0000 C CNN
-F 2 "" H 2350 6350 50  0001 C CNN
-F 3 "" H 2350 6350 50  0001 C CNN
-	1    2350 6350
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2350 6350 2350 6250
-$Comp
-L Jumper:Jumper_3_Open JP2
-U 1 1 5B84169E
-P 2350 5650
-F 0 "JP2" H 2350 5874 50  0000 C CNN
-F 1 "ExtClkSel" H 2350 5783 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 2350 5650 50  0001 C CNN
-F 3 "~" H 2350 5650 50  0001 C CNN
-	1    2350 5650
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2350 5950 2350 5800
-Text GLabel 1950 5650 0    50   Input ~ 0
+Text GLabel 2150 3900 0    50   Input ~ 0
 CW_HS1
-Text GLabel 2750 5650 2    50   Input ~ 0
-CW_HS2
-Wire Wire Line
-	1950 5650 2100 5650
-Wire Wire Line
-	2600 5650 2750 5650
 Wire Wire Line
 	1600 1400 2200 1400
 Wire Wire Line
 	2700 2100 3300 2100
-$Comp
-L Connector_Generic:Conn_01x01 J16
-U 1 1 5B84A46F
-P 2350 3250
-F 0 "J16" H 2430 3292 50  0000 L CNN
-F 1 "Conn_01x01" H 2430 3201 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 2350 3250 50  0001 C CNN
-F 3 "~" H 2350 3250 50  0001 C CNN
-	1    2350 3250
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2150 3250 2150 3350
-Connection ~ 2150 3350
 Text GLabel 1600 1400 0    50   Input ~ 0
 CW_3V3
 Text GLabel 3300 2100 2    50   Input ~ 0
 CW_3V3
 $Comp
-L Connector_Generic:Conn_01x01 J22
-U 1 1 5B899B87
-P 2450 3900
-F 0 "J22" H 2530 3942 50  0000 L CNN
-F 1 "GND" H 2530 3851 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 2450 3900 50  0001 C CNN
-F 3 "~" H 2450 3900 50  0001 C CNN
-	1    2450 3900
-	1    0    0    -1  
-$EndComp
-Connection ~ 2150 3900
-Wire Wire Line
-	2150 3900 2150 4050
-Wire Wire Line
-	2150 3900 2250 3900
-$Comp
-L Connector_Generic:Conn_01x01 J21
+L Connector_Generic:Conn_01x01 J7
 U 1 1 5B89C960
 P 4050 1150
-F 0 "J21" H 4130 1192 50  0000 L CNN
+F 0 "J7" H 4130 1192 50  0000 L CNN
 F 1 "GND" H 4130 1101 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4050 1150 50  0001 C CNN
 F 3 "~" H 4050 1150 50  0001 C CNN
@@ -920,7 +811,7 @@ U 1 1 5BE36D52
 P 5450 1900
 F 0 "F1" V 5225 1900 50  0000 C CNN
 F 1 "MF-MSMF050-2" V 5316 1900 50  0000 C CNN
-F 2 "" H 5500 1700 50  0001 L CNN
+F 2 "Fuse:Fuse_1812_4532Metric" H 5500 1700 50  0001 L CNN
 F 3 "~" H 5450 1900 50  0001 C CNN
 	1    5450 1900
 	0    1    1    0   
@@ -1048,10 +939,10 @@ Wire Wire Line
 	7400 1900 7600 1900
 Connection ~ 7400 1900
 $Comp
-L Connector_Generic:Conn_01x02 J3
+L Connector_Generic:Conn_01x02 J6
 U 1 1 5BE3D888
 P 7800 1350
-F 0 "J3" V 7766 1162 50  0000 R CNN
+F 0 "J6" V 7766 1162 50  0000 R CNN
 F 1 "Conn_01x02" V 7675 1162 50  0000 R CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 7800 1350 50  0001 C CNN
 F 3 "~" H 7800 1350 50  0001 C CNN
@@ -1081,8 +972,8 @@ P 8350 2300
 AR Path="/5B60048C/5BE403E4" Ref="J?"  Part="1" 
 AR Path="/5B6C87CC/5BE403E4" Ref="J?"  Part="1" 
 AR Path="/5B6DA40D/5BE403E4" Ref="J?"  Part="1" 
-AR Path="/5BE3725D/5BE403E4" Ref="J4"  Part="1" 
-F 0 "J4" H 8438 2296 50  0000 L CNN
+AR Path="/5BE3725D/5BE403E4" Ref="J10"  Part="1" 
+F 0 "J10" H 8438 2296 50  0000 L CNN
 F 1 "Measure" H 8438 2205 50  0000 L CNN
 F 2 "cerg:SMA-JOHNSON-142-0701-801" H 8350 2250 50  0001 C CNN
 F 3 "~" H 8350 2250 50  0001 C CNN
@@ -1165,8 +1056,6 @@ Wire Wire Line
 	3950 3900 4150 3900
 Wire Wire Line
 	5650 3700 5800 3700
-Wire Wire Line
-	5650 3900 5850 3900
 Wire Wire Line
 	5150 4400 5150 4300
 $Comp
@@ -1335,10 +1224,10 @@ Wire Wire Line
 Text GLabel 6900 4150 0    50   Input ~ 0
 TFD
 $Comp
-L Device:R R?
+L Device:R R7
 U 1 1 5BE62EF9
 P 5800 3500
-F 0 "R?" H 5870 3546 50  0000 L CNN
+F 0 "R7" H 5870 3546 50  0000 L CNN
 F 1 "10k" H 5870 3455 50  0000 L CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 5730 3500 50  0001 C CNN
 F 3 "~" H 5800 3500 50  0001 C CNN
@@ -1346,10 +1235,10 @@ F 3 "~" H 5800 3500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R?
+L Device:R R6
 U 1 1 5BE62F9F
 P 4150 3500
-F 0 "R?" H 4220 3546 50  0000 L CNN
+F 0 "R6" H 4220 3546 50  0000 L CNN
 F 1 "10k" H 4220 3455 50  0000 L CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 4080 3500 50  0001 C CNN
 F 3 "~" H 4150 3500 50  0001 C CNN
@@ -1378,47 +1267,108 @@ Wire Wire Line
 Wire Wire Line
 	5800 3050 5800 3350
 $Comp
-L Connector_Generic:Conn_01x10 J?
+L Connector_Generic:Conn_01x10 J1
 U 1 1 5BE6E9F1
 P 3950 5550
-F 0 "J?" H 4030 5542 50  0000 L CNN
-F 1 "Conn_01x10" H 4030 5451 50  0000 L CNN
+F 0 "J1" H 3900 6100 50  0000 L CNN
+F 1 "Conn_01x10" H 3550 4900 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 3950 5550 50  0001 C CNN
 F 3 "~" H 3950 5550 50  0001 C CNN
 	1    3950 5550
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x10 J?
+L Connector_Generic:Conn_01x10 J2
+U 1 1 5BE6EC06
+P 5600 5650
+F 0 "J2" H 5600 5000 50  0000 C CNN
+F 1 "Conn_01x10" H 5450 6200 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 5600 5650 50  0001 C CNN
+F 3 "~" H 5600 5650 50  0001 C CNN
+	1    5600 5650
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x10 J4
+U 1 1 5BE6EC70
+P 5400 5650
+F 0 "J4" H 5350 5000 50  0000 L CNN
+F 1 "Conn_01x10" H 5000 6200 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 5400 5650 50  0001 C CNN
+F 3 "~" H 5400 5650 50  0001 C CNN
+	1    5400 5650
+	1    0    0    1   
+$EndComp
+Text GLabel 3650 5950 0    50   Input ~ 0
+SCL
+Text GLabel 3650 6050 0    50   Input ~ 0
+SDA
+Text GLabel 5950 5550 2    50   Input ~ 0
+RST
+Text GLabel 5950 5250 2    50   Input ~ 0
+TFD
+Text GLabel 3650 5150 0    50   Input ~ 0
+XBD_3V3
+$Comp
+L power:GND #PWR0107
+U 1 1 5BE705C9
+P 4500 5250
+F 0 "#PWR0107" H 4500 5000 50  0001 C CNN
+F 1 "GND" H 4505 5077 50  0000 C CNN
+F 2 "" H 4500 5250 50  0001 C CNN
+F 3 "" H 4500 5250 50  0001 C CNN
+	1    4500 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0108
+U 1 1 5BE70612
+P 6300 5150
+F 0 "#PWR0108" H 6300 4900 50  0001 C CNN
+F 1 "GND" H 6305 4977 50  0000 C CNN
+F 2 "" H 6300 5150 50  0001 C CNN
+F 3 "" H 6300 5150 50  0001 C CNN
+	1    6300 5150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3650 5150 3750 5150
+Wire Wire Line
+	4500 5250 4350 5250
+Wire Wire Line
+	3750 5950 3650 5950
+Wire Wire Line
+	3750 6050 3650 6050
+Wire Wire Line
+	5800 5250 5950 5250
+Wire Wire Line
+	5800 5550 5950 5550
+Wire Wire Line
+	5800 5150 6300 5150
+$Comp
+L Connector_Generic:Conn_01x10 J3
 U 1 1 5BE6EB50
 P 4150 5550
-F 0 "J?" H 4367 5496 50  0000 C CNN
-F 1 "Conn_01x10" V 4276 5496 50  0000 C CNN
+F 0 "J3" H 4150 6100 50  0000 C CNN
+F 1 "Conn_01x10" H 4000 4900 50  0000 C CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 4150 5550 50  0001 C CNN
 F 3 "~" H 4150 5550 50  0001 C CNN
 	1    4150 5550
 	-1   0    0    -1  
 $EndComp
+Wire Wire Line
+	5650 3900 5850 3900
+Wire Wire Line
+	2150 3900 2250 3900
 $Comp
-L Connector_Generic:Conn_01x10 J?
-U 1 1 5BE6EC06
-P 5000 5550
-F 0 "J?" H 4920 6167 50  0000 C CNN
-F 1 "Conn_01x10" H 4920 6076 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 5000 5550 50  0001 C CNN
-F 3 "~" H 5000 5550 50  0001 C CNN
-	1    5000 5550
-	-1   0    0    -1  
-$EndComp
-$Comp
-L Connector_Generic:Conn_01x10 J?
-U 1 1 5BE6EC70
-P 4800 5550
-F 0 "J?" H 4880 5542 50  0000 L CNN
-F 1 "Conn_01x10" H 4880 5451 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 4800 5550 50  0001 C CNN
-F 3 "~" H 4800 5550 50  0001 C CNN
-	1    4800 5550
+L Connector_Generic:Conn_01x01 J8
+U 1 1 5B899B87
+P 2450 3900
+F 0 "J8" H 2530 3942 50  0000 L CNN
+F 1 "CLK" H 2530 3851 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 2450 3900 50  0001 C CNN
+F 3 "~" H 2450 3900 50  0001 C CNN
+	1    2450 3900
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
