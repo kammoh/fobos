@@ -21,8 +21,8 @@ P 8850 2300
 AR Path="/5B60048C/5B6C7A55" Ref="J?"  Part="1" 
 AR Path="/5B6C87CC/5B6C7A55" Ref="J2"  Part="1" 
 AR Path="/5B6DA40D/5B6C7A55" Ref="J?"  Part="1" 
-AR Path="/5BE3725D/5B6C7A55" Ref="J9"  Part="1" 
-F 0 "J9" H 8938 2296 50  0000 L CNN
+AR Path="/5BE3725D/5B6C7A55" Ref="J8"  Part="1" 
+F 0 "J8" H 8938 2296 50  0000 L CNN
 F 1 "Glitch" H 8938 2205 50  0000 L CNN
 F 2 "cerg:SMA-JOHNSON-142-0701-801" H 8850 2250 50  0001 C CNN
 F 3 "~" H 8850 2250 50  0001 C CNN
@@ -778,20 +778,6 @@ Text GLabel 1600 1400 0    50   Input ~ 0
 CW_3V3
 Text GLabel 3300 2100 2    50   Input ~ 0
 CW_3V3
-$Comp
-L Connector_Generic:Conn_01x01 J7
-U 1 1 5B89C960
-P 4050 1150
-F 0 "J7" H 4130 1192 50  0000 L CNN
-F 1 "GND" H 4130 1101 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4050 1150 50  0001 C CNN
-F 3 "~" H 4050 1150 50  0001 C CNN
-	1    4050 1150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3850 1150 3850 1300
-Connection ~ 3850 1300
 Text GLabel 4950 1900 0    50   Input ~ 0
 CW_3V3
 Text GLabel 4950 1750 0    50   Input ~ 0
@@ -943,7 +929,7 @@ L Connector_Generic:Conn_01x02 J6
 U 1 1 5BE3D888
 P 7800 1350
 F 0 "J6" V 7766 1162 50  0000 R CNN
-F 1 "Conn_01x02" V 7675 1162 50  0000 R CNN
+F 1 "Shunt" V 7675 1162 50  0000 R CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 7800 1350 50  0001 C CNN
 F 3 "~" H 7800 1350 50  0001 C CNN
 	1    7800 1350
@@ -972,8 +958,8 @@ P 8350 2300
 AR Path="/5B60048C/5BE403E4" Ref="J?"  Part="1" 
 AR Path="/5B6C87CC/5BE403E4" Ref="J?"  Part="1" 
 AR Path="/5B6DA40D/5BE403E4" Ref="J?"  Part="1" 
-AR Path="/5BE3725D/5BE403E4" Ref="J10"  Part="1" 
-F 0 "J10" H 8438 2296 50  0000 L CNN
+AR Path="/5BE3725D/5BE403E4" Ref="J9"  Part="1" 
+F 0 "J9" H 8438 2296 50  0000 L CNN
 F 1 "Measure" H 8438 2205 50  0000 L CNN
 F 2 "cerg:SMA-JOHNSON-142-0701-801" H 8350 2250 50  0001 C CNN
 F 3 "~" H 8350 2250 50  0001 C CNN
@@ -1040,11 +1026,11 @@ F 3 "" H 5150 4400 50  0001 C CNN
 $EndComp
 Text GLabel 4500 3700 0    50   Input ~ 0
 RST
-Text GLabel 3950 3900 0    50   Input ~ 0
+Text GLabel 6300 3900 2    50   Input ~ 0
 SCL
-Text GLabel 6050 3700 2    50   Input ~ 0
+Text GLabel 6300 3700 2    50   Input ~ 0
 SDA
-Text GLabel 5850 3900 2    50   Input ~ 0
+Text GLabel 4500 3900 0    50   Input ~ 0
 TF
 Wire Wire Line
 	5150 3300 5150 3050
@@ -1052,8 +1038,6 @@ Wire Wire Line
 	5150 2950 5100 2950
 Wire Wire Line
 	4500 3700 4650 3700
-Wire Wire Line
-	3950 3900 4150 3900
 Wire Wire Line
 	5650 3700 5800 3700
 Wire Wire Line
@@ -1226,46 +1210,37 @@ TFD
 $Comp
 L Device:R R7
 U 1 1 5BE62EF9
-P 5800 3500
-F 0 "R7" H 5870 3546 50  0000 L CNN
-F 1 "10k" H 5870 3455 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 5730 3500 50  0001 C CNN
-F 3 "~" H 5800 3500 50  0001 C CNN
-	1    5800 3500
+P 5800 3400
+F 0 "R7" H 5870 3446 50  0000 L CNN
+F 1 "10k" H 5870 3355 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 5730 3400 50  0001 C CNN
+F 3 "~" H 5800 3400 50  0001 C CNN
+	1    5800 3400
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:R R6
 U 1 1 5BE62F9F
-P 4150 3500
-F 0 "R6" H 4220 3546 50  0000 L CNN
-F 1 "10k" H 4220 3455 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 4080 3500 50  0001 C CNN
-F 3 "~" H 4150 3500 50  0001 C CNN
-	1    4150 3500
+P 6100 3400
+F 0 "R6" H 6170 3446 50  0000 L CNN
+F 1 "10k" H 6170 3355 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 6030 3400 50  0001 C CNN
+F 3 "~" H 6100 3400 50  0001 C CNN
+	1    6100 3400
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5800 3700 5800 3650
+	5800 3700 5800 3550
 Connection ~ 5800 3700
 Wire Wire Line
-	5800 3700 6050 3700
-Wire Wire Line
-	4150 3650 4150 3900
-Connection ~ 4150 3900
-Wire Wire Line
-	4150 3900 4650 3900
-Wire Wire Line
-	4150 3350 4150 3050
-Wire Wire Line
-	4150 3050 5150 3050
+	5800 3700 6300 3700
 Connection ~ 5150 3050
 Wire Wire Line
 	5150 3050 5150 2950
 Wire Wire Line
 	5150 3050 5800 3050
 Wire Wire Line
-	5800 3050 5800 3350
+	5800 3050 5800 3250
 $Comp
 L Connector_Generic:Conn_01x10 J1
 U 1 1 5BE6E9F1
@@ -1357,18 +1332,48 @@ F 3 "~" H 4150 5550 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	5650 3900 5850 3900
+	5650 3900 6100 3900
 Wire Wire Line
 	2150 3900 2250 3900
+Text Notes 1500 3550 0    79   ~ 0
+Clock from Microcontoller
 $Comp
-L Connector_Generic:Conn_01x01 J8
-U 1 1 5B899B87
-P 2450 3900
-F 0 "J8" H 2530 3942 50  0000 L CNN
-F 1 "CLK" H 2530 3851 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 2450 3900 50  0001 C CNN
-F 3 "~" H 2450 3900 50  0001 C CNN
-	1    2450 3900
+L Connector_Generic:Conn_01x02 J7
+U 1 1 5BED0A38
+P 2350 3700
+F 0 "J7" V 2316 3512 50  0000 R CNN
+F 1 "clk" V 2225 3512 50  0000 R CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 2350 3700 50  0001 C CNN
+F 3 "~" H 2350 3700 50  0001 C CNN
+	1    2350 3700
+	0    1    -1   0   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5BED3917
+P 2350 4000
+AR Path="/5B6C87CC/5BED3917" Ref="#PWR?"  Part="1" 
+AR Path="/5B5AB131/5BED3917" Ref="#PWR?"  Part="1" 
+AR Path="/5BE3725D/5BED3917" Ref="#PWR0109"  Part="1" 
+F 0 "#PWR0109" H 2350 3750 50  0001 C CNN
+F 1 "GND" H 2355 3827 50  0000 C CNN
+F 2 "" H 2350 4000 50  0001 C CNN
+F 3 "" H 2350 4000 50  0001 C CNN
+	1    2350 4000
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	2350 3900 2350 4000
+Wire Wire Line
+	4500 3900 4650 3900
+Wire Wire Line
+	5800 3050 6100 3050
+Wire Wire Line
+	6100 3050 6100 3250
+Connection ~ 5800 3050
+Wire Wire Line
+	6100 3550 6100 3900
+Connection ~ 6100 3900
+Wire Wire Line
+	6100 3900 6300 3900
 $EndSCHEMATC
