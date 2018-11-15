@@ -12,6 +12,10 @@ K A/D Converter
 F http://www.analog.com/media/en/technical-documentation/data-sheets/AD9215.pdf
 $ENDCMP
 #
+$CMP CERG-logo
+D CERG Logo
+$ENDCMP
+#
 $CMP IRF7807Z
 D Power MOSFET, 30V, 11A
 K Power MOSFET
@@ -22,6 +26,12 @@ $CMP REE-0505S
 D 200mA Isolated 1W Dual output DC/DC Converter Module, 5V Input Voltage, 5V Output Voltage, SIP7
 K Recom isolated isolation dc-dc converter
 F https://www.mouser.com/datasheet/2/468/REE-958304.pdf
+$ENDCMP
+#
+$CMP SP3003-04ATG
+D ESD Protection Diodes with Low Clamping Voltage, SOT-23-6
+K ESD protection diodes
+F http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF
 $ENDCMP
 #
 $CMP TPS7A7100_VQFN16_0
