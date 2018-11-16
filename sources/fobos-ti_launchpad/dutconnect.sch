@@ -66,26 +66,26 @@ RST
 Text GLabel 1600 1600 0    50   Input ~ 0
 CW_MISO
 Text GLabel 1600 1700 0    50   Input ~ 0
-CW_MOSI
+IO
 Text GLabel 1600 1800 0    50   Input ~ 0
-CW_SCK
+Ready
 Text GLabel 1600 1900 0    50   Input ~ 0
-CW_PDIC
+Valid
 Text GLabel 1600 2000 0    50   Input ~ 0
 CW_PDID
 Text GLabel 3300 1400 2    50   Input ~ 0
-CW_HS1
+CLK_D2C
 Text GLabel 3300 1500 2    50   Input ~ 0
-CW_HS2
+CLK_C2D
 Text GLabel 3300 1600 2    50   Input ~ 0
 CW_VREF
-Text GLabel 3300 1700 2    50   Input ~ 0
+Text GLabel 4050 1700 2    50   Input ~ 0
 SCL
-Text GLabel 3300 1800 2    50   Input ~ 0
+Text GLabel 4050 1800 2    50   Input ~ 0
 SDA
 Text GLabel 3300 1900 2    50   Input ~ 0
-CW_TARG3
-Text GLabel 3300 2000 2    50   Input ~ 0
+DIO2
+Text GLabel 4050 2000 2    50   Input ~ 0
 TF
 Text GLabel 3300 2200 2    50   Input ~ 0
 CW_5V
@@ -147,13 +147,13 @@ Wire Wire Line
 Wire Wire Line
 	2700 1600 3300 1600
 Wire Wire Line
-	2700 1700 3300 1700
+	2700 1700 3750 1700
 Wire Wire Line
-	2700 1800 3300 1800
+	2700 1800 3750 1800
 Wire Wire Line
 	2700 1900 3300 1900
 Wire Wire Line
-	2700 2000 3300 2000
+	2700 2000 3750 2000
 Wire Wire Line
 	2700 2200 3300 2200
 Text Label 2050 1500 2    50   ~ 0
@@ -769,7 +769,7 @@ $EndBitmap
 Text Notes 6350 7250 0    157  ~ 0
 FOBOS - Multitarget \nConnector
 Text GLabel 5150 7100 0    50   Input ~ 0
-CW_HS1
+CLK_D2C
 Wire Wire Line
 	1600 1400 2200 1400
 Wire Wire Line
@@ -1524,20 +1524,20 @@ F 3 "~" H 3000 3300 50  0001 C CNN
 	1    3000 3300
 	0    1    1    0   
 $EndComp
-Text Notes 1650 2900 0    79   ~ 0
+Text Notes 1650 2700 0    79   ~ 0
 PMOD Connectors
 $Comp
 L power:GND #PWR?
 U 1 1 5BF1EC19
-P 1200 3750
+P 1200 3900
 AR Path="/5B6C87CC/5BF1EC19" Ref="#PWR?"  Part="1" 
 AR Path="/5B5AB131/5BF1EC19" Ref="#PWR?"  Part="1" 
 AR Path="/5BE3725D/5BF1EC19" Ref="#PWR0114"  Part="1" 
-F 0 "#PWR0114" H 1200 3500 50  0001 C CNN
-F 1 "GND" H 1205 3577 50  0000 C CNN
-F 2 "" H 1200 3750 50  0001 C CNN
-F 3 "" H 1200 3750 50  0001 C CNN
-	1    1200 3750
+F 0 "#PWR0114" H 1200 3650 50  0001 C CNN
+F 1 "GND" H 1205 3727 50  0000 C CNN
+F 2 "" H 1200 3900 50  0001 C CNN
+F 3 "" H 1200 3900 50  0001 C CNN
+	1    1200 3900
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1571,25 +1571,25 @@ $EndComp
 $Comp
 L power:GND #PWR?
 U 1 1 5BF1ED2A
-P 1200 2900
+P 1200 2800
 AR Path="/5B6C87CC/5BF1ED2A" Ref="#PWR?"  Part="1" 
 AR Path="/5B5AB131/5BF1ED2A" Ref="#PWR?"  Part="1" 
 AR Path="/5BE3725D/5BF1ED2A" Ref="#PWR0117"  Part="1" 
-F 0 "#PWR0117" H 1200 2650 50  0001 C CNN
-F 1 "GND" H 1205 2727 50  0000 C CNN
-F 2 "" H 1200 2900 50  0001 C CNN
-F 3 "" H 1200 2900 50  0001 C CNN
-	1    1200 2900
+F 0 "#PWR0117" H 1200 2550 50  0001 C CNN
+F 1 "GND" H 1205 2627 50  0000 C CNN
+F 2 "" H 1200 2800 50  0001 C CNN
+F 3 "" H 1200 2800 50  0001 C CNN
+	1    1200 2800
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	1200 2900 1200 3100
+	1200 2800 1200 3100
 Wire Wire Line
-	1200 3600 1200 3750
+	1200 3600 1200 3900
 Wire Wire Line
-	2800 2900 2800 3100
+	2800 2900 2800 3050
 Wire Wire Line
-	2800 3600 2800 3750
+	2800 3600 2800 3700
 $Comp
 L power:GND #PWR?
 U 1 1 5BF2F766
@@ -1623,4 +1623,151 @@ Wire Wire Line
 	3900 2950 3700 2950
 Text Notes 3150 2600 0    50   ~ 0
 needs filter, what about  measure + glitch
+Text GLabel 2900 2950 1    50   Input ~ 0
+CLK_C2D
+Text GLabel 4050 1600 2    50   Input ~ 0
+DIO0
+Text GLabel 4050 1900 2    50   Input ~ 0
+DIO1
+Text GLabel 4050 2100 2    50   Input ~ 0
+DIO3
+Wire Wire Line
+	4050 1600 3750 1600
+Wire Wire Line
+	3750 1600 3750 1700
+Connection ~ 3750 1700
+Wire Wire Line
+	3750 1700 4050 1700
+Wire Wire Line
+	4050 1900 3750 1900
+Wire Wire Line
+	3750 1900 3750 1800
+Connection ~ 3750 1800
+Wire Wire Line
+	3750 1800 4050 1800
+Wire Wire Line
+	4050 2100 3750 2100
+Wire Wire Line
+	3750 2100 3750 2000
+Connection ~ 3750 2000
+Wire Wire Line
+	3750 2000 4050 2000
+Text GLabel 1300 3700 3    50   Input ~ 0
+DIO0
+Text GLabel 1300 3000 1    50   Input ~ 0
+DIO1
+Text GLabel 1400 3700 3    50   Input ~ 0
+DIO2
+Text GLabel 1400 3000 1    50   Input ~ 0
+DIO3
+Text GLabel 1600 3000 1    50   Input ~ 0
+RST
+Text GLabel 1500 3000 1    50   Input ~ 0
+Ready
+Text GLabel 1500 3700 3    50   Input ~ 0
+Valid
+Text GLabel 1600 3700 3    50   Input ~ 0
+IO
+Text GLabel 3100 2950 1    50   Input ~ 0
+CLK_D2C
+Wire Wire Line
+	1300 3000 1300 3100
+Wire Wire Line
+	1400 3000 1400 3100
+Wire Wire Line
+	1500 3100 1500 3000
+Wire Wire Line
+	1600 3100 1600 3000
+Wire Wire Line
+	1300 3700 1300 3600
+Wire Wire Line
+	1400 3700 1400 3600
+Wire Wire Line
+	1500 3600 1500 3700
+Wire Wire Line
+	1600 3700 1600 3600
+Wire Wire Line
+	2900 2950 2900 3100
+Wire Wire Line
+	3100 2950 3100 3100
+Wire Wire Line
+	3200 3100 3200 3050
+Wire Wire Line
+	3200 3050 3000 3050
+Connection ~ 2800 3050
+Wire Wire Line
+	2800 3050 2800 3100
+Wire Wire Line
+	3000 3100 3000 3050
+Connection ~ 3000 3050
+Wire Wire Line
+	3000 3050 2800 3050
+Wire Wire Line
+	2800 3700 2900 3700
+Wire Wire Line
+	2900 3700 2900 3600
+Connection ~ 2800 3700
+Wire Wire Line
+	2800 3700 2800 3750
+Wire Wire Line
+	2900 3700 3000 3700
+Wire Wire Line
+	3000 3700 3000 3600
+Connection ~ 2900 3700
+Wire Wire Line
+	3000 3700 3100 3700
+Wire Wire Line
+	3100 3700 3100 3600
+Connection ~ 3000 3700
+Wire Wire Line
+	3100 3700 3200 3700
+Wire Wire Line
+	3200 3700 3200 3600
+Connection ~ 3100 3700
+$Comp
+L cerg:SP3003-04ATG U2
+U 1 1 5BF8323D
+P 6400 5850
+F 0 "U2" H 6400 6528 50  0000 C CNN
+F 1 "SP3003-04ATG" H 6400 6437 50  0000 C CNN
+F 2 "Package_SO:MSOP-10_3x3mm_P0.5mm" H 7100 6300 50  0001 C CNN
+F 3 "http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF" H 6400 5850 50  0001 C CNN
+	1    6400 5850
+	1    0    0    -1  
+$EndComp
+Text GLabel 5750 5750 0    50   Input ~ 0
+Valid
+Text GLabel 5750 5950 0    50   Input ~ 0
+IO
+Text GLabel 7000 5750 2    50   Input ~ 0
+Ready
+Text GLabel 7050 5950 2    50   Input ~ 0
+DIO2
+Text GLabel 6350 5100 0    50   Input ~ 0
+CW_3V3
+$Comp
+L power:GND #PWR0119
+U 1 1 5BF8372F
+P 6400 6450
+F 0 "#PWR0119" H 6400 6200 50  0001 C CNN
+F 1 "GND" H 6405 6277 50  0000 C CNN
+F 2 "" H 6400 6450 50  0001 C CNN
+F 3 "" H 6400 6450 50  0001 C CNN
+	1    6400 6450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6350 5100 6400 5100
+Wire Wire Line
+	6400 5100 6400 5350
+Wire Wire Line
+	5750 5750 5900 5750
+Wire Wire Line
+	5750 5950 5900 5950
+Wire Wire Line
+	6900 5750 7000 5750
+Wire Wire Line
+	6900 5950 7050 5950
+Wire Wire Line
+	6400 6450 6400 6350
 $EndSCHEMATC
