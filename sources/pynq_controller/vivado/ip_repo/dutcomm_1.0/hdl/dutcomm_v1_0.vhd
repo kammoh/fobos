@@ -29,10 +29,13 @@ entity dutcomm_v1_0 is
         dout            : in std_logic_vector(3 downto 0);
         do_valid        : in std_logic;
         do_ready        : out std_logic;
+        --
+        snd_start       : out std_logic; --tell other that sending data to dut started.
+        rst             : in std_logic; --also resets the dut.
+        op_done         : out std_logic; --tell others that operation (i.e. encryption) is done.
+        dut_working     : out std_logic;
 		-- User ports ends
 		-- Do not modify the ports beyond this line
-
-
 		-- Ports of Axi Slave Bus Interface S_AXI
 		s_axi_aclk	: in std_logic;
 		s_axi_aresetn	: in std_logic;
@@ -61,8 +64,8 @@ entity dutcomm_v1_0 is
 		m_axis_aresetn	: in std_logic;
 		m_axis_tvalid	: out std_logic;
 		m_axis_tdata	: out std_logic_vector(C_M_AXIS_TDATA_WIDTH-1 downto 0);
-		m_axis_tstrb	: out std_logic_vector((C_M_AXIS_TDATA_WIDTH/8)-1 downto 0);
-		m_axis_tlast	: out std_logic;
+		--m_axis_tstrb	: out std_logic_vector((C_M_AXIS_TDATA_WIDTH/8)-1 downto 0);
+		--m_axis_tlast	: out std_logic;
 		m_axis_tready	: in std_logic;
 
 		-- Ports of Axi Slave Bus Interface S_AXIS
@@ -70,8 +73,8 @@ entity dutcomm_v1_0 is
 		s_axis_aresetn	: in std_logic;
 		s_axis_tready	: out std_logic;
 		s_axis_tdata	: in std_logic_vector(C_S_AXIS_TDATA_WIDTH-1 downto 0);
-		s_axis_tstrb	: in std_logic_vector((C_S_AXIS_TDATA_WIDTH/8)-1 downto 0);
-		s_axis_tlast	: in std_logic;
+		--s_axis_tstrb	: in std_logic_vector((C_S_AXIS_TDATA_WIDTH/8)-1 downto 0);
+		--s_axis_tlast	: in std_logic;
 		s_axis_tvalid	: in std_logic
 	);
 end dutcomm_v1_0;
@@ -113,36 +116,36 @@ architecture arch_imp of dutcomm_v1_0 is
 		);
 	end component dutcomm_v1_0_S_AXI;
 
-	component dutcomm_v1_0_M_AXIS is
-		generic (
-		C_M_AXIS_TDATA_WIDTH	: integer	:= 32;
-		C_M_START_COUNT	: integer	:= 32
-		);
-		port (
-		M_AXIS_ACLK	: in std_logic;
-		M_AXIS_ARESETN	: in std_logic;
-		M_AXIS_TVALID	: out std_logic;
-		M_AXIS_TDATA	: out std_logic_vector(C_M_AXIS_TDATA_WIDTH-1 downto 0);
-		M_AXIS_TSTRB	: out std_logic_vector((C_M_AXIS_TDATA_WIDTH/8)-1 downto 0);
-		M_AXIS_TLAST	: out std_logic;
-		M_AXIS_TREADY	: in std_logic
-		);
-	end component dutcomm_v1_0_M_AXIS;
+--	component dutcomm_v1_0_M_AXIS is
+--		generic (
+--		C_M_AXIS_TDATA_WIDTH	: integer	:= 32;
+--		C_M_START_COUNT	: integer	:= 32
+--		);
+--		port (
+--		M_AXIS_ACLK	: in std_logic;
+--		M_AXIS_ARESETN	: in std_logic;
+--		M_AXIS_TVALID	: out std_logic;
+--		M_AXIS_TDATA	: out std_logic_vector(C_M_AXIS_TDATA_WIDTH-1 downto 0);
+--		M_AXIS_TSTRB	: out std_logic_vector((C_M_AXIS_TDATA_WIDTH/8)-1 downto 0);
+--		M_AXIS_TLAST	: out std_logic;
+--		M_AXIS_TREADY	: in std_logic
+--		);
+--	end component dutcomm_v1_0_M_AXIS;
 
-	component dutcomm_v1_0_S_AXIS is
-		generic (
-		C_S_AXIS_TDATA_WIDTH	: integer	:= 32
-		);
-		port (
-		S_AXIS_ACLK	: in std_logic;
-		S_AXIS_ARESETN	: in std_logic;
-		S_AXIS_TREADY	: out std_logic;
-		S_AXIS_TDATA	: in std_logic_vector(C_S_AXIS_TDATA_WIDTH-1 downto 0);
-		S_AXIS_TSTRB	: in std_logic_vector((C_S_AXIS_TDATA_WIDTH/8)-1 downto 0);
-		S_AXIS_TLAST	: in std_logic;
-		S_AXIS_TVALID	: in std_logic
-		);
-	end component dutcomm_v1_0_S_AXIS;
+--	component dutcomm_v1_0_S_AXIS is
+--		generic (
+--		C_S_AXIS_TDATA_WIDTH	: integer	:= 32
+--		);
+--		port (
+--		S_AXIS_ACLK	: in std_logic;
+--		S_AXIS_ARESETN	: in std_logic;
+--		S_AXIS_TREADY	: out std_logic;
+--		S_AXIS_TDATA	: in std_logic_vector(C_S_AXIS_TDATA_WIDTH-1 downto 0);
+--		S_AXIS_TSTRB	: in std_logic_vector((C_S_AXIS_TDATA_WIDTH/8)-1 downto 0);
+--		S_AXIS_TLAST	: in std_logic;
+--		S_AXIS_TVALID	: in std_logic
+--		);
+--	end component dutcomm_v1_0_S_AXIS;
 	
 	--user defined component
 	component dutComm is
@@ -168,7 +171,6 @@ architecture arch_imp of dutcomm_v1_0 is
     --user defined signals
     signal start        : std_logic;
     signal status       : std_logic_vector(7 downto 0);
-    signal rst          : std_logic;
 
 begin
 
@@ -206,39 +208,39 @@ dutcomm_v1_0_S_AXI_inst : dutcomm_v1_0_S_AXI
 		S_AXI_RREADY	=> s_axi_rready
 	);
 
--- Instantiation of Axi Bus Interface M_AXIS
-dutcomm_v1_0_M_AXIS_inst : dutcomm_v1_0_M_AXIS
-	generic map (
-		C_M_AXIS_TDATA_WIDTH	=> C_M_AXIS_TDATA_WIDTH,
-		C_M_START_COUNT	=> C_M_AXIS_START_COUNT
-	)
-	port map (
-		M_AXIS_ACLK	=> m_axis_aclk,
-		M_AXIS_ARESETN	=> m_axis_aresetn,
-		M_AXIS_TVALID	=> m_axis_tvalid,
-		M_AXIS_TDATA	=> m_axis_tdata,
-		M_AXIS_TSTRB	=> m_axis_tstrb,
-		M_AXIS_TLAST	=> m_axis_tlast,
-		M_AXIS_TREADY	=> m_axis_tready
-	);
+---- Instantiation of Axi Bus Interface M_AXIS
+--dutcomm_v1_0_M_AXIS_inst : dutcomm_v1_0_M_AXIS
+--	generic map (
+--		C_M_AXIS_TDATA_WIDTH	=> C_M_AXIS_TDATA_WIDTH,
+--		C_M_START_COUNT	=> C_M_AXIS_START_COUNT
+--	)
+--	port map (
+--		M_AXIS_ACLK	=> m_axis_aclk,
+--		M_AXIS_ARESETN	=> m_axis_aresetn,
+--		M_AXIS_TVALID	=> m_axis_tvalid,
+--		M_AXIS_TDATA	=> m_axis_tdata,
+--		M_AXIS_TSTRB	=> m_axis_tstrb,
+--		M_AXIS_TLAST	=> m_axis_tlast,
+--		M_AXIS_TREADY	=> m_axis_tready
+--	);
 
 -- Instantiation of Axi Bus Interface S_AXIS
-dutcomm_v1_0_S_AXIS_inst : dutcomm_v1_0_S_AXIS
-	generic map (
-		C_S_AXIS_TDATA_WIDTH	=> C_S_AXIS_TDATA_WIDTH
-	)
-	port map (
-		S_AXIS_ACLK	=> s_axis_aclk,
-		S_AXIS_ARESETN	=> s_axis_aresetn,
-		S_AXIS_TREADY	=> s_axis_tready,
-		S_AXIS_TDATA	=> s_axis_tdata,
-		S_AXIS_TSTRB	=> s_axis_tstrb,
-		S_AXIS_TLAST	=> s_axis_tlast,
-		S_AXIS_TVALID	=> s_axis_tvalid
-	);
+--dutcomm_v1_0_S_AXIS_inst : dutcomm_v1_0_S_AXIS
+--	generic map (
+--		C_S_AXIS_TDATA_WIDTH	=> C_S_AXIS_TDATA_WIDTH
+--	)
+--	port map (
+--		S_AXIS_ACLK	=> s_axis_aclk,
+--		S_AXIS_ARESETN	=> s_axis_aresetn,
+--		S_AXIS_TREADY	=> s_axis_tready,
+--		S_AXIS_TDATA	=> s_axis_tdata,
+--		S_AXIS_TSTRB	=> s_axis_tstrb,
+--		S_AXIS_TLAST	=> s_axis_tlast,
+--		S_AXIS_TVALID	=> s_axis_tvalid
+--	);
 
 	-- Add user logic here
-	rst <= not m_axis_aresetn;
+	
     ---dutcomm instance
     dutcm: entity work.dutComm(behav)
     port map ( 
@@ -257,7 +259,10 @@ dutcomm_v1_0_S_AXIS_inst : dutcomm_v1_0_S_AXIS
             do_valid => do_valid,
             do_ready => do_ready,
             start => start,
-            status => status
+            status => status,
+            snd_start => snd_start,
+            op_done => op_done,
+            dut_working => dut_working
         );
 	-- User logic ends
 

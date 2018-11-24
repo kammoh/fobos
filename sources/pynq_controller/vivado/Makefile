@@ -6,5 +6,6 @@ synth: create_project
 
 ### removes vivado log and jou files ###
 clean:
-	rm *.log *.jou
+	rm -f *.log *.jou
+	rm -f build_proj_modified.tcl
 	rm -rf pynq_controller/

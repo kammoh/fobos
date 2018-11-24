@@ -53,7 +53,9 @@ entity dutCommCtrl is
         dout_cnt_en : out std_logic;
         dout_cnt_last : in std_logic;
         sipo_en       : out std_logic;
-        status         : out std_logic_vector(7 downto 0)
+        status         : out std_logic_vector(7 downto 0);
+        op_done         : out std_logic;
+        dut_working     : out std_logic
         ---     
     );
 end dutCommCtrl;
@@ -90,6 +92,8 @@ di_valid        <= '0';
 tx_ready        <= '0';
 do_ready        <= '0';
 rx_valid        <= '0';
+op_done         <= '0';
+dut_working     <= '0';
 ---Internal ctrl
 din_cnt_clr     <= '0';
 din_cnt_en      <= '0';
@@ -129,6 +133,7 @@ case current_state is
             end if;
             next_state <= S_SND;
         else
+            dut_working <= '1';
             next_state <= S_WAIT_VALID;
         end if;
     
@@ -140,6 +145,7 @@ case current_state is
             dout_cnt_en <= '1';
             sipo_en <= '1';
         else
+            dut_working <= '1';
             next_state <= S_WAIT_VALID;
         end if;
     
@@ -160,6 +166,7 @@ case current_state is
             next_state <= S_RCV;
         else
             next_state <= S_DONE; --when do_valid = 0 we are done
+            op_done <= '1';
         end if;
         
     when S_DONE =>

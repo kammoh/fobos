@@ -34,7 +34,7 @@ use ieee.std_logic_unsigned.all;
 entity dutComm is
     port ( 
         clk         : in STD_LOGIC;
-        rst         : in STD_LOGIC;
+        rst         : in STD_LOGIC; --also resets the dut
         tx_data     : in STD_LOGIC_VECTOR (31 downto 0);
         tx_valid    : in STD_LOGIC;
         tx_ready    : out STD_LOGIC;
@@ -48,7 +48,11 @@ entity dutComm is
         do_valid    : in STD_LOGIC;
         do_ready    : out STD_LOGIC;
         start       : in std_logic;
-        status      : out std_logic_vector(7 downto 0)
+        status      : out std_logic_vector(7 downto 0);
+        snd_start   : out std_logic; --tell other that sending data to dut started.
+        op_done     : out std_logic; --tell others that operation (i.e. encryption) is done.
+        dut_working : out std_logic
+        
      );
 end dutComm;
 
@@ -142,8 +146,12 @@ ctrl: entity work.dutCommCtrl(behav)
         dout_cnt_en  => dout_cnt_en,
         dout_cnt_last=> dout_cnt_last,
         sipo_en => sipo_en,
-        status => status
+        status => status,
+        op_done => op_done,
+        dut_working => dut_working
         ---     
     );
+    
+    snd_start <= start;
  
 end Behav;

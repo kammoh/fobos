@@ -168,9 +168,17 @@ proc create_root_design { parentCell } {
   # Create instance: axi_fifo_mm_s_0, and set properties
   set axi_fifo_mm_s_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_fifo_mm_s:4.1 axi_fifo_mm_s_0 ]
   set_property -dict [ list \
-CONFIG.C_HAS_AXIS_TSTRB {true} \
+CONFIG.C_HAS_AXIS_TSTRB {false} \
 CONFIG.C_USE_TX_CTRL {0} \
  ] $axi_fifo_mm_s_0
+
+  # Create instance: dut_controller_0, and set properties
+  set dut_controller_0 [ create_bd_cell -type ip -vlnv user.org:user:dut_controller:1.0 dut_controller_0 ]
+
+  set_property -dict [ list \
+CONFIG.NUM_READ_OUTSTANDING {1} \
+CONFIG.NUM_WRITE_OUTSTANDING {1} \
+ ] [get_bd_intf_pins /dut_controller_0/S_AXI]
 
   # Create instance: dutcomm_0, and set properties
   set dutcomm_0 [ create_bd_cell -type ip -vlnv user.org:user:dutcomm:1.0 dutcomm_0 ]
@@ -945,7 +953,7 @@ CONFIG.PCW_WDT_PERIPHERAL_FREQMHZ {133.333333} \
   # Create instance: ps7_0_axi_periph, and set properties
   set ps7_0_axi_periph [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 ps7_0_axi_periph ]
   set_property -dict [ list \
-CONFIG.NUM_MI {2} \
+CONFIG.NUM_MI {3} \
  ] $ps7_0_axi_periph
 
   # Create instance: rst_ps7_0_100M, and set properties
@@ -962,23 +970,28 @@ CONFIG.NUM_MI {2} \
   connect_bd_intf_net -intf_net processing_system7_0_M_AXI_GP0 [get_bd_intf_pins processing_system7_0/M_AXI_GP0] [get_bd_intf_pins ps7_0_axi_periph/S00_AXI]
   connect_bd_intf_net -intf_net ps7_0_axi_periph_M00_AXI [get_bd_intf_pins dutcomm_0/S_AXI] [get_bd_intf_pins ps7_0_axi_periph/M00_AXI]
   connect_bd_intf_net -intf_net ps7_0_axi_periph_M01_AXI [get_bd_intf_pins axi_fifo_mm_s_0/S_AXI] [get_bd_intf_pins ps7_0_axi_periph/M01_AXI]
+  connect_bd_intf_net -intf_net ps7_0_axi_periph_M02_AXI [get_bd_intf_pins dut_controller_0/S_AXI] [get_bd_intf_pins ps7_0_axi_periph/M02_AXI]
 
   # Create port connections
   connect_bd_net -net di_ready_1 [get_bd_ports di_ready] [get_bd_pins dutcomm_0/di_ready]
   connect_bd_net -net do_valid_1 [get_bd_ports do_valid] [get_bd_pins dutcomm_0/do_valid]
   connect_bd_net -net dout_1 [get_bd_ports dout] [get_bd_pins dutcomm_0/dout]
+  connect_bd_net -net dut_controller_0_dut_rst_cmd [get_bd_pins dut_controller_0/dut_rst_cmd] [get_bd_pins dutcomm_0/rst]
   connect_bd_net -net dutcomm_0_di_valid [get_bd_ports di_valid] [get_bd_pins dutcomm_0/di_valid]
   connect_bd_net -net dutcomm_0_din [get_bd_ports din] [get_bd_pins dutcomm_0/din]
   connect_bd_net -net dutcomm_0_do_ready [get_bd_ports do_ready] [get_bd_pins dutcomm_0/do_ready]
-  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_pins dutcomm_0/s_axi_aclk] [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins ps7_0_axi_periph/ACLK] [get_bd_pins ps7_0_axi_periph/M00_ACLK] [get_bd_pins ps7_0_axi_periph/S00_ACLK] [get_bd_pins rst_ps7_0_100M/slowest_sync_clk]
-  connect_bd_net -net processing_system7_0_FCLK_CLK1 [get_bd_pins axi_fifo_mm_s_0/s_axi_aclk] [get_bd_pins dutcomm_0/m_axis_aclk] [get_bd_pins dutcomm_0/s_axis_aclk] [get_bd_pins processing_system7_0/FCLK_CLK1] [get_bd_pins ps7_0_axi_periph/M01_ACLK] [get_bd_pins rst_ps7_0_1M/slowest_sync_clk]
+  connect_bd_net -net dutcomm_0_dut_working [get_bd_pins dut_controller_0/dut_working] [get_bd_pins dutcomm_0/dut_working]
+  connect_bd_net -net dutcomm_0_op_done [get_bd_pins dut_controller_0/op_done] [get_bd_pins dutcomm_0/op_done]
+  connect_bd_net -net dutcomm_0_snd_start [get_bd_pins dut_controller_0/snd_start] [get_bd_pins dutcomm_0/snd_start]
+  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins ps7_0_axi_periph/ACLK] [get_bd_pins rst_ps7_0_100M/slowest_sync_clk]
+  connect_bd_net -net processing_system7_0_FCLK_CLK1 [get_bd_pins axi_fifo_mm_s_0/s_axi_aclk] [get_bd_pins dut_controller_0/s_axi_aclk] [get_bd_pins dutcomm_0/m_axis_aclk] [get_bd_pins dutcomm_0/s_axi_aclk] [get_bd_pins dutcomm_0/s_axis_aclk] [get_bd_pins processing_system7_0/FCLK_CLK1] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins ps7_0_axi_periph/M00_ACLK] [get_bd_pins ps7_0_axi_periph/M01_ACLK] [get_bd_pins ps7_0_axi_periph/M02_ACLK] [get_bd_pins ps7_0_axi_periph/S00_ACLK] [get_bd_pins rst_ps7_0_1M/slowest_sync_clk]
   connect_bd_net -net processing_system7_0_FCLK_RESET0_N [get_bd_pins processing_system7_0/FCLK_RESET0_N] [get_bd_pins rst_ps7_0_100M/ext_reset_in] [get_bd_pins rst_ps7_0_1M/ext_reset_in]
   connect_bd_net -net rst_ps7_0_100M_interconnect_aresetn [get_bd_pins ps7_0_axi_periph/ARESETN] [get_bd_pins rst_ps7_0_100M/interconnect_aresetn]
-  connect_bd_net -net rst_ps7_0_100M_peripheral_aresetn [get_bd_pins dutcomm_0/s_axi_aresetn] [get_bd_pins ps7_0_axi_periph/M00_ARESETN] [get_bd_pins ps7_0_axi_periph/S00_ARESETN] [get_bd_pins rst_ps7_0_100M/peripheral_aresetn]
-  connect_bd_net -net rst_ps7_0_1M_peripheral_aresetn [get_bd_pins axi_fifo_mm_s_0/s_axi_aresetn] [get_bd_pins dutcomm_0/m_axis_aresetn] [get_bd_pins dutcomm_0/s_axis_aresetn] [get_bd_pins ps7_0_axi_periph/M01_ARESETN] [get_bd_pins rst_ps7_0_1M/peripheral_aresetn]
+  connect_bd_net -net rst_ps7_0_1M_peripheral_aresetn [get_bd_pins axi_fifo_mm_s_0/s_axi_aresetn] [get_bd_pins dut_controller_0/s_axi_aresetn] [get_bd_pins dutcomm_0/m_axis_aresetn] [get_bd_pins dutcomm_0/s_axi_aresetn] [get_bd_pins dutcomm_0/s_axis_aresetn] [get_bd_pins ps7_0_axi_periph/M00_ARESETN] [get_bd_pins ps7_0_axi_periph/M01_ARESETN] [get_bd_pins ps7_0_axi_periph/M02_ARESETN] [get_bd_pins ps7_0_axi_periph/S00_ARESETN] [get_bd_pins rst_ps7_0_1M/peripheral_aresetn]
 
   # Create address segments
   create_bd_addr_seg -range 0x00010000 -offset 0x43C10000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_fifo_mm_s_0/S_AXI/Mem0] SEG_axi_fifo_mm_s_0_Mem0
+  create_bd_addr_seg -range 0x00010000 -offset 0x43C20000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs dut_controller_0/S_AXI/S_AXI_reg] SEG_dut_controller_0_S_AXI_reg
   create_bd_addr_seg -range 0x00010000 -offset 0x43C00000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs dutcomm_0/S_AXI/S_AXI_reg] SEG_dutcomm_0_S_AXI_reg
 
 

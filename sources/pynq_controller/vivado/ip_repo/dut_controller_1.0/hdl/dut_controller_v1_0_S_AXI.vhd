@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity dutcomm_v1_0_S_AXI is
+entity dut_controller_v1_0_S_AXI is
 	generic (
 		-- Users to add parameters here
 
@@ -12,12 +12,11 @@ entity dutcomm_v1_0_S_AXI is
 		-- Width of S_AXI data bus
 		C_S_AXI_DATA_WIDTH	: integer	:= 32;
 		-- Width of S_AXI address bus
-		C_S_AXI_ADDR_WIDTH	: integer	:= 4
+		C_S_AXI_ADDR_WIDTH	: integer	:= 5
 	);
 	port (
 		-- Users to add ports here
-         start        : out std_logic;
-         status       : in std_logic_vector(7 downto 0);
+
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 
@@ -80,11 +79,23 @@ entity dutcomm_v1_0_S_AXI is
 		S_AXI_RVALID	: out std_logic;
 		-- Read ready. This signal indicates that the master can
     		-- accept the read data and response information.
-		S_AXI_RREADY	: in std_logic
+		S_AXI_RREADY	: in std_logic;
+		--user defined
+        --trigger module
+        trigger_length : out std_logic_vector(31 downto 0);
+        trigger_wait : out std_logic_vector(31 downto 0);
+        trigger_mode :  out std_logic_vector(7 downto 0);
+        --timeout module
+        ack             : out std_logic; --ack from pc that it know timeout happend
+        timeout         : out STD_LOGIC_VECTOR (31 downto 0);
+        timeout_status  : in STD_LOGIC_VECTOR (7 downto 0);
+        --reset module
+        time_to_rst     : out std_logic_vector(31 downto 0);
+        force_rst       : out std_logic
 	);
-end dutcomm_v1_0_S_AXI;
+end dut_controller_v1_0_S_AXI;
 
-architecture arch_imp of dutcomm_v1_0_S_AXI is
+architecture arch_imp of dut_controller_v1_0_S_AXI is
 
 	-- AXI4LITE signals
 	signal axi_awaddr	: std_logic_vector(C_S_AXI_ADDR_WIDTH-1 downto 0);
@@ -104,15 +115,19 @@ architecture arch_imp of dutcomm_v1_0_S_AXI is
 	-- ADDR_LSB = 2 for 32 bits (n downto 2)
 	-- ADDR_LSB = 3 for 64 bits (n downto 3)
 	constant ADDR_LSB  : integer := (C_S_AXI_DATA_WIDTH/32)+ 1;
-	constant OPT_MEM_ADDR_BITS : integer := 1;
+	constant OPT_MEM_ADDR_BITS : integer := 2;
 	------------------------------------------------
 	---- Signals for user logic register space example
 	--------------------------------------------------
-	---- Number of Slave Registers 4
+	---- Number of Slave Registers 8
 	signal slv_reg0	:std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
 	signal slv_reg1	:std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
 	signal slv_reg2	:std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
 	signal slv_reg3	:std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
+	signal slv_reg4	:std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
+	signal slv_reg5	:std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
+	signal slv_reg6	:std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
+	signal slv_reg7	:std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
 	signal slv_reg_rden	: std_logic;
 	signal slv_reg_wren	: std_logic;
 	signal reg_data_out	:std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);
@@ -218,11 +233,15 @@ begin
 	      slv_reg1 <= (others => '0');
 	      slv_reg2 <= (others => '0');
 	      slv_reg3 <= (others => '0');
+	      slv_reg4 <= (others => '0');
+	      slv_reg5 <= (others => '0');
+	      slv_reg6 <= (others => '0');
+	      slv_reg7 <= (others => '0');
 	    else
 	      loc_addr := axi_awaddr(ADDR_LSB + OPT_MEM_ADDR_BITS downto ADDR_LSB);
 	      if (slv_reg_wren = '1') then
 	        case loc_addr is
-	          when b"00" =>
+	          when b"000" =>
 	            for byte_index in 0 to (C_S_AXI_DATA_WIDTH/8-1) loop
 	              if ( S_AXI_WSTRB(byte_index) = '1' ) then
 	                -- Respective byte enables are asserted as per write strobes                   
@@ -230,7 +249,7 @@ begin
 	                slv_reg0(byte_index*8+7 downto byte_index*8) <= S_AXI_WDATA(byte_index*8+7 downto byte_index*8);
 	              end if;
 	            end loop;
-	          when b"01" =>
+	          when b"001" =>
 	            for byte_index in 0 to (C_S_AXI_DATA_WIDTH/8-1) loop
 	              if ( S_AXI_WSTRB(byte_index) = '1' ) then
 	                -- Respective byte enables are asserted as per write strobes                   
@@ -238,7 +257,7 @@ begin
 	                slv_reg1(byte_index*8+7 downto byte_index*8) <= S_AXI_WDATA(byte_index*8+7 downto byte_index*8);
 	              end if;
 	            end loop;
-	          when b"10" =>
+	          when b"010" =>
 	            for byte_index in 0 to (C_S_AXI_DATA_WIDTH/8-1) loop
 	              if ( S_AXI_WSTRB(byte_index) = '1' ) then
 	                -- Respective byte enables are asserted as per write strobes                   
@@ -246,7 +265,7 @@ begin
 	                slv_reg2(byte_index*8+7 downto byte_index*8) <= S_AXI_WDATA(byte_index*8+7 downto byte_index*8);
 	              end if;
 	            end loop;
-	          when b"11" =>
+	          when b"011" =>
 	            for byte_index in 0 to (C_S_AXI_DATA_WIDTH/8-1) loop
 	              if ( S_AXI_WSTRB(byte_index) = '1' ) then
 	                -- Respective byte enables are asserted as per write strobes                   
@@ -254,11 +273,47 @@ begin
 	                slv_reg3(byte_index*8+7 downto byte_index*8) <= S_AXI_WDATA(byte_index*8+7 downto byte_index*8);
 	              end if;
 	            end loop;
+	          when b"100" =>
+	            for byte_index in 0 to (C_S_AXI_DATA_WIDTH/8-1) loop
+	              if ( S_AXI_WSTRB(byte_index) = '1' ) then
+	                -- Respective byte enables are asserted as per write strobes                   
+	                -- slave registor 4
+	                slv_reg4(byte_index*8+7 downto byte_index*8) <= S_AXI_WDATA(byte_index*8+7 downto byte_index*8);
+	              end if;
+	            end loop;
+	          when b"101" =>
+	            for byte_index in 0 to (C_S_AXI_DATA_WIDTH/8-1) loop
+	              if ( S_AXI_WSTRB(byte_index) = '1' ) then
+	                -- Respective byte enables are asserted as per write strobes                   
+	                -- slave registor 5
+	                slv_reg5(byte_index*8+7 downto byte_index*8) <= S_AXI_WDATA(byte_index*8+7 downto byte_index*8);
+	              end if;
+	            end loop;
+	          when b"110" =>
+	            for byte_index in 0 to (C_S_AXI_DATA_WIDTH/8-1) loop
+	              if ( S_AXI_WSTRB(byte_index) = '1' ) then
+	                -- Respective byte enables are asserted as per write strobes                   
+	                -- slave registor 6
+	                slv_reg6(byte_index*8+7 downto byte_index*8) <= S_AXI_WDATA(byte_index*8+7 downto byte_index*8);
+	              end if;
+	            end loop;
+	          when b"111" =>
+	            for byte_index in 0 to (C_S_AXI_DATA_WIDTH/8-1) loop
+	              if ( S_AXI_WSTRB(byte_index) = '1' ) then
+	                -- Respective byte enables are asserted as per write strobes                   
+	                -- slave registor 7
+	                slv_reg7(byte_index*8+7 downto byte_index*8) <= S_AXI_WDATA(byte_index*8+7 downto byte_index*8);
+	              end if;
+	            end loop;
 	          when others =>
 	            slv_reg0 <= slv_reg0;
 	            slv_reg1 <= slv_reg1;
 	            slv_reg2 <= slv_reg2;
 	            slv_reg3 <= slv_reg3;
+	            slv_reg4 <= slv_reg4;
+	            slv_reg5 <= slv_reg5;
+	            slv_reg6 <= slv_reg6;
+	            slv_reg7 <= slv_reg7;
 	        end case;
 	      end if;
 	    end if;
@@ -346,22 +401,29 @@ begin
 	-- and the slave is ready to accept the read address.
 	slv_reg_rden <= axi_arready and S_AXI_ARVALID and (not axi_rvalid) ;
 
-	process (slv_reg0, slv_reg1, slv_reg2, slv_reg3, axi_araddr, S_AXI_ARESETN, slv_reg_rden)
+	process (slv_reg0, slv_reg1, slv_reg2, slv_reg3, slv_reg4, slv_reg5, slv_reg6, slv_reg7, axi_araddr, S_AXI_ARESETN, slv_reg_rden)
 	variable loc_addr :std_logic_vector(OPT_MEM_ADDR_BITS downto 0);
 	begin
 	    -- Address decoding for reading registers
 	    loc_addr := axi_araddr(ADDR_LSB + OPT_MEM_ADDR_BITS downto ADDR_LSB);
 	    case loc_addr is
-	      when b"00" =>
+	      when b"000" =>
 	        reg_data_out <= slv_reg0;
-	      when b"01" =>
-	        --reg_data_out <= slv_reg1;
-	        --status register 
-	        reg_data_out <= x"000000" & status;
-	      when b"10" =>
+	      when b"001" =>
+	        reg_data_out <= slv_reg1;
+	      when b"010" =>
 	        reg_data_out <= slv_reg2;
-	      when b"11" =>
+	      when b"011" =>
 	        reg_data_out <= slv_reg3;
+	      when b"100" =>
+	        reg_data_out <= slv_reg4;
+	      when b"101" =>
+	        --reg_data_out <= slv_reg5;
+	        reg_data_out <= x"000000" & timeout_status;
+	      when b"110" =>
+	        reg_data_out <= slv_reg6;
+	      when b"111" =>
+	        reg_data_out <= slv_reg7;
 	      when others =>
 	        reg_data_out  <= (others => '0');
 	    end case;
@@ -387,7 +449,17 @@ begin
 
 
 	-- Add user logic here
-    start <= slv_reg0(0);
+    --user defined
+    --trigger module
+    trigger_length  <= slv_reg0;
+    trigger_wait    <= slv_reg1;
+    trigger_mode    <= slv_reg2(7 downto 0);
+    --timeout module
+    timeout         <= slv_reg3;
+    ack             <= slv_reg4(0);
+    --slv_reg5 is for reading timeout_status
 	-- User logic ends
+	time_to_rst     <= slv_reg6;
+	force_rst       <= slv_reg7(0);
 
 end arch_imp;
