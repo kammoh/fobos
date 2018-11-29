@@ -16,7 +16,13 @@
 .directory
 .DS_Store
 __MACOSX
+*jou
+*.log
+*.str
 FOBOSWorkspace
 workspace
 temp
 _impact.cmd
+sources/pynq_controller/vivado/pynq_controller/
+sources/pynq_controller/vivado/build_proj_modified.tcl
+
