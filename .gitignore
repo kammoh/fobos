@@ -25,5 +25,5 @@ temp
 _impact.cmd
 sources/pynq_controller/vivado/pynq_controller/
 sources/soc_dut/vivado/soc_dut/
-sources/pynq_controller/vivado/build_proj_modified.tcl
+build_proj_modified.tcl
 

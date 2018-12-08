@@ -15,7 +15,7 @@ OUT_FILE_NAME = "build_proj_modified.tcl"
 code = """
 ######ADDED BY modify_project_tcl.py
 # Create block design
- source $origin_dir/src/bd/dut_top.tcl
+ source $origin_dir/src/bd/top.tcl
 
  # Generate the wrapper
  set design_name [get_bd_designs]
