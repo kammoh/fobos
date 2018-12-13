@@ -38,7 +38,7 @@ end ctrl_comm_ctrl;
 
 architecture Behav of ctrl_comm_ctrl is
 
-type STATE is (S_IDLE, S_WAIT_READY, S_SND, S_WAIT_VALID, S_RCV, S_WAIT_RES);
+type STATE is (S_IDLE, S_WAIT_READY, S_SND, S_WAIT_VALID, S_RCV, S_WAIT_RES, S_DONE);
 signal current_state,next_state:state;
 --status codes
 constant IDLE       : std_logic_vector(7 downto 0) := x"01";
@@ -46,7 +46,8 @@ constant WAIT_READY : std_logic_vector(7 downto 0) := x"05";
 constant SND        : std_logic_vector(7 downto 0) := x"0a";
 constant WAIT_VALID : std_logic_vector(7 downto 0) := x"0f";
 constant RCV        : std_logic_vector(7 downto 0) := x"15";
-constant WAIT_RES       : std_logic_vector(7 downto 0) := x"1a";
+constant WAIT_RES   : std_logic_vector(7 downto 0) := x"1a";
+constant DONE       : std_logic_vector(7 downto 0) := x"2b";
 --------
 begin
 
@@ -149,7 +150,15 @@ case current_state is
             end if;
             next_state <= S_SND;
         else
-            next_state <= S_IDLE;
+            next_state <= S_DONE;
+        end if;
+    
+    when S_DONE =>
+        status  <= DONE;
+        if res_ready = '1' then
+            next_state <= S_DONE;
+        else
+            next_state  <= S_IDLE;
         end if;
      
 end case;    

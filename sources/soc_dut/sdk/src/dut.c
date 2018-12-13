@@ -9,7 +9,6 @@
 #include "xil_cache.h"
 #include "xllfifo.h"
 #include "xstatus.h"
-#include "dutcomm.h"
 #include "ctrlComm.h"
 
 /***************** Macros (inline Functions) Definitions *********************/
@@ -19,10 +18,10 @@
 #define MAX_PACKET_LEN		 	12
 #define NO_OF_PACKETS		 	1
 #define MAX_DATA_BUFFER_SIZE 	NO_OF_PACKETS*MAX_PACKET_LEN
-#define DUTCOMM_BASE 			XPAR_DUTCOMM_0_S_AXI_BASEADDR
 #define CTLCOMM_BASE 			XPAR_CTRLCOMM_0_S_AXI_BASEADDR
 #undef DEBUG
-
+/*****************************************************************************/
+#define WAIT_RES				0x1a /*status from*/
 /************************** Function Prototypes ******************************/
 int init();
 int run();
@@ -79,31 +78,7 @@ int init(){
 	int status;
 
 	status = XST_SUCCESS;
-	/*Init dutcomm fifo ***************************************************/
-	/* Initialize the Device Configuration Interface driver */
-	devID= FIFO_DUTCOM_DEV_ID;
-	config = XLlFfio_LookupConfig(devID);
-	if (!config) {
-		xil_printf("No config found for %d\r\n", devID);
-		return XST_FAILURE;
-	}
 
-	status = XLlFifo_CfgInitialize(&fifoInstance_dutcom, config, config->BaseAddress);
-	if (status != XST_SUCCESS) {
-		xil_printf("Initialization failed\n\r");
-		return status;
-	}
-
-	/* Check for the Reset value */
-	status = XLlFifo_Status(&fifoInstance_dutcom);
-	XLlFifo_IntClear(&fifoInstance_dutcom,0xffffffff);
-	status = XLlFifo_Status(&fifoInstance_dutcom);
-	if(status != 0x0) {
-		xil_printf("\n error : Reset value of ISR0 : 0x%x\t"
-		    "Expected : 0x0\n\r",
-		    XLlFifo_Status(&fifoInstance_dutcom));
-		return XST_FAILURE;
-	}
 	/*Init ctrlcomm fifo *****************************************************/
 	// Initialize the Device Configuration Interface driver */
 
@@ -135,22 +110,19 @@ int init(){
 int run()
 {
 	int status;
-	int j;
-	int k;
+	long j;
+	
 	status = XST_SUCCESS;
 	///////////////////////////////////////////////////////////////////
-    for(k = 1; k<=10; k++){
-		/* Transmit the Data Stream */ //Through DUTCOMM
-		status = fifoSend(&fifoInstance_dutcom, testBuf, MAX_PACKET_LEN);
-		if (status != XST_SUCCESS){
-			xil_printf("Transmisson of Data failed\n\r");
-			return XST_FAILURE;
+    while(1){
+		CTRLCOMM_mWriteReg(CTLCOMM_BASE, 0, 0); // my not be needed since FIOF sends only when a PACKET LEN is written
+		//xil_printf("\ninside while(1)\n");
+		//wait until status = WAIT_RES
+		while((CTRLCOMM_mReadReg(CTLCOMM_BASE, 4) &0x000000FF ) != WAIT_RES){
+			//xil_printf("status:%02x\n", CTRLCOMM_mReadReg(CTLCOMM_BASE, 4) & 0x000000FF);
+			//for(j = 0; j<500000; j++);
 		}
-		//set snd_start signal
-		DUTCOMM_mWriteReg(DUTCOMM_BASE, 0, 1); // my not be needed since FIOF sends only when a PACKET LEN is written
-		for(j=0; j< 5000; j++);
-		DUTCOMM_mWriteReg(DUTCOMM_BASE, 0, 0); // my not be needed since FIOF sends only when a PACKET LEN is written
-
+		//for(j = 0; j<500000; j++);
 		clearDestBuf();
 		// Revceive the Data Stream FORM CTRL_COM
 		//from ctrl_comm
@@ -165,7 +137,7 @@ int run()
 		//NOW, return result
 
 		//push data in to the fifo
-		xil_printf("Sending back result...");
+		xil_printf("Sending back result...\n");
 		status = fifoSend(&fifoInstance_ctrlcom, destBuf, MAX_PACKET_LEN);
 		if (status != XST_SUCCESS){
 				xil_printf("Transmisson of Data failed\n\r");
@@ -175,14 +147,7 @@ int run()
 		// assert result ready// may not be needed
 
 		CTRLCOMM_mWriteReg(CTLCOMM_BASE, 0, 1);
-		//Now, get the data out of the DUTCOMM
-		xil_printf("receiving result... \n");
-		clearDestBuf();
-		status = fifoReceive(&fifoInstance_dutcom, destBuf);
-		if (status != XST_SUCCESS){
-			xil_printf("Receiving data failed");
-			return XST_FAILURE;
-		}
+		for(j = 0; j<5000; j++);
     }
 
 	return status;
@@ -233,7 +198,7 @@ int fifoReceive (XLlFifo *InstancePtr, u32* DestinationAddr)
 
 		*(DestinationAddr+i) = data;
 	}
-   xil_printf("waiting rx done");
+   xil_printf("waiting rx done\n");
    status = XLlFifo_IsRxDone(InstancePtr);
    if(status != TRUE){
 	   xil_printf("Failing in receive complete ... \r\n");

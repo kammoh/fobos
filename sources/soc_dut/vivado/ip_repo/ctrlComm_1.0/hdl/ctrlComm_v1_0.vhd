@@ -6,6 +6,7 @@ entity ctrlComm_v1_0 is
 	generic (
 		-- Users to add parameters here
 
+
 		-- User parameters ends
 		-- Do not modify the parameters beyond this line
 
@@ -107,6 +108,7 @@ architecture arch_imp of ctrlComm_v1_0 is
 		S_AXI_RVALID	: out std_logic;
 		S_AXI_RREADY	: in std_logic;
 		--user defined
+		dut_rst         : out std_logic;
 		status          : in std_logic_vector(7 downto 0);
 		res_ready       : out std_logic
 		);
@@ -144,7 +146,7 @@ architecture arch_imp of ctrlComm_v1_0 is
 --	end component ctrlComm_v1_0_M_AXIS;
     
     --User defined signals
-    signal rst : std_logic;
+    signal dut_rst : std_logic;
     signal status : std_logic_vector(7 downto 0);
     signal res_ready : std_logic;
     
@@ -179,6 +181,7 @@ ctrlComm_v1_0_S_AXI_inst : ctrlComm_v1_0_S_AXI
 		S_AXI_RVALID	=> s_axi_rvalid,
 		S_AXI_RREADY	=> s_axi_rready,
 		--user defined
+		dut_rst         => dut_rst,
 		status          => status,
 		res_ready       => res_ready
 	);
@@ -215,12 +218,11 @@ ctrlComm_v1_0_S_AXI_inst : ctrlComm_v1_0_S_AXI
 --	);
     
 	-- Add user logic here
-	rst <= not m_axis_aresetn;
 	
     comm: entity work.ctrl_comm(behav)
         port map ( 
             clk         => m_axis_aclk,
-            rst         => rst,
+            rst         => dut_rst,
             tx_data     => s_axis_tdata,
             tx_valid    => s_axis_tvalid,
             tx_ready    => s_axis_tready,

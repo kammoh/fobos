@@ -16,6 +16,7 @@ entity ctrlComm_v1_0_S_AXI is
 	);
 	port (
 		-- Users to add ports here
+		dut_rst     : out std_logic;
         status      : in std_logic_vector(7 downto 0);
         res_ready   : out std_logic;
 		-- User ports ends
@@ -389,6 +390,8 @@ begin
 	-- Add user logic here
 	--first bit of register 1 used for result ready signal
     res_ready <= slv_reg0(0);
+    --slv_reg1 is used for status
+    dut_rst   <= slv_reg2(0);
 	-- User logic ends
 
 end arch_imp;
