@@ -113,7 +113,8 @@
 #define TRIG_WAIT   1
 #define TRG_LEN     2
 #define TRG_TYPE    3
-
+//DUTCOMM status
+#define DONE		0x1a
 //testing fifo/dutcomm
 u32 testBuffer[12] = {0x00C00010,
 		0x77446B60,
@@ -488,7 +489,9 @@ int processData(){
 		return XST_FAILURE;
 	}
 	//some delay
-	for(j=0; j< 50000; j++);
+	//for(j=0; j< 50000; j++);
+	//wait until dutcom gets data back from dut
+	while((DUTCOMM_mReadReg(DUTCOMM_BASE,4) & 0x000000FF) != DONE);
 	//xil_printf("after delay\n");
 	/* Revceive the Data Stream */
 	//xil_printf("Recieving data...\n");
@@ -498,9 +501,9 @@ int processData(){
 		//return XST_FAILURE;
 	//}
 	//xil_printf("Received data: \n");
-	for (int i=0; i< 4; i++){
+	//for (int i=0; i< 4; i++){
 		//xil_printf("%08x\n", ((u32*)SendBuffer)[i]);
-	}
+	//}
 	//send start signal
 	/*
 	 * Send the buffer using the UartLite.
