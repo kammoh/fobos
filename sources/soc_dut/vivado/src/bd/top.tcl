@@ -413,6 +413,16 @@ CONFIG.C_SIZE {1} \
 CONFIG.NUM_PORTS {3} \
  ] $xlconcat_0
 
+  # Create instance: xlconstant_0, and set properties
+  set xlconstant_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 xlconstant_0 ]
+  set_property -dict [ list \
+CONFIG.CONST_VAL {1} \
+CONFIG.CONST_WIDTH {128} \
+ ] $xlconstant_0
+
+  # Create instance: xlconstant_1, and set properties
+  set xlconstant_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 xlconstant_1 ]
+
   # Create interface connections
   connect_bd_intf_net -intf_net FWFT_to_M_AXIS_2clk_0_M00_AXIS [get_bd_intf_pins FWFT_to_M_AXIS_2clk_0/M00_AXIS] [get_bd_intf_pins axi_dma_0/S_AXIS_S2MM]
   connect_bd_intf_net -intf_net axi_dma_0_M_AXIS_MM2S [get_bd_intf_pins axi_dma_0/M_AXIS_MM2S] [get_bd_intf_pins axis_data_fifo_0/S_AXIS]
@@ -462,6 +472,8 @@ CONFIG.NUM_PORTS {3} \
   connect_bd_net -net util_vector_logic_0_Res [get_bd_pins axis_dwidth_converter_0/m_axis_tready] [get_bd_pins util_vector_logic_0/Res] [get_bd_pins util_vector_logic_1/Op2]
   connect_bd_net -net util_vector_logic_1_Res [get_bd_pins FWFT_to_M_AXIS_2clk_0/fifo_write] [get_bd_pins util_vector_logic_1/Res]
   connect_bd_net -net xlconcat_0_dout [get_bd_pins processing_system7_0/IRQ_F2P] [get_bd_pins xlconcat_0/dout]
+  connect_bd_net -net xlconstant_0_dout [get_bd_pins aes_axi_0/sdi_data] [get_bd_pins xlconstant_0/dout]
+  connect_bd_net -net xlconstant_1_dout [get_bd_pins aes_axi_0/sdi_valid] [get_bd_pins xlconstant_1/dout]
 
   # Create address segments
   create_bd_addr_seg -range 0x20000000 -offset 0x00000000 [get_bd_addr_spaces axi_dma_0/Data_MM2S] [get_bd_addr_segs processing_system7_0/S_AXI_HP0/HP0_DDR_LOWOCM] SEG_processing_system7_0_HP0_DDR_LOWOCM
@@ -487,6 +499,4 @@ CONFIG.NUM_PORTS {3} \
 
 create_root_design ""
 
-
-common::send_msg_id "BD_TCL-1000" "WARNING" "This Tcl script was generated from a block design that has not been validated. It is possible that design <$design_name> may result in errors during validation."
 
