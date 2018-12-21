@@ -98,7 +98,9 @@ u32 destBuf[MAX_DATA_BUFFER_SIZE * WORD_SIZE];
 
 #define TEST_START_VALUE	0xC
 
-#define MAX_PKT_LEN			16
+#define OUTPUT_LEN			16
+#define PDI_LEN				16
+#define SDI_LEN				16
 
 #define NUMBER_OF_TRANSFERS	10
 
@@ -129,62 +131,106 @@ volatile int TxDone;
 volatile int RxDone;
 volatile int Error;
 /******************************************************************************/
+int initDMA(){
+ 	int Status;
+		XAxiDma_Config *Config;
+
+		/* Initial setup for Uart16550 */
+		xil_printf("\r\n--- Entering main() --- \r\n");
+		Config = XAxiDma_LookupConfig(DMA_DEV_ID);
+		if (!Config) {
+			xil_printf("No config found for %d\r\n", DMA_DEV_ID);
+			return XST_FAILURE;
+		}
+		/* Initialize DMA engine */
+		Status = XAxiDma_CfgInitialize(&AxiDma, Config);
+
+		if (Status != XST_SUCCESS) {
+			xil_printf("Initialization failed %d\r\n", Status);
+			return XST_FAILURE;
+		}
+
+		if(XAxiDma_HasSg(&AxiDma)){
+			xil_printf("Device configured as SG mode \r\n");
+			return XST_FAILURE;
+		}
+
+		/* Set up Interrupt system  */
+		Status = SetupIntrSystem(&Intc, &AxiDma, TX_INTR_ID, RX_INTR_ID);
+		if (Status != XST_SUCCESS) {
+
+			xil_printf("Failed intr setup\r\n");
+			return XST_FAILURE;
+		}
+
+		/* Disable all interrupts before setup */
+
+		XAxiDma_IntrDisable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
+							XAXIDMA_DMA_TO_DEVICE);
+
+		XAxiDma_IntrDisable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
+					XAXIDMA_DEVICE_TO_DMA);
+
+		/* Enable all interrupts */
+		XAxiDma_IntrEnable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
+								XAXIDMA_DMA_TO_DEVICE);
+
+
+		XAxiDma_IntrEnable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
+								XAXIDMA_DEVICE_TO_DMA);
+
+}
+
+int sendPdiData(u8* TxBufferPtr, u8* RxBufferPtr){
+			int Status;
+			TxDone = 0;
+			RxDone = 0;
+		    Error = 0;
+		    Xil_DCacheFlushRange((UINTPTR)TxBufferPtr, PDI_LEN);
+		    #ifdef __aarch64__
+		    	Xil_DCacheFlushRange((UINTPTR)RxBufferPtr, OUTPUT_LEN);
+		    #endif
+		    showData(TxBufferPtr, PDI_LEN);
+			Status = XAxiDma_SimpleTransfer(&AxiDma,(UINTPTR) RxBufferPtr,
+						OUTPUT_LEN, XAXIDMA_DEVICE_TO_DMA);
+
+			if (Status != XST_SUCCESS) {
+				return XST_FAILURE;
+			}
+
+			Status = XAxiDma_SimpleTransfer(&AxiDma,(UINTPTR) TxBufferPtr,
+						PDI_LEN, XAXIDMA_DMA_TO_DEVICE);
+
+			if (Status != XST_SUCCESS) {
+				return XST_FAILURE;
+			}
+			while (!TxDone || !RxDone );
+			//Show data
+			if (Error) {
+				xil_printf("Failed test transmit%s done, "
+				"receive%s done\r\n", TxDone? "":" not",
+								RxDone? "":" not");
+				return XST_FAILURE;
+			}
+
+			Xil_DCacheInvalidateRange((UINTPTR)RxBufferPtr, OUTPUT_LEN);
+			xil_printf("Ciphertext :\n");
+		   showData(RxBufferPtr, OUTPUT_LEN);
+
+}
+
 int main(void)
 {
 	int Status;
-	XAxiDma_Config *Config;
 	int Tries = NUMBER_OF_TRANSFERS;
 	int Index;
+	initDMA();
 	u8 tv[16] = {0xFF,  0xEE, 0xDD, 0xCC, 0xBB, 0xAA, 0x99, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00};
 	u8 *TxBufferPtr;
 	u8 *RxBufferPtr;
 	u8 Value;
 	TxBufferPtr = (u8 *)TX_BUFFER_BASE ;
 	RxBufferPtr = (u8 *)RX_BUFFER_BASE;
-	/* Initial setup for Uart16550 */
-	xil_printf("\r\n--- Entering main() --- \r\n");
-	Config = XAxiDma_LookupConfig(DMA_DEV_ID);
-	if (!Config) {
-		xil_printf("No config found for %d\r\n", DMA_DEV_ID);
-		return XST_FAILURE;
-	}
-	/* Initialize DMA engine */
-	Status = XAxiDma_CfgInitialize(&AxiDma, Config);
-
-	if (Status != XST_SUCCESS) {
-		xil_printf("Initialization failed %d\r\n", Status);
-		return XST_FAILURE;
-	}
-
-	if(XAxiDma_HasSg(&AxiDma)){
-		xil_printf("Device configured as SG mode \r\n");
-		return XST_FAILURE;
-	}
-
-	/* Set up Interrupt system  */
-	Status = SetupIntrSystem(&Intc, &AxiDma, TX_INTR_ID, RX_INTR_ID);
-	if (Status != XST_SUCCESS) {
-
-		xil_printf("Failed intr setup\r\n");
-		return XST_FAILURE;
-	}
-
-	/* Disable all interrupts before setup */
-
-	XAxiDma_IntrDisable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
-						XAXIDMA_DMA_TO_DEVICE);
-
-	XAxiDma_IntrDisable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
-				XAXIDMA_DEVICE_TO_DMA);
-
-	/* Enable all interrupts */
-	XAxiDma_IntrEnable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
-							XAXIDMA_DMA_TO_DEVICE);
-
-
-	XAxiDma_IntrEnable(&AxiDma, XAXIDMA_IRQ_ALL_MASK,
-							XAXIDMA_DEVICE_TO_DMA);
-
 	/* Initialize flags before start transfer test  */
 	TxDone = 0;
 	RxDone = 0;
@@ -192,76 +238,33 @@ int main(void)
 
 	Value = TEST_START_VALUE;
 
-	for(Index = 0; Index < MAX_PKT_LEN; Index ++) {
-			TxBufferPtr[Index] = tv[Index];
-			RxBufferPtr[Index] = 0;
+	for(Index = 0; Index < PDI_LEN; Index ++) {
+		TxBufferPtr[Index] = tv[Index];
+	}
 
+	for(Index = 0; Index < OUTPUT_LEN; Index ++) {
+		RxBufferPtr[Index] = 0;
 	}
 
 	/* Flush the SrcBuffer before the DMA transfer, in case the Data Cache
 	 * is enabled
 	 */
-	Xil_DCacheFlushRange((UINTPTR)TxBufferPtr, MAX_PKT_LEN);
+	Xil_DCacheFlushRange((UINTPTR)TxBufferPtr, PDI_LEN);
 //#ifdef __aarch64__
-	Xil_DCacheFlushRange((UINTPTR)RxBufferPtr, MAX_PKT_LEN);
+	Xil_DCacheFlushRange((UINTPTR)RxBufferPtr, OUTPUT_LEN);
 //#endif
 
 	/* Send a packet */
 	//set expected output len and start count
-	FWFT_TO_M_AXIS_2CLK_mWriteReg(XPAR_FWFT_TO_M_AXIS_2CLK_0_S00_AXI_BASEADDR, 0 , 16 /4); //NUMBER OF OUTPUT WORDS
+	FWFT_TO_M_AXIS_2CLK_mWriteReg(XPAR_FWFT_TO_M_AXIS_2CLK_0_S00_AXI_BASEADDR, 0 , OUTPUT_LEN /4); //NUMBER OF OUTPUT WORDS
 	FWFT_TO_M_AXIS_2CLK_mWriteReg(XPAR_FWFT_TO_M_AXIS_2CLK_0_S00_AXI_BASEADDR, 4 , 0x00); // START COUNT
 
 
-	for(Index = 0; Index < Tries; Index ++) {
-
-		TxDone = 0;
-		RxDone = 0;
-	    Error = 0;
-	    TxBufferPtr[0] = Index;
-
-	    Xil_DCacheFlushRange((UINTPTR)TxBufferPtr, MAX_PKT_LEN);
-	    #ifdef __aarch64__
-	    	Xil_DCacheFlushRange((UINTPTR)RxBufferPtr, MAX_PKT_LEN);
-	    #endif
-
-	    xil_printf("Plaintext %d:\n", Index);
-	    showData(TxBufferPtr, MAX_PKT_LEN);
-		Status = XAxiDma_SimpleTransfer(&AxiDma,(UINTPTR) RxBufferPtr,
-					MAX_PKT_LEN, XAXIDMA_DEVICE_TO_DMA);
-
-		if (Status != XST_SUCCESS) {
-			return XST_FAILURE;
-		}
-
-		Status = XAxiDma_SimpleTransfer(&AxiDma,(UINTPTR) TxBufferPtr,
-					MAX_PKT_LEN, XAXIDMA_DMA_TO_DEVICE);
-
-		if (Status != XST_SUCCESS) {
-			return XST_FAILURE;
-		}
-		while (!TxDone || !RxDone );
-
-		//Show data
-
-
-		if (Error) {
-			xil_printf("Failed test transmit%s done, "
-			"receive%s done\r\n", TxDone? "":" not",
-							RxDone? "":" not");
-
-			goto Done;
-
-		}
-
-		Xil_DCacheInvalidateRange((UINTPTR)RxBufferPtr, MAX_PKT_LEN);
-		xil_printf("Ciphertext %d:\n", Index);
-	   showData(RxBufferPtr, MAX_PKT_LEN);
+	for(Index = 0; Index < Tries; Index ++){
+		TxBufferPtr[0] = Index;
+		sendPdiData(TxBufferPtr, RxBufferPtr);
 	}
-
-
 	xil_printf("Successfully ran AXI DMA interrupt Example\r\n");
-
-
 	/* Disable TX and RX Ring interrupts and return success */
 
 	DisableIntrSystem(&Intc, TX_INTR_ID, RX_INTR_ID);
@@ -340,8 +343,6 @@ int run()
 	///////////////////////////////////////////////////////////////////
     while(1){
 		CTRLCOMM_mWriteReg(CTLCOMM_BASE, 0, 0); // my not be needed since FIOF sends only when a PACKET LEN is written
-		//xil_printf("\ninside while(1)\n");
-		//wait until status = WAIT_RES
 		while((CTRLCOMM_mReadReg(CTLCOMM_BASE, 4) &0x000000FF ) != WAIT_RES){
 			//xil_printf("status:%02x\n", CTRLCOMM_mReadReg(CTLCOMM_BASE, 4) & 0x000000FF);
 			//for(j = 0; j<500000; j++);
