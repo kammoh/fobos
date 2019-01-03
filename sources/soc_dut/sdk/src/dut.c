@@ -1,3 +1,8 @@
+////SET BY USER
+
+#define OUTPUT_LEN			16
+#define PDI_LEN				16
+#define SDI_LEN				16
 //SOC-DUT software controller
 //Author: Bakry Abdulgadir
 //Date  : Dec. 2018
@@ -21,6 +26,8 @@
 #else
  #include "xscugic.h"
 #endif
+//common functions
+int initMM2SFifo(XLlFifo* fifo, u16 devID);
 /*****************************************************************************/
 /***************** Macros (inline Functions) Definitions *********************/
 #define FIFO_DUTCOM_DEV_ID	   	XPAR_AXI_FIFO_1_DEVICE_ID
@@ -45,7 +52,10 @@ XLlFifo fifoInstance_ctrlcom;
 /*****************************************************************************/
 u32 srcBuf[MAX_DATA_BUFFER_SIZE * WORD_SIZE];
 u32 destBuf[MAX_DATA_BUFFER_SIZE * WORD_SIZE];
-
+/************************Accelerator Communication******************************/
+/**************************SDI FIFO********************************************/
+XLlFifo fifoInstanceSDI;
+#define FIFO_SDI_DEV_ID XPAR_AXI_FIFO_MM_S_SDI_DEVICE_ID
 /*****************************DMA***********************************************/
 /************************** Constant Definitions *****************************/
 #define DMA_DEV_ID			XPAR_AXIDMA_0_DEVICE_ID
@@ -98,9 +108,6 @@ u32 destBuf[MAX_DATA_BUFFER_SIZE * WORD_SIZE];
 
 #define TEST_START_VALUE	0xC
 
-#define OUTPUT_LEN			16
-#define PDI_LEN				16
-#define SDI_LEN				16
 
 #define NUMBER_OF_TRANSFERS	10
 
@@ -219,13 +226,24 @@ int sendPdiData(u8* TxBufferPtr, u8* RxBufferPtr){
 
 }
 
+int sendSdiData(u32* sdiBuff, int byteCnt){
+	int status;
+	status = fifoSend(&fifoInstanceSDI, sdiBuff, byteCnt/ WORD_SIZE);
+	return status;
+}
+
 int main(void)
 {
 	int Status;
 	int Tries = NUMBER_OF_TRANSFERS;
 	int Index;
 	initDMA();
-	u8 tv[16] = {0xFF,  0xEE, 0xDD, 0xCC, 0xBB, 0xAA, 0x99, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00};
+	initMM2SFifo(&fifoInstanceSDI, FIFO_SDI_DEV_ID);
+	//init ctrlcom fifo when clock is available for FOBOS CTRL
+	//initMM2SFifo(&fifoInstance_ctrlcom, FIFO_CTLCOM_DEV_ID);
+	u8 tv[16] = {0xFF,  0xEE, 0xDD, 0xCC, 0xBB, 0xAA, 0x99, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00}; //LSB byte in low address
+	u32 sdiBuff[4] = {  0x55667788,0x11223344, 0x789abcde, 0x00123456}; //32bit LSB word in low address
+	//key is 00123456 789abcde 11223344 55667788
 	u8 *TxBufferPtr;
 	u8 *RxBufferPtr;
 	u8 Value;
@@ -262,6 +280,7 @@ int main(void)
 
 	for(Index = 0; Index < Tries; Index ++){
 		TxBufferPtr[0] = Index;
+		sendSdiData(sdiBuff,SDI_LEN);
 		sendPdiData(TxBufferPtr, RxBufferPtr);
 	}
 	xil_printf("Successfully ran AXI DMA interrupt Example\r\n");
@@ -299,8 +318,7 @@ void clearDestBuf(){
 	for(i=0; i<MAX_DATA_BUFFER_SIZE; i++) destBuf[i] = 0;
 }
 
-int init(){
-	u16 devID;
+int initMM2SFifo(XLlFifo* fifo, u16 devID){
 	XLlFifo_Config *config;
 	int status;
 
@@ -309,26 +327,25 @@ int init(){
 	/*Init ctrlcomm fifo *****************************************************/
 	// Initialize the Device Configuration Interface driver */
 
-	devID = FIFO_CTLCOM_DEV_ID;
 	config = XLlFfio_LookupConfig(devID);
 	if (!config) {
 		xil_printf("No config found for %d\r\n", devID);
 		return XST_FAILURE;
 	}
 
-	status = XLlFifo_CfgInitialize(&fifoInstance_ctrlcom, config, config->BaseAddress);
+	status = XLlFifo_CfgInitialize(fifo, config, config->BaseAddress);
 	if (status != XST_SUCCESS) {
 		xil_printf("Initialization failed\n\r");
 		return status;
 	}
 
-	status = XLlFifo_Status(&fifoInstance_ctrlcom);
-	XLlFifo_IntClear(&fifoInstance_ctrlcom,0xffffffff);
-	status = XLlFifo_Status(&fifoInstance_ctrlcom);
+	status = XLlFifo_Status(fifo);
+	XLlFifo_IntClear(fifo,0xffffffff);
+	status = XLlFifo_Status(fifo);
 	if(status != 0x0) {
 		xil_printf("\n error : Reset value of ISR0 : 0x%x\t"
 				    "Expected : 0x0\n\r",
-				    XLlFifo_Status(&fifoInstance_ctrlcom));
+				    XLlFifo_Status(fifo));
 		return XST_FAILURE;
 	}
 	return status;
@@ -383,6 +400,7 @@ int fifoSend(XLlFifo *InstancePtr, u32  *SourceAddr, u32 cnt)
 {
 	int j;
 	u32 data;
+	xil_printf("\nSending %d words to the fifo", cnt);
 	for (j=0 ; j < cnt ; j++){
 		if( XLlFifo_iTxVacancy(InstancePtr) ){
 			data = *(SourceAddr +j);
