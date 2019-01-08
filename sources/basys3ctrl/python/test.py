@@ -11,7 +11,7 @@ C_EXPECTED_OUT = 0xC001
 ACK_LEN = 4
 PARAM_LEN = 2
 OUT_LEN = 16
-TRACE_NUM = 1000
+TRACE_NUM = 10
 
 def writeConfig(param, value):
     """
