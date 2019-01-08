@@ -246,7 +246,7 @@ proc create_root_design { parentCell } {
   set do_ready [ create_bd_port -dir O do_ready ]
   set do_valid [ create_bd_port -dir I do_valid ]
   set dout [ create_bd_port -dir I -from 3 -to 0 dout ]
-  set dut_clk [ create_bd_port -dir O -type clk dut_clk ]
+  set dut_clk [ create_bd_port -dir O -from 0 -to 0 -type clk dut_clk ]
   set dut_rst [ create_bd_port -dir O dut_rst ]
   set reset [ create_bd_port -dir I -type rst reset ]
   set_property -dict [ list \
@@ -299,15 +299,6 @@ CONFIG.USE_BOARD_FLOW {true} \
   # Create instance: dutcomm_0, and set properties
   set dutcomm_0 [ create_bd_cell -type ip -vlnv user.org:user:dutcomm:1.0 dutcomm_0 ]
 
-  set_property -dict [ list \
-CONFIG.TDATA_NUM_BYTES {4} \
- ] [get_bd_intf_pins /dutcomm_0/M_AXIS]
-
-  set_property -dict [ list \
-CONFIG.NUM_READ_OUTSTANDING {1} \
-CONFIG.NUM_WRITE_OUTSTANDING {1} \
- ] [get_bd_intf_pins /dutcomm_0/S_AXI]
-
   # Create instance: mdm_1, and set properties
   set mdm_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:mdm:3.2 mdm_1 ]
 
@@ -343,6 +334,14 @@ CONFIG.RESET_BOARD_INTERFACE {reset} \
 CONFIG.USE_BOARD_FLOW {true} \
  ] $rst_clk_wiz_1_5M
 
+  # Create instance: util_vector_logic_0, and set properties
+  set util_vector_logic_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_vector_logic:2.0 util_vector_logic_0 ]
+  set_property -dict [ list \
+CONFIG.C_OPERATION {not} \
+CONFIG.C_SIZE {1} \
+CONFIG.LOGO_FILE {data/sym_notgate.png} \
+ ] $util_vector_logic_0
+
   # Create interface connections
   connect_bd_intf_net -intf_net axi_fifo_mm_s_0_AXI_STR_TXD [get_bd_intf_pins axi_fifo_mm_s_0/AXI_STR_TXD] [get_bd_intf_pins dutcomm_0/S_AXIS]
   connect_bd_intf_net -intf_net axi_intc_0_interrupt [get_bd_intf_pins axi_intc_0/interrupt] [get_bd_intf_pins microblaze_0/INTERRUPT]
@@ -359,7 +358,7 @@ CONFIG.USE_BOARD_FLOW {true} \
 
   # Create port connections
   connect_bd_net -net axi_uartlite_0_interrupt [get_bd_pins axi_intc_0/intr] [get_bd_pins axi_uartlite_0/interrupt]
-  connect_bd_net -net clk_wiz_1_clk_slow [get_bd_ports dut_clk] [get_bd_pins axi_fifo_mm_s_0/s_axi_aclk] [get_bd_pins clk_wiz_1/clk_slow] [get_bd_pins dutcomm_0/m_axis_aclk] [get_bd_pins dutcomm_0/s_axi_aclk] [get_bd_pins dutcomm_0/s_axis_aclk] [get_bd_pins microblaze_0_axi_periph/M00_ACLK] [get_bd_pins microblaze_0_axi_periph/M01_ACLK] [get_bd_pins rst_clk_wiz_1_5M/slowest_sync_clk]
+  connect_bd_net -net clk_wiz_1_clk_slow [get_bd_pins axi_fifo_mm_s_0/s_axi_aclk] [get_bd_pins clk_wiz_1/clk_slow] [get_bd_pins dutcomm_0/m_axis_aclk] [get_bd_pins dutcomm_0/s_axi_aclk] [get_bd_pins dutcomm_0/s_axis_aclk] [get_bd_pins microblaze_0_axi_periph/M00_ACLK] [get_bd_pins microblaze_0_axi_periph/M01_ACLK] [get_bd_pins rst_clk_wiz_1_5M/slowest_sync_clk] [get_bd_pins util_vector_logic_0/Op1]
   connect_bd_net -net clk_wiz_1_locked [get_bd_pins clk_wiz_1/locked] [get_bd_pins rst_clk_wiz_1_100M/dcm_locked] [get_bd_pins rst_clk_wiz_1_5M/dcm_locked]
   connect_bd_net -net di_ready_1 [get_bd_ports di_ready] [get_bd_pins dutcomm_0/di_ready]
   connect_bd_net -net do_valid_1 [get_bd_ports do_valid] [get_bd_pins dutcomm_0/do_valid]
@@ -378,6 +377,7 @@ CONFIG.USE_BOARD_FLOW {true} \
   connect_bd_net -net rst_clk_wiz_1_5M_peripheral_aresetn [get_bd_pins axi_fifo_mm_s_0/s_axi_aresetn] [get_bd_pins axi_intc_0/s_axi_aresetn] [get_bd_pins dutcomm_0/m_axis_aresetn] [get_bd_pins dutcomm_0/s_axi_aresetn] [get_bd_pins dutcomm_0/s_axis_aresetn] [get_bd_pins microblaze_0_axi_periph/M00_ARESETN] [get_bd_pins microblaze_0_axi_periph/M01_ARESETN] [get_bd_pins rst_clk_wiz_1_5M/peripheral_aresetn]
   connect_bd_net -net rst_clk_wiz_1_5M_peripheral_reset [get_bd_pins dutcomm_0/rst] [get_bd_pins rst_clk_wiz_1_5M/peripheral_reset]
   connect_bd_net -net sys_clock_1 [get_bd_ports sys_clock] [get_bd_pins clk_wiz_1/clk_in1]
+  connect_bd_net -net util_vector_logic_0_Res [get_bd_ports dut_clk] [get_bd_pins util_vector_logic_0/Res]
 
   # Create address segments
   create_bd_addr_seg -range 0x00010000 -offset 0x44A00000 [get_bd_addr_spaces microblaze_0/Data] [get_bd_addr_segs axi_fifo_mm_s_0/S_AXI/Mem0] SEG_axi_fifo_mm_s_0_Mem0
