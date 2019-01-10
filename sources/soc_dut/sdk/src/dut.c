@@ -46,6 +46,9 @@ int run();
 int fifoSend(XLlFifo *InstancePtr, u32 *SourceAddr, u32 cnt);
 int fifoReceive(XLlFifo *InstancePtr, u32 *DestinationAddr);
 void clearDestBuf();
+int parseVector(u8* tv, u8* pdiBuf, int* pdiLen, u8* sdiBuf, int* sdiLen);
+void reverseByteOrder(u8* src, u8* dst, int len);
+
 /************************** Variable Definitions *****************************/
 XLlFifo fifoInstance_dutcom;
 XLlFifo fifoInstance_ctrlcom;
@@ -143,7 +146,7 @@ int initDMA(){
 		XAxiDma_Config *Config;
 
 		/* Initial setup for Uart16550 */
-		xil_printf("\r\n--- Entering main() --- \r\n");
+		//xil_printf("\r\n--- Entering main() --- \r\n");
 		Config = XAxiDma_LookupConfig(DMA_DEV_ID);
 		if (!Config) {
 			xil_printf("No config found for %d\r\n", DMA_DEV_ID);
@@ -232,86 +235,152 @@ int sendSdiData(u32* sdiBuff, int byteCnt){
 	return status;
 }
 
-int main(void)
-{
-	int Status;
-	int Tries = NUMBER_OF_TRANSFERS;
-	int Index;
-	initDMA();
-	initMM2SFifo(&fifoInstanceSDI, FIFO_SDI_DEV_ID);
-	//init ctrlcom fifo when clock is available for FOBOS CTRL
-	//initMM2SFifo(&fifoInstance_ctrlcom, FIFO_CTLCOM_DEV_ID);
-	u8 tv[16] = {0xFF,  0xEE, 0xDD, 0xCC, 0xBB, 0xAA, 0x99, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00}; //LSB byte in low address
-	u32 sdiBuff[4] = {  0x55667788,0x11223344, 0x789abcde, 0x00123456}; //32bit LSB word in low address
-	//key is 00123456 789abcde 11223344 55667788
-	u8 *TxBufferPtr;
-	u8 *RxBufferPtr;
-	u8 Value;
-	TxBufferPtr = (u8 *)TX_BUFFER_BASE ;
-	RxBufferPtr = (u8 *)RX_BUFFER_BASE;
-	/* Initialize flags before start transfer test  */
-	TxDone = 0;
-	RxDone = 0;
-	Error = 0;
-
-	Value = TEST_START_VALUE;
-
-	for(Index = 0; Index < PDI_LEN; Index ++) {
-		TxBufferPtr[Index] = tv[Index];
-	}
-
-	for(Index = 0; Index < OUTPUT_LEN; Index ++) {
-		RxBufferPtr[Index] = 0;
-	}
-
-	/* Flush the SrcBuffer before the DMA transfer, in case the Data Cache
-	 * is enabled
-	 */
-	Xil_DCacheFlushRange((UINTPTR)TxBufferPtr, PDI_LEN);
-//#ifdef __aarch64__
-	Xil_DCacheFlushRange((UINTPTR)RxBufferPtr, OUTPUT_LEN);
-//#endif
-
-	/* Send a packet */
-	//set expected output len and start count
-	FWFT_TO_M_AXIS_2CLK_mWriteReg(XPAR_FWFT_TO_M_AXIS_2CLK_0_S00_AXI_BASEADDR, 0 , OUTPUT_LEN /4); //NUMBER OF OUTPUT WORDS
-	FWFT_TO_M_AXIS_2CLK_mWriteReg(XPAR_FWFT_TO_M_AXIS_2CLK_0_S00_AXI_BASEADDR, 4 , 0x00); // START COUNT
-
-
-	for(Index = 0; Index < Tries; Index ++){
-		TxBufferPtr[0] = Index;
-		sendSdiData(sdiBuff,SDI_LEN);
-		sendPdiData(TxBufferPtr, RxBufferPtr);
-	}
-	xil_printf("Successfully ran AXI DMA interrupt Example\r\n");
-	/* Disable TX and RX Ring interrupts and return success */
-
-	DisableIntrSystem(&Intc, TX_INTR_ID, RX_INTR_ID);
-
-Done:
-	xil_printf("--- Exiting main() --- \r\n");
-
-	return XST_SUCCESS;
-}
-
-/*****************************************************************************/
-//int main()
+//int main(void)
 //{
-//	int status;
-//	xil_printf("--- Entering main() ---\n\r");
-//	init();
-//	status = run();
-//	if (status != XST_SUCCESS) {
-//		xil_printf("Process Failed\n\r");
-//		xil_printf("--- Exiting main() ---\n\r");
-//		return XST_FAILURE;
+//	int Status;
+//	int Tries = NUMBER_OF_TRANSFERS;
+//	int Index;
+//	initDMA();
+//	initMM2SFifo(&fifoInstanceSDI, FIFO_SDI_DEV_ID);
+//	//init ctrlcom fifo when clock is available for FOBOS CTRL
+//	//initMM2SFifo(&fifoInstance_ctrlcom, FIFO_CTLCOM_DEV_ID);
+//	u8 tv[16] = {0xFF,  0xEE, 0xDD, 0xCC, 0xBB, 0xAA, 0x99, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00}; //LSB byte in low address
+//	u32 sdiBuff[4] = {  0x55667788,0x11223344, 0x789abcde, 0x00123456}; //32bit LSB word in low address
+//	//key is 00123456 789abcde 11223344 55667788
+//	u8 *TxBufferPtr;
+//	u8 *RxBufferPtr;
+//	u8 Value;
+//	TxBufferPtr = (u8 *)TX_BUFFER_BASE ;
+//	RxBufferPtr = (u8 *)RX_BUFFER_BASE;
+//	/* Initialize flags before start transfer test  */
+//	TxDone = 0;
+//	RxDone = 0;
+//	Error = 0;
+//
+//	Value = TEST_START_VALUE;
+//
+//	for(Index = 0; Index < PDI_LEN; Index ++) {
+//		TxBufferPtr[Index] = tv[Index];
 //	}
-//	xil_printf("Successfully ran.\n\r");
-//	xil_printf("--- Exiting main() ---\n\r");
+//
+//	for(Index = 0; Index < OUTPUT_LEN; Index ++) {
+//		RxBufferPtr[Index] = 0;
+//	}
+//
+//	/* Flush the SrcBuffer before the DMA transfer, in case the Data Cache
+//	 * is enabled
+//	 */
+//	Xil_DCacheFlushRange((UINTPTR)TxBufferPtr, PDI_LEN);
+////#ifdef __aarch64__
+//	Xil_DCacheFlushRange((UINTPTR)RxBufferPtr, OUTPUT_LEN);
+////#endif
+//
+//	/* Send a packet */
+//	//set expected output len and start count
+//	FWFT_TO_M_AXIS_2CLK_mWriteReg(XPAR_FWFT_TO_M_AXIS_2CLK_0_S00_AXI_BASEADDR, 0 , OUTPUT_LEN /4); //NUMBER OF OUTPUT WORDS
+//	FWFT_TO_M_AXIS_2CLK_mWriteReg(XPAR_FWFT_TO_M_AXIS_2CLK_0_S00_AXI_BASEADDR, 4 , 0x00); // START COUNT
+//
+//
+//	for(Index = 0; Index < Tries; Index ++){
+//		TxBufferPtr[0] = Index;
+//		sendSdiData(sdiBuff,SDI_LEN);
+//		sendPdiData(TxBufferPtr, RxBufferPtr);
+//	}
+//	xil_printf("Successfully ran AXI DMA interrupt Example\r\n");
+//	/* Disable TX and RX Ring interrupts and return success */
+//
+//	DisableIntrSystem(&Intc, TX_INTR_ID, RX_INTR_ID);
+//
+//Done:
+//	xil_printf("--- Exiting main() --- \r\n");
 //
 //	return XST_SUCCESS;
 //}
 
+/*****************************************************************************/
+int main()
+{
+	int status;
+	xil_printf("--- Entering main() ---\n\r");
+	initDMA();
+	initMM2SFifo(&fifoInstanceSDI, FIFO_SDI_DEV_ID);
+	initMM2SFifo(&fifoInstance_ctrlcom, FIFO_CTLCOM_DEV_ID);
+	//////
+
+	//////
+	status = run();
+	if (status != XST_SUCCESS) {
+		xil_printf("Process Failed\n\r");
+		xil_printf("--- Exiting main() ---\n\r");
+		return XST_FAILURE;
+	}
+	xil_printf("Successfully ran.\n\r");
+	xil_printf("--- Exiting main() ---\n\r");
+
+	return XST_SUCCESS;
+}
+
+int parseVector(u8* tv, u8* pdiBuf, int* pdiLen, u8* sdiBuf, int* sdiLen){
+	int headerSize = 4; //2 bytes data type, 2 bytes length
+	int h1Type, h1Len, h2Type, h2Len, nextHeader;
+	nextHeader = 0;
+	//header
+	h1Type = tv[nextHeader + 0] * 256 + tv[nextHeader + 1]; //data type
+	h1Len  = tv[nextHeader + 2] * 256 + tv[nextHeader + 3]; //data len
+
+	//next header index
+	nextHeader = headerSize + h1Len; //heder size
+
+	h2Type = tv[nextHeader + 0] * 256 + tv[nextHeader + 1]; //data type
+	h2Len  = tv[nextHeader + 2] * 256 + tv[nextHeader + 3]; //data len
+	xil_printf("\nparse function: %04x %d %8x %d", h1Type, h1Len, h2Type, h2Len);
+	//put in correct arrays
+	//first heaer
+	if(h1Type == 0x00c0){
+		//pdi
+		xil_printf("\nh1 is pdi. len=%d", h1Len);
+		reverseByteOrder(&tv[headerSize], pdiBuf, h1Len);
+		*pdiLen = h1Len;
+	}else if(h1Type == 0x00c1){
+		//sdi
+		xil_printf("\nh1 is sdi. len=%d", h1Len);
+		reverseByteOrder(&tv[headerSize], sdiBuf, h1Len);
+		*sdiLen = h1Len;
+	}
+	//second header
+	if(h2Type == 0x00c0){
+			//pdi
+		xil_printf("\nh2 is pdi. len=%d", h2Len);
+		reverseByteOrder(&tv[2 * headerSize + h1Len], pdiBuf, h2Len);
+		*pdiLen = h2Len;
+	}else if(h2Type == 0x00c1){
+			//sd
+		xil_printf("\nh2 is sdi. len=%d", h2Len);
+		reverseByteOrder(&tv[2 * headerSize + h1Len], sdiBuf, h2Len);
+		*sdiLen = h2Len;
+	}
+	//DEBUG only
+	int i;
+	xil_printf("\PDI:");
+	for(i=0; i< *pdiLen; i++){
+		xil_printf("\n%02x", pdiBuf[i]);
+	}
+	xil_printf("\SDI:");
+	for(i=0; i< *sdiLen; i++){
+		xil_printf("\n%02x", sdiBuf[i]);
+	}
+
+	return 0;
+}
+
+void reverseByteOrder(u8* src, u8* dst, int len){
+	//fixes byte order
+	int i;
+	for(i=0; i< len; i++){
+		//xil_printf("\nCopy %d --> %02x", (len-1-i), src[len-1-i]);
+		dst[i] = src[len-1-i];
+	}
+}
 /*****************************************************************************/
 void clearDestBuf(){
 	int i;
@@ -355,10 +424,44 @@ int run()
 {
 	int status;
 	long j;
-	
+	///////////////////////////////////////////////////////////////////
+	u8 pdiBuf[PDI_LEN];
+	u8 sdiBuf[SDI_LEN];
+	u8 doBuf[OUTPUT_LEN];
+	int pdiLen = 0;
+	int sdiLen = 0;
+	//////////////////////////////////////////////////////////////////
 	status = XST_SUCCESS;
 	///////////////////////////////////////////////////////////////////
+	u8 *TxBufferPtr;
+	u8 *RxBufferPtr;
+
+	u8 Value;
+	TxBufferPtr = (u8 *)TX_BUFFER_BASE ;
+	RxBufferPtr = (u8 *)RX_BUFFER_BASE;
+	/* Initialize flags before start transfer test  */
+	TxDone = 0;
+	RxDone = 0;
+	Error = 0;
+
+	Value = TEST_START_VALUE;
+
+
+
+
+	Xil_DCacheFlushRange((UINTPTR)TxBufferPtr, PDI_LEN);
+	//#ifdef __aarch64__
+	Xil_DCacheFlushRange((UINTPTR)RxBufferPtr, OUTPUT_LEN);
+	//#endif
+
+	/* Send a packet */
+	//set expected output len and start count
+	FWFT_TO_M_AXIS_2CLK_mWriteReg(XPAR_FWFT_TO_M_AXIS_2CLK_0_S00_AXI_BASEADDR, 0 , OUTPUT_LEN /4); //NUMBER OF OUTPUT WORDS
+	FWFT_TO_M_AXIS_2CLK_mWriteReg(XPAR_FWFT_TO_M_AXIS_2CLK_0_S00_AXI_BASEADDR, 4 , 0x00); // START COUNT
+	///////////
+	
     while(1){
+
 		CTRLCOMM_mWriteReg(CTLCOMM_BASE, 0, 0); // my not be needed since FIOF sends only when a PACKET LEN is written
 		while((CTRLCOMM_mReadReg(CTLCOMM_BASE, 4) &0x000000FF ) != WAIT_RES){
 			//xil_printf("status:%02x\n", CTRLCOMM_mReadReg(CTLCOMM_BASE, 4) & 0x000000FF);
@@ -375,12 +478,27 @@ int run()
 		}
 		//process the data
 		//here
+		parseVector((u8*)destBuf, TxBufferPtr, &pdiLen, sdiBuf, &sdiLen);
 
+		sendSdiData(sdiBuf,SDI_LEN);
+		sendPdiData(TxBufferPtr, RxBufferPtr);
 		//NOW, return result
 
 		//push data in to the fifo
 		xil_printf("Sending back result...\n");
-		status = fifoSend(&fifoInstance_ctrlcom, destBuf, MAX_PACKET_LEN);
+		//reverse word order to send msb first
+		reverseByteOrder(RxBufferPtr, doBuf, OUTPUT_LEN);
+		u32 data, tmp;
+		for(int i=0; i<OUTPUT_LEN/WORD_SIZE; i++){
+			//fix endianess- now data is in big endian- msb in low address
+			data = *((u32*)doBuf+i);
+			tmp = (data >> 24) & 0x000000FF |
+				  (data >>  8) & 0x0000FF00 |
+				  (data <<  8) & 0x00FF0000 |
+				  (data << 24) & 0xFF000000;
+			*((u32*)doBuf+i) = tmp;
+		}
+		status = fifoSend(&fifoInstance_ctrlcom, doBuf, MAX_PACKET_LEN);
 		if (status != XST_SUCCESS){
 				xil_printf("Transmisson of Data failed\n\r");
 				return XST_FAILURE;
@@ -423,6 +541,7 @@ int fifoReceive (XLlFifo *InstancePtr, u32* DestinationAddr)
 	int i;
 	int status;
 	u32 data;
+	u32 tmp;
 	static u32 ReceiveLength;
 
 	xil_printf(" Receiving data ....\n\r");
@@ -438,8 +557,12 @@ int fifoReceive (XLlFifo *InstancePtr, u32* DestinationAddr)
 		if(XLlFifo_iRxOccupancy(InstancePtr)){
 			data = XLlFifo_RxGetWord(InstancePtr);
 		}
-
-		*(DestinationAddr+i) = data;
+		//fix endianess- now data is in big endian- msb in low address
+		tmp = (data >> 24) & 0x000000FF |
+			  (data >>  8) & 0x0000FF00 |
+			  (data <<  8) & 0x00FF0000 |
+			  (data << 24) & 0xFF000000;
+		*(DestinationAddr+i) = tmp;
 	}
    xil_printf("waiting rx done\n");
    status = XLlFifo_IsRxDone(InstancePtr);
