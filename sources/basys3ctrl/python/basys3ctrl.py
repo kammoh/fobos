@@ -9,6 +9,7 @@
 ##This uses a protocol to talk to Basys3
 ##The connection used is a UART/USB
 import serial
+import binascii
 from fobosctrl import FOBOSCtrl
 
 
@@ -28,11 +29,11 @@ class Basys3Ctrl(FOBOSCtrl):
         """
         #               WR_CONFIG       4 byte message   config number    config value 
         cmd = bytearray([0xF0, 0x03] + [0x00, 0x04] +  [0x00, param] + [ value / 256 , value % 256])
-        #print binascii.hexlify(cmd)
+        print binascii.hexlify(cmd)
         c = self.ser.write(cmd)
         ack = self.ser.read(FOBOSCtrl.ACK_LEN)
         return ack
-
+    
     def readConfig(self, param):
         """
         Reads config from the fobos  control board
@@ -41,12 +42,12 @@ class Basys3Ctrl(FOBOSCtrl):
         """
         #               RD_CONFIG       2 byte message   config number    
         cmd = bytearray([0xF0, 0x02] + [0x00, 0x02] +  [0x00, param] )
-        #print binascii.hexlify(cmd)
+        print binascii.hexlify(cmd)
         c = self.ser.write(cmd)
-        value = self.ser.read(FOBOSCtrl.PARAM_LEN)
+        value = self.ser.read(FOBOSCtrl. PARAM_LEN)
         return value
-
-    def processData(self, data):
+    
+    def processData(self, data, outLen):
         """
         Sends data to FOBOS hardware for processing, e.g. encryption
         data: The data to be processes. This is a hexadecimal string.
@@ -58,11 +59,11 @@ class Basys3Ctrl(FOBOSCtrl):
         #               PROCESS_DATA    message len         data
         cmd = bytearray([0xF0, 0x01] + [lenMsb, lenLsb]) +  bytearray.fromhex(data)
         #cmd = bytearray([0xF0, 0x01] + [lenMsb, lenLsb]) + data
-        #print binascii.hexlify(cmd)
+        print binascii.hexlify(cmd)
         c = self.ser.write(cmd)
-        result = self.ser.read(self.outLen)
+        result = self.ser.read(outLen)
         return result
-    
+
     def getModel(self):
         return self.model
     
