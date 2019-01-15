@@ -11,13 +11,16 @@
 import serial
 import binascii
 from fobosctrl import FOBOSCtrl
-
+from dummyserial import DummySerial
 
 class Basys3Ctrl(FOBOSCtrl):
 
-    def __init__(self, port, baudRate = 115200):
+    def __init__(self, port, baudRate = 115200, debug=False):
         self.model = "Basys3"
-        self.ser = serial.Serial(port, baudRate)
+        if debug == True:
+            self.ser = DummySerial()
+        else:
+            self.ser = serial.Serial(port, baudRate)
         self.outLen = 0
     
     def writeConfig(self, param, value):

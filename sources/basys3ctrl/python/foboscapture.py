@@ -8,7 +8,7 @@ from datagen import DataGenerator
 TRACE_NUM = 1000
 OUT_LEN = 16
 
-ctrl = Basys3Ctrl('/dev/ttyUSB1', 115200)
+ctrl = Basys3Ctrl('/dev/ttyUSB1', 115200, True)
 dgen = DataGenerator()
 
 data = "00C0001077446B609E646B7C9EDC1E9A070DFFB800C1001000112233445566778899AABBCCDDEEFF0081001000800001"
