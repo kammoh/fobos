@@ -66,6 +66,19 @@ class DataGenerator():
 
       return s
 
+   def randTVFile(self, pdiLen, sdiLen, rdiLen, outLen, fileName, numTVs):
+      try:
+         f = open(fileName, "w")
+      except Exception as e:
+         print "FATAL ERROR: Could not open file %s for writing" % (fileName)
+         exit()
+      else:      
+         for i in range(0, numTVs):
+            tv = self.randTestVector(pdiLen, sdiLen, rdiLen, outLen)
+            #print tv
+            f.write(tv + "\n")
+      f.close()
+
 def main():
    """
    Tesing routine
@@ -74,6 +87,7 @@ def main():
    print d.randBytes(3)
    print d.randBytesHex(3)
    print d.randTestVector(2,2,2,4)
+   d.randTVFile(2,2,2,4,"/home/bakry/Documents/dinFile.txt",10)
 
 if __name__ == '__main__':
    main()
