@@ -15,9 +15,9 @@ from dummyserial import DummySerial
 
 class Basys3Ctrl(FOBOSCtrl):
 
-    def __init__(self, port, baudRate = 115200, debug=False):
+    def __init__(self, port, baudRate = 115200, dummy=False):
         self.model = "Basys3"
-        if debug == True:
+        if dummy == True:
             self.ser = DummySerial()
         else:
             self.ser = serial.Serial(port, baudRate)
@@ -60,7 +60,7 @@ class Basys3Ctrl(FOBOSCtrl):
         lenLsb = vectorLen % 256
         lenMsb = vectorLen / 256
         #               PROCESS_DATA    message len         data
-        cmd = bytearray([0xF0, 0x01] + [lenMsb, lenLsb]) +  bytearray.fromhex(data)
+        cmd = bytearray([0xF0, 0x01] + [lenMsb, lenLsb]) +  bytearray.fromhex(data.strip())
         #cmd = bytearray([0xF0, 0x01] + [lenMsb, lenLsb]) + data
         print binascii.hexlify(cmd)
         c = self.ser.write(cmd)

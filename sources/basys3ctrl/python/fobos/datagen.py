@@ -87,7 +87,7 @@ def main():
    print d.randBytes(3)
    print d.randBytesHex(3)
    print d.randTestVector(2,2,2,4)
-   d.randTVFile(2,2,2,4,"/home/bakry/Documents/dinFile.txt",10)
+   d.randTVFile(2,2,2,4,"/home/bakry/Documents/fobos_workspace/acorn/dinFile.txt",10)
 
 if __name__ == '__main__':
    main()

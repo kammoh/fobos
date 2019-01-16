@@ -1,0 +1,62 @@
+import binascii
+import time
+import os
+import shutil
+import fobos
+#Constants################################################################################################
+WORKSPACE = "/home/bakry/Documents/fobos_workspace"
+PROJECT_NAME ="acorn"
+DIN_FILE_NAME = "dinFile.txt"
+CIPHER_FILE = "ciphertext.txt"
+TRACE_NUM = 10
+OUT_LEN = 16
+#Instantiate FOBOS objects#################################################################################
+ctrl = fobos.Basys3Ctrl('/dev/ttyUSB1', 115200, True)
+dgen = fobos.DataGenerator()
+
+#Configuration controller##################################################################################
+print 'Sending config ...'
+ack = ctrl.writeConfig(0,6) #set OUT_LEN to 6
+print binascii.hexlify(ack)
+print 'Sending config ...'
+ack = ctrl.writeConfig(1,8) #set OUT_LEN to 6
+print binascii.hexlify(ack)
+
+####read config
+param = ctrl.readConfig(0)
+print 'parameter value:'
+print binascii.hexlify(param)
+param = ctrl.readConfig(1)
+print 'parameter value:'
+print binascii.hexlify(param)
+#Configure project directories################################################################################
+
+pm = fobos.ProjectManager()
+pm.setWorkSpaceDir(WORKSPACE)
+pm.setProjName(PROJECT_NAME)
+projDir = pm.getProjDir()
+tvFileName = os.path.join(projDir, DIN_FILE_NAME)
+tvFile = open(tvFileName, "r")
+captureDir = pm.getCaptureDir()
+cipherFileName = os.path.join(captureDir, CIPHER_FILE)
+cipherFile = open(cipherFileName, "w")
+shutil.copy(tvFileName, captureDir)
+#Get traces####################################################################################################
+print 'Sending data..'
+t1 = time.time()
+string = ''
+j = 0
+while j < TRACE_NUM:
+   j+=1
+   print '==================================%s' % j
+   #data = dgen.randTestVector(16, 16, 0, 16)
+   data = tvFile.readline()
+   result = ctrl.processData(data, OUT_LEN)
+   print binascii.hexlify(result)
+   cipherFile.write(binascii.hexlify(result) + "\n")
+   
+tvFile.close()
+cipherFile.close()
+
+t2 = time.time()
+print "Time = " + str(t2 -t1)

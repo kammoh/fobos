@@ -81,12 +81,12 @@ class ProjectManager():
       creats a new directory to store capture attempt. It uses numbers to 
       """
       cnt = 1
-      while os.path.isdir(os.path.join(self.getProjDir() , "capture-" + str(cnt))):
+      while os.path.isdir(os.path.join(self.getProjDir() , "capture", "capture-" + str(cnt))):
          cnt+=1
       
       try:
-         captureDir = os.path.join(self.getProjDir() , "capture-" + str(cnt))
-         os.mkdir(captureDir)
+         captureDir = os.path.join(self.getProjDir() , "capture", "capture-" + str(cnt))
+         os.makedirs(captureDir)
          self.captureDir = captureDir
       except OSError as e:
          print ("FATAL ERROR: Cannot create directory:%s" % (captureDir))
