@@ -1,6 +1,9 @@
 # Requirements
 
 1. Vivado 2017.2 is required to build the project. It must be on the PATH, i.e. it can be invoked directrly from the shell.
+2. PYNQ-Z1 board files need to be add to Vivado. Copy `fobos/sources/pynq_controller/vivado/board_files/pynq-z1` to 
+   `<Xilinx installation directory>\Vivado\<version>\data\boards\board_files`
+ 
 
 # Build the project from source
 
