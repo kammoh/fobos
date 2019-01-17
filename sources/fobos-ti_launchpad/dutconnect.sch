@@ -916,30 +916,15 @@ F 3 "~" H 8400 1900 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	7950 1900 8200 1900
+	7950 1900 8150 1900
 Connection ~ 7950 1900
-$Comp
-L Connector_Generic:Conn_01x02 J6
-U 1 1 5BE3D888
-P 8350 1350
-F 0 "J6" V 8316 1162 50  0000 R CNN
-F 1 "Shunt1R" V 8450 1450 50  0000 R CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 8350 1350 50  0001 C CNN
-F 3 "~" H 8350 1350 50  0001 C CNN
-	1    8350 1350
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
-	8200 1900 8200 1550
+	8150 1900 8150 1550
+Connection ~ 8150 1900
 Wire Wire Line
-	8200 1550 8350 1550
-Connection ~ 8200 1900
-Wire Wire Line
-	8200 1900 8250 1900
+	8150 1900 8250 1900
 Wire Wire Line
 	8550 1900 8600 1900
-Wire Wire Line
-	8450 1550 8600 1550
 Wire Wire Line
 	8600 1550 8600 1900
 $Comp
@@ -1768,17 +1753,6 @@ CW_5V
 Wire Wire Line
 	5400 1650 5600 1650
 $Comp
-L Connector_Generic:Conn_01x02 J15
-U 1 1 5C42FE96
-P 8750 1350
-F 0 "J15" V 8716 1162 50  0000 R CNN
-F 1 "Shunt10R" V 8850 1450 50  0000 R CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 8750 1350 50  0001 C CNN
-F 3 "~" H 8750 1350 50  0001 C CNN
-	1    8750 1350
-	0    -1   -1   0   
-$EndComp
-$Comp
 L Device:R R8
 U 1 1 5C42FEFE
 P 8800 1900
@@ -1793,21 +1767,43 @@ Wire Wire Line
 	8600 1900 8650 1900
 Connection ~ 8600 1900
 Wire Wire Line
-	8950 1900 9000 1900
+	8950 1900 9050 1900
 Wire Wire Line
-	8600 1550 8750 1550
-Connection ~ 8600 1550
+	9050 1550 9050 1900
+Connection ~ 9050 1900
 Wire Wire Line
-	8850 1550 9000 1550
-Wire Wire Line
-	9000 1550 9000 1900
-Connection ~ 9000 1900
-Wire Wire Line
-	9000 1900 9300 1900
+	9050 1900 9300 1900
 Wire Wire Line
 	1600 1800 2200 1800
 Wire Wire Line
 	7500 4300 7600 4300
 Wire Wire Line
 	2700 2000 4050 2000
+$Comp
+L Jumper:Jumper_2_Open JP2
+U 1 1 5C411C7D
+P 8350 1550
+F 0 "JP2" H 8350 1785 50  0000 C CNN
+F 1 "Shunt1R" H 8350 1694 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 8350 1550 50  0001 C CNN
+F 3 "~" H 8350 1550 50  0001 C CNN
+	1    8350 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Jumper:Jumper_2_Open JP3
+U 1 1 5C411D33
+P 8850 1550
+F 0 "JP3" H 8850 1785 50  0000 C CNN
+F 1 "Shunt10R" H 8850 1694 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 8850 1550 50  0001 C CNN
+F 3 "~" H 8850 1550 50  0001 C CNN
+	1    8850 1550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8550 1550 8600 1550
+Connection ~ 8600 1550
+Wire Wire Line
+	8600 1550 8650 1550
 $EndSCHEMATC
