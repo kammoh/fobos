@@ -1,6 +1,8 @@
 # Requirements
 
 1. Vivado 2017.2 is required to build the project. It must be on the PATH, i.e. it can be invoked directrly from the shell.
+2. Basys3 board files need to be added to Vivado. Copy `fobos/sources/basys3ctrl/vivado/board_files/basys3` to
+   `<Xilinx installation directory>\Vivado\<version>\data\boards\board_files`
 
 # Build the project from source
 
@@ -29,7 +31,7 @@
 4. Link all the .c and .h files in the fobos/sources/basys3ctrl/sdk/src to the project 
    (right-click on (project/src) -> Import -> General-> file system -> browse to file). 
    make sure to check "Advanced-> Create links in the workspace" and "Create virtual folders" .
-8- Program FPGA.
-8- Run the project.
+5. Program FPGA.
+6. Run the project.
 
 
