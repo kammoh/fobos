@@ -9,7 +9,7 @@
 
 
 LINE = "update_ip_catalog -rebuild" # line seen before the bd references
-NUM_LINES = 15 #number of lines to comment out after the pattern
+NUM_LINES = 26 #number of lines to comment out after the pattern
 IN_FILE_NAME = "build_proj.tcl"
 OUT_FILE_NAME = "build_proj_modified.tcl"
 code = """
