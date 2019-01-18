@@ -29,7 +29,7 @@ entity dutcomm_v1_0 is
         dout            : in std_logic_vector(3 downto 0);
         do_valid        : in std_logic;
         do_ready        : out std_logic;
-        dut_rst         : out std_logic;
+        --dut_rst         : out std_logic;
         --
         snd_start       : out std_logic; --tell other that sending data to dut started.
         rst             : in std_logic; --also resets the dut.
@@ -165,7 +165,7 @@ architecture arch_imp of dutcomm_v1_0 is
             dout        : in STD_LOGIC_VECTOR (3 downto 0);
             do_valid    : in STD_LOGIC;
             do_ready    : out STD_LOGIC;
-            dut_rst     : out std_logic;
+            --dut_rst     : out std_logic;
             start       : in std_logic;
             status      : out std_logic_vector(7 downto 0)
          );
@@ -261,7 +261,7 @@ dutcomm_v1_0_S_AXI_inst : dutcomm_v1_0_S_AXI
             dout => dout,
             do_valid => do_valid,
             do_ready => do_ready,
-            dut_rst => dut_rst,
+            --dut_rst => dut_rst,
             start => start,
             status => status,
             snd_start => snd_start,
