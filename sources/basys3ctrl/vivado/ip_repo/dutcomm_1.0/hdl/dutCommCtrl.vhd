@@ -142,6 +142,10 @@ case current_state is
             next_state <= S_SND;
         else
             dut_working <= '1';
+            --due to inverted clock, last 4bit block sent is not counted. So it stays in the FIFO and software will hang
+            --this is becaus di_ready is set to zero half-cycle early.
+            --drain the fifo
+            tx_ready <= '1'; 
             next_state <= S_WAIT_VALID;
         end if;
     
