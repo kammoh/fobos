@@ -4,14 +4,15 @@ import os
 import shutil
 import fobos
 #Constants################################################################################################
-WORKSPACE = "/home/bakry/Documents/fobos_workspace"
-PROJECT_NAME ="acorn"
+WORKSPACE = "/home/aabdulga/fobos_workspace"
+PROJECT_NAME ="aes"
 DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
-TRACE_NUM = 10
+DUT_BIT_FILE = "FOBOS_DUT.bit"
+TRACE_NUM = 1000
 OUT_LEN = 16
 #Instantiate FOBOS objects#################################################################################
-ctrl = fobos.Basys3Ctrl('/dev/ttyUSB1', 115200, True)
+ctrl = fobos.Basys3Ctrl('/dev/ttyUSB1', 115200, False)
 dgen = fobos.DataGenerator()
 
 #Configuration controller##################################################################################
@@ -30,11 +31,16 @@ param = ctrl.readConfig(1)
 print 'parameter value:'
 print binascii.hexlify(param)
 #Configure project directories################################################################################
-
 pm = fobos.ProjectManager()
 pm.setWorkSpaceDir(WORKSPACE)
 pm.setProjName(PROJECT_NAME)
 projDir = pm.getProjDir()
+#program DUT
+dut = fobos.Nexys3DUT()
+bitFile = os.path.join(projDir, DUT_BIT_FILE)
+dut.setBitFile(bitFile)
+dut.program()
+########
 tvFileName = os.path.join(projDir, DIN_FILE_NAME)
 tvFile = open(tvFileName, "r")
 captureDir = pm.getCaptureDir()
