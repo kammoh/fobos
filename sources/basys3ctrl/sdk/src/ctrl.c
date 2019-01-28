@@ -68,12 +68,14 @@
 #include "xllfifo.h"
 #include "xstatus.h"
 #include "dutcomm.h"
+#include "dut_controller.h"
 
 #define DUTCOMM_BASE 			XPAR_DUTCOMM_0_S_AXI_BASEADDR
 
 /******Fifo params
  */
 #define FIFO_DEV_ID	   	XPAR_AXI_FIFO_0_DEVICE_ID
+#define DUT_CTRL_BASE 	XPAR_DUT_CONTROLLER_0_S_AXI_BASEADDR
 
 #define WORD_SIZE 4			/* Size of words in bytes */
 #define MAX_PACKET_LEN 12 //tetsing with 48 byte message
@@ -97,22 +99,38 @@
  */
 #define CONFIG_ARR_SIZE			32
 #define TEST_BUFFER_SIZE        100
-#define ACK_LEN                 4 //acknowledgement length in bytes
+#define STATUS_LEN              4 //acknowledgement length in bytes
 #define HEADER_SIZE             4 //command field size in bytes
 #define PARAM_LEN				2 //config prarameter length in bytes
+///Operation status Status
+#define OK						0
+#define ERROR					1
+#define TIMOUT					2
 
+u32 okStatus 			= OK;
+u32 errorStatus 		= ERROR;
+u32 timeoutStatus 		= TIMOUT;
 
 //Commands
 #define PROC_DATA		0xF001
 #define RD_CONFIG		0xF002
 #define WR_CONFIG		0xF003
 
+
 //config parameters numbers. Each number can serve as register number
 //or array index. These parameters must be sent to the hardware board.
 #define OUT_LEN     0
-#define TRIG_WAIT   1
+//trigger module
+#define TRG_WAIT    1
 #define TRG_LEN     2
-#define TRG_TYPE    3
+#define TRG_MODE    3
+//reset module
+#define TIME_TO_RST 4
+#define FORCE_RST   5
+#define RELEASE_RST 6
+//timeout module
+#define TIMEOUT		7
+#define TIMEOUT_ACK 8
 //DUTCOMM status
 #define DONE		0x1a
 //testing fifo/dutcomm
@@ -153,6 +171,17 @@ int processData(void);
 int XLlFifoPollingExample(XLlFifo *InstancePtr, u16 DeviceId);
 int TxSend(XLlFifo *InstancePtr, u32 *SourceAddr);
 int RxReceive(XLlFifo *InstancePtr, u32 *DestinationAddr);
+
+/********************************************************************************/
+void forceReset();
+void setTimeToReset(u32 cycles);
+void setTimeOut(u32 timeout);
+void setTimeoutAck();
+void setTriggerLength(u32 length);
+void setTriggerWait(u32 wait);
+void setTriggerMode(u32 mode);
+
+int applyConfig(int confNum, u32 value);
 
 /************************** Variable Definitions *****************************/
 
@@ -322,6 +351,8 @@ int XLlFifoPollingExample(XLlFifo *InstancePtr, u16 DeviceId)
 
 	return Status;
 }
+
+
 int UartLiteIntrExample(u16 DeviceId)
 {
 	int Status;
@@ -411,15 +442,31 @@ int UartLiteIntrExample(u16 DeviceId)
 
 			confNum =  ReceiveBuffer[0] * 256 + ReceiveBuffer[1];
 			value =  ReceiveBuffer[2] * 256 + ReceiveBuffer[3];
-			config[confNum] = value;
+
+			Status = applyConfig(confNum, value);
+
 			//send ack back
 			TotalSentCount = 0;
-			XUartLite_Send(&UartLite, ReceiveBuffer, ACK_LEN);
-		    while (TotalSentCount != ACK_LEN);
+			//send status
+			if(Status == OK){
+				XUartLite_Send(&UartLite, &okStatus, STATUS_LEN);
+			}else{
+				XUartLite_Send(&UartLite, &errorStatus, STATUS_LEN);
+			}
+
+		    while (TotalSentCount != STATUS_LEN);
 		    TotalSentCount = 0;
 			break;
 		case RD_CONFIG:
 			confNum =  ReceiveBuffer[0] * 256 + ReceiveBuffer[1];
+			if(confNum > CONFIG_ARR_SIZE - 1){
+				XUartLite_Send(&UartLite, &errorStatus, STATUS_LEN);
+				break;
+			}else{
+				XUartLite_Send(&UartLite, &okStatus, STATUS_LEN);
+			}
+		    while (TotalSentCount != STATUS_LEN);
+			TotalSentCount = 0;
 			value = config[confNum];
 			SendBuffer[1] = value % 256;
 			SendBuffer[0] = value / 256;
@@ -439,18 +486,31 @@ int UartLiteIntrExample(u16 DeviceId)
 			//xil_printf("Processing data ...\n");
 			/* Transmit the Data Stream */
 
-			processData();
+			Status = processData();
+			if (Status == OK){
+				//send status
+				XUartLite_Send(&UartLite, &okStatus, STATUS_LEN);
+				while (TotalSentCount != STATUS_LEN);
+				TotalSentCount = 0;
+				//send response
+				TotalSentCount = 0;
+				XUartLite_Send(&UartLite, SendBuffer, expectedOutLen);
+				while (TotalSentCount != expectedOutLen);
+				TotalSentCount = 0;
+			}else if(Status == TIMEOUT){
+				XUartLite_Send(&UartLite, &timeoutStatus, STATUS_LEN);
+				while (TotalSentCount != STATUS_LEN);
+				TotalSentCount = 0;
+
+			}
+			break;
 
 		   /*
 	    	* Wait for the entire buffer to be received, letting the interrupt
 		  * processing work in the background, this function may get locked
 		  * up in this loop if the interrupts are not working correctly.
 		   */
-			TotalSentCount = 0;
-			XUartLite_Send(&UartLite, SendBuffer, expectedOutLen);
-		   while (TotalSentCount != expectedOutLen);
-		   TotalSentCount = 0;
-		   break;
+
 
 		default:
 			break;
@@ -471,6 +531,7 @@ int UartLiteIntrExample(u16 DeviceId)
 
 int processData(){
 	int Status;
+	int timeoutStatus;
 	int i;
 	volatile long int j;
 	//clear sendBuffer
@@ -491,7 +552,20 @@ int processData(){
 	//some delay
 	//for(j=0; j< 50000; j++);
 	//wait until dutcom gets data back from dut
-	while((DUTCOMM_mReadReg(DUTCOMM_BASE,4) & 0x000000FF) != DONE);
+	while((DUTCOMM_mReadReg(DUTCOMM_BASE,4) & 0x000000FF) != DONE){
+		//check if timeout
+		timeoutStatus = DUT_CONTROLLER_mReadReg(DUT_CTRL_BASE, 5);
+		//reset all
+		if (timeoutStatus == 4){
+			//resetAll();
+			forceReset();
+			//reset fifo
+			XLlFifo_Reset(&FifoInstance);
+			releaseReset();
+
+			return TIMEOUT;
+		}
+	}
 	//xil_printf("after delay\n");
 	/* Revceive the Data Stream */
 	//xil_printf("Recieving data...\n");
@@ -512,7 +586,7 @@ int processData(){
 	DUTCOMM_mWriteReg(DUTCOMM_BASE,0,0); //release send_data my not be needed since FIOF sends only when a PACKET LEN is written
 
 
-	return 0;
+	return OK;
 }
 
 /*****************************************************************************/
@@ -747,5 +821,112 @@ int RxReceive (XLlFifo *InstancePtr, u32* DestinationAddr)
 
 	return XST_SUCCESS;
 }
+/*
+ *
+ *   trigger_length  <= slv_reg0;
+    trigger_wait    <= slv_reg1;
+    trigger_mode    <= slv_reg2(7 downto 0);
+    --timeout module
+    timeout         <= slv_reg3;
+    ack             <= slv_reg4(0);
+    --slv_reg5 is for reading timeout_status
+	-- User logic ends
+	time_to_rst     <= slv_reg6;
+	force_rst       <= slv_reg7(0);
+ *
+ *
+ */
 
- 
+/********************************************************************************/
+//Reset module
+void forceReset(){
+	 DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x1C, 1);     //register 7
+}
+
+void releaseReset(){
+	 DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x1C, 0);     //register 7
+}
+
+void setTimeToReset(u32 cycles){
+	DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x18, cycles); //register 6
+}
+
+//Timeout module
+void setTimeOut(u32 timeout){
+	DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x0C, timeout); //register 3
+}
+
+void setTimeoutAck(){
+	DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x10, 1);       //register 4
+}
+void releaseTimeoutAck(){
+	DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x10, 0);       //register 4
+}
+
+//trigger
+void setTriggerLength(u32 length){
+	DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x00, length);  //register 0
+}
+
+void setTriggerWait(u32 wait){
+	DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x04, wait);    //register 1
+}
+
+void setTriggerMode(u32 mode){
+	DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x08, mode);    //register 2
+}
+
+/*
+ *
+ * #define OUT_LEN     0
+//trigger module
+#define TRG_WAIT   1
+#define TRG_LEN     2
+#define TRG_TYPE    3
+//reset module
+#define TIME_TO_RST 4
+#define FORCE_RST   5
+//timeout module
+#define TIMEOUT		6
+#define TIMEOUT_ACK 7
+ */
+int applyConfig(int confNum, u32 value){
+	int status = OK;
+	config[confNum] = value;
+	//write configuration to hardware registers if needed
+
+	switch(confNum){
+		case OUT_LEN:
+				//no need to do anything else
+				break;
+		case TRG_WAIT:
+				setTriggerWait(value);
+				break;
+		case TRG_LEN:
+				setTriggerLength(value);
+				break;
+		case TRG_MODE:
+				setTriggerMode(value);
+				break;
+		case TIME_TO_RST:
+				setTimeToReset(value);
+				break;
+		case FORCE_RST:
+				forceReset();
+				break;
+		case RELEASE_RST:
+				releaseReset();
+				break;
+		case TIMEOUT:
+				setTimeOut(value);
+				break;
+		case TIMEOUT_ACK:
+				releaseTimeoutAck();
+				break;
+		default:
+				status = ERROR;
+				break;
+	}
+	return status;
+
+}

@@ -17,19 +17,25 @@ dgen = fobos.DataGenerator()
 
 #Configuration controller##################################################################################
 print 'Sending config ...'
-ack = ctrl.writeConfig(0,6) #set OUT_LEN to 6
-print binascii.hexlify(ack)
+status = ctrl.writeConfig(5, 0) #FORCE RESET
+print binascii.hexlify(status)
 print 'Sending config ...'
-ack = ctrl.writeConfig(1,8) #set OUT_LEN to 6
-print binascii.hexlify(ack)
-
+status = ctrl.writeConfig(6, 0) #RLEASE RESET
+print binascii.hexlify(status)
+print 'Sending config ...'
+status = ctrl.writeConfig(0,10) #set OUT_LEN to 6
+print binascii.hexlify(status)
+print 'Sending config ...'
+status = ctrl.writeConfig(1,8) #set OUT_LEN to 6
+print binascii.hexlify(status)
 ####read config
-param = ctrl.readConfig(0)
+status, param = ctrl.readConfig(100)
 print 'parameter value:'
 print binascii.hexlify(param)
-param = ctrl.readConfig(1)
+status, param = ctrl.readConfig(1)
 print 'parameter value:'
 print binascii.hexlify(param)
+
 #Configure project directories################################################################################
 pm = fobos.ProjectManager()
 pm.setWorkSpaceDir(WORKSPACE)
@@ -48,6 +54,7 @@ cipherFileName = os.path.join(captureDir, CIPHER_FILE)
 cipherFile = open(cipherFileName, "w")
 shutil.copy(tvFileName, captureDir)
 #Get traces####################################################################################################
+
 print 'Sending data..'
 t1 = time.time()
 string = ''
@@ -57,7 +64,9 @@ while j < TRACE_NUM:
    print '==================================%s' % j
    #data = dgen.randTestVector(16, 16, 0, 16)
    data = tvFile.readline()
-   result = ctrl.processData(data, OUT_LEN)
+   status, result = ctrl.processData(data, OUT_LEN)
+   if status != bytearray([0,0,0,0]):
+      print "TIMEOUT"
    print binascii.hexlify(result)
    cipherFile.write(binascii.hexlify(result) + "\n")
    
