@@ -15,6 +15,9 @@ entity dut_controller_v1_0 is
 		C_S_AXI_ADDR_WIDTH	: integer	:= 5
 	);
 	port (
+	    --debug only
+	    d_timeout : out std_logic_vector(31 downto 0);
+	    d_timeout_status : out std_logic_vector(7 downto 0);
 		-- Users to add ports here
         --trigger module     
         trigger_out : out std_logic;
@@ -224,6 +227,10 @@ dut_controller_v1_0_S_AXI_inst : dut_controller_v1_0_S_AXI
       );
     
     dut_rst    <= dut_rst_cmd or force_rst;
+    
+    --debug only
+    d_timeout <= timeout;
+    d_timeout_status <= timeout_status;
     -- User logic ends
 
 end arch_imp;

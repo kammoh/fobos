@@ -103,13 +103,13 @@
 #define HEADER_SIZE             4 //command field size in bytes
 #define PARAM_LEN				2 //config prarameter length in bytes
 ///Operation status Status
-#define OK						0
-#define ERROR					1
-#define TIMOUT					2
+#define S_OK						0
+#define S_ERROR					1
+#define S_TIMEOUT					2
 
-u32 okStatus 			= OK;
-u32 errorStatus 		= ERROR;
-u32 timeoutStatus 		= TIMOUT;
+u32 okStatus 			= S_OK;
+u32 errorStatus 		= S_ERROR;
+u32 timeoutStatus 		= S_TIMEOUT;
 
 //Commands
 #define PROC_DATA		0xF001
@@ -131,6 +131,7 @@ u32 timeoutStatus 		= TIMOUT;
 //timeout module
 #define TIMEOUT		7
 #define TIMEOUT_ACK 8
+#define REL_TIMEOUT_ACK 9
 //DUTCOMM status
 #define DONE		0x1a
 //testing fifo/dutcomm
@@ -448,7 +449,7 @@ int UartLiteIntrExample(u16 DeviceId)
 			//send ack back
 			TotalSentCount = 0;
 			//send status
-			if(Status == OK){
+			if(Status == S_OK){
 				XUartLite_Send(&UartLite, &okStatus, STATUS_LEN);
 			}else{
 				XUartLite_Send(&UartLite, &errorStatus, STATUS_LEN);
@@ -487,7 +488,7 @@ int UartLiteIntrExample(u16 DeviceId)
 			/* Transmit the Data Stream */
 
 			Status = processData();
-			if (Status == OK){
+			if (Status == S_OK){
 				//send status
 				XUartLite_Send(&UartLite, &okStatus, STATUS_LEN);
 				while (TotalSentCount != STATUS_LEN);
@@ -497,7 +498,7 @@ int UartLiteIntrExample(u16 DeviceId)
 				XUartLite_Send(&UartLite, SendBuffer, expectedOutLen);
 				while (TotalSentCount != expectedOutLen);
 				TotalSentCount = 0;
-			}else if(Status == TIMEOUT){
+			}else if(Status == S_TIMEOUT){
 				XUartLite_Send(&UartLite, &timeoutStatus, STATUS_LEN);
 				while (TotalSentCount != STATUS_LEN);
 				TotalSentCount = 0;
@@ -545,25 +546,25 @@ int processData(){
 	Status = TxSend(&FifoInstance, ReceiveBuffer);
 	//xil_printf("Data sent!!\n");
 
-	if (Status != XST_SUCCESS){
-		xil_printf("Transmisson of Data failed\n\r");
-		return XST_FAILURE;
+	if (Status != S_OK){
+		return S_TIMEOUT;
 	}
 	//some delay
 	//for(j=0; j< 50000; j++);
 	//wait until dutcom gets data back from dut
 	while((DUTCOMM_mReadReg(DUTCOMM_BASE,4) & 0x000000FF) != DONE){
 		//check if timeout
-		timeoutStatus = DUT_CONTROLLER_mReadReg(DUT_CTRL_BASE, 5);
 		//reset all
-		if (timeoutStatus == 4){
+		if (DUT_CONTROLLER_mReadReg(DUT_CTRL_BASE, 20) == 4){
 			//resetAll();
 			forceReset();
 			//reset fifo
 			XLlFifo_Reset(&FifoInstance);
+			DUTCOMM_mWriteReg(DUTCOMM_BASE,0,0); //release snd_start
+
 			releaseReset();
 
-			return TIMEOUT;
+			return S_TIMEOUT;
 		}
 	}
 	//xil_printf("after delay\n");
@@ -586,7 +587,7 @@ int processData(){
 	DUTCOMM_mWriteReg(DUTCOMM_BASE,0,0); //release send_data my not be needed since FIOF sends only when a PACKET LEN is written
 
 
-	return OK;
+	return S_OK;
 }
 
 /*****************************************************************************/
@@ -757,13 +758,16 @@ int TxSend(XLlFifo *InstancePtr, u32  *SourceAddr)
 //	xil_printf(" waiting for txDone... \r\n");
 	/* Check for Transmission completion */
 	while( !(XLlFifo_IsTxDone(InstancePtr)) ){
-
+		int status = DUT_CONTROLLER_mReadReg(DUT_CTRL_BASE, 20);
+		if (status == 4){
+			return S_TIMEOUT;
+		}
 	}
 	//xil_printf("txDone... \r\n");
 
 
 	/* Transmission Complete */
-	return XST_SUCCESS;
+	return S_OK;
 }
 
 /*****************************************************************************/
@@ -891,7 +895,7 @@ void setTriggerMode(u32 mode){
 #define TIMEOUT_ACK 7
  */
 int applyConfig(int confNum, u32 value){
-	int status = OK;
+	int status = S_OK;
 	config[confNum] = value;
 	//write configuration to hardware registers if needed
 
@@ -921,10 +925,13 @@ int applyConfig(int confNum, u32 value){
 				setTimeOut(value);
 				break;
 		case TIMEOUT_ACK:
+				setTimeoutAck();
+				break;
+		case REL_TIMEOUT_ACK:
 				releaseTimeoutAck();
 				break;
 		default:
-				status = ERROR;
+				status = S_ERROR;
 				break;
 	}
 	return status;

@@ -26,6 +26,9 @@ print 'Sending config ...'
 status = ctrl.writeConfig(0,10) #set OUT_LEN to 6
 print binascii.hexlify(status)
 print 'Sending config ...'
+status = ctrl.writeConfig(7, 5) #set TIMEOUT
+print binascii.hexlify(status)
+print 'Sending config ...'
 status = ctrl.writeConfig(1,8) #set OUT_LEN to 6
 print binascii.hexlify(status)
 ####read config
@@ -45,7 +48,7 @@ projDir = pm.getProjDir()
 dut = fobos.Nexys3DUT()
 bitFile = os.path.join(projDir, DUT_BIT_FILE)
 dut.setBitFile(bitFile)
-dut.program()
+#dut.program()
 ########
 tvFileName = os.path.join(projDir, DIN_FILE_NAME)
 tvFile = open(tvFileName, "r")
