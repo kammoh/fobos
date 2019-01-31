@@ -33,12 +33,15 @@ entity timeout_mod is
            op_done     : in std_logic;
            ack : in std_logic; --ack from pc that it knows timeout happend
            timeout : in STD_LOGIC_VECTOR (31 downto 0);
-           status : out STD_LOGIC_VECTOR (7 downto 0));
+           status : out STD_LOGIC_VECTOR (7 downto 0);
+           d_en_module : out std_logic;
+           d_timeout_cnt    : out std_logic_vector(31 downto 0)
+           );
 end timeout_mod;
    
 architecture behav of timeout_mod is
 ----timeout 
-type state is (S_IDLE, S_STARTED, S_TIMEDOUT, S_ACK_SEEN);
+type state is (S_IDLE, S_STARTED, S_TIMEDOUT);
 constant C_IDLE     : std_logic_vector(7 downto 0)     := x"01";
 constant C_STARTED  : std_logic_vector(7 downto 0)     := x"02";
 constant C_TIMEDOUT : std_logic_vector(7 downto 0)     := x"04";
@@ -112,23 +115,28 @@ case current_state is
     when S_TIMEDOUT =>
         status <= C_TIMEDOUT;
         if ack = '1' then 
-            next_state <= S_ACK_SEEN;
+            --next_state <= S_ACK_SEEN;
+            next_state <= S_IDLE;
         else
             next_state <= S_TIMEDOUT;
         end if;
     
-    when S_ACK_SEEN =>
-        status <= C_ACK_SEEN;
-        if ack = '1' then
-            next_state <= S_ACK_SEEN;
-        else
-            next_state <= S_IDLE;
-        end if;
+--    when S_ACK_SEEN =>
+--        status <= C_ACK_SEEN;
+--        if ack = '1' then
+--            next_state <= S_ACK_SEEN;
+--        else
+--            next_state <= S_IDLE;
+--        end if;
 end case;
     
 end process;
 ----
 timedout <= '1' when unsigned(timeout_cnt) >= unsigned(timeout) else '0';
-en_module <= '1' when timeout > x"00000000" else '0'; --if timeout not set then nothing to do
+en_module <= '1' when timeout /= x"00000000" else '0'; --if timeout not set then nothing to do
+
+--debug
+d_en_module <= en_module;
+d_timeout_cnt <= std_logic_vector(timeout_cnt);
 
 end behav;

@@ -26,7 +26,7 @@ print 'Sending config ...'
 status = ctrl.writeConfig(0,10) #set OUT_LEN to 6
 print binascii.hexlify(status)
 print 'Sending config ...'
-status = ctrl.writeConfig(7, 5) #set TIMEOUT
+status = ctrl.writeConfig(7, 600) #set TIMEOUT
 print binascii.hexlify(status)
 print 'Sending config ...'
 status = ctrl.writeConfig(1,8) #set OUT_LEN to 6

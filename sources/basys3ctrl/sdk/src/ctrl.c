@@ -130,8 +130,8 @@ u32 timeoutStatus 		= S_TIMEOUT;
 #define RELEASE_RST 6
 //timeout module
 #define TIMEOUT		7
-#define TIMEOUT_ACK 8
-#define REL_TIMEOUT_ACK 9
+//#define TIMEOUT_ACK 8
+//#define REL_TIMEOUT_ACK 9
 //DUTCOMM status
 #define DONE		0x1a
 //testing fifo/dutcomm
@@ -172,6 +172,7 @@ int processData(void);
 int XLlFifoPollingExample(XLlFifo *InstancePtr, u16 DeviceId);
 int TxSend(XLlFifo *InstancePtr, u32 *SourceAddr);
 int RxReceive(XLlFifo *InstancePtr, u32 *DestinationAddr);
+void delay(long loops);
 
 /********************************************************************************/
 void forceReset();
@@ -247,7 +248,7 @@ int main(void)
 			return XST_FAILURE;
 		}
 		//set send_data ro 0
-		DUTCOMM_mWriteReg(DUTCOMM_BASE,0,0);// my not be needed since FIOF sends only when a PACKET LEN is written
+		//DUTCOMM_mWriteReg(DUTCOMM_BASE,0,0);// my not be needed since FIOF sends only when a PACKET LEN is written
 
 
     //configure GPIO
@@ -279,7 +280,11 @@ int main(void)
 	xil_printf("Successfully ran Uartlite interrupt Example\r\n");
 	return XST_SUCCESS;
 }
-
+/*****************************************************************************/
+void delay(long loops){
+	volatile long i = 0;
+	while(i < loops) i++;
+}
 /****************************************************************************/
 /**
 *
@@ -541,12 +546,21 @@ int processData(){
 	}
 	//xil_printf("processData() called\n");
 	//XGpio_DiscreteWrite(&Gpio, 1,1);
-	DUTCOMM_mWriteReg(DUTCOMM_BASE,0,1); //set send_data to 1, my not be needed since FIOF sends only when a PACKET LEN is written
+	//DUTCOMM_mWriteReg(DUTCOMM_BASE,0,1); //set send_data to 1, my not be needed since FIOF sends only when a PACKET LEN is written
 
 	Status = TxSend(&FifoInstance, ReceiveBuffer);
 	//xil_printf("Data sent!!\n");
 
 	if (Status != S_OK){
+		forceReset();
+		//reset fifo
+		XLlFifo_Reset(&FifoInstance);
+		//DUTCOMM_mWriteReg(DUTCOMM_BASE,0,0); //release snd_start
+		//acknowlage timeout
+		//setTimeoutAck();
+		//delay(1000);
+		//releaseTimeoutAck();
+		releaseReset();
 		return S_TIMEOUT;
 	}
 	//some delay
@@ -560,8 +574,11 @@ int processData(){
 			forceReset();
 			//reset fifo
 			XLlFifo_Reset(&FifoInstance);
-			DUTCOMM_mWriteReg(DUTCOMM_BASE,0,0); //release snd_start
-
+			//DUTCOMM_mWriteReg(DUTCOMM_BASE,0,0); //release snd_start
+			//acknowlage timeout
+			//setTimeoutAck();
+			//delay(1000);
+			//releaseTimeoutAck();
 			releaseReset();
 
 			return S_TIMEOUT;
@@ -584,7 +601,7 @@ int processData(){
 	 * Send the buffer using the UartLite.
 	*/
 	//XGpio_DiscreteWrite(&Gpio, 1, 0);
-	DUTCOMM_mWriteReg(DUTCOMM_BASE,0,0); //release send_data my not be needed since FIOF sends only when a PACKET LEN is written
+	//DUTCOMM_mWriteReg(DUTCOMM_BASE,0,0); //release send_data my not be needed since FIOF sends only when a PACKET LEN is written
 
 
 	return S_OK;
@@ -860,12 +877,12 @@ void setTimeOut(u32 timeout){
 	DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x0C, timeout); //register 3
 }
 
-void setTimeoutAck(){
-	DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x10, 1);       //register 4
-}
-void releaseTimeoutAck(){
-	DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x10, 0);       //register 4
-}
+//void setTimeoutAck(){
+//	DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x10, 1);       //register 4
+//}
+//void releaseTimeoutAck(){
+//	DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, 0x10, 0);       //register 4
+//}
 
 //trigger
 void setTriggerLength(u32 length){
@@ -924,12 +941,12 @@ int applyConfig(int confNum, u32 value){
 		case TIMEOUT:
 				setTimeOut(value);
 				break;
-		case TIMEOUT_ACK:
-				setTimeoutAck();
-				break;
-		case REL_TIMEOUT_ACK:
-				releaseTimeoutAck();
-				break;
+//		case TIMEOUT_ACK:
+//				setTimeoutAck();
+//				break;
+//		case REL_TIMEOUT_ACK:
+//				releaseTimeoutAck();
+//				break;
 		default:
 				status = S_ERROR;
 				break;

@@ -53,7 +53,8 @@ entity dutComm is
         status      : out std_logic_vector(7 downto 0);
         snd_start   : out std_logic; --tell other that sending data to dut started.
         op_done     : out std_logic; --tell others that operation (i.e. encryption) is done.
-        dut_working : out std_logic
+        dut_working : out std_logic;
+        started     : out std_logic
         
      );
 end dutComm;
@@ -152,7 +153,8 @@ ctrl: entity work.dutCommCtrl(behav)
         sipo_en => sipo_en,
         status => status,
         op_done => op_done,
-        dut_working => dut_working
+        dut_working => dut_working,
+        started => started
         ---     
     );
     

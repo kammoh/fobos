@@ -57,17 +57,19 @@ entity dutCommCtrl is
         sipo_en       : out std_logic;
         status         : out std_logic_vector(7 downto 0);
         op_done         : out std_logic;
-        dut_working     : out std_logic
+        dut_working     : out std_logic;
+        started         : out std_logic
         ---     
     );
 end dutCommCtrl;
 
 architecture Behav of dutCommCtrl is
 
-type STATE is (S_IDLE, S_WAIT_READY, S_SND, S_WAIT_VALID, S_RCV, S_DONE );
+type STATE is (S_IDLE, S_WAIT_TXVALID, S_WAIT_READY, S_SND, S_WAIT_VALID, S_RCV, S_DONE );
 signal current_state,next_state:state;
 --status codes
 constant IDLE       : std_logic_vector(7 downto 0) := x"01";
+constant C_TX_VALID   : std_logic_vector(7 downto 0) := x"02";
 constant WAIT_READY : std_logic_vector(7 downto 0) := x"05";
 constant SND        : std_logic_vector(7 downto 0) := x"0a";
 constant WAIT_VALID : std_logic_vector(7 downto 0) := x"0f";
@@ -104,6 +106,7 @@ din_cnt_en      <= '0';
 dout_cnt_clr    <= '0';
 dout_cnt_en     <= '0';
 sipo_en         <= '0';
+started         <= '0';
 
 
 case current_state is
@@ -112,10 +115,15 @@ case current_state is
         din_cnt_clr <= '1';
         dout_cnt_clr <= '1';
         dut_rst     <= '1';
-        if start = '1' then
+        next_state <= S_WAIT_TXVALID;
+        
+    when S_WAIT_TXVALID => --we do not want started to be issue when we reset this FSM
+        status <= C_TX_VALID;
+        if tx_valid = '1' then
             next_state <= S_WAIT_READY;
+            started <= '1';
         else
-            next_state <= S_IDLE;
+            next_state <= S_WAIT_TXVALID;
         end if;
         
     when S_WAIT_READY =>
@@ -188,11 +196,12 @@ case current_state is
         
     when S_DONE =>
         status <= DONE;
-        if start = '1' then --wait unit upper level consumes the data
-            next_state <= S_DONE;
-        else
+        if tx_valid = '1' then --wait unit upper level consumes the data
             next_state <= S_IDLE;
+        else
+            next_state <= S_DONE;
         end if;
+        
     
 end case;    
 

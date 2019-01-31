@@ -35,6 +35,7 @@ entity dutcomm_v1_0 is
         rst             : in std_logic; --also resets the dut.
         op_done         : out std_logic; --tell others that operation (i.e. encryption) is done.
         dut_working     : out std_logic;
+        started         : out std_logic;
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 		-- Ports of Axi Slave Bus Interface S_AXI
@@ -266,7 +267,8 @@ dutcomm_v1_0_S_AXI_inst : dutcomm_v1_0_S_AXI
             status => status,
             snd_start => snd_start,
             op_done => op_done,
-            dut_working => dut_working
+            dut_working => dut_working,
+            started     => started
         );
 	-- User logic ends
 
