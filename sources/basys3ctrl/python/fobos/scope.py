@@ -1,19 +1,24 @@
 #class that encapsulate logic to talk to oscilloscope
 from socket import *
 import logging
+import time
+import numpy
 
 class Scope():
    """docstring fos Scope"""
    def __init__(self):
+      logging.basicConfig(filename='fobos.log', level=logging.INFO, format='%(asctime)s %(message)s')
+
       self.logger = logging.getLogger("__name__")
+      self.logger.warn("Hello")
       self.socket = socket(AF_INET, SOCK_STREAM)
       self.cutMode = 'FULL'
       self.numSamples = 20000 #number of samples to be returned for scope
       self.conf = {
          'OSCILLOSCOPE'    : "", 'OSCILLOSCOPE_IP'  : "", 'OSCILLOSCOPE_PORT' : "", 
          'RESOURCE'        : "", 'AUTOSCALE'        : "", 'IMPEDANCE'         : "",        
-         'CHANNEL_RANGE1'  : "", 'CHANNEL_RANGE2'   : "", 'CHANNEL_RANGE3'    : "", 
-         'CHANNEL_RANGE4'  : "", 'CHANNEL1_DISPLAY' : "",
+         'CHANNEL1_RANGE'  : "", 'CHANNEL2_RANGE'   : "", 'CHANNEL3_RANGE'    : "", 
+         'CHANNEL_4RANGE'  : "", 'CHANNEL1_DISPLAY' : "",
          'CHANNEL2_DISPLAY': "", 'CHANNEL3_DISPLAY' : "", 'CHANNEL4_DISPLAY'  : "", 
          'TIME_RANGE'      : "", 'TIMEBASE_REF'     : "", 'TRIGGER_SOURCE'    : "",
          'TRIGGER_MODE'    : "", 'TRIGGER_SWEEP'    : "", 'TRIGGER_LEVEL'     : "",    
@@ -34,81 +39,68 @@ class Scope():
       for key, value in conf.iteritems():
          #print key , value
          self.conf[key] = value
-      self.doConfigureScope()
 
-   def doConfigureScope(self):
+   def applyConfig(self):
       if self.conf['IMPEDANCE'] :
          cmdString = ":CHANNEL1:IMPEDANCE " + self.conf['IMPEDANCE']
-         self.logger.info("\t" + cmdString)
          self.send(cmdString + '\n')
       if self.conf['CHANNEL1_RANGE'] :
-         cmdString = ":CHANNEL1:RANGE " + self.conf['CHANNEL_RANGE1']
-         self.logger.info("\t" + cmdString)
+         cmdString = ":CHANNEL1:RANGE " + self.conf['CHANNEL1_RANGE']
          self.send(cmdString + '\n')
       if self.conf['CHANNEL2_RANGE'] :
-         cmdString = ":CHANNEL2:RANGE " + self.conf['CHANNEL_RANGE2']
-         self.logger.info("\t" + cmdString)
+         cmdString = ":CHANNEL2:RANGE " + self.conf['CHANNEL2_RANGE']
          self.send(cmdString + '\n')
       if self.conf['CHANNEL3_RANGE'] :  
-         cmdString = ":CHANNEL3:RANGE " + self.conf['CHANNEL_RANGE3']
-         self.logger.info("\t" + cmdString)
+         cmdString = ":CHANNEL3:RANGE " + self.conf['CHANNEL3_RANGE']
          self.send(cmdString+'\n')
       if self.conf['CHANNEL4_RANGE'] :
-         cmdString = ":CHANNEL4:RANGE " + self.conf['CHANNEL_RANGE4']
-         self.logger.info("\t" + cmdString)
+         cmdString = ":CHANNEL4:RANGE " + self.conf['CHANNEL4_RANGE']
          self.send(cmdString + '\n')
       if self.conf['TIME_RANGE'] :
          cmdString = ":TIM:RANG " + self.conf['TIME_RANGE']
-         self.logger.info("\t" + cmdString)
          self.send(cmdString + '\n')
       if self.conf['TIMEBASE_REF'] :
          cmdString = ":TIMEBASE:REFERENCE " + self.conf['TIMEBASE_REF']
-         self.logger.info("\t" + cmdString)
          self.send(cmdString + '\n')
       if self.conf['TRIGGER_SOURCE'] :
          cmdString = ":TRIGger:EDGE:SOURce " + self.conf['TRIGGER_SOURCE']
-         self.logger.info("\t" + cmdString)
          self.send(cmdString + '\n')
       if self.conf['TRIGGER_MODE'] :
          cmdString = ":TRIGGER:MODE " + self.conf['TRIGGER_MODE']
-         self.logger.info("\t" + cmdString)
          self.send(cmdString + '\n')
       if self.conf['TRIGGER_SWEEP'] :
          cmdString = ":TRIGGER:SWEEP " + self.conf['TRIGGER_SWEEP']
-         self.logger.info("\t" + cmdString)
          self.send(cmdString + '\n')
       if self.conf['TRIGGER_LEVEL'] :
          cmdString = ":TRIGGER:EDGE:LEVEL " + self.conf['TRIGGER_LEVEL']
-         self.logger.info("\t" + cmdString)
          self.send(cmdString + '\n')
       if self.conf['TRIGGER_SLOPE'] :
          cmdString = ":TRIGGER:EDGE:SLOPE " + self.conf['TRIGGER_SLOPE']
-         self.logger.info("\t" + cmdString)
          self.send(cmdString + '\n')
       if self.conf['ACQUIRE_TYPE'] :
          cmdString = ":ACQUIRE:TYPE " + self.conf['ACQUIRE_TYPE']
-         self.logger.info("\t" + cmdString)
          self.send(cmdString + '\n')
       if self.conf['ACQUIRE_MODE'] :
          cmdString = ":ACQUIRE:MODE " + self.conf['ACQUIRE_MODE']
-         self.logger.info("\t" + cmdString)
          self.send(cmdString + '\n')
       
       cmdString = ":ACQUIRE:COMPLETE 100"
-      self.logger.info("\t" + cmdString)
       self.send(cmdString + '\n')
       self.send(":WAVEFORM:FORMAT BYTE" + '\n')
       self.send(":WAVEFORM:POINTS:MODE RAW" + '\n')
       #get more than 1000 points only then this line is on 2/26 JK ?????
 
    def send(self, msg):
-      self.logger.info("Sending: " + msg)
+      self.logger.info("Sending to scop: " + msg)
       #testing
-      return
+      #return
       self.socket.send(msg)
 
+   def recv(self, numBytes):
+      return self.socket.recv(numBytes)
+
    def openConnection(self):
-     self.socket.connect((self.conf['OSCILLOSCOPE_IP'], self.conf['OSCILLOSCOPE_PORT']))
+     self.socket.connect((self.conf['OSCILLOSCOPE_IP'], int(self.conf['OSCILLOSCOPE_PORT'])))
      self.socket.send("*IDN?"+'\n')
      oscID = self.socket.recv(200)
      self.logger.info("\tConnected to Oscilloscope ID :" + oscID + '\n')
@@ -116,7 +108,23 @@ class Scope():
    def closeConnection(self):
       self.socket.close()
 
-   def getAlignedTracec(self):
+   def arm(self):
+      channels = []
+      if self.conf['CHANNEL1_RANGE']   != 'OFF' :
+         channels.append('CHAN1')
+      if self.conf['CHANNEL2_RANGE'] != 'OFF' :
+         channels.append('CHAN2')
+      if self.conf['CHANNEL3_RANGE'] != 'OFF' :
+         channels.append('CHAN3')
+      if self.conf['CHANNEL4_RANGE'] != 'OFF' :
+         channels.append('CHAN4')
+
+      channels = ', '.join(channels)
+      cmdString = ":DIGITIZE " + channels
+      self.send(cmdString.strip() + '\n')
+      #time.sleep(0.1)
+
+   def getAlignedTrace(self):
       powerChan = ""
       if self.conf['CHANNEL1_RANGE']   != 'OFF' :
          powerChan = 'CHAN1'
@@ -124,15 +132,17 @@ class Scope():
          powerChan = 'CHAN2'
       elif self.conf['CHANNEL3_RANGE'] != 'OFF' :
          powerChan = 'CHAN3'
-      else self.conf['CHANNEL4_RANGE'] != 'OFF' :
+      elif self.conf['CHANNEL4_RANGE'] != 'OFF' :
          powerChan = 'CHAN4'
 
       triggerChan = self.conf['TRIGGER_SOURCE']
 
-      powerTrace = readChannel(powerChan)
-      powerTrace =  self.adjustSampleSize(self.numSamples, powerTrace)
-      triggerSignal = readChannel(triggerChan)
+      powerSignal = self.readChannel(powerChan)
+      powerSignal=  self.adjustSampleSize(self.numSamples, powerSignal)
+      triggerSignal = self.readChannel(triggerChan)
       triggerSignal = self.adjustSampleSize(self.numSamples, triggerSignal)
+      alginedTrace = self.alginTrace(powerSignal, triggerSignal)
+      return alginedTrace
 
    def readChannel(self, channelName):
       t1 = time.time()
@@ -160,13 +170,14 @@ class Scope():
       print "++++++++++++++++++++++++++++++++++++++++t2-t1=%s" % str(t2-t1)
       return measuredData
 
+
    def alginTrace(self, measuredPowerData, measuredTriggerData):     
       sampleNo = 0
       firstTriggerHigh = False
       tempArray = numpy.zeros(0)
       start = 0 
       end = len(measuredTriggerData)
-      threshold = self.conf['TRIGGER_THRESHOLD']
+      threshold = self.conf['TRIGGER_LEVEL']
       for sampleNo in range(0, len(measuredTriggerData)):
          if(measuredTriggerData[sampleNo] > threshold and firstTriggerHigh == False):
             start = sampleNo
@@ -221,9 +232,12 @@ def main():
          'ACQUIRE_MODE'       : 'RTIM'   # RTIM | ETIM| SEG
    }
    sc = Scope()
+   sc.openConnection()
    sc.setConfig(scopConfig)
-   logging.basicConfig(filename='fobos.log', level=logging.INFO, format='%(asctime)s %(message)s')
    print sc.getConfig()
+   sc.openConnection()
+   sc.arm()
+   sc.closeConnection()
 
 if __name__=="__main__":
    main()

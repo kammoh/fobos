@@ -240,11 +240,6 @@ proc create_root_design { parentCell } {
   set usb_uart [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:uart_rtl:1.0 usb_uart ]
 
   # Create ports
-  set d_en_module [ create_bd_port -dir O d_en_module ]
-  set d_timeout [ create_bd_port -dir O -from 31 -to 0 d_timeout ]
-  set d_timeout_ack [ create_bd_port -dir O d_timeout_ack ]
-  set d_timeout_cnt [ create_bd_port -dir O -from 31 -to 0 d_timeout_cnt ]
-  set d_timeout_status [ create_bd_port -dir O -from 7 -to 0 d_timeout_status ]
   set di_ready [ create_bd_port -dir I di_ready ]
   set di_valid [ create_bd_port -dir O di_valid ]
   set din [ create_bd_port -dir O -from 3 -to 0 din ]
@@ -307,15 +302,6 @@ CONFIG.USE_BOARD_FLOW {true} \
 
   # Create instance: dutcomm_0, and set properties
   set dutcomm_0 [ create_bd_cell -type ip -vlnv user.org:user:dutcomm:1.0 dutcomm_0 ]
-
-  set_property -dict [ list \
-CONFIG.TDATA_NUM_BYTES {4} \
- ] [get_bd_intf_pins /dutcomm_0/M_AXIS]
-
-  set_property -dict [ list \
-CONFIG.NUM_READ_OUTSTANDING {1} \
-CONFIG.NUM_WRITE_OUTSTANDING {1} \
- ] [get_bd_intf_pins /dutcomm_0/S_AXI]
 
   # Create instance: mdm_1, and set properties
   set mdm_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:mdm:3.2 mdm_1 ]
@@ -382,11 +368,6 @@ CONFIG.LOGO_FILE {data/sym_notgate.png} \
   connect_bd_net -net di_ready_1 [get_bd_ports di_ready] [get_bd_pins dutcomm_0/di_ready]
   connect_bd_net -net do_valid_1 [get_bd_ports do_valid] [get_bd_pins dutcomm_0/do_valid]
   connect_bd_net -net dout_1 [get_bd_ports dout] [get_bd_pins dutcomm_0/dout]
-  connect_bd_net -net dut_controller_0_d_en_module [get_bd_ports d_en_module] [get_bd_pins dut_controller_0/d_en_module]
-  connect_bd_net -net dut_controller_0_d_timeout [get_bd_ports d_timeout] [get_bd_pins dut_controller_0/d_timeout]
-  connect_bd_net -net dut_controller_0_d_timeout_ack [get_bd_ports d_timeout_ack] [get_bd_pins dut_controller_0/d_timeout_ack]
-  connect_bd_net -net dut_controller_0_d_timeout_cnt [get_bd_ports d_timeout_cnt] [get_bd_pins dut_controller_0/d_timeout_cnt]
-  connect_bd_net -net dut_controller_0_d_timeout_status [get_bd_ports d_timeout_status] [get_bd_pins dut_controller_0/d_timeout_status]
   connect_bd_net -net dut_controller_0_dut_rst [get_bd_ports dut_rst] [get_bd_pins dut_controller_0/dut_rst] [get_bd_pins dutcomm_0/rst]
   connect_bd_net -net dut_controller_0_trigger_out [get_bd_ports trigger_out] [get_bd_pins dut_controller_0/trigger_out]
   connect_bd_net -net dutcomm_0_di_valid [get_bd_ports di_valid] [get_bd_pins dutcomm_0/di_valid]

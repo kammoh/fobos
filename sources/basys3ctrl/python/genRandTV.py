@@ -6,7 +6,7 @@ SDI_LEN     = 16     #length of sdi(key) in bytes
 RDI_LEN     = 0      #length of rdi(random data) in bytes
 OUTPUT_LEN  = 16     #expected output(ciphertext) length in bytes
 #store the files you generate into this directory
-OUT_FILE     = "/home/aabdulga/fobos_workspace/aes/dinFile.txt" 
+OUT_FILE     = "/home/bakry/fobosworkspace/aes/dinFile.txt" 
 
 ####################################################################################
 

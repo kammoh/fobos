@@ -85,7 +85,7 @@ class ProjectManager():
          cnt+=1
       
       try:
-         captureDir = os.path.join(self.getProjDir() , "capture", "capture-" + str(cnt))
+         captureDir = os.path.join(self.getProjDir() , "capture", "attempt-" + str(cnt))
          os.makedirs(captureDir)
          self.captureDir = captureDir
       except OSError as e:
