@@ -81,7 +81,7 @@ class ProjectManager():
       creats a new directory to store capture attempt. It uses numbers to 
       """
       cnt = 1
-      while os.path.isdir(os.path.join(self.getProjDir() , "capture", "capture-" + str(cnt))):
+      while os.path.isdir(os.path.join(self.getProjDir() , "capture", "attempt-" + str(cnt))):
          cnt+=1
       
       try:
