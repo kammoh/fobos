@@ -31,8 +31,6 @@ entity rst_mod is
            time_to_rst : in std_logic_vector(31 downto 0);
            dut_rst_cmd : out STD_LOGIC);
 end rst_mod;
-
-
    
 architecture behav of rst_mod is
 ----timeout 
@@ -79,8 +77,10 @@ begin
 --default outputs
 clr_rst_cnt <= '0';
 en_rst_cnt  <= '0';
+dut_rst_cmd <= '0';
 
 case current_state is
+
     when S_IDLE => 
         if dut_working = '1' and en_module = '1' then
             en_rst_cnt <= '1';

@@ -41,17 +41,22 @@ entity dutComm is
         rx_data     : out STD_LOGIC_VECTOR (31 downto 0);
         rx_valid    : out STD_LOGIC;
         rx_ready    : in STD_LOGIC;
+        rx_last     : out std_logic;
         din         : out STD_LOGIC_VECTOR (3 downto 0);
         di_valid    : out STD_LOGIC;
         di_ready    : in STD_LOGIC;        
         dout        : in STD_LOGIC_VECTOR (3 downto 0);
         do_valid    : in STD_LOGIC;
         do_ready    : out STD_LOGIC;
+        dut_rst     : out std_logic;
         start       : in std_logic;
         status      : out std_logic_vector(7 downto 0);
         snd_start   : out std_logic; --tell other that sending data to dut started.
         op_done     : out std_logic; --tell others that operation (i.e. encryption) is done.
-        dut_working : out std_logic
+        dut_working : out std_logic;
+        started     : out std_logic;
+        expected_out_len : in std_logic_vector(31 downto 0) 
+
         
      );
 end dutComm;
@@ -133,10 +138,12 @@ ctrl: entity work.dutCommCtrl(behav)
         tx_ready    => tx_ready,
         rx_valid    => rx_valid,
         rx_ready    => rx_ready,
+        rx_last     => rx_last,
         di_valid    => di_valid,
         di_ready    => di_ready,
         do_valid    => do_valid,
         do_ready    => do_ready,
+        dut_rst     => dut_rst,
         start       => start,
         ---Internal control/status
         din_cnt_clr => din_cnt_clr,
@@ -148,7 +155,9 @@ ctrl: entity work.dutCommCtrl(behav)
         sipo_en => sipo_en,
         status => status,
         op_done => op_done,
-        dut_working => dut_working
+        dut_working => dut_working,
+        started => started,
+        expected_out_len => expected_out_len
         ---     
     );
     

@@ -29,11 +29,13 @@ entity dutcomm_v1_0 is
         dout            : in std_logic_vector(3 downto 0);
         do_valid        : in std_logic;
         do_ready        : out std_logic;
+        dut_rst         : out std_logic;
         --
         snd_start       : out std_logic; --tell other that sending data to dut started.
         rst             : in std_logic; --also resets the dut.
         op_done         : out std_logic; --tell others that operation (i.e. encryption) is done.
         dut_working     : out std_logic;
+        started         : out std_logic;
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 		-- Ports of Axi Slave Bus Interface S_AXI
@@ -65,7 +67,7 @@ entity dutcomm_v1_0 is
 		m_axis_tvalid	: out std_logic;
 		m_axis_tdata	: out std_logic_vector(C_M_AXIS_TDATA_WIDTH-1 downto 0);
 		--m_axis_tstrb	: out std_logic_vector((C_M_AXIS_TDATA_WIDTH/8)-1 downto 0);
-		--m_axis_tlast	: out std_logic;
+		m_axis_tlast	: out std_logic;
 		m_axis_tready	: in std_logic;
 
 		-- Ports of Axi Slave Bus Interface S_AXIS
@@ -91,6 +93,7 @@ architecture arch_imp of dutcomm_v1_0 is
 		--user defined
 		start        : out std_logic;
 		status       : in std_logic_vector(7 downto 0);
+		expected_out_len : out std_logic_vector(31 downto 0);
 		--end user defined
 		S_AXI_ACLK	: in std_logic;
 		S_AXI_ARESETN	: in std_logic;
@@ -164,13 +167,16 @@ architecture arch_imp of dutcomm_v1_0 is
             dout        : in STD_LOGIC_VECTOR (3 downto 0);
             do_valid    : in STD_LOGIC;
             do_ready    : out STD_LOGIC;
+            dut_rst     : out std_logic;
             start       : in std_logic;
-            status      : out std_logic_vector(7 downto 0)
+            status      : out std_logic_vector(7 downto 0);
+            expected_out_len : in std_logic_vector(31 downto 0) 
          );
     end component dutComm;
     --user defined signals
     signal start        : std_logic;
     signal status       : std_logic_vector(7 downto 0);
+    signal expected_out_len : std_logic_vector(31 downto 0);
 
 begin
 
@@ -184,6 +190,7 @@ dutcomm_v1_0_S_AXI_inst : dutcomm_v1_0_S_AXI
 	    --user defined 
 	    start => start,
 	    status => status,
+	    expected_out_len => expected_out_len,
 	    --end user defined
 		S_AXI_ACLK	=> s_axi_aclk,
 		S_AXI_ARESETN	=> s_axi_aresetn,
@@ -251,6 +258,7 @@ dutcomm_v1_0_S_AXI_inst : dutcomm_v1_0_S_AXI
             tx_ready    => s_axis_tready,
             rx_data => m_axis_tdata,
             rx_valid => m_axis_tvalid,
+            rx_last => m_axis_tlast,
             rx_ready    => m_axis_tready,
             din        => din,
             di_valid => di_valid,
@@ -258,11 +266,14 @@ dutcomm_v1_0_S_AXI_inst : dutcomm_v1_0_S_AXI
             dout => dout,
             do_valid => do_valid,
             do_ready => do_ready,
+            dut_rst => dut_rst,
             start => start,
             status => status,
             snd_start => snd_start,
             op_done => op_done,
-            dut_working => dut_working
+            dut_working => dut_working,
+            started     => started,
+            expected_out_len => expected_out_len
         );
 	-- User logic ends
 

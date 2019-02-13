@@ -404,7 +404,12 @@ begin
 	process (slv_reg0, slv_reg1, slv_reg2, slv_reg3, slv_reg4, slv_reg5, slv_reg6, slv_reg7, axi_araddr, S_AXI_ARESETN, slv_reg_rden)
 	variable loc_addr :std_logic_vector(OPT_MEM_ADDR_BITS downto 0);
 	begin
+	    
+	    --!default value
+	    ack <= '0';
+        ------
 	    -- Address decoding for reading registers
+	    
 	    loc_addr := axi_araddr(ADDR_LSB + OPT_MEM_ADDR_BITS downto ADDR_LSB);
 	    case loc_addr is
 	      when b"000" =>
@@ -420,6 +425,12 @@ begin
 	      when b"101" =>
 	        --reg_data_out <= slv_reg5;
 	        reg_data_out <= x"000000" & timeout_status;
+	        if timeout_status = x"04" and slv_reg_rden = '1' then --x04 is timeout status
+                ack <= '1';
+             else
+                ack <= '0';
+            end if;
+            
 	      when b"110" =>
 	        reg_data_out <= slv_reg6;
 	      when b"111" =>
@@ -447,6 +458,7 @@ begin
 	  end if;
 	end process;
 
+    
 
 	-- Add user logic here
     --user defined
@@ -456,10 +468,22 @@ begin
     trigger_mode    <= slv_reg2(7 downto 0);
     --timeout module
     timeout         <= slv_reg3;
-    ack             <= slv_reg4(0);
+    --ack             <= slv_reg4(0);
     --slv_reg5 is for reading timeout_status
 	-- User logic ends
 	time_to_rst     <= slv_reg6;
 	force_rst       <= slv_reg7(0);
-
+    ---
+    ---if timeout_status is read, issue ack signal
+--     process ( slv_reg5, axi_araddr, slv_reg_rden)
+--        variable loc_addr :std_logic_vector(OPT_MEM_ADDR_BITS downto 0);
+--        begin       
+--          loc_addr := axi_araddr(ADDR_LSB + OPT_MEM_ADDR_BITS downto ADDR_LSB);
+--          if loc_addr = b"101" and timeout_status = x"04"  then
+--             ack <= '1';
+--          else
+--             ack <= '0';
+--          end if;  
+--     end process; 
+        
 end arch_imp;
