@@ -37,13 +37,6 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 # To test this script, run the following commands from Vivado Tcl console:
 # source ctrl_top_script.tcl
 
-
-# The design that will be created by this Tcl script contains the following 
-# module references:
-# FOBOS_DUT
-
-# Please add the sources of those modules before sourcing this Tcl script.
-
 # If there is no project opened, this script will create a
 # project, but make sure you do not have an existing project
 # <./myproj/project_1.xpr> in the current working folder.
@@ -164,18 +157,23 @@ proc create_root_design { parentCell } {
   set FIXED_IO [ create_bd_intf_port -mode Master -vlnv xilinx.com:display_processing_system7:fixedio_rtl:1.0 FIXED_IO ]
 
   # Create ports
+  set ck_an_n [ create_bd_port -dir I -from 3 -to 0 ck_an_n ]
+  set ck_an_p [ create_bd_port -dir I -from 3 -to 0 ck_an_p ]
+  set clk_in1 [ create_bd_port -dir I -type clk clk_in1 ]
+  set di_ready [ create_bd_port -dir I di_ready ]
+  set di_valid [ create_bd_port -dir O di_valid ]
+  set din [ create_bd_port -dir O -from 3 -to 0 din ]
+  set do_ready [ create_bd_port -dir O do_ready ]
+  set do_valid [ create_bd_port -dir I do_valid ]
+  set dout [ create_bd_port -dir I -from 3 -to 0 dout ]
+  set dut_clk [ create_bd_port -dir O -from 0 -to 0 -type clk dut_clk ]
+  set dut_rst [ create_bd_port -dir O -type rst dut_rst ]
+  set gain_0 [ create_bd_port -dir O -from 1 -to 0 gain_0 ]
+  set gain_1 [ create_bd_port -dir O -from 1 -to 0 gain_1 ]
+  set power [ create_bd_port -dir O -from 5 -to 0 power ]
+  set power_en [ create_bd_port -dir O power_en ]
+  set power_ok [ create_bd_port -dir I power_ok ]
 
-  # Create instance: FOBOS_DUT_0, and set properties
-  set block_name FOBOS_DUT
-  set block_cell_name FOBOS_DUT_0
-  if { [catch {set FOBOS_DUT_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
-     catch {common::send_msg_id "BD_TCL-105" "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   } elseif { $FOBOS_DUT_0 eq "" } {
-     catch {common::send_msg_id "BD_TCL-106" "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
-     return 1
-   }
-  
   # Create instance: axi_dma_0, and set properties
   set axi_dma_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_dma:7.1 axi_dma_0 ]
   set_property -dict [ list \
@@ -185,11 +183,48 @@ CONFIG.c_s2mm_burst_size {16} \
 CONFIG.c_sg_include_stscntrl_strm {0} \
  ] $axi_dma_0
 
+  # Create instance: axi_intc_0, and set properties
+  set axi_intc_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_intc:4.1 axi_intc_0 ]
+
   # Create instance: axi_smc, and set properties
   set axi_smc [ create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 axi_smc ]
   set_property -dict [ list \
 CONFIG.NUM_SI {2} \
  ] $axi_smc
+
+  # Create instance: axis_data_fifo_0, and set properties
+  set axis_data_fifo_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_data_fifo:1.1 axis_data_fifo_0 ]
+  set_property -dict [ list \
+CONFIG.IS_ACLK_ASYNC {1} \
+ ] $axis_data_fifo_0
+
+  # Create instance: axis_data_fifo_1, and set properties
+  set axis_data_fifo_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_data_fifo:1.1 axis_data_fifo_1 ]
+  set_property -dict [ list \
+CONFIG.IS_ACLK_ASYNC {1} \
+ ] $axis_data_fifo_1
+
+  # Create instance: clk_wiz, and set properties
+  set clk_wiz [ create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:5.4 clk_wiz ]
+  set_property -dict [ list \
+CONFIG.CLKOUT1_DRIVES {BUFGCE} \
+CONFIG.CLKOUT1_JITTER {631.442} \
+CONFIG.CLKOUT1_PHASE_ERROR {346.848} \
+CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {5} \
+CONFIG.CLKOUT2_DRIVES {BUFGCE} \
+CONFIG.CLKOUT3_DRIVES {BUFGCE} \
+CONFIG.CLKOUT4_DRIVES {BUFGCE} \
+CONFIG.CLKOUT5_DRIVES {BUFGCE} \
+CONFIG.CLKOUT6_DRIVES {BUFGCE} \
+CONFIG.CLKOUT7_DRIVES {BUFGCE} \
+CONFIG.FEEDBACK_SOURCE {FDBK_AUTO} \
+CONFIG.MMCM_CLKFBOUT_MULT_F {32.000} \
+CONFIG.MMCM_CLKOUT0_DIVIDE_F {128.000} \
+CONFIG.MMCM_DIVCLK_DIVIDE {5} \
+CONFIG.USE_DYN_PHASE_SHIFT {false} \
+CONFIG.USE_DYN_RECONFIG {true} \
+CONFIG.USE_SAFE_CLOCK_STARTUP {true} \
+ ] $clk_wiz
 
   # Create instance: dut_controller_0, and set properties
   set dut_controller_0 [ create_bd_cell -type ip -vlnv user.org:user:dut_controller:1.0 dut_controller_0 ]
@@ -197,20 +232,15 @@ CONFIG.NUM_SI {2} \
   # Create instance: dutcomm_0, and set properties
   set dutcomm_0 [ create_bd_cell -type ip -vlnv user.org:user:dutcomm:1.0 dutcomm_0 ]
 
-  set_property -dict [ list \
-CONFIG.TDATA_NUM_BYTES {4} \
- ] [get_bd_intf_pins /dutcomm_0/M_AXIS]
-
-  set_property -dict [ list \
-CONFIG.NUM_READ_OUTSTANDING {1} \
-CONFIG.NUM_WRITE_OUTSTANDING {1} \
- ] [get_bd_intf_pins /dutcomm_0/S_AXI]
+  # Create instance: powermanager_0, and set properties
+  set powermanager_0 [ create_bd_cell -type ip -vlnv CERG:user:powermanager:1.0 powermanager_0 ]
 
   # Create instance: processing_system7_0, and set properties
   set processing_system7_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0 ]
   set_property -dict [ list \
 CONFIG.PCW_EN_CLK1_PORT {1} \
-CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {50} \
+CONFIG.PCW_FPGA0_PERIPHERAL_FREQMHZ {100} \
+CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {1} \
 CONFIG.PCW_IRQ_F2P_INTR {1} \
 CONFIG.PCW_USE_FABRIC_INTERRUPT {1} \
 CONFIG.PCW_USE_S_AXI_HP0 {1} \
@@ -219,47 +249,87 @@ CONFIG.PCW_USE_S_AXI_HP0 {1} \
   # Create instance: ps7_0_axi_periph, and set properties
   set ps7_0_axi_periph [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 ps7_0_axi_periph ]
   set_property -dict [ list \
-CONFIG.NUM_MI {4} \
+CONFIG.NUM_MI {6} \
  ] $ps7_0_axi_periph
+
+  # Create instance: rst_ps7_0_100M, and set properties
+  set rst_ps7_0_100M [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 rst_ps7_0_100M ]
 
   # Create instance: rst_ps7_0_1M, and set properties
   set rst_ps7_0_1M [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 rst_ps7_0_1M ]
 
+  # Create instance: util_vector_logic_0, and set properties
+  set util_vector_logic_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_vector_logic:2.0 util_vector_logic_0 ]
+  set_property -dict [ list \
+CONFIG.C_OPERATION {not} \
+CONFIG.C_SIZE {1} \
+CONFIG.LOGO_FILE {data/sym_notgate.png} \
+ ] $util_vector_logic_0
+
+  # Create instance: xlconcat_0, and set properties
+  set xlconcat_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat:2.1 xlconcat_0 ]
+
   # Create interface connections
-  connect_bd_intf_net -intf_net axi_dma_0_M_AXIS_MM2S [get_bd_intf_pins axi_dma_0/M_AXIS_MM2S] [get_bd_intf_pins dutcomm_0/S_AXIS]
+  connect_bd_intf_net -intf_net axi_dma_0_M_AXIS_MM2S [get_bd_intf_pins axi_dma_0/M_AXIS_MM2S] [get_bd_intf_pins axis_data_fifo_0/S_AXIS]
   connect_bd_intf_net -intf_net axi_dma_0_M_AXI_MM2S [get_bd_intf_pins axi_dma_0/M_AXI_MM2S] [get_bd_intf_pins axi_smc/S00_AXI]
   connect_bd_intf_net -intf_net axi_dma_0_M_AXI_S2MM [get_bd_intf_pins axi_dma_0/M_AXI_S2MM] [get_bd_intf_pins axi_smc/S01_AXI]
   connect_bd_intf_net -intf_net axi_smc_M00_AXI [get_bd_intf_pins axi_smc/M00_AXI] [get_bd_intf_pins processing_system7_0/S_AXI_HP0]
-  connect_bd_intf_net -intf_net dutcomm_0_M_AXIS [get_bd_intf_pins axi_dma_0/S_AXIS_S2MM] [get_bd_intf_pins dutcomm_0/M_AXIS]
+  connect_bd_intf_net -intf_net axis_data_fifo_0_M_AXIS [get_bd_intf_pins axis_data_fifo_0/M_AXIS] [get_bd_intf_pins dutcomm_0/S_AXIS]
+  connect_bd_intf_net -intf_net axis_data_fifo_1_M_AXIS [get_bd_intf_pins axi_dma_0/S_AXIS_S2MM] [get_bd_intf_pins axis_data_fifo_1/M_AXIS]
+  connect_bd_intf_net -intf_net dutcomm_0_M_AXIS [get_bd_intf_pins axis_data_fifo_1/S_AXIS] [get_bd_intf_pins dutcomm_0/M_AXIS]
   connect_bd_intf_net -intf_net processing_system7_0_DDR [get_bd_intf_ports DDR] [get_bd_intf_pins processing_system7_0/DDR]
   connect_bd_intf_net -intf_net processing_system7_0_FIXED_IO [get_bd_intf_ports FIXED_IO] [get_bd_intf_pins processing_system7_0/FIXED_IO]
   connect_bd_intf_net -intf_net processing_system7_0_M_AXI_GP0 [get_bd_intf_pins processing_system7_0/M_AXI_GP0] [get_bd_intf_pins ps7_0_axi_periph/S00_AXI]
   connect_bd_intf_net -intf_net ps7_0_axi_periph_M00_AXI [get_bd_intf_pins axi_dma_0/S_AXI_LITE] [get_bd_intf_pins ps7_0_axi_periph/M00_AXI]
   connect_bd_intf_net -intf_net ps7_0_axi_periph_M01_AXI [get_bd_intf_pins dutcomm_0/S_AXI] [get_bd_intf_pins ps7_0_axi_periph/M01_AXI]
   connect_bd_intf_net -intf_net ps7_0_axi_periph_M02_AXI [get_bd_intf_pins dut_controller_0/S_AXI] [get_bd_intf_pins ps7_0_axi_periph/M02_AXI]
+  connect_bd_intf_net -intf_net ps7_0_axi_periph_M03_AXI [get_bd_intf_pins clk_wiz/s_axi_lite] [get_bd_intf_pins ps7_0_axi_periph/M03_AXI]
+  connect_bd_intf_net -intf_net ps7_0_axi_periph_M04_AXI [get_bd_intf_pins powermanager_0/S00_AXI] [get_bd_intf_pins ps7_0_axi_periph/M04_AXI]
+  connect_bd_intf_net -intf_net ps7_0_axi_periph_M05_AXI [get_bd_intf_pins axi_intc_0/s_axi] [get_bd_intf_pins ps7_0_axi_periph/M05_AXI]
 
   # Create port connections
-  connect_bd_net -net FOBOS_DUT_0_di_ready [get_bd_pins FOBOS_DUT_0/di_ready] [get_bd_pins dutcomm_0/di_ready]
-  connect_bd_net -net FOBOS_DUT_0_do_valid [get_bd_pins FOBOS_DUT_0/do_valid] [get_bd_pins dutcomm_0/do_valid]
-  connect_bd_net -net FOBOS_DUT_0_dout [get_bd_pins FOBOS_DUT_0/dout] [get_bd_pins dutcomm_0/dout]
-  connect_bd_net -net dut_controller_0_dut_rst [get_bd_pins FOBOS_DUT_0/rst] [get_bd_pins dut_controller_0/dut_rst] [get_bd_pins dutcomm_0/rst]
-  connect_bd_net -net dutcomm_0_di_valid [get_bd_pins FOBOS_DUT_0/di_valid] [get_bd_pins dutcomm_0/di_valid]
-  connect_bd_net -net dutcomm_0_din [get_bd_pins FOBOS_DUT_0/din] [get_bd_pins dutcomm_0/din]
-  connect_bd_net -net dutcomm_0_do_ready [get_bd_pins FOBOS_DUT_0/do_ready] [get_bd_pins dutcomm_0/do_ready]
+  connect_bd_net -net axi_dma_0_mm2s_introut [get_bd_pins axi_dma_0/mm2s_introut] [get_bd_pins xlconcat_0/In0]
+  connect_bd_net -net axi_dma_0_s2mm_introut [get_bd_pins axi_dma_0/s2mm_introut] [get_bd_pins xlconcat_0/In1]
+  connect_bd_net -net axi_intc_0_irq [get_bd_pins axi_intc_0/irq] [get_bd_pins processing_system7_0/IRQ_F2P]
+  connect_bd_net -net ck_an_n_1 [get_bd_ports ck_an_n] [get_bd_pins powermanager_0/ck_an_n]
+  connect_bd_net -net ck_an_p_1 [get_bd_ports ck_an_p] [get_bd_pins powermanager_0/ck_an_p]
+  connect_bd_net -net clk_in1_1 [get_bd_ports clk_in1] [get_bd_pins clk_wiz/clk_in1]
+  connect_bd_net -net clk_wiz_clk_out1 [get_bd_pins axis_data_fifo_0/m_axis_aclk] [get_bd_pins axis_data_fifo_1/s_axis_aclk] [get_bd_pins clk_wiz/clk_out1] [get_bd_pins dut_controller_0/s_axi_aclk] [get_bd_pins dutcomm_0/m_axis_aclk] [get_bd_pins dutcomm_0/s_axi_aclk] [get_bd_pins dutcomm_0/s_axis_aclk] [get_bd_pins ps7_0_axi_periph/M01_ACLK] [get_bd_pins ps7_0_axi_periph/M02_ACLK] [get_bd_pins rst_ps7_0_1M/slowest_sync_clk] [get_bd_pins util_vector_logic_0/Op1]
+  connect_bd_net -net clk_wiz_locked [get_bd_pins clk_wiz/locked] [get_bd_pins rst_ps7_0_1M/dcm_locked]
+  connect_bd_net -net di_ready_1 [get_bd_ports di_ready] [get_bd_pins dutcomm_0/di_ready]
+  connect_bd_net -net do_valid_1 [get_bd_ports do_valid] [get_bd_pins dutcomm_0/do_valid]
+  connect_bd_net -net dout_1 [get_bd_ports dout] [get_bd_pins dutcomm_0/dout]
+  connect_bd_net -net dut_controller_0_dut_rst [get_bd_ports dut_rst] [get_bd_pins dut_controller_0/dut_rst] [get_bd_pins dutcomm_0/rst]
+  connect_bd_net -net dut_controller_0_trigger_out [get_bd_pins dut_controller_0/trigger_out] [get_bd_pins powermanager_0/trigger]
+  connect_bd_net -net dutcomm_0_di_valid [get_bd_ports di_valid] [get_bd_pins dutcomm_0/di_valid]
+  connect_bd_net -net dutcomm_0_din [get_bd_ports din] [get_bd_pins dutcomm_0/din]
+  connect_bd_net -net dutcomm_0_do_ready [get_bd_ports do_ready] [get_bd_pins dutcomm_0/do_ready]
   connect_bd_net -net dutcomm_0_dut_working [get_bd_pins dut_controller_0/dut_working] [get_bd_pins dutcomm_0/dut_working]
   connect_bd_net -net dutcomm_0_op_done [get_bd_pins dut_controller_0/op_done] [get_bd_pins dutcomm_0/op_done]
   connect_bd_net -net dutcomm_0_started [get_bd_pins dut_controller_0/snd_start] [get_bd_pins dutcomm_0/started]
-  connect_bd_net -net processing_system7_0_FCLK_CLK1 [get_bd_pins FOBOS_DUT_0/clk] [get_bd_pins axi_dma_0/m_axi_mm2s_aclk] [get_bd_pins axi_dma_0/m_axi_s2mm_aclk] [get_bd_pins axi_dma_0/s_axi_lite_aclk] [get_bd_pins axi_smc/aclk] [get_bd_pins dut_controller_0/s_axi_aclk] [get_bd_pins dutcomm_0/m_axis_aclk] [get_bd_pins dutcomm_0/s_axi_aclk] [get_bd_pins dutcomm_0/s_axis_aclk] [get_bd_pins processing_system7_0/FCLK_CLK1] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins processing_system7_0/S_AXI_HP0_ACLK] [get_bd_pins ps7_0_axi_periph/ACLK] [get_bd_pins ps7_0_axi_periph/M00_ACLK] [get_bd_pins ps7_0_axi_periph/M01_ACLK] [get_bd_pins ps7_0_axi_periph/M02_ACLK] [get_bd_pins ps7_0_axi_periph/M03_ACLK] [get_bd_pins ps7_0_axi_periph/S00_ACLK] [get_bd_pins rst_ps7_0_1M/slowest_sync_clk]
-  connect_bd_net -net processing_system7_0_FCLK_RESET0_N [get_bd_pins processing_system7_0/FCLK_RESET0_N] [get_bd_pins rst_ps7_0_1M/ext_reset_in]
-  connect_bd_net -net rst_ps7_0_1M_interconnect_aresetn [get_bd_pins ps7_0_axi_periph/ARESETN] [get_bd_pins rst_ps7_0_1M/interconnect_aresetn]
-  connect_bd_net -net rst_ps7_0_1M_peripheral_aresetn [get_bd_pins axi_dma_0/axi_resetn] [get_bd_pins axi_smc/aresetn] [get_bd_pins dut_controller_0/s_axi_aresetn] [get_bd_pins dutcomm_0/m_axis_aresetn] [get_bd_pins dutcomm_0/s_axi_aresetn] [get_bd_pins dutcomm_0/s_axis_aresetn] [get_bd_pins ps7_0_axi_periph/M00_ARESETN] [get_bd_pins ps7_0_axi_periph/M01_ARESETN] [get_bd_pins ps7_0_axi_periph/M02_ARESETN] [get_bd_pins ps7_0_axi_periph/M03_ARESETN] [get_bd_pins ps7_0_axi_periph/S00_ARESETN] [get_bd_pins rst_ps7_0_1M/peripheral_aresetn]
+  connect_bd_net -net power_ok_1 [get_bd_ports power_ok] [get_bd_pins powermanager_0/power_ok]
+  connect_bd_net -net powermanager_0_gain_0 [get_bd_ports gain_0] [get_bd_pins powermanager_0/gain_0]
+  connect_bd_net -net powermanager_0_gain_1 [get_bd_ports gain_1] [get_bd_pins powermanager_0/gain_1]
+  connect_bd_net -net powermanager_0_power [get_bd_ports power] [get_bd_pins powermanager_0/power]
+  connect_bd_net -net powermanager_0_power_en [get_bd_ports power_en] [get_bd_pins powermanager_0/power_en]
+  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_pins axi_dma_0/m_axi_mm2s_aclk] [get_bd_pins axi_dma_0/m_axi_s2mm_aclk] [get_bd_pins axi_dma_0/s_axi_lite_aclk] [get_bd_pins axi_intc_0/s_axi_aclk] [get_bd_pins axi_smc/aclk] [get_bd_pins axis_data_fifo_0/s_axis_aclk] [get_bd_pins axis_data_fifo_1/m_axis_aclk] [get_bd_pins clk_wiz/s_axi_aclk] [get_bd_pins powermanager_0/s00_axi_aclk] [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins processing_system7_0/S_AXI_HP0_ACLK] [get_bd_pins ps7_0_axi_periph/ACLK] [get_bd_pins ps7_0_axi_periph/M00_ACLK] [get_bd_pins ps7_0_axi_periph/M03_ACLK] [get_bd_pins ps7_0_axi_periph/M04_ACLK] [get_bd_pins ps7_0_axi_periph/M05_ACLK] [get_bd_pins ps7_0_axi_periph/S00_ACLK] [get_bd_pins rst_ps7_0_100M/slowest_sync_clk]
+  connect_bd_net -net processing_system7_0_FCLK_RESET0_N [get_bd_pins processing_system7_0/FCLK_RESET0_N] [get_bd_pins rst_ps7_0_100M/ext_reset_in] [get_bd_pins rst_ps7_0_1M/ext_reset_in]
+  connect_bd_net -net rst_ps7_0_100M_interconnect_aresetn [get_bd_pins axi_dma_0/axi_resetn] [get_bd_pins axi_smc/aresetn] [get_bd_pins axis_data_fifo_0/s_axis_aresetn] [get_bd_pins axis_data_fifo_1/m_axis_aresetn] [get_bd_pins rst_ps7_0_100M/interconnect_aresetn]
+  connect_bd_net -net rst_ps7_0_100M_peripheral_aresetn [get_bd_pins axi_intc_0/s_axi_aresetn] [get_bd_pins clk_wiz/s_axi_aresetn] [get_bd_pins powermanager_0/s00_axi_aresetn] [get_bd_pins ps7_0_axi_periph/ARESETN] [get_bd_pins ps7_0_axi_periph/M00_ARESETN] [get_bd_pins ps7_0_axi_periph/M03_ARESETN] [get_bd_pins ps7_0_axi_periph/M04_ARESETN] [get_bd_pins ps7_0_axi_periph/M05_ARESETN] [get_bd_pins ps7_0_axi_periph/S00_ARESETN] [get_bd_pins rst_ps7_0_100M/peripheral_aresetn]
+  connect_bd_net -net rst_ps7_0_1M_interconnect_aresetn [get_bd_pins axis_data_fifo_0/m_axis_aresetn] [get_bd_pins axis_data_fifo_1/s_axis_aresetn] [get_bd_pins rst_ps7_0_1M/interconnect_aresetn]
+  connect_bd_net -net rst_ps7_0_1M_peripheral_aresetn [get_bd_pins dut_controller_0/s_axi_aresetn] [get_bd_pins dutcomm_0/m_axis_aresetn] [get_bd_pins dutcomm_0/s_axi_aresetn] [get_bd_pins dutcomm_0/s_axis_aresetn] [get_bd_pins ps7_0_axi_periph/M01_ARESETN] [get_bd_pins ps7_0_axi_periph/M02_ARESETN] [get_bd_pins rst_ps7_0_1M/peripheral_aresetn]
+  connect_bd_net -net util_vector_logic_0_Res [get_bd_ports dut_clk] [get_bd_pins util_vector_logic_0/Res]
+  connect_bd_net -net xlconcat_0_dout [get_bd_pins axi_intc_0/intr] [get_bd_pins xlconcat_0/dout]
 
   # Create address segments
   create_bd_addr_seg -range 0x20000000 -offset 0x00000000 [get_bd_addr_spaces axi_dma_0/Data_MM2S] [get_bd_addr_segs processing_system7_0/S_AXI_HP0/HP0_DDR_LOWOCM] SEG_processing_system7_0_HP0_DDR_LOWOCM
   create_bd_addr_seg -range 0x20000000 -offset 0x00000000 [get_bd_addr_spaces axi_dma_0/Data_S2MM] [get_bd_addr_segs processing_system7_0/S_AXI_HP0/HP0_DDR_LOWOCM] SEG_processing_system7_0_HP0_DDR_LOWOCM
   create_bd_addr_seg -range 0x00010000 -offset 0x40400000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_dma_0/S_AXI_LITE/Reg] SEG_axi_dma_0_Reg
+  create_bd_addr_seg -range 0x00010000 -offset 0x41800000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_intc_0/S_AXI/Reg] SEG_axi_intc_0_Reg
+  create_bd_addr_seg -range 0x00010000 -offset 0x43C20000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs clk_wiz/s_axi_lite/Reg] SEG_clk_wiz_Reg
   create_bd_addr_seg -range 0x00010000 -offset 0x43C10000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs dut_controller_0/S_AXI/S_AXI_reg] SEG_dut_controller_0_S_AXI_reg
   create_bd_addr_seg -range 0x00010000 -offset 0x43C00000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs dutcomm_0/S_AXI/S_AXI_reg] SEG_dutcomm_0_S_AXI_reg
+  create_bd_addr_seg -range 0x00010000 -offset 0x43C30000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs powermanager_0/S00_AXI/S00_AXI_reg] SEG_powermanager_0_S00_AXI_reg
 
 
   # Restore current instance
