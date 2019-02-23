@@ -15,6 +15,12 @@ entity dut_controller_v1_0 is
 		C_S_AXI_ADDR_WIDTH	: integer	:= 5
 	);
 	port (
+	    --debug only
+	    d_timeout : out std_logic_vector(31 downto 0); 
+	    d_timeout_ack : out std_logic;
+	    d_timeout_status : out std_logic_vector(7 downto 0);
+	    d_en_module : out std_logic;
+	    d_timeout_cnt : out std_logic_vector(31 downto 0);
 		-- Users to add ports here
         --trigger module     
         trigger_out : out std_logic;
@@ -23,7 +29,7 @@ entity dut_controller_v1_0 is
         snd_start : in STD_LOGIC;
         op_done   : in std_logic;
         --reset module
-        dut_rst_cmd : out std_logic;
+        dut_rst : out std_logic;
 
 		-- User ports ends
 		-- Do not modify the ports beyond this line
@@ -117,7 +123,9 @@ architecture arch_imp of dut_controller_v1_0 is
         op_done     : in std_logic;
         ack : in std_logic; --ack from pc that it know timeout happend
         timeout : in STD_LOGIC_VECTOR (31 downto 0);
-        status : out STD_LOGIC_VECTOR (7 downto 0)
+        status : out STD_LOGIC_VECTOR (7 downto 0);
+        d_en_module : out std_logic;
+        d_timeout_cnt    : out std_logic_vector(31 downto 0)
     );
     end component;
     
@@ -141,7 +149,7 @@ architecture arch_imp of dut_controller_v1_0 is
     --reset module
     signal time_to_rst : std_logic_vector(31 downto 0);
     signal force_rst   : std_logic;
-    signal dut_rst     : std_logic;
+    signal dut_rst_cmd     : std_logic;
 
     ---end user defined 
     
@@ -211,7 +219,9 @@ dut_controller_v1_0_S_AXI_inst : dut_controller_v1_0_S_AXI
             op_done  => op_done,
             ack => ack, --ack from pc that it know timeout happend
             timeout => timeout,
-            status => timeout_status
+            status => timeout_status,
+            d_en_module => d_en_module,
+            d_timeout_cnt => d_timeout_cnt
      );
      
      rstmod : rst_mod
@@ -220,10 +230,15 @@ dut_controller_v1_0_S_AXI_inst : dut_controller_v1_0_S_AXI
            rst => rst,
            dut_working => dut_working,
            time_to_rst => time_to_rst,
-           dut_rst_cmd => dut_rst
+           dut_rst_cmd => dut_rst_cmd
       );
     
-    dut_rst_cmd     <= dut_rst or force_rst;
+    dut_rst    <= dut_rst_cmd or force_rst;
+    
+    --debug only
+    d_timeout <= timeout;
+    d_timeout_status <= timeout_status;
+    d_timeout_ack <= ack;
     -- User logic ends
 
 end arch_imp;

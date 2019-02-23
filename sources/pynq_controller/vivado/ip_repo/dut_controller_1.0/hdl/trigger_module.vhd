@@ -81,7 +81,7 @@ len_cnt_expired   <= '1' when  len_cnt_out >= trigger_length else '0';
 state_reg:	process (clk)
 begin
 	if(rising_edge(clk)) then
-		if (rst='0') then
+		if (rst='1') then
 			current_state <= S_RST;
 		else
 			current_state<=next_state;

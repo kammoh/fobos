@@ -18,6 +18,8 @@ entity dutcomm_v1_0_S_AXI is
 		-- Users to add ports here
          start        : out std_logic;
          status       : in std_logic_vector(7 downto 0);
+         expected_out_len : out std_logic_vector(31 downto 0);
+
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 
@@ -388,6 +390,9 @@ begin
 
 	-- Add user logic here
     start <= slv_reg0(0);
+    --slv_reg2 is reserved for status
+    expected_out_len <= slv_reg3;
 	-- User logic ends
+	
 
 end arch_imp;
