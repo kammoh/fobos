@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:fobosshield-cache
 EELAYER 26 0
 EELAYER END
 $Descr USLetter 11000 8500
@@ -2273,6 +2272,11 @@ Text Notes 5450 3300 0    79   ~ 0
 3.3 V, 800mA Supply for Target
 Text Notes 1500 1100 0    79   ~ 0
 0.9 - 3.5 V, 1A Supply for Target
+Text GLabel 2600 4550 2    50   Input ~ 0
+XADCGND
+Wire Wire Line
+	2600 4550 2450 4550
 Wire Bus Line
 	2700 2850 3500 2850
+Connection ~ 2450 4550
 $EndSCHEMATC

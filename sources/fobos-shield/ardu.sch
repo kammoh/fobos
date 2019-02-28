@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:fobosshield-cache
 EELAYER 26 0
 EELAYER END
 $Descr USLetter 11000 8500
@@ -167,10 +166,10 @@ Text GLabel 3750 1250 2    50   Input ~ 0
 CSM3V3Gain0
 Text GLabel 3750 1150 2    50   Input ~ 0
 CSM3V3Gain1
-Text GLabel 3700 1550 2    50   Input ~ 0
+Text GLabel 3750 1550 2    50   Input ~ 0
 A10
-Text GLabel 3700 1650 2    50   Input ~ 0
-A11
+Text GLabel 3750 1650 2    50   Input ~ 0
+Trigger
 Text GLabel 2850 2000 0    50   Input ~ 0
 XADC_V_P
 Text GLabel 2850 2100 0    50   Input ~ 0
@@ -179,8 +178,6 @@ Text GLabel 2850 2200 0    50   Input ~ 0
 XADCGND
 Text GLabel 2850 2300 0    50   Input ~ 0
 XADCVREF
-Text GLabel 1900 3250 0    50   Input ~ 0
-Trigger
 Text GLabel 1900 3350 0    50   Input ~ 0
 VCC3V3
 Text GLabel 1900 3450 0    50   Input ~ 0
@@ -196,8 +193,6 @@ Wire Wire Line
 Wire Wire Line
 	2500 3150 2500 3350
 Connection ~ 2500 3350
-Wire Wire Line
-	2950 3250 1900 3250
 Wire Wire Line
 	2950 3650 2500 3650
 Wire Wire Line
@@ -224,9 +219,9 @@ Wire Wire Line
 Wire Wire Line
 	3400 1450 3750 1450
 Wire Wire Line
-	3400 1550 3700 1550
+	3400 1550 3750 1550
 Wire Wire Line
-	3400 1650 3700 1650
+	3400 1650 3750 1650
 Wire Wire Line
 	7700 2400 8200 2400
 Wire Wire Line
@@ -413,15 +408,8 @@ Entry Wire Line
 	9050 2100 9150 2200
 Entry Wire Line
 	9050 2200 9150 2300
-Entry Wire Line
-	6050 2200 6150 2100
-Entry Wire Line
-	6050 2300 6150 2200
-Entry Wire Line
-	6050 2400 6150 2300
 Wire Bus Line
 	6050 1900 9150 1900
-Connection ~ 6050 1900
 Connection ~ 9150 1900
 Entry Wire Line
 	6150 2500 6250 2400
@@ -1184,16 +1172,81 @@ Wire Wire Line
 	1900 3450 2950 3450
 Text GLabel 2600 5550 0    50   Input ~ 0
 SCL
+Text Notes 4400 1050 0    50   ~ 0
+FPGA\nPin
+Text Notes 4400 1200 0    50   ~ 0
+F19
+Text Notes 4400 1300 0    50   ~ 0
+F20
+Text Notes 4400 1400 0    50   ~ 0
+C20
+Text Notes 4400 1500 0    50   ~ 0
+B20
+Text Notes 4400 1700 0    50   ~ 0
+A20
+Text Notes 4400 1600 0    50   ~ 0
+(B19)
+Text Notes 750  950  0    50   ~ 0
+FPGA Pin
+Text Notes 750  1050 0    50   ~ 0
+N
+Text Notes 1000 1050 0    50   ~ 0
+P
+Text Notes 950  1200 0    50   ~ 0
+E17
+Text Notes 700  1200 0    50   ~ 0
+D18
+Text Notes 950  1300 0    50   ~ 0
+E18
+Text Notes 700  1300 0    50   ~ 0
+E19
+Text Notes 950  1400 0    50   ~ 0
+K14
+Text Notes 700  1400 0    50   ~ 0
+J14
+Text Notes 950  1500 0    50   ~ 0
+K16
+Text Notes 700  1500 0    50   ~ 0
+J16
+Text Notes 2000 5500 0    50   ~ 0
+P15
+Text Notes 2000 5350 0    50   ~ 0
+FPGA\nPin
+Text Notes 9250 1350 0    50   ~ 0
+FPGA\nPin
+Text Notes 9200 2500 0    50   ~ 0
+W8
+Text Notes 9200 2600 0    50   ~ 0
+Y8
+Text Notes 9200 2700 0    50   ~ 0
+W9
+Text Notes 5800 1500 0    50   ~ 0
+FPGA\nPin
+Text Notes 5800 2400 0    50   ~ 0
+R17
+Text Notes 5800 2500 0    50   ~ 0
+P18
+Text Notes 5800 2600 0    50   ~ 0
+N17
+Text Notes 5800 2800 0    50   ~ 0
+Y13
+Entry Wire Line
+	6050 2200 6150 2300
+Entry Wire Line
+	6050 2100 6150 2200
+Entry Wire Line
+	6050 2000 6150 2100
 Wire Bus Line
 	6050 1750 6050 1900
 Wire Bus Line
 	9150 1900 9150 2300
 Wire Bus Line
-	6050 1900 6050 2400
-Wire Bus Line
 	6150 2500 6150 3300
 Wire Bus Line
 	9050 2600 9050 3300
 Wire Bus Line
+	6050 1900 6050 2200
+Wire Bus Line
 	9150 1450 9150 1900
+Connection ~ 6050 1900
 $EndSCHEMATC

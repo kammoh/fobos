@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:fobosshield-cache
 EELAYER 26 0
 EELAYER END
 $Descr USLetter 11000 8500
@@ -353,18 +352,16 @@ $EndComp
 $Comp
 L power:GND #PWR0151
 U 1 1 5B6D7DB3
-P 3850 1300
+P 4150 1300
 AR Path="/5B6C87CC/5B6D7DB3" Ref="#PWR0151"  Part="1" 
 AR Path="/5B5AB131/5B6D7DB3" Ref="#PWR?"  Part="1" 
-F 0 "#PWR0151" H 3850 1050 50  0001 C CNN
-F 1 "GND" H 3855 1127 50  0000 C CNN
-F 2 "" H 3850 1300 50  0001 C CNN
-F 3 "" H 3850 1300 50  0001 C CNN
-	1    3850 1300
+F 0 "#PWR0151" H 4150 1050 50  0001 C CNN
+F 1 "GND" H 4155 1127 50  0000 C CNN
+F 2 "" H 4150 1300 50  0001 C CNN
+F 3 "" H 4150 1300 50  0001 C CNN
+	1    4150 1300
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3850 1300 2700 1300
 Wire Wire Line
 	2100 2300 2100 2200
 Wire Wire Line
@@ -1089,15 +1086,45 @@ Wire Wire Line
 $Comp
 L Connector_Generic:Conn_01x01 J21
 U 1 1 5B89C960
-P 4050 1150
-F 0 "J21" H 4130 1192 50  0000 L CNN
-F 1 "GND" H 4130 1101 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4050 1150 50  0001 C CNN
-F 3 "~" H 4050 1150 50  0001 C CNN
-	1    4050 1150
+P 4350 1150
+F 0 "J21" H 4430 1192 50  0000 L CNN
+F 1 "GND" H 4430 1101 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4350 1150 50  0001 C CNN
+F 3 "~" H 4350 1150 50  0001 C CNN
+	1    4350 1150
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3850 1150 3850 1300
-Connection ~ 3850 1300
+	4150 1150 4150 1300
+Connection ~ 4150 1300
+Text Notes 1000 1550 0    50   ~ 0
+T14
+Text Notes 1000 1650 0    50   ~ 0
+U5
+Text Notes 1000 1750 0    50   ~ 0
+V5
+Text Notes 1000 1850 0    50   ~ 0
+V6
+Text Notes 1000 1950 0    50   ~ 0
+V15
+Text Notes 1000 2050 0    50   ~ 0
+T15
+Text Notes 1000 1200 0    50   ~ 0
+FPGA\nPin
+Wire Wire Line
+	2700 1300 4150 1300
+Text Notes 3800 1250 0    50   ~ 0
+FPGA\nPin
+Text Notes 3800 1450 0    50   ~ 0
+U7
+Text Notes 3800 1550 0    50   ~ 0
+Y7
+Text Notes 3800 1750 0    50   ~ 0
+U12
+Text Notes 3800 1850 0    50   ~ 0
+U13
+Text Notes 3800 1950 0    50   ~ 0
+V13
+Text Notes 3800 2050 0    50   ~ 0
+V7
 $EndSCHEMATC
