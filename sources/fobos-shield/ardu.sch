@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:fobosshield-cache
 EELAYER 26 0
 EELAYER END
 $Descr USLetter 11000 8500
@@ -1236,6 +1237,7 @@ Entry Wire Line
 	6050 2100 6150 2200
 Entry Wire Line
 	6050 2000 6150 2100
+Connection ~ 6050 1900
 Wire Bus Line
 	6050 1750 6050 1900
 Wire Bus Line
@@ -1248,5 +1250,4 @@ Wire Bus Line
 	6050 1900 6050 2200
 Wire Bus Line
 	9150 1450 9150 1900
-Connection ~ 6050 1900
 $EndSCHEMATC
