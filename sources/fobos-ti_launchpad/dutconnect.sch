@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:fobos-ti_launchpad-cache
 EELAYER 26 0
 EELAYER END
 $Descr USLetter 11000 8500
@@ -1004,8 +1003,6 @@ Text GLabel 6500 4100 2    50   Input ~ 0
 SCL
 Text GLabel 6500 4300 2    50   Input ~ 0
 SDA
-Text GLabel 7350 5000 2    50   Input ~ 0
-TF
 Wire Wire Line
 	5350 3700 5350 3450
 Wire Wire Line
