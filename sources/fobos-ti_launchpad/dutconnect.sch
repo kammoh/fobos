@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:fobos-ti_launchpad-cache
 EELAYER 26 0
 EELAYER END
 $Descr USLetter 11000 8500
@@ -58,31 +59,31 @@ F 3 "~" H 2400 1700 50  0001 C CNN
 	1    2400 1700
 	1    0    0    -1  
 $EndComp
-Text GLabel 1600 1300 0    50   Input ~ 0
+Text GLabel 1300 1300 0    50   Input ~ 0
 CW_5V
-Text GLabel 1600 1500 0    50   Input ~ 0
+Text GLabel 1300 1500 0    50   Input ~ 0
 RST
-Text GLabel 1600 1600 0    50   Input ~ 0
+Text GLabel 1300 1600 0    50   Input ~ 0
 IO
-Text GLabel 1600 1700 0    50   Input ~ 0
+Text GLabel 1300 1700 0    50   Input ~ 0
 TF
-Text GLabel 1600 1900 0    50   Input ~ 0
+Text GLabel 1300 1900 0    50   Input ~ 0
 Valid
-Text GLabel 1600 2000 0    50   Input ~ 0
+Text GLabel 1300 2000 0    50   Input ~ 0
 CW_PDID
-Text GLabel 3300 1400 2    50   Input ~ 0
+Text GLabel 3750 1400 2    50   Input ~ 0
 CLK_D2C
-Text GLabel 3300 1500 2    50   Input ~ 0
+Text GLabel 3750 1500 2    50   Input ~ 0
 CLK_C2D
-Text GLabel 3300 1600 2    50   Input ~ 0
+Text GLabel 3550 1600 2    50   Input ~ 0
 CW_VREF
-Text GLabel 4050 1700 2    50   Input ~ 0
+Text GLabel 4100 1700 2    50   Input ~ 0
 SCL
-Text GLabel 4050 1800 2    50   Input ~ 0
+Text GLabel 4100 1800 2    50   Input ~ 0
 SDA
-Text GLabel 3300 1900 2    50   Input ~ 0
+Text GLabel 3600 1900 2    50   Input ~ 0
 DIO2
-Text GLabel 1600 1800 0    50   Input ~ 0
+Text GLabel 1300 1800 0    50   Input ~ 0
 Ready
 Text GLabel 3300 2200 2    50   Input ~ 0
 CW_5V
@@ -103,19 +104,19 @@ $EndComp
 $Comp
 L power:GND #PWR0151
 U 1 1 5B6D7DB3
-P 3850 1300
+P 4300 1300
 AR Path="/5B6C87CC/5B6D7DB3" Ref="#PWR0151"  Part="1" 
 AR Path="/5B5AB131/5B6D7DB3" Ref="#PWR?"  Part="1" 
 AR Path="/5BE3725D/5B6D7DB3" Ref="#PWR0151"  Part="1" 
-F 0 "#PWR0151" H 3850 1050 50  0001 C CNN
-F 1 "GND" H 3855 1127 50  0000 C CNN
-F 2 "" H 3850 1300 50  0001 C CNN
-F 3 "" H 3850 1300 50  0001 C CNN
-	1    3850 1300
+F 0 "#PWR0151" H 4300 1050 50  0001 C CNN
+F 1 "GND" H 4305 1127 50  0000 C CNN
+F 2 "" H 4300 1300 50  0001 C CNN
+F 3 "" H 4300 1300 50  0001 C CNN
+	1    4300 1300
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3850 1300 2700 1300
+	4300 1300 2700 1300
 Wire Wire Line
 	2100 2300 2100 2200
 Wire Wire Line
@@ -126,33 +127,19 @@ Wire Wire Line
 	2100 2100 2200 2100
 Connection ~ 2100 2200
 Wire Wire Line
-	1600 2000 2200 2000
+	2700 1400 3200 1400
 Wire Wire Line
-	1600 1900 2200 1900
+	2700 1500 3200 1500
 Wire Wire Line
-	1600 1700 2200 1700
+	2700 1700 3200 1700
 Wire Wire Line
-	1600 1600 2200 1600
+	2700 1800 3200 1800
 Wire Wire Line
-	1600 1300 2200 1300
-Wire Wire Line
-	2700 1400 3300 1400
-Wire Wire Line
-	2700 1500 3300 1500
-Wire Wire Line
-	2700 1600 3300 1600
-Wire Wire Line
-	2700 1700 3750 1700
-Wire Wire Line
-	2700 1800 3750 1800
-Wire Wire Line
-	2700 1900 3300 1900
+	2700 1900 3200 1900
 Wire Wire Line
 	2700 2200 3300 2200
 Text Label 2050 1500 2    50   ~ 0
 CV_RST
-Wire Wire Line
-	1600 1500 2200 1500
 Text Label 2050 1600 2    50   ~ 0
 CW_MISO
 Text Label 2800 1700 0    50   ~ 0
@@ -764,10 +751,8 @@ FOBOS - Multitarget \nConnector
 Text GLabel 9000 6150 0    50   Input ~ 0
 CLK_D2C
 Wire Wire Line
-	1600 1400 2200 1400
-Wire Wire Line
 	2700 2100 3300 2100
-Text GLabel 1600 1400 0    50   Input ~ 0
+Text GLabel 1300 1400 0    50   Input ~ 0
 CW_3V3
 Text GLabel 3300 2100 2    50   Input ~ 0
 CW_3V3
@@ -1561,26 +1546,26 @@ Wire Wire Line
 	3050 3700 3050 3800
 Text GLabel 3400 3950 2    50   Input ~ 0
 CLK_C2D
-Text GLabel 4050 1600 2    50   Input ~ 0
+Text GLabel 4100 1600 2    50   Input ~ 0
 DIO0
-Text GLabel 4050 1900 2    50   Input ~ 0
+Text GLabel 4100 1900 2    50   Input ~ 0
 DIO1
-Text GLabel 4050 2000 2    50   Input ~ 0
+Text GLabel 4100 2000 2    50   Input ~ 0
 DIO3
 Wire Wire Line
-	4050 1600 3750 1600
+	4100 1600 4000 1600
 Wire Wire Line
-	3750 1600 3750 1700
-Connection ~ 3750 1700
+	4000 1600 4000 1700
+Connection ~ 4000 1700
 Wire Wire Line
-	3750 1700 4050 1700
+	4000 1700 4100 1700
 Wire Wire Line
-	4050 1900 3750 1900
+	4100 1900 4000 1900
 Wire Wire Line
-	3750 1900 3750 1800
-Connection ~ 3750 1800
+	4000 1900 4000 1800
+Connection ~ 4000 1800
 Wire Wire Line
-	3750 1800 4050 1800
+	4000 1800 4100 1800
 Text GLabel 1550 3800 3    50   Input ~ 0
 DIO0
 Text GLabel 1550 3100 1    50   Input ~ 0
@@ -1722,11 +1707,7 @@ Wire Wire Line
 Wire Wire Line
 	9250 1550 9250 1900
 Wire Wire Line
-	1600 1800 2200 1800
-Wire Wire Line
 	8000 4300 8100 4300
-Wire Wire Line
-	2700 2000 4050 2000
 $Comp
 L Jumper:Jumper_2_Open JP2
 U 1 1 5C411C7D
@@ -1790,17 +1771,6 @@ Wire Wire Line
 	3150 3200 3150 2900
 Wire Wire Line
 	3150 2900 3200 2900
-$Comp
-L Connector_Generic:Conn_01x01 J6
-U 1 1 5C8BFC68
-P 10000 1700
-F 0 "J6" H 10079 1742 50  0000 L CNN
-F 1 "VCore" H 10079 1651 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 10000 1700 50  0001 C CNN
-F 3 "~" H 10000 1700 50  0001 C CNN
-	1    10000 1700
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	9800 1700 9700 1700
 Wire Wire Line
@@ -1810,4 +1780,181 @@ Wire Wire Line
 	9700 1900 9800 1900
 Text GLabel 6000 6050 2    50   Input ~ 0
 DIO3
+$Comp
+L Connector_Generic:Conn_01x02 J6
+U 1 1 5C7A7CB8
+P 10000 1700
+F 0 "J6" H 9919 1375 50  0000 C CNN
+F 1 "Conn_01x02" H 9919 1466 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 10000 1700 50  0001 C CNN
+F 3 "~" H 10000 1700 50  0001 C CNN
+	1    10000 1700
+	1    0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5C7A7DA0
+P 9550 1600
+AR Path="/5B6DA40D/5C7A7DA0" Ref="#PWR?"  Part="1" 
+AR Path="/5B6C87CC/5C7A7DA0" Ref="#PWR?"  Part="1" 
+AR Path="/5BE3725D/5C7A7DA0" Ref="#PWR0118"  Part="1" 
+F 0 "#PWR0118" H 9550 1350 50  0001 C CNN
+F 1 "GND" H 9555 1427 50  0000 C CNN
+F 2 "" H 9550 1600 50  0001 C CNN
+F 3 "" H 9550 1600 50  0001 C CNN
+	1    9550 1600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9800 1600 9550 1600
+$Comp
+L Device:R R19
+U 1 1 5C7B8800
+P 3350 1900
+F 0 "R19" H 3420 1946 50  0000 L CNN
+F 1 "22R" H 3420 1855 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3280 1900 50  0001 C CNN
+F 3 "~" H 3350 1900 50  0001 C CNN
+	1    3350 1900
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1700 1500 2200 1500
+$Comp
+L Device:R R10
+U 1 1 5C7D0D3E
+P 1550 1600
+F 0 "R10" H 1620 1646 50  0000 L CNN
+F 1 "22R" H 1620 1555 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1480 1600 50  0001 C CNN
+F 3 "~" H 1550 1600 50  0001 C CNN
+	1    1550 1600
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1700 1600 2200 1600
+$Comp
+L Device:R R12
+U 1 1 5C7D0E67
+P 1550 1800
+F 0 "R12" H 1620 1846 50  0000 L CNN
+F 1 "22R" H 1620 1755 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1480 1800 50  0001 C CNN
+F 3 "~" H 1550 1800 50  0001 C CNN
+	1    1550 1800
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1700 1800 2200 1800
+$Comp
+L Device:R R13
+U 1 1 5C7D0ECB
+P 1550 1900
+F 0 "R13" H 1620 1946 50  0000 L CNN
+F 1 "22R" H 1620 1855 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1480 1900 50  0001 C CNN
+F 3 "~" H 1550 1900 50  0001 C CNN
+	1    1550 1900
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1700 1900 2200 1900
+$Comp
+L Device:R R9
+U 1 1 5C7D0CD8
+P 1550 1500
+F 0 "R9" H 1620 1546 50  0000 L CNN
+F 1 "22R" H 1620 1455 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1480 1500 50  0001 C CNN
+F 3 "~" H 1550 1500 50  0001 C CNN
+	1    1550 1500
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1300 1300 2200 1300
+Wire Wire Line
+	1300 1400 2200 1400
+Wire Wire Line
+	1300 1500 1400 1500
+Wire Wire Line
+	1300 1600 1400 1600
+Wire Wire Line
+	1300 1800 1400 1800
+Wire Wire Line
+	1300 1900 1400 1900
+Wire Wire Line
+	1300 2000 2200 2000
+$Comp
+L Device:R R18
+U 1 1 5C843A79
+P 3350 1800
+F 0 "R18" H 3420 1846 50  0000 L CNN
+F 1 "22R" H 3420 1755 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3280 1800 50  0001 C CNN
+F 3 "~" H 3350 1800 50  0001 C CNN
+	1    3350 1800
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R17
+U 1 1 5C843AE7
+P 3350 1700
+F 0 "R17" H 3420 1746 50  0000 L CNN
+F 1 "22R" H 3420 1655 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3280 1700 50  0001 C CNN
+F 3 "~" H 3350 1700 50  0001 C CNN
+	1    3350 1700
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R15
+U 1 1 5C843BC7
+P 3350 1500
+F 0 "R15" H 3420 1546 50  0000 L CNN
+F 1 "22R" H 3420 1455 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3280 1500 50  0001 C CNN
+F 3 "~" H 3350 1500 50  0001 C CNN
+	1    3350 1500
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R14
+U 1 1 5C843C35
+P 3350 1400
+F 0 "R14" H 3420 1446 50  0000 L CNN
+F 1 "22R" H 3420 1355 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3280 1400 50  0001 C CNN
+F 3 "~" H 3350 1400 50  0001 C CNN
+	1    3350 1400
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3500 1400 3750 1400
+Wire Wire Line
+	3500 1500 3750 1500
+Wire Wire Line
+	3500 1900 3600 1900
+Wire Wire Line
+	3500 1700 4000 1700
+Wire Wire Line
+	3500 1800 4000 1800
+Wire Wire Line
+	2700 1600 3550 1600
+Wire Wire Line
+	1300 1700 2200 1700
+Wire Wire Line
+	2700 2000 3200 2000
+$Comp
+L Device:R R11
+U 1 1 5C8C3539
+P 3350 2000
+F 0 "R11" H 3420 2046 50  0000 L CNN
+F 1 "22R" H 3420 1955 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3280 2000 50  0001 C CNN
+F 3 "~" H 3350 2000 50  0001 C CNN
+	1    3350 2000
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3500 2000 4100 2000
 $EndSCHEMATC
