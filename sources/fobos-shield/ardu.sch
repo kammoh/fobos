@@ -7,7 +7,7 @@ encoding utf-8
 Sheet 2 5
 Title "FOBOS3 PYNQ Shield"
 Date "2018-08-08"
-Rev "1.0"
+Rev "1.1"
 Comp "Cryptographic Engineering Research Group"
 Comment1 ""
 Comment2 ""
@@ -1090,24 +1090,6 @@ A11
 Text Notes 6300 7150 0    157  ~ 0
 PYNQ Chip Kit Connector\n
 $Comp
-L power:GND #PWR0134
-U 1 1 5B7DC6CF
-P 2500 3950
-F 0 "#PWR0134" H 2500 3700 50  0001 C CNN
-F 1 "GND" H 2505 3777 50  0000 C CNN
-F 2 "" H 2500 3950 50  0001 C CNN
-F 3 "" H 2500 3950 50  0001 C CNN
-	1    2500 3950
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2500 3950 2500 3750
-Wire Wire Line
-	2250 3750 2500 3750
-Connection ~ 2500 3750
-Wire Wire Line
-	2500 3750 2950 3750
-$Comp
 L Device:R R30
 U 1 1 5B7DE70C
 P 2100 1350
@@ -1215,11 +1197,11 @@ Text Notes 2000 5350 0    50   ~ 0
 FPGA\nPin
 Text Notes 9250 1350 0    50   ~ 0
 FPGA\nPin
-Text Notes 9200 2500 0    50   ~ 0
+Text Notes 9250 2500 0    50   ~ 0
 W8
-Text Notes 9200 2600 0    50   ~ 0
+Text Notes 9250 2600 0    50   ~ 0
 Y8
-Text Notes 9200 2700 0    50   ~ 0
+Text Notes 9250 2700 0    50   ~ 0
 W9
 Text Notes 5800 1500 0    50   ~ 0
 FPGA\nPin
@@ -1250,4 +1232,42 @@ Wire Bus Line
 	6050 1900 6050 2200
 Wire Bus Line
 	9150 1450 9150 1900
+Text Notes 5800 1650 0    50   ~ 0
+R16
+Text Notes 5800 1750 0    50   ~ 0
+U17
+Text Notes 5800 2100 0    50   ~ 0
+V17
+Text Notes 5800 2200 0    50   ~ 0
+V18
+Text Notes 5800 2300 0    50   ~ 0
+T16
+Text Notes 9250 1550 0    50   ~ 0
+U8
+Text Notes 9250 1650 0    50   ~ 0
+V8
+Text Notes 9250 1750 0    50   ~ 0
+V10
+Text Notes 9250 2100 0    50   ~ 0
+W10
+Text Notes 9250 2200 0    50   ~ 0
+W6
+Text Notes 9250 2300 0    50   ~ 0
+Y6
+Text Notes 9250 2800 0    50   ~ 0
+Y9
+Text Notes 4150 4900 0    50   ~ 0
+T12
+Text Notes 1900 4750 0    50   ~ 0
+W15
+Text Notes 1900 4850 0    50   ~ 0
+H15
+Text Notes 1900 4950 0    50   ~ 0
+F16
+Text Notes 1900 4600 0    50   ~ 0
+FPGA\nPin
+Text Notes 4150 4750 0    50   ~ 0
+FPGA\nPin
+Wire Wire Line
+	2250 3750 2950 3750
 $EndSCHEMATC

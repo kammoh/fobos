@@ -2277,7 +2277,7 @@ Text GLabel 2600 4550 2    50   Input ~ 0
 XADCGND
 Wire Wire Line
 	2600 4550 2450 4550
+Connection ~ 2450 4550
 Wire Bus Line
 	2700 2850 3500 2850
-Connection ~ 2450 4550
 $EndSCHEMATC

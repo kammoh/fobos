@@ -7,7 +7,7 @@ encoding utf-8
 Sheet 4 5
 Title "FOBOS3 PYNQ Shield"
 Date "2018-08-08"
-Rev "1.0"
+Rev "1.1"
 Comp "Cryptographic Engineering Research Group"
 Comment1 ""
 Comment2 ""
