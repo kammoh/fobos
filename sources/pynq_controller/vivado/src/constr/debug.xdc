@@ -1057,6 +1057,16 @@ set_property MARK_DEBUG true [get_nets {ctrl_top_i/dutcomm_0/s_axis_tdata[19]}]
 
 
 
+
+
+set_property MARK_DEBUG true [get_nets ctrl_top_i/trigger]
+
+
+
+
+connect_debug_port dbg_hub/clk [get_nets u_ila_1_clkfbout_buf_ctrl_top_clk_wiz_0]
+
+
 create_debug_core u_ila_0 ila
 set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
 set_property ALL_PROBE_SAME_MU_CNT 1 [get_debug_cores u_ila_0]
@@ -1070,23 +1080,23 @@ set_property port_width 1 [get_debug_ports u_ila_0/clk]
 connect_debug_port u_ila_0/clk [get_nets [list ctrl_top_i/clk_wiz/inst/CLK_CORE_DRP_I/clk_inst/clk_out1]]
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
 set_property port_width 4 [get_debug_ports u_ila_0/probe0]
-connect_debug_port u_ila_0/probe0 [get_nets [list {ctrl_top_i/dutcomm_0/m_axis_tdata[28]} {ctrl_top_i/dutcomm_0/m_axis_tdata[29]} {ctrl_top_i/dutcomm_0/m_axis_tdata[30]} {ctrl_top_i/dutcomm_0/m_axis_tdata[31]}]]
+connect_debug_port u_ila_0/probe0 [get_nets [list {ctrl_top_i/dutcomm_0/U0/din[0]} {ctrl_top_i/dutcomm_0/U0/din[1]} {ctrl_top_i/dutcomm_0/U0/din[2]} {ctrl_top_i/dutcomm_0/U0/din[3]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
-set_property port_width 32 [get_debug_ports u_ila_0/probe1]
-connect_debug_port u_ila_0/probe1 [get_nets [list {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[0]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[1]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[2]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[3]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[4]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[5]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[6]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[7]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[8]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[9]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[10]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[11]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[12]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[13]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[14]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[15]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[16]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[17]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[18]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[19]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[20]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[21]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[22]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[23]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[24]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[25]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[26]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[27]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[28]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[29]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[30]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[31]}]]
+set_property port_width 4 [get_debug_ports u_ila_0/probe1]
+connect_debug_port u_ila_0/probe1 [get_nets [list {ctrl_top_i/dutcomm_0/U0/dout[0]} {ctrl_top_i/dutcomm_0/U0/dout[1]} {ctrl_top_i/dutcomm_0/U0/dout[2]} {ctrl_top_i/dutcomm_0/U0/dout[3]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe2]
-set_property port_width 32 [get_debug_ports u_ila_0/probe2]
-connect_debug_port u_ila_0/probe2 [get_nets [list {ctrl_top_i/dutcomm_0/s_axis_tdata[0]} {ctrl_top_i/dutcomm_0/s_axis_tdata[1]} {ctrl_top_i/dutcomm_0/s_axis_tdata[2]} {ctrl_top_i/dutcomm_0/s_axis_tdata[3]} {ctrl_top_i/dutcomm_0/s_axis_tdata[4]} {ctrl_top_i/dutcomm_0/s_axis_tdata[5]} {ctrl_top_i/dutcomm_0/s_axis_tdata[6]} {ctrl_top_i/dutcomm_0/s_axis_tdata[7]} {ctrl_top_i/dutcomm_0/s_axis_tdata[8]} {ctrl_top_i/dutcomm_0/s_axis_tdata[9]} {ctrl_top_i/dutcomm_0/s_axis_tdata[10]} {ctrl_top_i/dutcomm_0/s_axis_tdata[11]} {ctrl_top_i/dutcomm_0/s_axis_tdata[12]} {ctrl_top_i/dutcomm_0/s_axis_tdata[13]} {ctrl_top_i/dutcomm_0/s_axis_tdata[14]} {ctrl_top_i/dutcomm_0/s_axis_tdata[15]} {ctrl_top_i/dutcomm_0/s_axis_tdata[16]} {ctrl_top_i/dutcomm_0/s_axis_tdata[17]} {ctrl_top_i/dutcomm_0/s_axis_tdata[18]} {ctrl_top_i/dutcomm_0/s_axis_tdata[19]} {ctrl_top_i/dutcomm_0/s_axis_tdata[20]} {ctrl_top_i/dutcomm_0/s_axis_tdata[21]} {ctrl_top_i/dutcomm_0/s_axis_tdata[22]} {ctrl_top_i/dutcomm_0/s_axis_tdata[23]} {ctrl_top_i/dutcomm_0/s_axis_tdata[24]} {ctrl_top_i/dutcomm_0/s_axis_tdata[25]} {ctrl_top_i/dutcomm_0/s_axis_tdata[26]} {ctrl_top_i/dutcomm_0/s_axis_tdata[27]} {ctrl_top_i/dutcomm_0/s_axis_tdata[28]} {ctrl_top_i/dutcomm_0/s_axis_tdata[29]} {ctrl_top_i/dutcomm_0/s_axis_tdata[30]} {ctrl_top_i/dutcomm_0/s_axis_tdata[31]}]]
+set_property port_width 28 [get_debug_ports u_ila_0/probe2]
+connect_debug_port u_ila_0/probe2 [get_nets [list {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[0]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[1]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[2]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[3]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[4]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[5]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[6]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[7]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[8]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[9]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[10]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[11]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[12]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[13]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[14]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[15]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[16]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[17]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[18]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[19]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[20]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[21]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[22]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[23]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[24]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[25]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[26]} {ctrl_top_i/dutcomm_0/U0/m_axis_tdata[27]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe3]
 set_property port_width 4 [get_debug_ports u_ila_0/probe3]
-connect_debug_port u_ila_0/probe3 [get_nets [list {ctrl_top_i/dutcomm_0/U0/dout[0]} {ctrl_top_i/dutcomm_0/U0/dout[1]} {ctrl_top_i/dutcomm_0/U0/dout[2]} {ctrl_top_i/dutcomm_0/U0/dout[3]}]]
+connect_debug_port u_ila_0/probe3 [get_nets [list {ctrl_top_i/dutcomm_0/m_axis_tdata[28]} {ctrl_top_i/dutcomm_0/m_axis_tdata[29]} {ctrl_top_i/dutcomm_0/m_axis_tdata[30]} {ctrl_top_i/dutcomm_0/m_axis_tdata[31]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe4]
-set_property port_width 4 [get_debug_ports u_ila_0/probe4]
-connect_debug_port u_ila_0/probe4 [get_nets [list {ctrl_top_i/dutcomm_0/U0/din[0]} {ctrl_top_i/dutcomm_0/U0/din[1]} {ctrl_top_i/dutcomm_0/U0/din[2]} {ctrl_top_i/dutcomm_0/U0/din[3]}]]
+set_property port_width 32 [get_debug_ports u_ila_0/probe4]
+connect_debug_port u_ila_0/probe4 [get_nets [list {ctrl_top_i/dutcomm_0/s_axis_tdata[0]} {ctrl_top_i/dutcomm_0/s_axis_tdata[1]} {ctrl_top_i/dutcomm_0/s_axis_tdata[2]} {ctrl_top_i/dutcomm_0/s_axis_tdata[3]} {ctrl_top_i/dutcomm_0/s_axis_tdata[4]} {ctrl_top_i/dutcomm_0/s_axis_tdata[5]} {ctrl_top_i/dutcomm_0/s_axis_tdata[6]} {ctrl_top_i/dutcomm_0/s_axis_tdata[7]} {ctrl_top_i/dutcomm_0/s_axis_tdata[8]} {ctrl_top_i/dutcomm_0/s_axis_tdata[9]} {ctrl_top_i/dutcomm_0/s_axis_tdata[10]} {ctrl_top_i/dutcomm_0/s_axis_tdata[11]} {ctrl_top_i/dutcomm_0/s_axis_tdata[12]} {ctrl_top_i/dutcomm_0/s_axis_tdata[13]} {ctrl_top_i/dutcomm_0/s_axis_tdata[14]} {ctrl_top_i/dutcomm_0/s_axis_tdata[15]} {ctrl_top_i/dutcomm_0/s_axis_tdata[16]} {ctrl_top_i/dutcomm_0/s_axis_tdata[17]} {ctrl_top_i/dutcomm_0/s_axis_tdata[18]} {ctrl_top_i/dutcomm_0/s_axis_tdata[19]} {ctrl_top_i/dutcomm_0/s_axis_tdata[20]} {ctrl_top_i/dutcomm_0/s_axis_tdata[21]} {ctrl_top_i/dutcomm_0/s_axis_tdata[22]} {ctrl_top_i/dutcomm_0/s_axis_tdata[23]} {ctrl_top_i/dutcomm_0/s_axis_tdata[24]} {ctrl_top_i/dutcomm_0/s_axis_tdata[25]} {ctrl_top_i/dutcomm_0/s_axis_tdata[26]} {ctrl_top_i/dutcomm_0/s_axis_tdata[27]} {ctrl_top_i/dutcomm_0/s_axis_tdata[28]} {ctrl_top_i/dutcomm_0/s_axis_tdata[29]} {ctrl_top_i/dutcomm_0/s_axis_tdata[30]} {ctrl_top_i/dutcomm_0/s_axis_tdata[31]}]]
 create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe5]
 set_property port_width 1 [get_debug_ports u_ila_0/probe5]
@@ -1135,6 +1145,10 @@ create_debug_port u_ila_0 probe
 set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe16]
 set_property port_width 1 [get_debug_ports u_ila_0/probe16]
 connect_debug_port u_ila_0/probe16 [get_nets [list ctrl_top_i/dutcomm_0/s_axis_tvalid]]
+create_debug_port u_ila_0 probe
+set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe17]
+set_property port_width 1 [get_debug_ports u_ila_0/probe17]
+connect_debug_port u_ila_0/probe17 [get_nets [list ctrl_top_i/trigger]]
 set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
 set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
 set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
