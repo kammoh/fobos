@@ -1067,6 +1067,7 @@ set_property MARK_DEBUG true [get_nets ctrl_top_i/trigger]
 connect_debug_port dbg_hub/clk [get_nets u_ila_1_clkfbout_buf_ctrl_top_clk_wiz_0]
 
 
+
 create_debug_core u_ila_0 ila
 set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
 set_property ALL_PROBE_SAME_MU_CNT 1 [get_debug_cores u_ila_0]
