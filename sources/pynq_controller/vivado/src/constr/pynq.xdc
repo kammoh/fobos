@@ -5,8 +5,8 @@
 
 ## Clock signal 125 MHz
 
-set_property -dict { PACKAGE_PIN H16   IOSTANDARD LVCMOS33 } [get_ports { clk_in1 }]; #IO_L13P_T2_MRCC_35 Sch=sysclk
-create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports { clk_in1 }];
+#set_property -dict { PACKAGE_PIN H16   IOSTANDARD LVCMOS33 } [get_ports { clk_in1 }]; #IO_L13P_T2_MRCC_35 Sch=sysclk
+#create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports { clk_in1 }];
 
 ###Switches
 
@@ -41,9 +41,10 @@ create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports { c
 set_property -dict { PACKAGE_PIN Y18   IOSTANDARD LVCMOS33 } [get_ports { dut_clk }]; #IO_L17P_T2_34 Sch=ja_p[1]
 set_property -dict {PACKAGE_PIN Y19 IOSTANDARD LVCMOS33} [get_ports do_ready]
 set_property -dict {PACKAGE_PIN Y16 IOSTANDARD LVCMOS33} [get_ports {din[3]}]
-set_property -dict {PACKAGE_PIN Y17 IOSTANDARD LVCMOS33} [get_ports {din[1]}]
+#set_property -dict {PACKAGE_PIN Y17 IOSTANDARD LVCMOS33} [get_ports {din[1]}]
 set_property -dict {PACKAGE_PIN U18 IOSTANDARD LVCMOS33} [get_ports do_valid]
-#set_property -dict { PACKAGE_PIN U19   IOSTANDARD LVCMOS33 } [get_ports { ja[5] }]; #IO_L12N_T1_MRCC_34 Sch=ja_n[3]
+##repeated for Artix7 DUT
+set_property -dict { PACKAGE_PIN U19 IOSTANDARD LVCMOS33 } [get_ports {din[1]}]; #IO_L12N_T1_MRCC_34 Sch=ja_n[3] 
 set_property -dict {PACKAGE_PIN W18 IOSTANDARD LVCMOS33} [get_ports {din[2]}]
 set_property -dict {PACKAGE_PIN W19 IOSTANDARD LVCMOS33} [get_ports {din[0]}]
 
