@@ -309,6 +309,9 @@ CONFIG.LOGO_FILE {data/sym_notgate.png} \
 
   # Create instance: xlconcat_0, and set properties
   set xlconcat_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat:2.1 xlconcat_0 ]
+  set_property -dict [ list \
+CONFIG.NUM_PORTS {3} \
+ ] $xlconcat_0
 
   # Create interface connections
   connect_bd_intf_net -intf_net axi_dma_0_M_AXIS_MM2S [get_bd_intf_pins axi_dma_0/M_AXIS_MM2S] [get_bd_intf_pins axis_data_fifo_0/S_AXIS]
@@ -338,6 +341,7 @@ CONFIG.LOGO_FILE {data/sym_notgate.png} \
   connect_bd_net -net adc_in_1 [get_bd_ports adc] [get_bd_pins openadc_interface_v1_0_0/adc_in]
   connect_bd_net -net axi_dma_0_mm2s_introut [get_bd_pins axi_dma_0/mm2s_introut] [get_bd_pins xlconcat_0/In0]
   connect_bd_net -net axi_dma_0_s2mm_introut [get_bd_pins axi_dma_0/s2mm_introut] [get_bd_pins xlconcat_0/In1]
+  connect_bd_net -net axi_dma_1_s2mm_introut [get_bd_pins axi_dma_1/s2mm_introut] [get_bd_pins xlconcat_0/In2]
   connect_bd_net -net axi_intc_0_irq [get_bd_pins axi_intc_0/irq] [get_bd_pins processing_system7_0/IRQ_F2P]
   connect_bd_net -net c_counter_binary_0_Q [get_bd_pins c_counter_binary_0/Q] [get_bd_pins openadc_interface_v1_0_0/adc_capture_test]
   connect_bd_net -net ck_an_n_1 [get_bd_ports ck_an_n] [get_bd_pins powermanager_0/ck_an_n]
@@ -349,7 +353,7 @@ CONFIG.LOGO_FILE {data/sym_notgate.png} \
   connect_bd_net -net do_valid_1 [get_bd_ports do_valid] [get_bd_pins dutcomm_0/do_valid]
   connect_bd_net -net dout_1 [get_bd_ports dout] [get_bd_pins dutcomm_0/dout]
   connect_bd_net -net dut_controller_0_dut_rst [get_bd_ports dut_rst] [get_bd_pins dut_controller_0/dut_rst] [get_bd_pins dutcomm_0/rst]
-  connect_bd_net -net dut_controller_0_trigger_out [get_bd_ports trigger] [get_bd_pins dut_controller_0/trigger_out] [get_bd_pins powermanager_0/trigger]
+  connect_bd_net -net dut_controller_0_trigger_out [get_bd_ports trigger] [get_bd_pins dut_controller_0/trigger_out] [get_bd_pins openadc_interface_v1_0_0/capture_en] [get_bd_pins powermanager_0/trigger]
   connect_bd_net -net dutcomm_0_di_valid [get_bd_ports di_valid] [get_bd_pins dutcomm_0/di_valid]
   connect_bd_net -net dutcomm_0_din [get_bd_ports din] [get_bd_pins dutcomm_0/din]
   connect_bd_net -net dutcomm_0_do_ready [get_bd_ports do_ready] [get_bd_pins dutcomm_0/do_ready]

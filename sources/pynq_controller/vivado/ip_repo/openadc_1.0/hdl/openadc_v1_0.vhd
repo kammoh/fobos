@@ -277,10 +277,12 @@ openadc_v1_0_M_AXIS_inst : openadc_v1_0_M_AXIS
     end generate;
     
     adc_operational: if not TEST_CAPTURE generate
-        adc_data <= adc_in & (adc_data_lsb OR adc_lsb_conf);
+        --adc_data <= adc_in & (adc_data_lsb OR adc_lsb_conf);
+        adc_data <= "000000" & adc_in; --changed to avoid masking in software
     end generate;
     
-    enable_capture_in <= enable_capture_conf OR capture_en;
+    --enable_capture_in <= enable_capture_conf OR capture_en;
+    enable_capture_in <= enable_capture_conf AND capture_en;
     
     capture_count_int <= to_integer(unsigned(capture_count));
     divisor_count <= capture_divisor;
@@ -334,10 +336,15 @@ openadc_v1_0_M_AXIS_inst : openadc_v1_0_M_AXIS
                    stream_data_out_phase_3 <= adc_data;
                    tx_state <= PHASE_4;
                  when PHASE_4 =>
-                   stream_data_out(63 downto 48) <= stream_data_out_phase_1;
-                   stream_data_out(47 downto 32) <= stream_data_out_phase_2; 
-                   stream_data_out(31 downto 16) <= stream_data_out_phase_3;                 
-                   stream_data_out(15 downto 0) <= adc_data;
+                    --Changed to avoid reordring in software
+                   --stream_data_out(63 downto 48) <= stream_data_out_phase_1;
+                   --stream_data_out(47 downto 32) <= stream_data_out_phase_2; 
+                   --stream_data_out(31 downto 16) <= stream_data_out_phase_3;                 
+                   --stream_data_out(15 downto 0) <= adc_data;
+                    stream_data_out(63 downto 48) <= adc_data;
+                    stream_data_out(47 downto 32) <= stream_data_out_phase_3; 
+                    stream_data_out(31 downto 16) <= stream_data_out_phase_2;                 
+                    stream_data_out(15 downto 0)  <= stream_data_out_phase_1;
                    samples_captured <= samples_captured + 1;
                    adc_data_ready <= '1';
                    if (capture_complete = '1') then
