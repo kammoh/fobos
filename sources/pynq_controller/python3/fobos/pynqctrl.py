@@ -1,27 +1,22 @@
 ##FOBOS control board class
 ##GMU
 ##Author: Abubakr Abdulgadir
-##Aug 7 2018
-##This class hides the Control Board hardware and provides easy to use 
-##methods to configure and run operations on the DUT
-##This class will interface to Digilent Basys3 board
-##The board includes a Microblaze softcore 
-##This uses a protocol to talk to Basys3
-##The connection used is a UART/USB
-import serial
-import binascii
-from fobosctrl import FOBOSCtrl
+##March 2019
+
+from .fobosctrl import FOBOSCtrl
 import pynq.lib.dma
 from pynq import Xlnk
 import numpy as np
 from pynq import Overlay
+from .clkwizard import ClockWizard
+from .openadc import OpenADC
 
 
 class PYNQCtrl(FOBOSCtrl):
     #status codes
-    OK      = 0x00
-    ERROR   = 0x01
-    TIMEOUT = 0x02
+    OK                  = 0x00
+    ERROR               = 0x01
+    TIMEOUT             = 0x02
     #dutcomm register offsets
     dutcomm_START       = 0x00
     dutcomm_STATUS      = 0x04
@@ -31,23 +26,39 @@ class PYNQCtrl(FOBOSCtrl):
     dutctrl_TRGLEN      = 0x00
     dutctrl_TRGWIAT     = 0x04
     dutctrl_TRGMODE     = 0x08
+    ###trigger modes
+    TRG_NORM            = 0X00
+    TRG_FULL            = 0x01
+    TRG_NORM_CLK        = 0x02
+    TRG_FULL_CLK        = 0x03
     ##########################
     #constants
-    MAX_IN_BUFF         = 2048 #max input buffer size in bytes
-    MAX_OUT_BUFF        = 2048 #max output buffer size in bytes
+    MAX_IN_BUFF         = 12 #max input buffer size in bytes
+    MAX_OUT_BUFF        = 4 #max output buffer size in bytes
      
-    def __init__(self, port, baudRate = 115200, dummy=False):
-        self.model = "PYNQ-Z1"
+    def __init__(self, overlay):
+        self.model = "FOBOS-CTRL-PYNQ-Z1"
         self.outLen = 0
         self.STATUS_LEN = 4
-        self.overlay = Overlay("../ctrl_top_wrapper.bit")
-        self.dma = self.overlay.dma_0
-        self.dutcomm = self.overlay.dutcomm_0
-        self.dutctrl = self.overlay.dutctrl_0
+        self.dma = overlay.axi_dma_0
+        self.dutcomm = overlay.dutcomm_0
+        self.dutctrl = overlay.dut_controller_0
+        self.dutClkWizard =overlay.clk_wiz
         #io buffers
-        self.input_buffer = xlnk.cma_array(shape=(MAX_IN_BUFF,), dtype=np.uint32)
-        self.output_buffer = xlnk.cma_array(shape=(MAX_OUT_BUFF,), dtype=np.uint32)
+        xlnk = Xlnk()
+        self.input_buffer = xlnk.cma_array(shape=(PYNQCtrl.MAX_IN_BUFF,), dtype=np.uint32)
+        self.output_buffer = xlnk.cma_array(shape=(PYNQCtrl.MAX_OUT_BUFF,), dtype=np.uint32)
 
+    def setDUTClk(self, clkFreq):
+        self.dutClkWizard.setClock0Freq(clkFreq)       
+        #self.dutClkWizard.write(0x200, 0x00000102)
+        #self.dutClkWizard.write(0x208, 0x00000064)
+        #self.dutClkWizard.write(0x25c, 0x00000003)
+
+    def __del__(self):
+        #not sure if necessay
+        self.input_buffer.freebuffer()
+        self.output_buffer.freebuffer()
         
     def processData(self, data):
         """
@@ -55,9 +66,18 @@ class PYNQCtrl(FOBOSCtrl):
         data: The data to be processed. This is a hexadecimal string.
         returns: the result of processing, e.g. ciphertext
         """
-        
-        
-        
+        #put data in the buffer as 32bit integers
+        data = data.strip()
+        testVector = [int(data[i:i+8],16) for i in range(0, len(data), 8)]
+        for i in range(0, len(testVector)):
+            self.input_buffer[i] = testVector[i]
+        #send via DMA
+        self.dma.recvchannel.transfer(self.output_buffer) #configure dma to receive
+        self.dma.sendchannel.transfer(self.input_buffer)  #configure dma to send 
+        self.dma.sendchannel.wait()
+        self.dma.recvchannel.wait()
+        result = ''.join(['{:08x}'.format(self.output_buffer[i]) for i in range(0, 4)])
+        return result
 
     def getModel(self):
         return self.model
@@ -67,48 +87,49 @@ class PYNQCtrl(FOBOSCtrl):
         set Expected Output Length (outLen)
         """
         self.outLen = outLen
-        self.dutcomm.write(dutcomm_EXP_OUT_LEN, outLen)
+        self.dutcomm.write(PYNQCtrl.dutcomm_EXP_OUT_LEN, outLen)
 
     def getOutLen(self):
         """
         get Expected Output Length (outLen)
         """
-        return self.dutcomm.read(dutcomm_EXP_OUT_LEN)
+        return self.dutcomm.read(PYNQCtrl.dutcomm_EXP_OUT_LEN)
     
-    def setTrigWait(self, trigWait):
+    def setTriggerWait(self, trigWait):
         """
         set number of trigger wait cycles
         """
-        self.dutcomm.write(dutctrl_TRGWIAT, trigWait)
+        self.dutctrl.write(PYNQCtrl.dutctrl_TRGWIAT, trigWait)
 
-    def getTrigWait(self):
+    def getTriggerWait(self):
         """
         get number of trigger wait cycles
         """
-        return self.dutcomm.read(dutctrl_TRGWIAT)
+        return self.dutctrl.read(PYNQCtrl.dutctrl_TRGWIAT)
         
-    def setTrigLen(self, trigLen):
+    def setTriggerLen(self, trigLen):
         """
         set number of trigger length in cycles
         """
-        self.dutcomm.write(dutctrl_TRGLEN, trigLen)
+        self.dutctrl.write(PYNQCtrl.dutctrl_TRGLEN, trigLen)
 
-    def getTrigLen(self):
+    def getTriggerLen(self):
         """
         get number of trigger length in cycles
         """
-        return self.dutcomm.read(dutctrl_TRGLEN)
+        return self.dutctrl.read(PYNQCtrl.dutctrl_TRGLEN)
     
     
-    def setTrigMode(self, trigMode):
+    def setTriggerMode(self, trigMode):
         """
         set trigger type
         """
-        self.dutcomm.write(dutctrl_TRGMODE, trigMode)
+        self.dutctrl.write(PYNQCtrl.dutctrl_TRGMODE, trigMode)
 
-    def getTrigMode(self):
+    def getTriggerMode(self):
         """
         get trigger type
         """
-        return self.dutcomm.read(dutctrl_TRGMODE)
-        
+        return self.dutctrl.read(PYNQCtrl.dutctrl_TRGMODE)
+    
+   
