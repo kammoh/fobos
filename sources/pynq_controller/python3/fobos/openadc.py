@@ -446,3 +446,7 @@ class OpenADCScope():
         if (phase > 360 or phase < 0):
             raise Exception('ADC Phase may only be between 0 and 360 degrees')
         self.adcClk.writeClk0Phase(math.floor(phase*1000))
+
+    def setGain(self, gain):
+        self.openADCInterface.writeGain(gain)
+        
