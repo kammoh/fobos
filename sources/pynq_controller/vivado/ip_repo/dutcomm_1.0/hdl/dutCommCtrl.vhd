@@ -222,7 +222,7 @@ en_tlast_cnt <= '1' when rx_ready = '1' and s_rx_valid = '1' else '0';
 last_word <= '1' when tlast_cnt >= unsigned(expected_out_len) - 1  else '0';
 rx_last <= '1' when last_word = '1' and s_rx_valid = '1' else '0';
 
-tlast_cnt_poc : process
+tlast_cnt_poc : process(clk)
 begin
     if rising_edge(clk) then
         if clr_tlast_cnt = '1' then
