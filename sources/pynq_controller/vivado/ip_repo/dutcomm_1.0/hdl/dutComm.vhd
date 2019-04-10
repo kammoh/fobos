@@ -48,6 +48,7 @@ entity dutComm is
         dout        : in STD_LOGIC_VECTOR (3 downto 0);
         do_valid    : in STD_LOGIC;
         do_ready    : out STD_LOGIC;
+        direction   : out std_logic;
         dut_rst     : out std_logic;
         start       : in std_logic;
         status      : out std_logic_vector(7 downto 0);
@@ -145,6 +146,7 @@ ctrl: entity work.dutCommCtrl(behav)
         do_ready    => do_ready,
         dut_rst     => dut_rst,
         start       => start,
+        direction   => direction,
         ---Internal control/status
         din_cnt_clr => din_cnt_clr,
         din_cnt_en  => din_cnt_en,

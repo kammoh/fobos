@@ -46,6 +46,7 @@ entity dutCommCtrl is
         do_valid : in std_logic;
         dut_rst  : out std_logic;
         start    : in std_logic; -- signal to start sending data
+        direction: out std_logic; -- to control half duplex interface -- 0 means data is going from ctrl-> dut
         ---Internal control/status
         din_cnt_clr : out std_logic;
         din_cnt_en : out std_logic;
@@ -97,6 +98,7 @@ end process;
 process(current_state, tx_valid, di_ready, do_valid, start,din_cnt_last, rx_ready, dout_cnt_last, last_word)
 begin
 --default outputs
+direction       <= '0';
 di_valid        <= '0';
 tx_ready        <= '0';
 do_ready        <= '0';
@@ -165,6 +167,7 @@ case current_state is
         end if;
     
     when S_WAIT_VALID =>
+        direction <= '1'; --get data from dut
         status <= WAIT_VALID;
         do_ready <= '1';
         if do_valid = '1' then
@@ -177,6 +180,7 @@ case current_state is
         end if;
     
     when S_RCV  =>
+        direction <= '1';
         status <= RCV;
         if rx_ready = '1' then
             do_ready <= '1';

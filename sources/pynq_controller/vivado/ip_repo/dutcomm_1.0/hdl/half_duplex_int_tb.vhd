@@ -31,14 +31,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity dutcomm_tb is
+entity half_duplex_int_tb is
 --  Port ( );
-end dutcomm_tb;
+end half_duplex_int_tb;
 
 
 
 
-architecture Behav of dutcomm_tb is
+architecture Behav of half_duplex_int_tb is
 constant clk_period : time := 10 ns;
 ---CTRL
 signal clk         : STD_LOGIC;
@@ -69,9 +69,13 @@ signal fifo_dout_valid, fifo_dout_ready, fifo_din_valid, fifo_din_ready: std_log
 signal fifo_din, fifo_dout : std_logic_vector(31 downto 0);
 ---
 signal enable_fifo_out : std_logic := '0'; --to enable fifo_data_valid 
-
+---
+signal shared_handshake_out :  std_logic; 
+signal shared_handshake_in  : std_logic;
+signal dbus :  STD_LOGIC_VECTOR (3 downto 0);
+signal direction_out :  std_logic;
 begin
-    dutcm: entity work.dutComm(behav)
+    dutcm: entity work.dutcomm_wrapper(behav)
     port map ( 
             clk => clk,
             rst => rst,
@@ -95,23 +99,27 @@ begin
             op_done => op_done,
             dut_working => dut_working,
             started     => started,
-            expected_out_len => expected_out_len
+            expected_out_len => expected_out_len,
+            ---
+            shared_handshake_out => shared_handshake_out,
+            shared_handshake_in  => shared_handshake_in,
+            dbus => dbus,
+            direction_out => direction_out
         );
         
-dut: entity work.FOBOS_DUT(structural)
+dut: entity work.half_duplex_dut(behav)
         generic map(       
             W => 128,
             SW => 128                                    
         )
         port map(
-            clk => clk,
-            rst => rst,
-            di_valid => di_valid,
-            do_ready => do_ready,
-            di_ready => di_ready, 
-            do_valid => do_valid,
-            din   => din,
-            dout  => dout   
+            clk  => clk,
+            rst  => rst,
+            --External bus--half duplex interface 
+            shared_handshake_out => shared_handshake_in, 
+            shared_handshake_in  => shared_handshake_out,
+            dbus => dbus,
+            direction_in => direction_out
 );
 
 
@@ -152,7 +160,7 @@ begin
     rst <= '0';
     fifo_din_valid <= '0';
     ----
-    expected_out_len <=   x"00000004"; --4 words--16 bytes
+    expected_out_len <=   x"00000004"; --4words --16 bytes
     
     ---Fill fifo
     wait for 4*clk_period;
