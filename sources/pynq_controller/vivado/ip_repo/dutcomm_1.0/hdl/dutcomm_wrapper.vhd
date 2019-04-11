@@ -68,17 +68,23 @@ entity dutcomm_wrapper is
 end dutcomm_wrapper;
 
 architecture behav of dutcomm_wrapper is
-
-signal din_s         :  STD_LOGIC_VECTOR (3 downto 0);
-signal di_valid_s    :  STD_LOGIC;
-signal di_ready_s    :  STD_LOGIC;        
-signal dout_s        :  STD_LOGIC_VECTOR (3 downto 0);
-signal do_valid_s    :  STD_LOGIC;
-signal do_ready_s    :  STD_LOGIC;
+---signals connected to dutcomm
+signal din_d         :  STD_LOGIC_VECTOR (3 downto 0);
+signal di_valid_d    :  STD_LOGIC;
+signal di_ready_d    :  STD_LOGIC;        
+signal dout_d        :  STD_LOGIC_VECTOR (3 downto 0);
+signal do_valid_d    :  STD_LOGIC;
+signal do_ready_d    :  STD_LOGIC;
 signal direction     : std_logic;
+---signals connected to half_duplex_interface
+signal handshake0_out_h : std_logic;
+signal handshake1_out_h : std_logic;
+signal handshake0_in_h  : std_logic;
+signal handshake1_in_h  : std_logic;
+signal dout_h : std_logic_vector(3 downto 0);-- from the user point of view
+signal din_h  : std_logic_vector(3 downto 0);
 
 begin
-
     --dutcomm instance
     dutcm: entity work.dutComm(behav)
     port map ( 
@@ -92,12 +98,12 @@ begin
             rx_last => rx_last,
             rx_ready    => rx_ready,
             ---External bus
-            din        => din_s,
-            di_valid => di_valid_s,
-            di_ready  => di_ready_s,        
-            dout => dout_s,
-            do_valid => do_valid_s,
-            do_ready => do_ready_s,
+            din        => din_d,
+            di_valid => di_valid_d,
+            di_ready  => di_ready_d,        
+            dout => dout_d,
+            do_valid => do_valid_d,
+            do_ready => do_ready_d,
             direction => direction,
             ---End external bus
             dut_rst => dut_rst,
@@ -121,27 +127,48 @@ begin
             direction_out => direction_out, 
             --user connection
             ---out/in from the view point of the interface user
-            handshake0_out => di_valid_s,
-            handshake1_out => do_ready_s,
-            handshake0_in =>  di_ready_s,
-            handshake1_in =>  do_valid_s,
+            handshake0_out => handshake0_out_h,
+            handshake1_out => handshake1_out_h,
+            handshake0_in =>  handshake0_in_h,
+            handshake1_in =>  handshake1_in_h,
             --data
-            dout => din_s, -- from the user point of view
-            din  => dout_s, -- from the user point of view
+            dout => dout_h, -- from the user point of view
+            din  => din_h, -- from the user point of view
             ---control
             direction_in => direction -- 0 --for phase0 (ctrl -> dut)-- drived by master
                    
         );
-    ---interface selection mux
---    int_mux: process(all inputs):
---    begin
---        if legacy_interface = '1' then
---            din <= din_s;
---            dout_s <= dout
---        else
-    
---        end if;
-    
---    end process;
+    --interface selection mux
+    int_mux: process(din_d, di_valid_d, do_ready_d, dout, do_valid, di_ready,
+                    handshake0_in_h, handshake1_in_h, din_d, din_h)
+    begin
+        --default values
+        din             <= (others=>'0');
+        di_valid        <= '0';
+        do_ready        <= '0';
+        dout_d          <= (others=>'0');
+        do_valid_d      <= '0';
+        di_ready_d      <= '0';
+        handshake0_out_h<= '0';
+        handshake1_out_h<= '0';
+        dout_h          <= (others=>'0');
+        dout_d          <= (others=>'0');
+        -----
+        if legacy_interface = '1' then
+            din         <= din_d;
+            di_valid    <= di_valid_d;
+            do_ready    <= do_ready_d;
+            dout_d      <= dout;
+            do_valid_d  <= do_valid;
+            di_ready_d  <= di_ready;
+        else
+            handshake0_out_h <= di_valid_d;
+            handshake1_out_h <= do_ready_d;
+            di_ready_d <= handshake0_in_h;
+            do_valid_d <= handshake1_in_h;
+            dout_h <= din_d;
+            dout_d  <= din_h;
+        end if;
+    end process;
 
 end behav;

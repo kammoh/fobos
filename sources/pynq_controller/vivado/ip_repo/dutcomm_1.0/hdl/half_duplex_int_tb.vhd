@@ -64,6 +64,7 @@ signal op_done     : std_logic; --tell others that operation (i.e. encryption) i
 signal dut_working : std_logic;
 signal started     : std_logic;
 signal expected_out_len : std_logic_vector(31 downto 0);
+signal legacy_interface : std_logic;
 ------FIFO
 signal fifo_dout_valid, fifo_dout_ready, fifo_din_valid, fifo_din_ready: std_logic;
 signal fifo_din, fifo_dout : std_logic_vector(31 downto 0);
@@ -100,6 +101,7 @@ begin
             dut_working => dut_working,
             started     => started,
             expected_out_len => expected_out_len,
+            legacy_interface => legacy_interface,
             ---
             shared_handshake_out => shared_handshake_out,
             shared_handshake_in  => shared_handshake_in,
@@ -107,7 +109,7 @@ begin
             direction_out => direction_out
         );
         
-dut: entity work.half_duplex_dut(behav)
+dut_4bit_interface: entity work.half_duplex_dut(behav)
         generic map(       
             W => 128,
             SW => 128                                    
@@ -122,7 +124,21 @@ dut: entity work.half_duplex_dut(behav)
             direction_in => direction_out
 );
 
-
+dut_8bit_interface: entity work.FOBOS_DUT(structural)
+        generic map(       
+            W => 128,
+            SW => 128                                    
+        )
+        port map(
+            clk => clk,
+            rst => rst,
+            di_valid => di_valid,
+            do_ready => do_ready,
+            di_ready => di_ready, 
+            do_valid => do_valid,
+            din   => din,
+            dout  => dout   
+);
 
 data_fifo: entity work.fwft_fifo(structure)
     generic map (
@@ -156,6 +172,7 @@ stim: process
 begin
     rst <= '1';
     enable_fifo_out <= '0';
+    legacy_interface <= '1';
     wait for 2 * clk_period;
     rst <= '0';
     fifo_din_valid <= '0';
