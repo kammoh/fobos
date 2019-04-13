@@ -19,6 +19,7 @@ entity dutcomm_v1_0_S_AXI is
          start        : out std_logic;
          status       : in std_logic_vector(7 downto 0);
          expected_out_len : out std_logic_vector(31 downto 0);
+         legacy_interface : out std_logic;
 
 		-- User ports ends
 		-- Do not modify the ports beyond this line
@@ -390,7 +391,8 @@ begin
 
 	-- Add user logic here
     start <= slv_reg0(0);
-    --slv_reg2 is reserved for status
+    --slv_reg1 is reserved for status
+    legacy_interface <= slv_reg2(0);
     expected_out_len <= slv_reg3;
 	-- User logic ends
 	

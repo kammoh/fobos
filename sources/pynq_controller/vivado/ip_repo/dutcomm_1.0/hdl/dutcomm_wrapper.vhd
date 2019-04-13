@@ -138,37 +138,44 @@ begin
             direction_in => direction -- 0 --for phase0 (ctrl -> dut)-- drived by master
                    
         );
-    --interface selection mux
-    int_mux: process(din_d, di_valid_d, do_ready_d, dout, do_valid, di_ready,
-                    handshake0_in_h, handshake1_in_h, din_d, din_h)
-    begin
-        --default values
-        din             <= (others=>'0');
-        di_valid        <= '0';
-        do_ready        <= '0';
-        dout_d          <= (others=>'0');
-        do_valid_d      <= '0';
-        di_ready_d      <= '0';
-        handshake0_out_h<= '0';
-        handshake1_out_h<= '0';
-        dout_h          <= (others=>'0');
-        dout_d          <= (others=>'0');
-        -----
-        if legacy_interface = '1' then
-            din         <= din_d;
-            di_valid    <= di_valid_d;
-            do_ready    <= do_ready_d;
-            dout_d      <= dout;
-            do_valid_d  <= do_valid;
-            di_ready_d  <= di_ready;
-        else
-            handshake0_out_h <= di_valid_d;
-            handshake1_out_h <= do_ready_d;
-            di_ready_d <= handshake0_in_h;
-            do_valid_d <= handshake1_in_h;
-            dout_h <= din_d;
-            dout_d  <= din_h;
-        end if;
-    end process;
+--    --interface selection mux
+--    int_mux: process(din_d, di_valid_d, do_ready_d, dout, do_valid, di_ready,
+--                    handshake0_in_h, handshake1_in_h, din_d, din_h)
+--    begin
+--        --default values
+--        din             <= (others=>'0');
+--        di_valid        <= '0';
+--        do_ready        <= '0';
+--        dout_d          <= (others=>'0');
+--        do_valid_d      <= '0';
+--        di_ready_d      <= '0';
+--        handshake0_out_h<= '0';
+--        handshake1_out_h<= '0';
+--        dout_h          <= (others=>'0');
+--        dout_d          <= (others=>'0');
+--        -----
+--        if legacy_interface = '1' then
+--            din         <= din_d;
+--            di_valid    <= di_valid_d;
+--            do_ready    <= do_ready_d;
+--            dout_d      <= dout;
+--            do_valid_d  <= do_valid;
+--            di_ready_d  <= di_ready;
+--        else
+--            handshake0_out_h <= di_valid_d;
+--            handshake1_out_h <= do_ready_d;
+--            di_ready_d <= handshake0_in_h;
+--            do_valid_d <= handshake1_in_h;
+--            dout_h <= din_d;
+--            dout_d  <= din_h;
+--        end if;
+--    end process;
+    
+    handshake0_out_h <= di_valid_d;
+                handshake1_out_h <= do_ready_d;
+                di_ready_d <= handshake0_in_h;
+                do_valid_d <= handshake1_in_h;
+                dout_h <= din_d;
+                dout_d  <= din_h;
 
 end behav;

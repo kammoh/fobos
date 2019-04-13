@@ -172,7 +172,7 @@ stim: process
 begin
     rst <= '1';
     enable_fifo_out <= '0';
-    legacy_interface <= '1';
+    legacy_interface <= '0';
     wait for 2 * clk_period;
     rst <= '0';
     fifo_din_valid <= '0';
