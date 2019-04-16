@@ -20,17 +20,22 @@ class PYNQCtrl(FOBOSCtrl):
     #dutcomm register offsets
     dutcomm_START       = 0x00
     dutcomm_STATUS      = 0x04
+    dutcomm_INTERFACE   = 0x08
     dutcomm_EXP_OUT_LEN = 0x0c
     ##########################
     #dutctrl register offsets
     dutctrl_TRGLEN      = 0x00
     dutctrl_TRGWIAT     = 0x04
     dutctrl_TRGMODE     = 0x08
+    dutctrl_FORCE_RST   = 0x1c
     ###trigger modes
     TRG_NORM            = 0X00
     TRG_FULL            = 0x01
     TRG_NORM_CLK        = 0x02
     TRG_FULL_CLK        = 0x03
+    ###interface types - 4bit interface is default
+    INTERFACE_4BIT      = 0x00
+    INTERFACE_8BIT      = 0x01
     ##########################
     #constants
     MAX_IN_BUFF         = 12 #max input buffer size in bytes
@@ -125,11 +130,26 @@ class PYNQCtrl(FOBOSCtrl):
         set trigger type
         """
         self.dutctrl.write(PYNQCtrl.dutctrl_TRGMODE, trigMode)
+        
+    def forceReset(self):
+        """
+        set reset ctrl and DUT
+        """
+        self.dutctrl.write(PYNQCtrl.dutctrl_FORCE_RST, 1)
+    
+    def releaseReset(self):
+        """
+        set reset ctrl and DUT
+        """
+        self.dutctrl.write(PYNQCtrl.dutctrl_FORCE_RST, 0)
 
     def getTriggerMode(self):
         """
         get trigger type
         """
         return self.dutctrl.read(PYNQCtrl.dutctrl_TRGMODE)
+    
+    def setDUTInterface(self, interfaceType):
+        self.dutcomm.write(PYNQCtrl.dutcomm_INTERFACE, interfaceType)
     
    
