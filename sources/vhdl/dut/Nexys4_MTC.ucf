@@ -19,20 +19,23 @@
 ##################################################################################
 ## Pmod JD and JC connector for connection to Control
 # ======================== Data in/out from/to Control ===========================
-NET "dio<0>"         LOC = "F3"	|IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L13N_T2_MRCC_35,   Sch name = JD10
-NET "dio<1>"         LOC = "G3"  |IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L20N_T3_35,        Sch name = JD4
-NET "dio<2>"         LOC = "G2"  |IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L15N_T2_DQS_35,    Sch name = JD9
-NET "dio<3>"         LOC = "G1"  |IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L17N_T2_35,        Sch name = JD3
+NET "dio<0>"         LOC = "U11" | IOSTANDARD = "LVCMOS33";   #Bank = 14, Pin name = IO_L19N_T3_A09_D25_VREF_14,  Sch name = JB10 
+NET "dio<1>"         LOC = "V15" | IOSTANDARD = "LVCMOS33";   #Bank = CONFIG, Pin name = IO_L16P_T2_CSI_B_14,     Sch name = JB4
+NET "dio<2>"         LOC = "T9"  | IOSTANDARD = "LVCMOS33";   #Bank = 14, Pin name = IO_L24P_T3_A01_D17_14,       Sch name = JB9
+NET "dio<3>"         LOC = "V11" | IOSTANDARD = "LVCMOS33";   #Bank = 14, Pin name = IO_L21N_T3_DQS_A06_D22_14,   Sch name = JB3
 # ============================= CONTROL SIGNALS ==================================
-NET "clk_c2d"        LOC = "E6"  |IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L5P_T0_AD13P_35,   Sch name = JC8
-NET "handshake_c2d"  LOC = "H1"  |IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L17P_T2_35,        Sch name = JD2
-NET "handshake_d2c"  LOC = "G4"  |IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L20P_T3_35,        Sch name = JD8
-NET "d_rst"          LOC = "H4"  |IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L21N_T2_DQS_35,    Sch name = JD1
-NET "io"             LOC = "H2"  |IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L15P_T2_DQS_35,    Sch name = JD7
+#NET "tfd"            LOC = "B13" | IOSTANDARD = "LVCMOS33";   #Bank = 15, Pin name = IO_L1N_T0_AD0N_15,           Sch name = JA1
+#NET "clk_d2c"        LOC = "E17" | IOSTANDARD = "LVCMOS33";   #Bank = 15, Pin name = IO_L16P_T2_A28_15,           Sch name = JA4
+#NET "aux"            LOC = "G13" | IOSTANDARD = "LVCMOS33";   #Bank = 15, Pin name = IO_0_15,                     Sch name = JA7
+NET "clk_c2d"        LOC = "C17" | IOSTANDARD = "LVCMOS33";   #Bank = 15, Pin name = IO_L20N_T3_A19_15,           Sch name = JA8
+NET "handshake_c2d"  LOC = "P15" | IOSTANDARD = "LVCMOS33";   #Bank = 14, Pin name = IO_L13P_T2_MRCC_14,          Sch name = JB2
+NET "handshake_d2c"  LOC = "R16" | IOSTANDARD = "LVCMOS33";   #Bank = CONFIG, Pin name = IO_L15P_T2_DQS_RWR_B_14, Sch name = JB8
+NET "d_rst"          LOC = "G14" | IOSTANDARD = "LVCMOS33";   #Bank = 15, Pin name = IO_L15N_T2_DQS_ADV_B_15,     Sch name = JB1
+NET "io"             LOC = "K16" | IOSTANDARD = "LVCMOS33";   #Bank = 15, Pin name = IO_25_15,                    Sch name = JB7
 NET "clk_c2d" CLOCK_DEDICATED_ROUTE = FALSE;
 ####DEBUG
-NET "di_valid_deb"   LOC = "B13" |IOSTANDARD = "LVCMOS33";   #Bank = 15, Pin name = IO_L1N_T0_AD0N_15,    Sch name = JA1
-NET "di_ready_deb"   LOC = "F14" |IOSTANDARD = "LVCMOS33";   #Bank = 15, Pin name = IO_L5N_T0_AD9N_15,    Sch name = JA2
-NET "do_valid_deb"   LOC = "D17" |IOSTANDARD = "LVCMOS33";   #Bank = 15, Pin name = IO_L16N_T2_A27_15,    Sch name = JA3
-NET "do_ready_deb"   LOC = "E17" |IOSTANDARD = "LVCMOS33";   #Bank = 15, Pin name = IO_L16P_T2_A28_15,    Sch name = JA4
+NET "di_valid_deb"   LOC = "K2"  | IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L23P_T3_35,               Sch name = JC1
+NET "di_ready_deb"   LOC = "E7"  | IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L6P_T0_35,                Sch name = JC2
+NET "do_valid_deb"   LOC = "J3"  | IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L22P_T3_35,               Sch name = JC3
+NET "do_ready_deb"   LOC = "J4"  | IOSTANDARD = "LVCMOS33";   #Bank = 35, Pin name = IO_L21P_T3_DQS_35,           Sch name = JC4
 
