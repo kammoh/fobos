@@ -397,9 +397,10 @@ def plotCorr3D(C, fileName= None, show='no'):
 def plotCorr(C, correctIndex,fileName= None, show='no'):
     import matplotlib.pyplot as plt
     plt.clf()
+    plt.margins(0)
     for i in range(C.shape[0]):
         row = C[i,:]
-        plt.plot(row, '#aaaaaa')
+        plt.plot(row, '#aaaaaa', linewidth = 0.5)
     plt.plot(C[correctIndex, :], 'k')
     if fileName != None:
         plt.savefig(fileName)
@@ -432,9 +433,10 @@ def plotMTDGraph(correctTime, correctKeyIndex, measuredPower,
         index +=1
     import matplotlib.pyplot as plt
     plt.clf()
+    plt.margins(0)
     for i in range(dataToPlot.shape[0]):
         row = dataToPlot[i,:]
-        plt.plot(row, '#aaaaaa')
+        plt.plot(row, '#aaaaaa', linewidth = 0.5)
     plt.plot(dataToPlot[correctKeyIndex, :], 'k')
     if fileName != None:
         plt.savefig(fileName)
@@ -446,15 +448,15 @@ def testModel1():
     D = np.random.randint(0, 10, size=(10,1))
     K = np.random.randint(0, 10, size=(1 ,5))
     cpa = CPA()
-
     hypotheticalPower = testAESPowerModel1()
     measuredPower = read_raw_traces("./example_data/rawDataAligned.npy", 10000)
     print(measuredPower.shape)
     #print(hypotheticalPower.shape)
     croppedMeasuredPower = measuredPower[:,100:400]
     correctKey = []
-    for byteNum in range(16):
-        C =  correlation_pearson(croppedMeasuredPower, hypotheticalPower[byteNum][0:10000,:])
+    for byteNum in range(1):
+        #C =  correlation_pearson(croppedMeasuredPower[0:1000,:], hypotheticalPower[byteNum][0:1000,:])
+        C =  correlationPearsonOnlineVect(croppedMeasuredPower[0:1000,:], hypotheticalPower[byteNum][0:1000,:])
         print("C=")
         print(C.shape)
         printHexMatrix(C, dtype='float')
@@ -466,7 +468,6 @@ def testModel1():
         plotMTDGraph(maxCorrTime, maxKeyIndex, croppedMeasuredPower, hypotheticalPower[byteNum], 
             stride=100, fileName=mtdFile, show='no')
         correctKey.append(format(maxKeyIndex, '02x'))
-
     print(correctKey)
 
 def testFirstRound():
@@ -483,7 +484,7 @@ def testFirstRound():
     correctKey = []
     correctSample = []
     for byteNum in range(16):
-        C =  correlation_pearson(croppedMeasuredPower, hypotheticalPower[byteNum][0:10000,:])
+        C =  correlation_pearson(croppedMeasuredPower, hypotheticalPower[byteNum][0:10000,:])  
         print("C=")
         print(C.shape)
         printHexMatrix(C, dtype='float')
@@ -496,16 +497,71 @@ def testFirstRound():
             stride=100, fileName=mtdFile, show='no')
         correctKey.append(format(maxKeyIndex, '02x'))
         correctSample.append(format(maxCorrTime, '02x'))
-
     print(correctKey)
     print(correctSample)
+
+def correlationPearsonOnlineVect(t,h):
+    D = t.shape[0]
+    T = t.shape[1]
+    K = h.shape[1]
+    r = np.zeros((K, T))
+    ##intermediate sums
+    print("K={}, T={}".format(K,T))
+    sht = np.zeros((K,T))
+    sh  = np.zeros(K)
+    st  = np.zeros(T)
+    sh2 = np.zeros(K)
+    st2 = np.zeros(T)
+    ##update arrays
+    for i in range(K):
+        for j in range(T):
+            sht[i,j] = np.dot(h[:,i], t[:,j])
+    sh  = np.sum(h, axis=0)
+    st  = np.sum(t, axis=0)
+    sh2 = np.sum(h**2, axis=0)
+    st2 = np.sum(t**2, axis=0)
+    print(sht)
+    print(sh)
+    print(st)
+    print(sh2)
+    print(st2)
+    num = D * sht - np.outer(sh, st)
+    tmp = np.outer(sh ** 2 - D * sh2, st ** 2 - D * st2 )
+    print(tmp)
+    den = np.sqrt(tmp)
+    r = num / den
+    return r
+
+def correlationPearsonOnline(t, h):
+    D = t.shape[0]
+    T = t.shape[1]
+    K = h.shape[1]
+    r = np.zeros((K, T))
+    for i in range(K):
+        for j in range(T):
+            ##calc sht
+            sht = 0
+            sh = 0
+            st = 0
+            ##calc sh^ and st^2
+            sh2 = 0
+            st2 = 0
+            for d in range(D):
+                sht += h[d,i] * t[d,j]
+                ##calc sh and st
+                sh += h[d,i]
+                st += t[d,j]
+                sh2 += h[d,i]**2
+                st2 += t[d,j]**2
+            ##calc r[i,j]
+            num = D * sht - sh * st
+            den = np.sqrt((sh**2 - D * sh2)*(st**2  - D * st2))
+            r[i,j] = num/den
+    return r
 
 def main():
     #testFirstRound()
     testModel1()
-
-
-    
 
 if __name__ == '__main__':
     main()
