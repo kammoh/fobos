@@ -39,7 +39,7 @@ class PYNQCtrl(FOBOSCtrl):
     ##########################
     #constants
     MAX_IN_BUFF         = 12 #max input buffer size in bytes
-    MAX_OUT_BUFF        = 4 #max output buffer size in bytes
+    MAX_OUT_BUFF        = 4 #max output buffer size in 32 bit words 
      
     def __init__(self, overlay):
         self.model = "FOBOS-CTRL-PYNQ-Z1"
@@ -82,7 +82,13 @@ class PYNQCtrl(FOBOSCtrl):
         self.dma.sendchannel.wait()
         self.dma.recvchannel.wait()
         result = ''.join(['{:08x}'.format(self.output_buffer[i]) for i in range(0, 4)])
-        return result
+        ##get result in correct format
+        result2 = ''
+        for i in range(len(result)):
+            if (i % 2 == 0 and i != 0):
+                result2 += ' '
+            result2 += result[i]       
+        return result2
 
     def getModel(self):
         return self.model
