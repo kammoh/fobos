@@ -255,24 +255,24 @@ def aesPowerHD(p1, p2):
     tmp = p1 ^ p2
 
 def testAESPowerModel1():
-    plaintext = loadTextMatrix('./example_data/plaintexts1.txt')
+    plaintext = loadTextMatrix('./example_data/pdi.txt')
     #plaintext = loadTextMatrix('./plaintext1.txt', 3)
     print("plaintext=")
     printHexMatrix(plaintext[:,0:5])
-    numPlainTexts = plaintext.shape[0]
-
-    ciphertext = loadTextMatrix('./example_data/ciphertexts1.txt')
+    ciphertext = loadTextMatrix('./example_data/do.txt')
+    numTraces = ciphertext.shape[0]
+    plaintext = plaintext[0:numTraces,:]
     #plaintext = loadTextMatrix('./plaintext1.txt', 3)
     print("ciphertext=")
     printHexMatrix(ciphertext)
     hypotheticalPower = []
     for byteNum in range(16):
-        sbox_pt_key = vectAESSboxOutFirstRound(plaintext[:, byteNum].reshape(numPlainTexts,1))
+        sbox_pt_key = vectAESSboxOutFirstRound(plaintext[:, byteNum].reshape(numTraces,1))
         #res =  firstRound(plaintext[:,0], 0)
         print("sbox_pt_key=")
         printHexMatrix(sbox_pt_key[:,0:1])
         #####
-        sbox_ct = vectAESSboxOut(ciphertext[:, byteNum].reshape(numPlainTexts,1))
+        sbox_ct = vectAESSboxOut(ciphertext[:, byteNum].reshape(numTraces,1))
         #res =  firstRound(plaintext[:,0], 0)
         print("sbox_ct=")
         printHexMatrix(sbox_ct[:,0:1])
@@ -401,7 +401,9 @@ def plotCorr(C, correctIndex,fileName= None, show='no'):
     for i in range(C.shape[0]):
         row = C[i,:]
         plt.plot(row, '#aaaaaa', linewidth = 0.5)
-    plt.plot(C[correctIndex, :], 'k')
+    plt.plot(C[correctIndex, :], 'k', linewidth = 0.5)
+    plt.xlabel("Sample No.")
+    plt.ylabel("Correlation (Pearson's r)")
     if fileName != None:
         plt.savefig(fileName)
     if show == 'yes':
@@ -437,7 +439,12 @@ def plotMTDGraph(correctTime, correctKeyIndex, measuredPower,
     for i in range(dataToPlot.shape[0]):
         row = dataToPlot[i,:]
         plt.plot(row, '#aaaaaa', linewidth = 0.5)
-    plt.plot(dataToPlot[correctKeyIndex, :], 'k')
+    plt.plot(dataToPlot[correctKeyIndex, :], 'k', linewidth = 0.5)
+    if stride != 1:
+        plt.xlabel("Trace No. ({} traces)".format(stride))
+    else:
+        plt.xlabel("Trace No.")
+    plt.ylabel("Correlation (Pearson's r)")
     if fileName != None:
         plt.savefig(fileName)
     if show == 'yes':
@@ -449,14 +456,14 @@ def testModel1():
     K = np.random.randint(0, 10, size=(1 ,5))
     cpa = CPA()
     hypotheticalPower = testAESPowerModel1()
-    measuredPower = read_raw_traces("./example_data/rawDataAligned.npy", 10000)
+    measuredPower = read_raw_traces("./example_data/powerTraces.npy", 10000)
     print(measuredPower.shape)
     #print(hypotheticalPower.shape)
-    croppedMeasuredPower = measuredPower[:,100:400]
+    croppedMeasuredPower = measuredPower[:,200:800]
     correctKey = []
-    for byteNum in range(1):
-        #C =  correlation_pearson(croppedMeasuredPower[0:1000,:], hypotheticalPower[byteNum][0:1000,:])
-        C =  correlationPearsonOnlineVect(croppedMeasuredPower[0:1000,:], hypotheticalPower[byteNum][0:1000,:])
+    for byteNum in range(16):
+        C =  correlation_pearson(croppedMeasuredPower[0:10000,:], hypotheticalPower[byteNum][0:10000,:])
+        #C =  correlationPearsonOnlineVect(croppedMeasuredPower[0:1000,:], hypotheticalPower[byteNum][0:1000,:])
         print("C=")
         print(C.shape)
         printHexMatrix(C, dtype='float')
