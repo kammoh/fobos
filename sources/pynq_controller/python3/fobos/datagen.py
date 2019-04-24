@@ -66,8 +66,14 @@ class DataGenerator():
          rdi = self.randBytesHex(rdiLen)
          s += self.H_RDI + self.to2ByteHex(rdiLen) + rdi
       s += self.H_OUT_LEN + self.to2ByteHex(outLen) + self.H_CMD + self.START_CMD
-
-      return s, pdi
+      #format pdi
+      ##get result in correct format
+      pdiFormatted = ''
+      for i in range(len(pdi)):
+         if (i % 2 == 0 and i != 0):
+            pdiFormatted += ' '
+         pdiFormatted += pdi[i]
+      return s, pdiFormatted
 
    def fixedTestVector(self, pdiLen, sdiLen, rdiLen, outLen, pdi, sdi):
       """
