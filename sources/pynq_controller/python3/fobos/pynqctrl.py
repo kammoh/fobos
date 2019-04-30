@@ -38,21 +38,21 @@ class PYNQCtrl(FOBOSCtrl):
     INTERFACE_8BIT      = 0x01
     ##########################
     #constants
-    MAX_IN_BUFF         = 12 #max input buffer size in bytes
-    MAX_OUT_BUFF        = 4 #max output buffer size in 32 bit words 
-     
-    def __init__(self, overlay):
+    
+    def __init__(self, overlay, inputSize, outputSize):
         self.model = "FOBOS-CTRL-PYNQ-Z1"
-        self.outLen = 0
         self.STATUS_LEN = 4
+        self.outLen = 0
         self.dma = overlay.axi_dma_0
         self.dutcomm = overlay.dutcomm_0
         self.dutctrl = overlay.dut_controller_0
         self.dutClkWizard =overlay.clk_wiz
         #io buffers
         xlnk = Xlnk()
-        self.input_buffer = xlnk.cma_array(shape=(PYNQCtrl.MAX_IN_BUFF,), dtype=np.uint32)
-        self.output_buffer = xlnk.cma_array(shape=(PYNQCtrl.MAX_OUT_BUFF,), dtype=np.uint32)
+        self.input_buffer = xlnk.cma_array(shape=(int(inputSize / 4),), dtype=np.uint32)
+        self.output_buffer = xlnk.cma_array(shape=(int(outputSize / 4),), dtype=np.uint32)
+        #self.setOutLen(int(outputSize/4))
+
 
     def setDUTClk(self, clkFreq):
         self.dutClkWizard.setClock0Freq(clkFreq)       
@@ -81,7 +81,7 @@ class PYNQCtrl(FOBOSCtrl):
         self.dma.sendchannel.transfer(self.input_buffer)  #configure dma to send 
         self.dma.sendchannel.wait()
         self.dma.recvchannel.wait()
-        result = ''.join(['{:08x}'.format(self.output_buffer[i]) for i in range(0, 4)])
+        result = ''.join(['{:08x}'.format(self.output_buffer[i]) for i in range(0, int(self.outLen))])
         ##get result in correct format
         result2 = ''
         for i in range(len(result)):
