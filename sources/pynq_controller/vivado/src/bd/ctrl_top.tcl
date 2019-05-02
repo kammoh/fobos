@@ -172,6 +172,8 @@ proc create_root_design { parentCell } {
   set do_ready [ create_bd_port -dir O do_ready ]
   set do_valid [ create_bd_port -dir I do_valid ]
   set dout [ create_bd_port -dir I -from 3 -to 0 dout ]
+  set dut_clk [ create_bd_port -dir O -from 0 -to 0 dut_clk ]
+  set dut_rst [ create_bd_port -dir O dut_rst ]
   set gain_0 [ create_bd_port -dir O -from 1 -to 0 gain_0 ]
   set gain_1 [ create_bd_port -dir O -from 1 -to 0 gain_1 ]
   set handshake_c2d [ create_bd_port -dir O handshake_c2d ]
@@ -271,6 +273,15 @@ CONFIG.USE_DYN_RECONFIG {true} \
   # Create instance: dutcomm_0, and set properties
   set dutcomm_0 [ create_bd_cell -type ip -vlnv user.org:user:dutcomm:1.0 dutcomm_0 ]
 
+  set_property -dict [ list \
+CONFIG.TDATA_NUM_BYTES {4} \
+ ] [get_bd_intf_pins /dutcomm_0/M_AXIS]
+
+  set_property -dict [ list \
+CONFIG.NUM_READ_OUTSTANDING {1} \
+CONFIG.NUM_WRITE_OUTSTANDING {1} \
+ ] [get_bd_intf_pins /dutcomm_0/S_AXI]
+
   # Create instance: openadc_interface_v1_0_0, and set properties
   set openadc_interface_v1_0_0 [ create_bd_cell -type ip -vlnv xilinx.com:user:openadc_interface_v1_0:1.0 openadc_interface_v1_0_0 ]
 
@@ -357,7 +368,7 @@ CONFIG.NUM_PORTS {3} \
   connect_bd_net -net di_ready_1 [get_bd_ports di_ready] [get_bd_pins dutcomm_0/di_ready]
   connect_bd_net -net do_valid_1 [get_bd_ports do_valid] [get_bd_pins dutcomm_0/do_valid]
   connect_bd_net -net dout_1 [get_bd_ports dout] [get_bd_pins dutcomm_0/dout]
-  connect_bd_net -net dut_controller_0_dut_rst [get_bd_ports d_rst] [get_bd_pins dut_controller_0/dut_rst] [get_bd_pins dutcomm_0/rst]
+  connect_bd_net -net dut_controller_0_dut_rst [get_bd_ports d_rst] [get_bd_ports dut_rst] [get_bd_pins dut_controller_0/dut_rst] [get_bd_pins dutcomm_0/rst]
   connect_bd_net -net dut_controller_0_trigger_out [get_bd_ports trigger] [get_bd_pins dut_controller_0/trigger_out] [get_bd_pins openadc_interface_v1_0_0/capture_en] [get_bd_pins powermanager_0/trigger]
   connect_bd_net -net dutcomm_0_di_valid [get_bd_ports di_valid] [get_bd_pins dutcomm_0/di_valid]
   connect_bd_net -net dutcomm_0_din [get_bd_ports din] [get_bd_pins dutcomm_0/din]
@@ -384,7 +395,7 @@ CONFIG.NUM_PORTS {3} \
   connect_bd_net -net rst_ps7_0_100M_peripheral_aresetn [get_bd_pins axi_dma_1/axi_resetn] [get_bd_pins axi_intc_0/s_axi_aresetn] [get_bd_pins clk_wiz/s_axi_aresetn] [get_bd_pins clk_wiz_adc/s_axi_aresetn] [get_bd_pins openadc_interface_v1_0_0/s_axi_aresetn] [get_bd_pins powermanager_0/s00_axi_aresetn] [get_bd_pins ps7_0_axi_periph/ARESETN] [get_bd_pins ps7_0_axi_periph/M00_ARESETN] [get_bd_pins ps7_0_axi_periph/M03_ARESETN] [get_bd_pins ps7_0_axi_periph/M04_ARESETN] [get_bd_pins ps7_0_axi_periph/M05_ARESETN] [get_bd_pins ps7_0_axi_periph/M06_ARESETN] [get_bd_pins ps7_0_axi_periph/M07_ARESETN] [get_bd_pins ps7_0_axi_periph/M08_ARESETN] [get_bd_pins ps7_0_axi_periph/S00_ARESETN] [get_bd_pins rst_ps7_0_100M/peripheral_aresetn]
   connect_bd_net -net rst_ps7_0_1M_interconnect_aresetn [get_bd_pins axis_data_fifo_0/m_axis_aresetn] [get_bd_pins axis_data_fifo_1/s_axis_aresetn] [get_bd_pins rst_ps7_0_1M/interconnect_aresetn]
   connect_bd_net -net rst_ps7_0_1M_peripheral_aresetn [get_bd_pins dut_controller_0/s_axi_aresetn] [get_bd_pins dutcomm_0/m_axis_aresetn] [get_bd_pins dutcomm_0/s_axi_aresetn] [get_bd_pins dutcomm_0/s_axis_aresetn] [get_bd_pins ps7_0_axi_periph/M01_ARESETN] [get_bd_pins ps7_0_axi_periph/M02_ARESETN] [get_bd_pins rst_ps7_0_1M/peripheral_aresetn]
-  connect_bd_net -net util_vector_logic_0_Res [get_bd_ports clk_c2d] [get_bd_pins util_vector_logic_0/Res]
+  connect_bd_net -net util_vector_logic_0_Res [get_bd_ports clk_c2d] [get_bd_ports dut_clk] [get_bd_pins util_vector_logic_0/Res]
   connect_bd_net -net xlconcat_0_dout [get_bd_pins axi_intc_0/intr] [get_bd_pins xlconcat_0/dout]
 
   # Create address segments

@@ -20,34 +20,39 @@ class PYNQCtrl(FOBOSCtrl):
     #dutcomm register offsets
     dutcomm_START       = 0x00
     dutcomm_STATUS      = 0x04
+    dutcomm_INTERFACE   = 0x08
     dutcomm_EXP_OUT_LEN = 0x0c
     ##########################
     #dutctrl register offsets
     dutctrl_TRGLEN      = 0x00
     dutctrl_TRGWIAT     = 0x04
     dutctrl_TRGMODE     = 0x08
+    dutctrl_FORCE_RST   = 0x1c
     ###trigger modes
     TRG_NORM            = 0X00
     TRG_FULL            = 0x01
     TRG_NORM_CLK        = 0x02
     TRG_FULL_CLK        = 0x03
+    ###interface types - 4bit interface is default
+    INTERFACE_4BIT      = 0x00
+    INTERFACE_8BIT      = 0x01
     ##########################
     #constants
-    MAX_IN_BUFF         = 12 #max input buffer size in bytes
-    MAX_OUT_BUFF        = 4 #max output buffer size in bytes
-     
-    def __init__(self, overlay):
+    
+    def __init__(self, overlay, inputSize, outputSize):
         self.model = "FOBOS-CTRL-PYNQ-Z1"
-        self.outLen = 0
         self.STATUS_LEN = 4
+        self.outLen = 0
         self.dma = overlay.axi_dma_0
         self.dutcomm = overlay.dutcomm_0
         self.dutctrl = overlay.dut_controller_0
         self.dutClkWizard =overlay.clk_wiz
         #io buffers
         xlnk = Xlnk()
-        self.input_buffer = xlnk.cma_array(shape=(PYNQCtrl.MAX_IN_BUFF,), dtype=np.uint32)
-        self.output_buffer = xlnk.cma_array(shape=(PYNQCtrl.MAX_OUT_BUFF,), dtype=np.uint32)
+        self.input_buffer = xlnk.cma_array(shape=(int(inputSize / 4),), dtype=np.uint32)
+        self.output_buffer = xlnk.cma_array(shape=(int(outputSize / 4),), dtype=np.uint32)
+        #self.setOutLen(int(outputSize/4))
+
 
     def setDUTClk(self, clkFreq):
         self.dutClkWizard.setClock0Freq(clkFreq)       
@@ -76,8 +81,14 @@ class PYNQCtrl(FOBOSCtrl):
         self.dma.sendchannel.transfer(self.input_buffer)  #configure dma to send 
         self.dma.sendchannel.wait()
         self.dma.recvchannel.wait()
-        result = ''.join(['{:08x}'.format(self.output_buffer[i]) for i in range(0, 4)])
-        return result
+        result = ''.join(['{:08x}'.format(self.output_buffer[i]) for i in range(0, int(self.outLen))])
+        ##get result in correct format
+        result2 = ''
+        for i in range(len(result)):
+            if (i % 2 == 0 and i != 0):
+                result2 += ' '
+            result2 += result[i]       
+        return result2
 
     def getModel(self):
         return self.model
@@ -125,11 +136,26 @@ class PYNQCtrl(FOBOSCtrl):
         set trigger type
         """
         self.dutctrl.write(PYNQCtrl.dutctrl_TRGMODE, trigMode)
+        
+    def forceReset(self):
+        """
+        set reset ctrl and DUT
+        """
+        self.dutctrl.write(PYNQCtrl.dutctrl_FORCE_RST, 1)
+    
+    def releaseReset(self):
+        """
+        set reset ctrl and DUT
+        """
+        self.dutctrl.write(PYNQCtrl.dutctrl_FORCE_RST, 0)
 
     def getTriggerMode(self):
         """
         get trigger type
         """
         return self.dutctrl.read(PYNQCtrl.dutctrl_TRGMODE)
+    
+    def setDUTInterface(self, interfaceType):
+        self.dutcomm.write(PYNQCtrl.dutcomm_INTERFACE, interfaceType)
     
    
