@@ -245,7 +245,7 @@ Text GLabel 3650 4850 2    50   Input ~ 0
 VGA_GAIN
 Text GLabel 2550 4950 0    50   Input ~ 0
 VGA_HILO
-Text GLabel 9250 1450 2    50   Input ~ 0
+Text GLabel 9350 1450 2    50   Input ~ 0
 ADC_D[9..0]
 $Comp
 L power:GND #PWR0152
@@ -400,7 +400,7 @@ Entry Wire Line
 Entry Wire Line
 	9050 1750 9150 1850
 Wire Bus Line
-	9150 1450 9250 1450
+	9150 1450 9350 1450
 Entry Wire Line
 	6050 1750 6150 1650
 Entry Wire Line
@@ -1220,18 +1220,6 @@ Entry Wire Line
 Entry Wire Line
 	6050 2000 6150 2100
 Connection ~ 6050 1900
-Wire Bus Line
-	6050 1750 6050 1900
-Wire Bus Line
-	9150 1900 9150 2300
-Wire Bus Line
-	6150 2500 6150 3300
-Wire Bus Line
-	9050 2600 9050 3300
-Wire Bus Line
-	6050 1900 6050 2200
-Wire Bus Line
-	9150 1450 9150 1900
 Text Notes 5800 1650 0    50   ~ 0
 R16
 Text Notes 5800 1750 0    50   ~ 0
@@ -1270,4 +1258,16 @@ Text Notes 4150 4750 0    50   ~ 0
 FPGA\nPin
 Wire Wire Line
 	2250 3750 2950 3750
+Wire Bus Line
+	6050 1750 6050 1900
+Wire Bus Line
+	9150 1900 9150 2300
+Wire Bus Line
+	6150 2500 6150 3300
+Wire Bus Line
+	9050 2600 9050 3300
+Wire Bus Line
+	6050 1900 6050 2200
+Wire Bus Line
+	9150 1450 9150 1900
 $EndSCHEMATC
