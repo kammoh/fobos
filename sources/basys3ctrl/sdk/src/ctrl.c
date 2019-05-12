@@ -99,6 +99,8 @@
  */
 #define CONFIG_ARR_SIZE			32
 #define TEST_BUFFER_SIZE        100
+#define INPUT_BUFF_SIZE			4096
+#define OUTPUT_BUFF_SIZE		2048
 #define STATUS_LEN              4 //acknowledgement length in bytes
 #define HEADER_SIZE             4 //command field size in bytes
 #define PARAM_LEN				2 //config prarameter length in bytes
@@ -134,22 +136,9 @@ u32 timeoutStatus 		= S_TIMEOUT;
 //#define REL_TIMEOUT_ACK 9
 //DUTCOMM status
 #define DONE		0x1a
-//testing fifo/dutcomm
-u32 testBuffer[12] = {0x00C00010,
-		0x77446B60,
-		0x9E646B7C,
-		0x9EDC1E9A,
-		0x070DFFB8,
-		0x00C10010,
-		0x00112233,
-		0x44556677,
-		0x8899AABB,
-		0xCCDDEEFF,
-		0x00810010,
-		0x00800001};
 
 ///configuration parameters
-u32 expectedOutLen = 16;
+u32 expectedOutLen = 0;
 u16 config[CONFIG_ARR_SIZE];
 
 /**************************** Type Definitions *******************************/
@@ -168,9 +157,9 @@ void SendHandler(void *CallBackRef, unsigned int EventData);
 
 void RecvHandler(void *CallBackRef, unsigned int EventData);
 
-int processData(void);
+int processData(u32 testVectorSize);
 int XLlFifoPollingExample(XLlFifo *InstancePtr, u16 DeviceId);
-int TxSend(XLlFifo *InstancePtr, u32 *SourceAddr);
+int TxSend(XLlFifo *InstancePtr, u32 *SourceAddr, u32 dataSize);
 int RxReceive(XLlFifo *InstancePtr, u32 *DestinationAddr);
 void delay(long loops);
 
@@ -367,6 +356,7 @@ int UartLiteIntrExample(u16 DeviceId)
 	u16 value = 0;
 	u16 bytesToRec = 0;
 	u16 cmd = 0;
+	u32 testVectorSize;
 
 	/*
 	 * Initialize the UartLite driver so that it's ready to use.
@@ -416,10 +406,7 @@ int UartLiteIntrExample(u16 DeviceId)
 	 *
 	 *
 	 */
-	for(int i=0; i<10; i++){
-		//xil_printf("encryption: %d \n", i);
-		//processData();
-	}
+
 	while(1){
 		TotalReceivedCount = 0;
 		TotalSentCount = 0;
@@ -491,8 +478,8 @@ int UartLiteIntrExample(u16 DeviceId)
 			//}
 			//xil_printf("Processing data ...\n");
 			/* Transmit the Data Stream */
-
-			Status = processData();
+			testVectorSize = bytesToRec;
+			Status = processData(testVectorSize);
 			if (Status == S_OK){
 				//send status
 				XUartLite_Send(&UartLite, &okStatus, STATUS_LEN);
@@ -535,20 +522,20 @@ int UartLiteIntrExample(u16 DeviceId)
 	return XST_SUCCESS;
 }
 
-int processData(){
+int processData(u32 testVectorSize){
 	int Status;
 	int timeoutStatus;
 	int i;
 	volatile long int j;
 	//clear sendBuffer
-	for(i=0; i<16; i++){
+	for(i=0; i < expectedOutLen; i++){
 		SendBuffer[i] = 0;
 	}
 	//xil_printf("processData() called\n");
 	//XGpio_DiscreteWrite(&Gpio, 1,1);
 	//DUTCOMM_mWriteReg(DUTCOMM_BASE,0,1); //set send_data to 1, my not be needed since FIOF sends only when a PACKET LEN is written
 
-	Status = TxSend(&FifoInstance, ReceiveBuffer);
+	Status = TxSend(&FifoInstance, ReceiveBuffer,testVectorSize);
 	//xil_printf("Data sent!!\n");
 
 	if (Status != S_OK){
@@ -743,7 +730,7 @@ int SetupInterruptSystem(XUartLite *UartLitePtr)
 }
 
 /////////////FIFO send and receive
-int TxSend(XLlFifo *InstancePtr, u32  *SourceAddr)
+int TxSend(XLlFifo *InstancePtr, u32  *SourceAddr, u32 dataSize)
 {
 
 	int i;
@@ -756,7 +743,7 @@ int TxSend(XLlFifo *InstancePtr, u32  *SourceAddr)
 	//for (i=0;i<MAX_DATA_BUFFER_SIZE;i++)
 		//*(SourceAddr + i) = i;
 		/* Writing into the FIFO Transmit Port Buffer */
-		for (j=0 ; j < MAX_PACKET_LEN ; j++){
+		for (j=0 ; j < (int)dataSize / 4 ; j++){
 			if( XLlFifo_iTxVacancy(InstancePtr) ){
 				sendData = *(SourceAddr +j);
 				//fix endianess
@@ -771,7 +758,7 @@ int TxSend(XLlFifo *InstancePtr, u32  *SourceAddr)
 		}
 
 	/* Start Transmission by writing transmission length into the TLR */
-	XLlFifo_iTxSetLen(InstancePtr, (MAX_DATA_BUFFER_SIZE * WORD_SIZE));
+	XLlFifo_iTxSetLen(InstancePtr, dataSize);
 //	xil_printf(" waiting for txDone... \r\n");
 	/* Check for Transmission completion */
 	while( !(XLlFifo_IsTxDone(InstancePtr)) ){
