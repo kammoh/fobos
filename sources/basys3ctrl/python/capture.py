@@ -5,14 +5,19 @@ import shutil
 import numpy
 import fobos
 #Constants################################################################################################
-WORKSPACE = "/home/bakry/fobosworkspace"
-PROJECT_NAME ="aes"
+WORKSPACE = "/home/aabdulga/fobosworkspace"
+PROJECT_NAME ="ntt"
 DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTrace.npy"
 DUT_BIT_FILE = "FOBOS_DUT.bit"
-TRACE_NUM = 1000
-OUT_LEN = 16
+TRACE_NUM = 9
+OUT_LEN = 1024
+TIMEOUT = 10000
+TRIG_WAIT = 1
+TRIG_LENGTH = 1
+TRIG_MODE_NORM = 0
+TRIG_MODE_FULL = 1 
 #Instantiate FOBOS objects#################################################################################
 ctrl = fobos.Basys3Ctrl('/dev/ttyUSB1', 115200, False)
 dgen = fobos.DataGenerator()
@@ -25,16 +30,19 @@ print 'Sending config ...'
 status = ctrl.writeConfig(6, 0) #RLEASE RESET
 print binascii.hexlify(status)
 print 'Sending config ...'
-status = ctrl.writeConfig(0,10) #set OUT_LEN to 6
+#status = ctrl.writeConfig(0,16) #set OUT_LEN to 6
+status = ctrl.setOutLen(OUT_LEN)
 print binascii.hexlify(status)
 print 'Sending config ...'
-status = ctrl.writeConfig(7, 600) #set TIMEOUT
+status = ctrl.writeConfig(7, TIMEOUT) #set TIMEOUT
 print binascii.hexlify(status)
 print 'Sending config ...'
-status = ctrl.writeConfig(1,8) #set OUT_LEN to 6
+status = ctrl.writeConfig(1,TRIG_WAIT) #set OUT_LEN to 6
+print binascii.hexlify(status)
+status = ctrl.writeConfig(2,TRIG_LENGTH) #set OUT_LEN to 6
 print binascii.hexlify(status)
 print 'Sending config ...'
-status = ctrl.writeConfig(3,1) #set Trigger mode to FULL
+status = ctrl.writeConfig(3,TRIG_MODE_FULL) #set Trigger mode to FULL
 print binascii.hexlify(status)
 
 ####read config
@@ -55,6 +63,7 @@ dut = fobos.Nexys3DUT()
 bitFile = os.path.join(projDir, DUT_BIT_FILE)
 dut.setBitFile(bitFile)
 #dut.program()
+#exit()
 ########
 tvFileName = os.path.join(projDir, DIN_FILE_NAME)
 tvFile = open(tvFileName, "r")
@@ -89,11 +98,11 @@ scopConfig = {
          'ACQUIRE_TYPE'       : 'NORM', # NORM|PEAK|HRES|AVER
          'ACQUIRE_MODE'       : 'RTIM'   # RTIM | ETIM| SEG
 }
-scope = fobos.Scope()
-scope.setConfig(scopConfig)
-print scope.getConfig()
-scope.openConnection()
-scope.applyConfig()
+# scope = fobos.Scope()
+# scope.setConfig(scopConfig)
+# print scope.getConfig()
+# scope.openConnection()
+# scope.applyConfig()
 
 #Get traces####################################################################################################
 print 'Sending data..'
@@ -102,7 +111,7 @@ string = ''
 j = 0
 while j < TRACE_NUM:
    tc1 = time.time()
-   scope.arm()
+   #scope.arm()
    tc2 = time.time()
    if j==0: ##need to sleep. The arm function needs some time before getting trigger
             ##but only on the first command
@@ -118,16 +127,16 @@ while j < TRACE_NUM:
    cipherFile.write(binascii.hexlify(result) + "\n")
    
    tc3 = time.time()
-   trace = scope.readChannel('CHAN1')
+   #trace = scope.readChannel('CHAN1')
    #scope.readChannel('CHAN2')
    #trace = scope.getAlignedTrace()
    tc4 =time.time()
-   numpy.save(traceFile, trace)
+   #numpy.save(traceFile, trace)
 
 tvFile.close()
 cipherFile.close()
 traceFile.close()
-scope.closeConnection()
+#scope.closeConnection()
 t2 = time.time()
 print "Time = " + str(t2 -t1)
 print "Arm time" + str(tc2-tc1)

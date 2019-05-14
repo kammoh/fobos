@@ -262,6 +262,12 @@ CONFIG.PHASE {0.000} \
   # Create instance: axi_fifo_mm_s_0, and set properties
   set axi_fifo_mm_s_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_fifo_mm_s:4.1 axi_fifo_mm_s_0 ]
   set_property -dict [ list \
+CONFIG.C_RX_FIFO_DEPTH {2048} \
+CONFIG.C_RX_FIFO_PE_THRESHOLD {2} \
+CONFIG.C_RX_FIFO_PF_THRESHOLD {507} \
+CONFIG.C_TX_FIFO_DEPTH {2048} \
+CONFIG.C_TX_FIFO_PE_THRESHOLD {2} \
+CONFIG.C_TX_FIFO_PF_THRESHOLD {507} \
 CONFIG.C_USE_TX_CTRL {0} \
  ] $axi_fifo_mm_s_0
 
