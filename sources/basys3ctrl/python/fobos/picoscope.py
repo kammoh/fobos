@@ -254,7 +254,7 @@ class Picoscope():
                                     None, None)
         assert_pico_ok(self.status["runBlock"])
 
-    def getTrace(self):
+    def readTrace(self):
         # Check for data collection to finish using ps5000aIsReady
         ready = ctypes.c_int16(0)
         check = ctypes.c_int16(0)

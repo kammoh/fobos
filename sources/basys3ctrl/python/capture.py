@@ -4,15 +4,16 @@ import os
 import shutil
 import numpy
 import fobos
+import fobos.picoscope
 #Constants################################################################################################
 WORKSPACE = "/home/aabdulga/fobosworkspace"
-PROJECT_NAME ="ntt"
+PROJECT_NAME ="aes"
 DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
-TRACE_FILE = "powerTrace.npy"
+TRACE_FILE = "powerTraces.npy"
 DUT_BIT_FILE = "FOBOS_DUT.bit"
-TRACE_NUM = 9
-OUT_LEN = 1024
+TRACE_NUM = 1000
+OUT_LEN = 16
 TIMEOUT = 10000
 TRIG_WAIT = 1
 TRIG_LENGTH = 1
@@ -103,6 +104,15 @@ scopConfig = {
 # print scope.getConfig()
 # scope.openConnection()
 # scope.applyConfig()
+################Configure Picoscope
+scope = fobos.picoscope.Picoscope(sampleResolution = 8, 
+                     postTriggerSamples = 2000, #samples
+                     requestedSamplingInterval = 2 #T=2 ns, Fs= 500MHz
+                     )
+scope.setChannel(channelName = 'CHANNEL_A', rangemv = '100mV')
+scope.setChannel(channelName = 'CHANNEL_B', rangemv = '5V')
+scope.setTrigger(channelName ='CHANNEL_B', direction = 'RISING_EDGE', thresholdmv = 200)
+scope.setDataBuffers()
 
 #Get traces####################################################################################################
 print 'Sending data..'
@@ -111,7 +121,7 @@ string = ''
 j = 0
 while j < TRACE_NUM:
    tc1 = time.time()
-   #scope.arm()
+   scope.arm()
    tc2 = time.time()
    if j==0: ##need to sleep. The arm function needs some time before getting trigger
             ##but only on the first command
@@ -127,11 +137,12 @@ while j < TRACE_NUM:
    cipherFile.write(binascii.hexlify(result) + "\n")
    
    tc3 = time.time()
+   trace = scope.readTrace()
    #trace = scope.readChannel('CHAN1')
    #scope.readChannel('CHAN2')
    #trace = scope.getAlignedTrace()
    tc4 =time.time()
-   #numpy.save(traceFile, trace)
+   numpy.save(traceFile, trace)
 
 tvFile.close()
 cipherFile.close()
