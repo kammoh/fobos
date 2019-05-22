@@ -86,10 +86,17 @@ class Basys3Ctrl(FOBOSCtrl):
         if status == self.OK:
             print "OK.    Status= %s" % binascii.hexlify(status)
             result = self.ser.read(outLen)
+            result = binascii.hexlify(result)
+            ##get result in correct format
+            result2 = ''
+            for i in range(len(result)):
+                if (i % 2 == 0 and i != 0):
+                    result2 += ' '
+                result2 += result[i]   
         else:
             print "TIMEOUT. Status= %s" % binascii.hexlify(status)
         
-        return status, result
+        return status, result2
 
     def getModel(self):
         return self.model

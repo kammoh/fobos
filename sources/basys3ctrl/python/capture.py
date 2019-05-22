@@ -12,7 +12,7 @@ DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
 DUT_BIT_FILE = "FOBOS_DUT.bit"
-TRACE_NUM = 1000
+TRACE_NUM = 10000
 OUT_LEN = 16
 TIMEOUT = 10000
 TRIG_WAIT = 1
@@ -133,8 +133,8 @@ while j < TRACE_NUM:
    status, result = ctrl.processData(data, OUT_LEN)
    if status != bytearray([0,0,0,0]):
       print "TIMEOUT"
-   print binascii.hexlify(result)
-   cipherFile.write(binascii.hexlify(result) + "\n")
+   print(result)
+   cipherFile.write(result + "\n")
    
    tc3 = time.time()
    trace = scope.readTrace()
