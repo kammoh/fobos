@@ -32,8 +32,7 @@ class Picoscope():
         elif sampleResolution == 16:
             res = "PS5000A_DR_16BIT"
         else:
-            print("Scope resolution not supported. Please select one of 8,12,14,15,16")
-            raise
+            raise Exception("Scope resolution not supported. Please select one of 8,12,14,15,16")
         resolution =ps.PS5000A_DEVICE_RESOLUTION[res]
         self.sampleResolution = sampleResolution
       
@@ -50,7 +49,7 @@ class Picoscope():
                 self.status["changePowerSource"] = ps.ps5000aChangePowerSource(self.chandle, 
                     powerStatus)
             else:
-                raise
+                raise Exception("Error initializing PicoScope")
 
             assert_pico_ok(self.status["changePowerSource"])
 
@@ -73,8 +72,7 @@ class Picoscope():
         elif channelName == 'CHANNEL_B':
             chan = "PS5000A_CHANNEL_B"
         else:
-            print("Scope channel supported. Please select one of CHANNEL_A or CHANNEL_B")
-            raise
+            raise Exception("Scope channel supported. Please select one of CHANNEL_A or CHANNEL_B")
 
         channel = ps.PS5000A_CHANNEL[chan]
         # enabled = 1
@@ -83,8 +81,7 @@ class Picoscope():
         elif coupling == 'AC':
             coup = "PS5000A_AC"
         else:
-            print("Scope coupling supported. Please select one of DC or AC")
-            raise
+            raise Exception("Scope coupling supported. Please select one of DC or AC")
         couplingType = ps.PS5000A_COUPLING[coup]
         ##set range
         if rangemv == '10mV':
@@ -110,9 +107,9 @@ class Picoscope():
         elif rangemv == '20V':
             srange = "PS5000A_20V"
         else: 
-            print("Scope voltage range supported. Supported ranges:")
-            print("\t10mV, 20mV, 50mV, 100mV, 200mV, 500mV, 1V, 2V, 5V, 10V, 20V.")
-            raise
+            raise Exception("Scope voltage range supported. Supported ranges:" +
+                    "\t10mV, 20mV, 50mV, 100mV, 200mV, 500mV, 1V, 2V, 5V, 10V, 20V.")
+            
 
         chRange = ps.PS5000A_RANGE[srange]
         # analogue offset = 0 V
@@ -200,8 +197,7 @@ class Picoscope():
 
         elif self.sampleResolution == 12:
             if s < 2:
-                print('Requested sampling interval not possible for current resolution = {} bit'.format(self.sampleResolution))
-                raise
+                raise Exception('Requested sampling interval not possible for current resolution = {} bit'.format(self.sampleResolution))
             elif s >= 2 and s < 16:
                 n = int(math.log2(s / 2, 2) + 1)
             elif s >= 16 and s < 1000000000:
@@ -209,8 +205,7 @@ class Picoscope():
 
         elif self.sampleResolution == 14 or self.sampleResolution == 15:
             if s < 8:
-                print('Requested sampling interval not possible for current resolution = {} bit'.format(self.sampleResolution))
-                raise
+                raise Exception('Requested sampling interval not possible for current resolution = {} bit'.format(self.sampleResolution))
             if s < 16:
                 n = 3
             elif s >= 16 and s < 1000000000:
@@ -218,16 +213,15 @@ class Picoscope():
 
         elif self.sampleResolution == 16:
             if s < 16:
-                print('Requested sampling interval not possible for current resolution = {} bit'.format(self.sampleResolution))
-                raise
+                #print('Requested sampling interval not possible for current resolution = {} bit'.format(self.sampleResolution))
+                raise Exception('Requested sampling interval not possible for current resolution = {} bit'.format(self.sampleResolution))
             if s < 32:
                 n = 4
             elif s >= 32 and s < 1000000000:
                 n = int(s / 16 + 3)
 
         else:
-            print('Sampling Resolution not vaild')
-            raise
+            raise Exception('Sampling Resolution not vaild')
         print('Calculated timebase = {}'.format(n))
 
         self.timebase = n

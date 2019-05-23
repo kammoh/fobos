@@ -12,7 +12,7 @@ DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
 DUT_BIT_FILE = "FOBOS_DUT.bit"
-TRACE_NUM = 1000
+TRACE_NUM = 10000
 OUT_LEN = 16
 TIMEOUT = 10000
 TRIG_WAIT = 1
@@ -105,13 +105,13 @@ shutil.copy(tvFileName, captureDir)
 # scope.openConnection()
 # scope.applyConfig()
 ################Configure Picoscope
-scope = fobos.picoscope.Picoscope(sampleResolution = 8, 
-                     postTriggerSamples = 4000 #samples
+scope = fobos.picoscope.Picoscope(sampleResolution = 16, 
+                     postTriggerSamples = 250 #samples
                      )
 scope.setChannel(channelName = 'CHANNEL_A', rangemv = '100mV')
 #scope.setChannel(channelName = 'CHANNEL_B', rangemv = '5V')
 #scope.setTrigger(channelName ='CHANNEL_B', direction = 'RISING_EDGE', thresholdmv = 200)
-scope.setSamplingInterval(samplingIntervalns = 1) #T=1 ns, Fs= 1000MHz
+scope.setSamplingInterval(samplingIntervalns = 16) #T=1 ns, Fs= 1000MHz
 scope.setTrigger(channelName ='EXTERNAL', direction = 'RISING_EDGE', thresholdmv = 200)
 scope.setDataBuffers()
 
