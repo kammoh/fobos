@@ -255,11 +255,11 @@ def aesPowerHD(p1, p2):
     tmp = p1 ^ p2
 
 def testAESPowerModel1():
-    plaintext = loadTextMatrix('./example_data/pdi.txt')
+    plaintext = loadTextMatrix('/home/aabdulga/fobosworkspace/aes/aes_pico_16bitres/plaintext.txt')
     #plaintext = loadTextMatrix('./plaintext1.txt', 3)
     print("plaintext=")
     printHexMatrix(plaintext[:,0:5])
-    ciphertext = loadTextMatrix('./example_data/do.txt')
+    ciphertext = loadTextMatrix('/home/aabdulga/fobosworkspace/aes/aes_pico_16bitres/ciphertext.txt')
     numTraces = ciphertext.shape[0]
     plaintext = plaintext[0:numTraces,:]
     #plaintext = loadTextMatrix('./plaintext1.txt', 3)
@@ -450,16 +450,65 @@ def plotMTDGraph(correctTime, correctKeyIndex, measuredPower,
     if show == 'yes':
         plt.show()
 
+def plotMTDGraph2(correctTime, correctKeyIndex, measuredPower, 
+                hypotheticalPower, numTraces=None, stride=1,
+                fileName= None, show='no'):
+    if numTraces == None:
+        numTraces = measuredPower.shape[0]
+    numKeys = hypotheticalPower.shape[1]
+    corrData = np.zeros((numKeys,numTraces/ stride))
+    interestingPower = measuredPower[:,correctTime].reshape(measuredPower.shape[0],1)
+    index = 0
+    for i in range(0,numTraces, stride):
+        if i % 100 == 0:
+            print("MDT step={}".format(i))
+        C = correlation_pearson(interestingPower[0:i,:], hypotheticalPower[0:i,:])
+        #print(C.shape)
+        corrData[:,index] = C.reshape(numKeys)
+        index +=1
+    ##get only highest and lowest values
+    print (corrData.shape)
+    print(corrData)
+    
+    import matplotlib.pyplot as plt
+    plt.clf()
+    plt.margins(0)
+    #plot this first
+    plt.plot(corrData[correctKeyIndex, :], 'k', linewidth = 0.5)
+    #remove the correct key
+    corrData[correctKeyIndex, :] = 0 #zero all elements in row so they are
+                                     #min nor max
+    # for i in range(dataToPlot.shape[0]):
+    #     row = dataToPlot[i,:]
+    #     plt.plot(row, '#aaaaaa', linewidth = 0.5)
+    highVals = np.nanmax(corrData, axis =0)
+    lowVals  = np.nanmin(corrData, axis =0)
+    print(highVals.shape)
+    print(highVals)
+    plt.plot(highVals, 'b', linewidth = 0.5)
+    plt.plot(lowVals, 'b', linewidth = 0.5)
+    
+    if stride != 1:
+        plt.xlabel("Trace No. ({} traces)".format(stride))
+    else:
+        plt.xlabel("Trace No.")
+    plt.ylabel("Correlation (Pearson's r)")
+    if fileName != None:
+        plt.savefig(fileName)
+    if show == 'yes':
+        plt.show()
+
 def testModel1():
     ## Test genIntermediateMatrix
     D = np.random.randint(0, 10, size=(10,1))
     K = np.random.randint(0, 10, size=(1 ,5))
     cpa = CPA()
     hypotheticalPower = testAESPowerModel1()
-    measuredPower = read_raw_traces("./example_data/powerTraces.npy", 10000)
+    measuredPower = read_raw_traces("/home/aabdulga/fobosworkspace/aes/aes_pico_16bitres/powerTraces.npy", 10000)
     print(measuredPower.shape)
     #print(hypotheticalPower.shape)
-    croppedMeasuredPower = measuredPower[:,200:800]
+    #croppedMeasuredPower = measuredPower[:,200:800] #for 2000 samples
+    croppedMeasuredPower = measuredPower[:,25:100] # for 250 samples
     correctKey = []
     for byteNum in range(16):
         C =  correlation_pearson(croppedMeasuredPower[0:10000,:], hypotheticalPower[byteNum][0:10000,:])
@@ -472,7 +521,7 @@ def testModel1():
         mtdFile = './analysis/MTD' + str(byteNum)
         print("keyIndex= {}, max corr = {}, time= {}".format(hex(maxKeyIndex), maxCorr, maxCorrTime))
         plotCorr(C, maxKeyIndex, fileName= corrFile)
-        plotMTDGraph(maxCorrTime, maxKeyIndex, croppedMeasuredPower, hypotheticalPower[byteNum], 
+        plotMTDGraph2(maxCorrTime, maxKeyIndex, croppedMeasuredPower, hypotheticalPower[byteNum], 
             stride=100, fileName=mtdFile, show='no')
         correctKey.append(format(maxKeyIndex, '02x'))
     print(correctKey)
