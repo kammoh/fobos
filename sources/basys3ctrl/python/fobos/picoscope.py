@@ -12,7 +12,7 @@ from picosdk.functions import adc2mV, assert_pico_ok, mV2adc
 class Picoscope():
 
     def __init__(self,sampleResolution = 8, preTriggerSamples = 0,
-                    postTriggerSamples = 1000, requestedSamplingInterval = 16):
+                    postTriggerSamples = 1000):
         """
         Open oscilloscope
         """
@@ -54,6 +54,7 @@ class Picoscope():
 
             assert_pico_ok(self.status["changePowerSource"])
 
+        self.disableAllChannel()
         ###Set number of samples
         self.preTriggerSamples = preTriggerSamples
         self.postTriggerSamples = postTriggerSamples
@@ -63,9 +64,6 @@ class Picoscope():
         self.status["maximumValue"] = ps.ps5000aMaximumValue(self.chandle, 
             ctypes.byref(self.maxADC))
         assert_pico_ok(self.status["maximumValue"])
-
-        timebase = self.getTimebase(requestedSamplingInterval)
-
 
     def setChannel(self, channelName = 'CHANNEL_A', coupling = 'DC', rangemv = '1V'):
         # Set up channel A
@@ -122,9 +120,31 @@ class Picoscope():
                             couplingType, chRange, 0)
         if channelName == 'CHANNEL_A':
             self.chARange = chRange
+            self.chAEnabled = True
         else:
             self.chBRange = chRange
+            self.chBEnabled = True
+
         assert_pico_ok(self.status[channelName])
+
+    def disableAllChannel(self):
+
+        channel = ps.PS5000A_CHANNEL['PS5000A_CHANNEL_A']
+        chRange = ps.PS5000A_RANGE['PS5000A_1V']
+        couplingType = ps.PS5000A_COUPLING['PS5000A_DC']
+        self.status['CHANNEL_A'] = ps.ps5000aSetChannel(self.chandle, channel, 0, 
+                            couplingType, chRange, 0)
+        
+
+        channel = ps.PS5000A_CHANNEL['PS5000A_CHANNEL_B']
+        chRange = ps.PS5000A_RANGE['PS5000A_1V']
+        couplingType = ps.PS5000A_COUPLING['PS5000A_DC']
+        self.status['CHANNEL_B'] = ps.ps5000aSetChannel(self.chandle, channel, 0, 
+                            couplingType, chRange, 0)
+
+        self.chAEnabled = False
+        self.chBEnabled = False
+
 
     def setTrigger(self, channelName= 'CHANNEL_A', thresholdmv = 500, 
                     direction = 'RISING_EDGE', autoTriggerDelay = 2000):
@@ -137,9 +157,9 @@ class Picoscope():
         elif channelName == 'CHANNEL_B':
             chan = 'PS5000A_CHANNEL_B'
             chRange = self.chBRange
-        elif chan == 'EXTERNAL':
+        elif channelName == 'EXTERNAL':
             chan = 'PS5000A_EXTERNAL'
-            chRange = self.chErange
+            chRange = ps.PS5000A_RANGE['PS5000A_5V']
         else:
             print('scope.setTrigger: channel name not supported: use (CHANNEL_A, CHANNEL_B, EXTERNAL)')
             raise
@@ -164,7 +184,7 @@ class Picoscope():
                                 )
         assert_pico_ok(self.status["trigger"])     
 
-    def getTimebase(self, samplingIntervalns):
+    def setSamplingInterval(self, samplingIntervalns):
         """
         Calculate timebase (n) to satisfy maxSampiling interval (minSamplingFreq)
         See Programmer's guide page 22
@@ -223,26 +243,28 @@ class Picoscope():
         assert_pico_ok(self.status["getTimebase2"])
         
 
-    def setDataBuffers(self, source = 'CHANNEL_A'):
-        self.bufferA = (ctypes.c_int16 * self.maxSamples)()
-        self.bufferB = (ctypes.c_int16 * self.maxSamples)()
-        source = ps.PS5000A_CHANNEL["PS5000A_CHANNEL_A"]
-        self.status["setDataBuffersA"] = ps.ps5000aSetDataBuffer(self.chandle,
-                                source, 
-                                ctypes.byref(self.bufferA),
-                                self.maxSamples,
-                                0,
-                                0)
-        assert_pico_ok(self.status["setDataBuffersA"])
+    def setDataBuffers(self):
+        if self.chAEnabled == True:
+            self.bufferA = (ctypes.c_int16 * self.maxSamples)()
+            self.bufferB = (ctypes.c_int16 * self.maxSamples)()
+            source = ps.PS5000A_CHANNEL["PS5000A_CHANNEL_A"]
+            self.status["setDataBuffersA"] = ps.ps5000aSetDataBuffer(self.chandle,
+                                    source, 
+                                    ctypes.byref(self.bufferA),
+                                    self.maxSamples,
+                                    0,
+                                    0)
+            assert_pico_ok(self.status["setDataBuffersA"])
 
-        source = ps.PS5000A_CHANNEL["PS5000A_CHANNEL_B"]
-        self.status["setDataBuffersB"] = ps.ps5000aSetDataBuffer(self.chandle,
-                                source, 
-                                ctypes.byref(self.bufferB), 
-                                self.maxSamples, 
-                                0,
-                                0)
-        assert_pico_ok(self.status["setDataBuffersB"])
+        if self.chBEnabled == True:
+            source = ps.PS5000A_CHANNEL["PS5000A_CHANNEL_B"]
+            self.status["setDataBuffersB"] = ps.ps5000aSetDataBuffer(self.chandle,
+                                    source, 
+                                    ctypes.byref(self.bufferB), 
+                                    self.maxSamples, 
+                                    0,
+                                    0)
+            assert_pico_ok(self.status["setDataBuffersB"])
 
     def arm(self):
         self.status["runBlock"] = ps.ps5000aRunBlock(self.chandle, 

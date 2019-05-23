@@ -12,7 +12,7 @@ DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
 DUT_BIT_FILE = "FOBOS_DUT.bit"
-TRACE_NUM = 10000
+TRACE_NUM = 1000
 OUT_LEN = 16
 TIMEOUT = 10000
 TRIG_WAIT = 1
@@ -75,30 +75,30 @@ traceFileName = os.path.join(captureDir, TRACE_FILE)
 traceFile = open(traceFileName, "w")
 shutil.copy(tvFileName, captureDir)
 
-#Scope ########################################################################################################
-scopConfig = {
-         'OSCILLOSCOPE'       : 'AGILENT', #AGILENT|OPENADC
-         'OSCILLOSCOPE_IP'    : '192.168.10.10',
-         'OSCILLOSCOPE_PORT'  : '5025',
-         'AUTOSCALE'          : 'NO',   # YES|NO    
-         'IMPEDANCE'          : 'ONEMEG', #FIFTY|ONEMEG
-         # VOLTAGE AND TIME RANGE OPTIONS        
-         'CHANNEL1_RANGE'     : '0.100V',
-         'CHANNEL2_RANGE'     : '6V',
-         'CHANNEL3_RANGE'     : 'OFF', # ON|OFF|voltage range
-         'CHANNEL4_RANGE'     : 'OFF', # ON|OFF|voltage range
-         'TIME_RANGE'         :  '0.000040',
-         'TIMEBASE_REF'       : 'LEFT',    
-         # TRIGGER OPTIONS
-         'TRIGGER_SOURCE'     : 'CHANNEL2',
-         'TRIGGER_MODE'       : 'EDGE',   
-         'TRIGGER_SWEEP'      : 'NORM',
-         'TRIGGER_LEVEL'      : '1',
-         'TRIGGER_SLOPE'      : 'POSITIVE',
-         # ACQUIRE OPTIONS
-         'ACQUIRE_TYPE'       : 'NORM', # NORM|PEAK|HRES|AVER
-         'ACQUIRE_MODE'       : 'RTIM'   # RTIM | ETIM| SEG
-}
+# #Scope ########################################################################################################
+# scopConfig = {
+#          'OSCILLOSCOPE'       : 'AGILENT', #AGILENT|OPENADC
+#          'OSCILLOSCOPE_IP'    : '192.168.10.10',
+#          'OSCILLOSCOPE_PORT'  : '5025',
+#          'AUTOSCALE'          : 'NO',   # YES|NO    
+#          'IMPEDANCE'          : 'ONEMEG', #FIFTY|ONEMEG
+#          # VOLTAGE AND TIME RANGE OPTIONS        
+#          'CHANNEL1_RANGE'     : '0.100V',
+#          'CHANNEL2_RANGE'     : '6V',
+#          'CHANNEL3_RANGE'     : 'OFF', # ON|OFF|voltage range
+#          'CHANNEL4_RANGE'     : 'OFF', # ON|OFF|voltage range
+#          'TIME_RANGE'         :  '0.000040',
+#          'TIMEBASE_REF'       : 'LEFT',    
+#          # TRIGGER OPTIONS
+#          'TRIGGER_SOURCE'     : 'CHANNEL2',
+#          'TRIGGER_MODE'       : 'EDGE',   
+#          'TRIGGER_SWEEP'      : 'NORM',
+#          'TRIGGER_LEVEL'      : '1',
+#          'TRIGGER_SLOPE'      : 'POSITIVE',
+#          # ACQUIRE OPTIONS
+#          'ACQUIRE_TYPE'       : 'NORM', # NORM|PEAK|HRES|AVER
+#          'ACQUIRE_MODE'       : 'RTIM'   # RTIM | ETIM| SEG
+# }
 # scope = fobos.Scope()
 # scope.setConfig(scopConfig)
 # print scope.getConfig()
@@ -106,12 +106,13 @@ scopConfig = {
 # scope.applyConfig()
 ################Configure Picoscope
 scope = fobos.picoscope.Picoscope(sampleResolution = 8, 
-                     postTriggerSamples = 2000, #samples
-                     requestedSamplingInterval = 2 #T=2 ns, Fs= 500MHz
+                     postTriggerSamples = 4000 #samples
                      )
 scope.setChannel(channelName = 'CHANNEL_A', rangemv = '100mV')
-scope.setChannel(channelName = 'CHANNEL_B', rangemv = '5V')
-scope.setTrigger(channelName ='CHANNEL_B', direction = 'RISING_EDGE', thresholdmv = 200)
+#scope.setChannel(channelName = 'CHANNEL_B', rangemv = '5V')
+#scope.setTrigger(channelName ='CHANNEL_B', direction = 'RISING_EDGE', thresholdmv = 200)
+scope.setSamplingInterval(samplingIntervalns = 1) #T=1 ns, Fs= 1000MHz
+scope.setTrigger(channelName ='EXTERNAL', direction = 'RISING_EDGE', thresholdmv = 200)
 scope.setDataBuffers()
 
 #Get traces####################################################################################################
