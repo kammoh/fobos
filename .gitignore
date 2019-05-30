@@ -24,3 +24,5 @@ sources
 !sources/blockCipherTVGen.py
 temp
 _impact.cmd
+*.jou
+*.str
