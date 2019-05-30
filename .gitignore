@@ -29,4 +29,6 @@ sources/pynq_controller/vivado/pynq_controller/
 sources/basys3ctrl/vivado/basys3ctrl/
 sources/soc_dut/vivado/soc_dut/
 build_proj_modified.tcl
-
+sources/pynq_controller/vivado/pynq_controller/
+sources/pynq_controller/vivado/build_proj_modified.tcl
+.ipynb_checkpoints/
