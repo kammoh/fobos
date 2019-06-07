@@ -83,12 +83,12 @@ class Basys3Ctrl(FOBOSCtrl):
         c = self.ser.write(cmd)
         #read status
         status = self.ser.read(self.STATUS_LEN)
+        result2 = ''
         if status == self.OK:
             print "OK.    Status= %s" % binascii.hexlify(status)
             result = self.ser.read(outLen)
             result = binascii.hexlify(result)
             ##get result in correct format
-            result2 = ''
             for i in range(len(result)):
                 if (i % 2 == 0 and i != 0):
                     result2 += ' '
