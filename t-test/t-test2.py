@@ -10,13 +10,13 @@ start_ylim = -40
 end_ylim = 40
 
 start_xlim = 0
-end_xlim = 14500
+end_xlim = 21000
 
 
 #load trace file
 #use simple array first
 #samples_per_trace = 25000
-num_of_traces = 998
+num_of_traces = 4992
 #raw_traces0 = numpy.array([[1,2,3,4],[5,6,7,8],[9,10,11,12]])
 #raw_traces1 = numpy.array([[13,24,35,45],[15,61,71,18],[19,110,131,12]])
 
@@ -102,3 +102,6 @@ plt.ylabel("t-value")
 plt.plot(t_array, color='r')
 #plt.show()
 plt.savefig(plot_file)
+###
+numpy.save("t-values.npy", numpy.array(t_array).transpose()) ##need to get one row array
+####

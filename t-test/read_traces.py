@@ -1,5 +1,7 @@
 #!/usr/bin/python
-#This scripts takes raw power trace and calculates the t value for each traces sample wise
+#This scripts reads the raw traces provided by FOBOS and saves them as an NxM numpy array
+#Author : Bakry Abdulgadir
+#####################################################################################
 import math
 import numpy as np
 import matplotlib as mpl
@@ -19,11 +21,11 @@ import argparse
 
 
 def adjustSampleSize(sampleLength, dataArray):
-		print "\tAdjusting Sample Size to ->" + str(sampleLength)
+		#print "\tAdjusting Sample Size to ->" + str(sampleLength)
 		temp = dataArray.shape
 		newDataArray = dataArray
 		arrLen = temp[0]
-		print "Array Length --> " + str(arrLen)
+		#print "Array Length --> " + str(arrLen)
 		if (arrLen == sampleLength):
 			
 			return dataArray
@@ -47,50 +49,45 @@ def detectSampleSize(file_name):
 	This function calcualates the number of sample per trace. This is needed to do any paddig/truncation to make all 
 	traces the same size. We iterate through the first 10 traces and get the max number of traces
 	"""
-	print "DEBUG: Module: analysis, Function: detectSampleSize():"
-	print "----Detecting samples per trace"
+	#print "DEBUG: Module: analysis, Function: detectSampleSize():"
+	#print "----Detecting samples per trace"
 	maxNumOfSamples = 0
 	for traceCount in range (0,10):
 		try:
 			trace = np.load(file_name)
 		except:
-			print "----You have less than 10 samples. It looks that the max number of samples is : " + str(maxNumOfSamples)
+			print "You have less than 10 samples. It looks that the max number of samples is : " + str(maxNumOfSamples)
 			return maxNumOfSamples
 		numOfSamples = len(trace)
 		if maxNumOfSamples < numOfSamples:
 			maxNumOfSamples = numOfSamples
-	print "----It looks that the max number of samples in the first 10 traces is: " + str(maxNumOfSamples)
+	print "It looks that the max number of samples in the first 10 traces is: " + str(maxNumOfSamples)
 	return maxNumOfSamples
 	
 def read_raw_traces(file_name):
-        print "Loading rawtraces from file: " + file_name 
+        print "Loading raw traces from file: " + file_name  
+        print "Please wait ..."
 	measurementFile = open(file_name, 'r')
 	#Get sample size to adjust all traces to the same number of samples. A better solution is to get the data cleaned up upon acquistion.
         global samples_per_trace
 	samples_per_trace = detectSampleSize(measurementFile)
+	##create the array
+	raw_traces = np.empty((num_of_traces, samples_per_trace))
 	#samples_per_trace = 4000
 	#need to reset file handle since we used it 
 	measurementFile.seek(0)
 	for traceCount in range (0,num_of_traces):
-		print "traceCount= " + str(traceCount)
+		#print "traceCount= " + str(traceCount)
 		tempArrayMeasurement = np.load(measurementFile)
 		tempArrayMeasurement = adjustSampleSize(samples_per_trace, tempArrayMeasurement)
-		if (traceCount == 0):
-			raw_traces  = tempArrayMeasurement
-			#print 'array length' + str(len(cfg.RAW_POWER_DATA))
-			#print 'array length' + str(len(tempArrayMeasurement))
-		elif (traceCount > 0):
-			print "DEBUG shape: " + str(tempArrayMeasurement.shape)
-			#print 'array length cfg: ' + str(len(cfg.RAW_POWER_DATA)) 
-			#print 'array length tmp: ' + str(len(tempArrayMeasurement)) + ' count= ' + str(traceCount)
-			raw_traces  = np.vstack((raw_traces,tempArrayMeasurement))
+		raw_traces[traceCount,:] = tempArrayMeasurement
 	
-	print "Loading done"
+	print "Loading done."
 	return raw_traces
 
 
 
-	
+print "###### readtraces.py script"	
 parser = argparse.ArgumentParser()
 parser.add_argument("source_file", help="Traces from FOBOS dataAcquisition", type=str)
 parser.add_argument("destination_file", help=".npy file that store traces as MxN Nupmy array.", type=str)
@@ -102,4 +99,6 @@ num_of_traces = args.num_of_traces
 destination_file = args.destination_file
 
 raw_traces0 = read_raw_traces(source_file)
+print "Saving file. Please wait ..."
 np.save(destination_file, raw_traces0)
+print "Done"

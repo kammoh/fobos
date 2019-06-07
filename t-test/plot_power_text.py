@@ -27,25 +27,16 @@ import matplotlib.pyplot as plt
 ######## SUB MACROS ####################################################
 ########################################################################
 
-CHANNEL1_MEASUREMENT_FILE_NAME = "channel1Data.npy"
-CHANNEL2_MEASUREMENT_FILE_NAME = "channel2Data.npy"
-CHANNEL3_MEASUREMENT_FILE_NAME = "channel3Data.npy"
-CHANNEL4_MEASUREMENT_FILE_NAME = "channel4Data.npy"
-
-CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME = "channel1TriggerData.npy"
-CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME = "channel2TriggerData.npy"
-CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME = "channel3TriggerData.npy"
-CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME = "channel4TriggerData.npy"
+PLOT_TEXT_FILE_NAME = "power_text.txt"
+sample_length = 16007
 
 def clearScreen():
   os.system( [ 'clear', 'cls' ][ os.name == 'nt' ] )
 
 
-def plotRawTrace(fileName, traceLowerBound, traceUpperBound):
-	if os.path.exists(fileName):
-		print "-> File Set - " + fileName
-		dataToPlot = numpy.load(fileName)
-		plotName = str(fileName)
+def plotRawTrace(power_array, traceLowerBound, traceUpperBound):
+		dataToPlot = power_array
+		plotName = "Power Array"
 		figs = plt.figure()	
 		figs.suptitle(plotName, fontsize=14, fontweight='bold')
 		toPlot = numpy.zeros(0)
@@ -53,12 +44,11 @@ def plotRawTrace(fileName, traceLowerBound, traceUpperBound):
 		plt.hold(False)
 		plt.clf()
 		plt.plot(toPlot[traceLowerBound:traceUpperBound])
-		plt.ylabel('volts')
+		plt.ylabel('mW')
 		plt.xlabel('time')
 		plt.title(plotName)
 		plt.grid(b=True, which='Major', color = 'b', linestyle = '--')
 		plt.show()
-
 
 def main():	
 	clearScreen()
@@ -67,16 +57,17 @@ def main():
 ##########  USER DEFINED VARIABLES. EDIT ONLY THESE VARIABLES ############
 ##########################################################################
 	traceStartPoint = 0
-	traceEndPoint = 2000000
+	traceEndPoint = 16007
 ##########################################################################
-	plotRawTrace(CHANNEL1_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
-	plotRawTrace(CHANNEL2_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
-	plotRawTrace(CHANNEL3_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
-	plotRawTrace(CHANNEL4_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
-	plotRawTrace(CHANNEL1_TRIGGER_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
-	plotRawTrace(CHANNEL2_TRIGGER_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
-	plotRawTrace(CHANNEL3_TRIGGER_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
-	plotRawTrace(CHANNEL4_TRIGGER_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
-
+	#plotRawTrace(CHANNEL1_MEASUREMENT_FILE_NAME, traceStartPoint, traceEndPoint)
+  
+        power_array = numpy.zeros(traceEndPoint)
+        readfile = open(PLOT_TEXT_FILE_NAME,'r')
+	for i in range (0, traceEndPoint):
+	    readline = readfile.readline()
+	    power_array[i] = float(readline[0:len(readline)-1])*1000
+	    
+	plotRawTrace(power_array, traceStartPoint, traceEndPoint)
+	
 if __name__ == "__main__":
     main()	
