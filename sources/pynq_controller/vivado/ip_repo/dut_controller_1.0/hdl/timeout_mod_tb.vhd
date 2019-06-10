@@ -53,7 +53,7 @@ ARCHITECTURE behavior OF timeout_mod_tb IS
    
 
  	--Outputs
-    signal status : std_logic := '0';
+    signal status : std_logic_vector(7 downto 0);
    -- Clock period definitions
    constant clk_period : time := 10 ns;
  
@@ -66,7 +66,8 @@ BEGIN
           snd_start => snd_start,
           op_done => op_done,
           ack => ack,
-          timeout => timeout
+          timeout => timeout,
+          status => status
         );
 
    -- Clock process definitions

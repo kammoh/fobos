@@ -30,7 +30,7 @@ entity trigger_module is
 		dut_working : in std_logic;
 		trigger_length : in std_logic_vector(31 downto 0);
 		trigger_wait : in std_logic_vector(31 downto 0);
-	   trigger_mode : in std_logic_vector(7 downto 0);
+	    trigger_mode : in std_logic_vector(7 downto 0);
 		trigger_out : out std_logic
    );
 
@@ -43,8 +43,8 @@ component counter is
 	port ( 	  
 		clk : in std_logic;
 		reset : in std_logic;
-	   enable : in std_logic; 
-      counter_out : out std_logic_vector(N-1 downto 0)
+	    enable : in std_logic; 
+        counter_out : out std_logic_vector(N-1 downto 0)
 	);
 end component;
 
@@ -101,7 +101,7 @@ trigger_s <= '0';
 
 case current_state is
    when S_RST =>
-	   wait_cnt_rst <= '1';
+	    wait_cnt_rst <= '1';
 		len_cnt_rst <= '1';
 		next_state <= S_WAIT_START;
 		
@@ -109,20 +109,20 @@ case current_state is
 		if (dut_working = '1') then
 		   if wait_cnt_expired = '1' then
 			    trigger_s <= '1';
-			end if;
+		   end if;
 		   wait_cnt_en <= '1';
-			next_state <= S_DELAY;
+		   next_state <= S_DELAY;
 		else
-			next_state <= S_WAIT_START;
+		   next_state <= S_WAIT_START;
 		end if;
 		
    when S_DELAY => --wait for "trigger_wait clock cycles"
 		if (wait_cnt_expired = '1') then
-		   trigger_s <= '1';
+		    trigger_s <= '1';
 			len_cnt_en <= '1';
 			next_state <= S_LENGTH; --change to lenght state
 		else
-		   wait_cnt_en <= '1';
+		    wait_cnt_en <= '1';
 			next_state <= S_DELAY;
 		end if;
 		
@@ -131,12 +131,17 @@ case current_state is
 		   next_state <= S_DONE;
 		else
 		   trigger_s <= '1';
-			len_cnt_en <= '1';
+		   len_cnt_en <= '1';
 		   next_state <= S_LENGTH;
 		end if;
 		
 	when S_DONE =>
-	   next_state <= S_DONE;
+	   if dut_working = '1' then 
+	       next_state <= S_DONE;
+	   else
+	       next_state <= S_RST;
+	   end if;
+	   
 end case;
 
 end process;
@@ -146,6 +151,6 @@ with trigger_mode select
                     dut_working when TRG_FULL,
                     trigger_s and clk when TRG_NORM_CLK,
                     dut_working and clk when TRG_FULL_CLK,
-		              trigger_s when others;
+		            trigger_s when others;
 		  
 end behav;
