@@ -12,7 +12,7 @@ DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
 DUT_BIT_FILE = "FOBOS_DUT.bit"
-TRACE_NUM = 10
+TRACE_NUM = 1000
 OUT_LEN = 16
 TIMEOUT = 10000
 TRIG_WAIT = 1
@@ -24,6 +24,9 @@ ctrl = fobos.Basys3Ctrl('/dev/ttyUSB1', 115200, False)
 dgen = fobos.DataGenerator()
 
 #Configuration controller##################################################################################
+status = ctrl.setDUTClk(50)
+print binascii.hexlify(status)
+#ime.sleep(3)
 print 'Sending config ...'
 status = ctrl.writeConfig(5, 0) #FORCE RESET
 print binascii.hexlify(status)

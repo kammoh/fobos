@@ -125,5 +125,15 @@ class Basys3Ctrl(FOBOSCtrl):
         set trigger type
         """
         return self.writeConfig(FOBOSCtrl.TRG_TYPE, trigType)
+
+    def setDUTClk(self, clkFreqMhz):
+        """
+        set dut clock frequency in MHz
+        """
+        if clkFreqMhz > 50 or clkFreqMhz < 0.5:
+            print("Error: DUT clock must be between 50MHz and 0.5MHz")
+            print("Limit is because of PMOD connector and CLK wizard.")
+            raise
+        return self.writeConfig(FOBOSCtrl.SET_DUT_CLK, clkFreqMhz)
     
 

@@ -32,6 +32,7 @@
 #define UARTLITE_DEVICE_ID         	XPAR_UARTLITE_0_DEVICE_ID
 #define INTC_DEVICE_ID            	XPAR_INTC_0_DEVICE_ID
 #define UARTLITE_INT_IRQ_ID      	XPAR_INTC_0_UARTLITE_0_VEC_ID
+#define DUT_CLKWIZ_BASE				XPAR_CLK_WIZ_1_BASEADDR
 /*DUT_controller Register offsets*************************************************************/
 //Trigger module
 #define TRG_LEN_REG_OFFSET        	0x00
@@ -51,7 +52,7 @@
 /*Constants********************************************************************/
 #define CONFIG_ARR_SIZE            	32
 #define INPUT_BUFF_SIZE            	8192
-#define OUTPUT_BUFF_SIZE        	8192
+#define OUTPUT_BUFF_SIZE        	4096
 #define WORD_SIZE               	4         	// Size of words in bytes
 #define STATUS_LEN                 	4         	//Acknowledgment length in bytes
 #define HEADER_SIZE                	4         	//command field size in bytes
@@ -78,9 +79,16 @@
 #define RELEASE_RST                	6
 //timeout module
 #define TIMEOUT                     7
+#define SET_DUT_CLK					8
 /*DUT COMM Status codes********************************************************/
 #define DONE                     0x1a
 /******************************************************************************/
+#define CLKWIZ_mWriteReg(BaseAddress, RegOffset, Data) \
+  	Xil_Out32((BaseAddress) + (RegOffset), (u32)(Data))
+
+#define CLKWIZ_mReadReg(BaseAddress, RegOffset) \
+    Xil_In32((BaseAddress) + (RegOffset))
+/**************************************************************************/
 u32 okStatus      = S_OK;
 u32 errorStatus    = S_ERROR;
 u32 timeoutStatus = S_TIMEOUT;
@@ -97,6 +105,7 @@ int initFifos(XLlFifo *InstancePtr, u16 DeviceId);
 int TxSend(XLlFifo *InstancePtr, u32 *SourceAddr, u32 dataSize);
 int RxReceive(XLlFifo *InstancePtr, u32 *DestinationAddr);
 void delay(long loops);
+u32 writeClk0Div(int divInt, int divFrac);
 
 /*Command service***************************************************************/
 void forceReset();
@@ -109,6 +118,7 @@ void setTriggerWait(u32 wait);
 void setTriggerMode(u32 mode);
 int applyConfig(int confNum, u32 value);
 void setInterfaceType();
+int  setClock0Freq(float clockValue);
 /*Variable definitions ********************************************************/
 XUartLite UartLite;
 XLlFifo FifoInstance;
@@ -123,6 +133,7 @@ static volatile int TotalSentCount;
 int main(void)
 {
    int Status;
+   //setClock0Freq(2);
    // clear config array
    for(int i=0; i < CONFIG_ARR_SIZE; i++){
       config[i] = 0;
@@ -450,6 +461,11 @@ void setTriggerWait(u32 wait){
 void setTriggerMode(u32 mode){
    DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, TRG_MODE_REG_OFFSET, mode);
 }
+
+void setInterfaceType(){
+       //This version uses legacy interface only only.
+       DUTCOMM_mWriteReg(DUTCOMM_BASE, INT_TYPE_REG_OFFSET, 1);
+}
 /*****************************************************************************/
 int applyConfig(int confNum, u32 value){
    int status = S_OK;
@@ -480,6 +496,14 @@ int applyConfig(int confNum, u32 value){
       case TIMEOUT:
             setTimeOut(value);
             break;
+      case SET_DUT_CLK:
+    	  	setClock0Freq(value);
+    	  	forceReset();
+    	  	//reset fifo
+    	  	XLlFifo_Reset(&FifoInstance);
+    	  	releaseReset();
+    	  	setInterfaceType(); //Interface type is forgotten after clock adjust. Set it back!
+    	  	break;
       default:
             status = S_ERROR;
             break;
@@ -487,9 +511,56 @@ int applyConfig(int confNum, u32 value){
    return status;
 
 }
-/******************************************************************************/
-void setInterfaceType(){
-       //This version uses legacy interface only only.
-       DUTCOMM_mWriteReg(DUTCOMM_BASE, INT_TYPE_REG_OFFSET, 1);
+///*Clock wizard driver********************************************************/
+u32 writeClk0Div(int divInt, int divFrac){
+	u32 div;
+	div = CLKWIZ_mReadReg(DUT_CLKWIZ_BASE, 0x208);
+	div = (div & 0xffffff00) | (divInt & 0xFF);
+	div = (div & 0xfffc00ff) | ((divFrac & 0x3FF) << 8);
+	CLKWIZ_mWriteReg(DUT_CLKWIZ_BASE, 0x208, div);
+	return div;
+
 }
 
+int  setClock0Freq(float clockValue){
+   int intDiv, conf, intMult, fracMult, divInt;
+   float finalClk;
+   float clkOut;
+   int busClk = 100;
+   float divisor, divFrac, divFracStored;
+   if (clockValue > 100 || clockValue < 0.4){
+      //xil_printf("Clk may only be between 0.5 and 100 MHz");
+      return XST_FAILURE;
+   }
+   if (clockValue > 15){
+      CLKWIZ_mWriteReg(DUT_CLKWIZ_BASE, 0x200, 0x00000a01);
+
+   }else{
+      CLKWIZ_mWriteReg(DUT_CLKWIZ_BASE, 0x200, 0x00000102);
+   }
+   conf = CLKWIZ_mReadReg(DUT_CLKWIZ_BASE, 0x00);
+   intDiv = conf & 0xff;
+   intMult = (conf & 0xff00) >> 8;
+   fracMult = (conf & 0x3ff0000) >> 16;
+   float tmpFracMult;
+   tmpFracMult = fracMult;
+   while (tmpFracMult > 1){
+      tmpFracMult = tmpFracMult / 10;
+   }
+   clkOut = (busClk * (intMult + tmpFracMult)) / intDiv;
+   divisor = clkOut / clockValue;
+   divInt = (int)divisor;
+   divFrac = divisor - divInt;
+   //printf("%d\n%f\n", divInt, divFrac);
+   divFracStored = divFrac;
+   if(divFrac != 0){
+      while (divFrac < 1024){
+            divFrac = divFrac * 10;
+      }
+      divFrac = (int)(divFrac / 10);
+   }
+   finalClk = clkOut / (divInt + (int)divFracStored);
+   writeClk0Div(divInt, (int)divFrac);
+   CLKWIZ_mWriteReg(DUT_CLKWIZ_BASE, 0x25c,  0x00000003);
+   return (int)finalClk;
+}

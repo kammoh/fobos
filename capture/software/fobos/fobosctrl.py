@@ -16,8 +16,13 @@ class FOBOSCtrl:
    TRIG_WAIT   = 1
    TRG_LEN     = 2
    TRG_TYPE    = 3
+   TIME_TO_RST = 4
+   FORCE_RST   = 5
+   RELEASE_RST = 6
+   TIMEOUT     = 7
+   SET_DUT_CLK = 8
    #Trigger parameters
-   TRG_NORM   = 0                                                            
+   TRG_NORM   =    0                                                            
    TRG_FULL      = 1
    TRG_NORM_CLK  = 2  
    TRG_FULL_CLK  = 3
