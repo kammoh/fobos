@@ -45,7 +45,7 @@
 ## Clock signal
 set_property PACKAGE_PIN W5 [get_ports sys_clock]
 set_property IOSTANDARD LVCMOS33 [get_ports sys_clock]
-create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports sys_clock]
+create_clock -period 10.000 -name sys_clk_pin -waveform {0.000 5.000} -add [get_ports sys_clock]
 ###################################################################
 ###reset is center button
 set_property PACKAGE_PIN U18 [get_ports reset]
@@ -56,8 +56,8 @@ set_property IOSTANDARD LVCMOS33 [get_ports reset]
 set_property PACKAGE_PIN J1 [get_ports {dut_clk[0]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {dut_clk[0]}]
 #Sch name = JA2
-set_property PACKAGE_PIN L2 [get_ports {do_ready}]
-set_property IOSTANDARD LVCMOS33 [get_ports {do_ready}]
+set_property PACKAGE_PIN L2 [get_ports do_ready]
+set_property IOSTANDARD LVCMOS33 [get_ports do_ready]
 #Sch name = JA3
 set_property PACKAGE_PIN J2 [get_ports {din[3]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {din[3]}]
@@ -65,8 +65,8 @@ set_property IOSTANDARD LVCMOS33 [get_ports {din[3]}]
 #set_property PACKAGE_PIN G2 [get_ports {din[1]}]
 #set_property IOSTANDARD LVCMOS33 [get_ports {din[1]}]
 #Sch name = JA7
-set_property PACKAGE_PIN H1 [get_ports {do_valid}]
-set_property IOSTANDARD LVCMOS33 [get_ports {do_valid}]
+set_property PACKAGE_PIN H1 [get_ports do_valid]
+set_property IOSTANDARD LVCMOS33 [get_ports do_valid]
 #Sch name = JA8
 set_property PACKAGE_PIN K2 [get_ports {din[1]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {din[1]}]
@@ -79,16 +79,16 @@ set_property IOSTANDARD LVCMOS33 [get_ports {din[0]}]
 ###################################################################
 ##Pmod Header JC
 ##Sch name = JC1
-set_property PACKAGE_PIN K17 [get_ports {trigger_out}]
-set_property IOSTANDARD LVCMOS33 [get_ports {trigger_out}]
+set_property PACKAGE_PIN K17 [get_ports trigger_out]
+set_property IOSTANDARD LVCMOS33 [get_ports trigger_out]
 ###################################################################
 #Pmod Header JXADC
 #Sch name = XA1_P
-set_property PACKAGE_PIN J3 [get_ports {dut_rst}]
-set_property IOSTANDARD LVCMOS33 [get_ports {dut_rst}]
+set_property PACKAGE_PIN J3 [get_ports dut_rst]
+set_property IOSTANDARD LVCMOS33 [get_ports dut_rst]
 #Sch name = XA2_P
-set_property PACKAGE_PIN L3 [get_ports {di_ready}]
-set_property IOSTANDARD LVCMOS33 [get_ports {di_ready}]
+set_property PACKAGE_PIN L3 [get_ports di_ready]
+set_property IOSTANDARD LVCMOS33 [get_ports di_ready]
 #Sch name = XA3_P
 set_property PACKAGE_PIN M2 [get_ports {dout[3]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {dout[3]}]
@@ -99,8 +99,8 @@ set_property IOSTANDARD LVCMOS33 [get_ports {dout[1]}]
 #set_property PACKAGE_PIN K3 [get_ports {JXADC[4]}]
 #set_property IOSTANDARD LVCMOS33 [get_ports {JXADC[4]}]
 #Sch name = XA2_N
-set_property PACKAGE_PIN M3 [get_ports {di_valid}]
-set_property IOSTANDARD LVCMOS33 [get_ports {di_valid}]
+set_property PACKAGE_PIN M3 [get_ports di_valid]
+set_property IOSTANDARD LVCMOS33 [get_ports di_valid]
 #Sch name = XA3_N
 set_property PACKAGE_PIN M1 [get_ports {dout[2]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {dout[2]}]
@@ -116,4 +116,11 @@ set_property IOSTANDARD LVCMOS33 [get_ports RsTx]
 ## Configuration options, can be used for all designs
 set_property CONFIG_VOLTAGE 3.3 [current_design]
 set_property CFGBVS VCCO [current_design]
-
+##################################################################
+set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
+set_property BITSTREAM.CONFIG.CONFIGRATE 33 [current_design]
+set_property CONFIG_MODE SPIx4 [current_design]
+set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
+set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
+set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
+connect_debug_port dbg_hub/clk [get_nets u_ila_0_clk_out2]
