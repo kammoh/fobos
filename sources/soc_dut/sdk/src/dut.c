@@ -1,3 +1,5 @@
+//WARNING: There is a bug in vivado that causes some base addresses in xparameters.h to be wrong!
+//Make sure XPAR_FWFT_TO_M_AXIS_2CLK_0_S00_AXI_BASEADDR is correct!
 ////SET BY USER
 
 #define OUTPUT_LEN			16
