@@ -9,6 +9,7 @@ matrix H to obtain the correlation matrix R
 5- Visualize the Matrix R in various was.
 6- Generate plots.
 """
+import os
 import numpy as np
 import scipy.stats.stats as statModule
 
@@ -254,14 +255,15 @@ def getPW(p1,p2):
 def aesPowerHD(p1, p2):
     tmp = p1 ^ p2
 
-def testAESPowerModel1():
-    plaintext = loadTextMatrix('/home/aabdulga/fobosworkspace/aes/aes_pico_16bitres/plaintext.txt')
+def testAESPowerModel1(plaintextFile, ciphertextFile, numTraces):
+    plaintext = loadTextMatrix(plaintextFile)
     #plaintext = loadTextMatrix('./plaintext1.txt', 3)
     print("plaintext=")
     printHexMatrix(plaintext[:,0:5])
-    ciphertext = loadTextMatrix('/home/aabdulga/fobosworkspace/aes/aes_pico_16bitres/ciphertext.txt')
-    numTraces = ciphertext.shape[0]
+    ciphertext = loadTextMatrix(ciphertextFile)
+    #numTraces = ciphertext.shape[0]
     plaintext = plaintext[0:numTraces,:]
+    ciphertext = ciphertext[0:numTraces, :]
     #plaintext = loadTextMatrix('./plaintext1.txt', 3)
     print("ciphertext=")
     printHexMatrix(ciphertext)
@@ -498,27 +500,28 @@ def plotMTDGraph2(correctTime, correctKeyIndex, measuredPower,
     if show == 'yes':
         plt.show()
 
-def testModel1():
+def testPlainCipherModel(tracesFile, numTraces, cropStart, cropEnd, analysisDir,
+                plaintextFile, ciphertextFile):
     ## Test genIntermediateMatrix
     D = np.random.randint(0, 10, size=(10,1))
     K = np.random.randint(0, 10, size=(1 ,5))
     cpa = CPA()
-    hypotheticalPower = testAESPowerModel1()
-    measuredPower = read_raw_traces("/home/aabdulga/fobosworkspace/aes/aes_pico_16bitres/powerTraces.npy", 10000)
+    hypotheticalPower = testAESPowerModel1(plaintextFile, ciphertextFile, numTraces)
+    measuredPower = read_raw_traces(tracesFile, numTraces)
     print(measuredPower.shape)
     #print(hypotheticalPower.shape)
-    #croppedMeasuredPower = measuredPower[:,200:800] #for 2000 samples
-    croppedMeasuredPower = measuredPower[:,25:100] # for 250 samples
+    #croppedMeasuredPower = measuredPower[:,200:800] #for 200-800 for2000 samples
+    croppedMeasuredPower = measuredPower[:,cropStart:cropEnd] # 25-100f or 250 samples
     correctKey = []
     for byteNum in range(16):
-        C =  correlation_pearson(croppedMeasuredPower[0:10000,:], hypotheticalPower[byteNum][0:10000,:])
+        C =  correlation_pearson(croppedMeasuredPower[0:numTraces,:], hypotheticalPower[byteNum][0:numTraces,:])
         #C =  correlationPearsonOnlineVect(croppedMeasuredPower[0:1000,:], hypotheticalPower[byteNum][0:1000,:])
         print("C=")
         print(C.shape)
         printHexMatrix(C, dtype='float')
         maxKeyIndex, maxCorr, maxCorrTime = findCorrectKey(C)
-        corrFile = './analysis/correlation' + str(byteNum)
-        mtdFile = './analysis/MTD' + str(byteNum)
+        corrFile = os.path.join(analysisDir, 'correlation' + str(byteNum))
+        mtdFile = os.path.join(analysisDir, 'MTD' + str(byteNum))
         print("keyIndex= {}, max corr = {}, time= {}".format(hex(maxKeyIndex), maxCorr, maxCorrTime))
         plotCorr(C, maxKeyIndex, fileName= corrFile)
         plotMTDGraph2(maxCorrTime, maxKeyIndex, croppedMeasuredPower, hypotheticalPower[byteNum], 
@@ -617,7 +620,21 @@ def correlationPearsonOnline(t, h):
 
 def main():
     #testFirstRound()
-    testModel1()
+    BASE_DIR = "/home/aabdulga/fobosworkspace/aes_artix7/aes_artix_7_analysis/"
+    TRACES_FILE = os.path.join(BASE_DIR, 'powerTraces.npy')
+    PLAIN_FILE = os.path.join(BASE_DIR, 'plaintext.txt')
+    CIPHER_FILE = os.path.join(BASE_DIR, 'ciphertext.txt')
+    ANALYSIS_DIR = os.path.join(BASE_DIR, 'analysis')
+    CROP_START = 200
+    CROP_END = 800
+    NUM_TRACES = 200000
+    testPlainCipherModel(tracesFile = TRACES_FILE, numTraces = NUM_TRACES,
+                         cropStart = CROP_START, cropEnd = CROP_END,
+                          analysisDir =  ANALYSIS_DIR,
+                        plaintextFile =  PLAIN_FILE, 
+                        ciphertextFile = CIPHER_FILE
+                        )
+
 
 if __name__ == '__main__':
     main()
