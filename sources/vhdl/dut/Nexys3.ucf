@@ -1,28 +1,41 @@
-##################################################################################
-#                                                                                #
-#   Copyright 2016 Cryptographic Engineering Research Group (CERG)               #
-#   George Mason University                                                      #
-#   http://cryptography.gmu.edu/fobos                                            #
-#                                                                                #
-#   you may not use this file except in compliance with the License.             #
-#   You may obtain a copy of the License at                                      #
-#                                                                                #
-#       http://www.apache.org/licenses/LICENSE-2.0                               #
-#                                                                                #
-#   Licensed under the Apache License, Version 2.0 (the "License");              #
-#   Unless required by applicable law or agreed to in writing, software          #
-#   distributed under the License is distributed on an "AS IS" BASIS,            #
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.     #
-#   See the License for the specific language governing permissions and          #
-#   limitations under the License.                                               #
-#                                                                                #
-##################################################################################
-## Pmod JD and JC connector for connection from Control
-# ==== JD and JC Connector (Pmod) ====
+#############################################################################
+#                                                                           #
+#   Copyright 2019 CERG                                                     #
+#                                                                           #
+#   Licensed under the Apache License, Version 2.0 (the "License");         #
+#   you may not use this file except in compliance with the License.        #
+#   You may obtain a copy of the License at                                 #
+#                                                                           #
+#       http://www.apache.org/licenses/LICENSE-2.0                          #
+#                                                                           #
+#   Unless required by applicable law or agreed to in writing, software     #
+#   distributed under the License is distributed on an "AS IS" BASIS,       #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
+#   See the License for the specific language governing permissions and     #
+#   limitations under the License.                                          #
+#                                                                           #
+#############################################################################
+#JA
+#+----------+----------+----------+----------+
+#|          |  din3    |  do_ready|  dut_clk |
+#|          |          |          |          |
+#+----------+----------+----------+----------+
+#|  din0    |  din2    |  din1    |  do_valid|
+#|          |          |          |          |
+#+----------+----------+----------+----------+
+
+#JB
+#+----------+----------+----------+----------+
+#|  dout1   |  dout3   |  di_ready|  rst     |
+#|          |          |          |          |
+#+----------+----------+----------+----------+
+#|  dout0   |  dout2   |  di_valid|          |
+#|          |          |          |          |
+#+----------+----------+----------+----------+
 # ===================== Data out to DUT  =================================== 
 NET "din<3>"   LOC = "K6"  |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L45N_M3ODT,                     Sch name = JC3
 NET "din<2>"   LOC = "J6"  |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L47N_M3A1,                      Sch name = JC9
-NET "din<1>"   LOC = "G3"  |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L46P_M3CLK,                     Sch name = JC4
+NET "din<1>"   LOC = "J7"  |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L46P_M3CLK,                     Sch name = JC4
 NET "din<0>"   LOC = "F2"  |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L48P_M3BA0,                     Sch name = JC10
 # ===================== Data in from DUT ===================================
 NET "dout<0>"  LOC = "E12" |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L51N,                           Sch name = JD10
@@ -37,65 +50,3 @@ NET "di_valid"   LOC = "C12" |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = I
 NET "rst"       LOC = "G11" |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L40P,                           Sch name = JD1
 # ======================== CLOCK SIGNAL ====================================
 NET "clk"       LOC = "H3"  |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L44N_GCLK20_M3A6,               Sch name = JC1
-# ===========================DISPLAY=========================================
-#NET "seven_seg<0>"         LOC = "T17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L51P_M1DQ12,                    Sch name = CA
-#NET "seven_seg<1>"         LOC = "T18" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L51N_M1DQ13,                    Sch name = CB
-#NET "seven_seg<2>"         LOC = "U17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L52P_M1DQ14,                    Sch name = CC
-#NET "seven_seg<3>"         LOC = "U18" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L52N_M1DQ15,                    Sch name = CD
-#NET "seven_seg<4>"         LOC = "M14" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L53P,                           Sch name = CE
-#NET "seven_seg<5>"         LOC = "N14" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L53N_VREF,                      Sch name = CF
-#NET "seven_seg<6>"         LOC = "L14" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L61P,                           Sch name = CG
-#NET "seven_seg<7>"         LOC = "M13" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L61N,                           Sch name = DP
-#NET "seven_seg<8>"         LOC = "N16" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L50N_M1UDQSN,                   Sch name = AN0
-#NET "seven_seg<9>"         LOC = "N15" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L50P_M1UDQS,                    Sch name = AN1
-#NET "seven_seg<10>"        LOC = "P18" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L49N_M1DQ11,                    Sch name = AN2
-#NET "seven_seg<11>"        LOC = "P17" | IOSTANDARD = "LVCMOS33";   #Bank = 1, Pin name = IO_L49P_M1DQ10,                    Sch name = AN3
-
-
-## VHDCI Connector
-#NET "EXP-IO_P<0>"    LOC = "B2"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L2P,                            Sch name = EXP_IO1_P
-#NET "EXP-IO_N<0>"    LOC = "A2"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L2N,                            Sch name = EXP_IO1_N
-#NET "EXP-IO_P<1>"    LOC = "D6"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L3P,                            Sch name = EXP_IO2_P
-#NET "EXP-IO_N<1>"    LOC = "C6"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L3N,                            Sch name = EXP_IO2_N
-#NET "EXP-IO_P<2>"    LOC = "B3"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L4P,                            Sch name = EXP_IO3_P
-#NET "EXP-IO_N<2>"    LOC = "A3"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L4N,                            Sch name = EXP_IO3_N
-#NET "EXP-IO_P<3>"    LOC = "B4"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L5P,                            Sch name = EXP_IO4_P
-#NET "EXP-IO_N<3>"    LOC = "A4"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L5N,                            Sch name = EXP_IO4_N
-#NET "EXP-IO_P<4>"    LOC = "C5"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L6P,                            Sch name = EXP_IO5_P
-#NET "EXP-IO_N<4>"    LOC = "A5"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L6N,                            Sch name = EXP_IO5_N
-#NET "EXP-IO_P<5>"    LOC = "B6"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L8P,                            Sch name = EXP_IO6_P
-#NET "EXP-IO_N<5>"    LOC = "A6"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L8N_VREF,                       Sch name = EXP_IO6_N
-#NET "EXP-IO_P<6>"    LOC = "C7"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L10P,                           Sch name = EXP_IO7_P
-#NET "EXP-IO_N<6>"    LOC = "A7"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L10N,                           Sch name = EXP_IO7_N
-#NET "EXP-IO_P<7>"    LOC = "D8"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L11P,                           Sch name = EXP_IO8_P
-#NET "EXP-IO_N<7>"    LOC = "C8"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L11N,                           Sch name = EXP_IO8_N
-#NET "EXP-IO_P<8>"    LOC = "B9"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L35P_GCLK17,                    Sch name = EXP_IO9_P
-#NET "EXP-IO_N<8>"    LOC = "A9"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L35N_GCLK16,                    Sch name = EXP_IO9_N
-#NET "EXP-IO_P<9>"    LOC = "D11" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L36P_GCLK15,                    Sch name = EXP_IO10_P
-#NET "EXP-IO_N<9>"    LOC = "C11" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L36N_GCLK14,                    Sch name = EXP_IO10_N
-#NET "EXP-IO_P<10>"   LOC = "C10" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L37P_GCLK13,                    Sch name = EXP_IO11_P
-#NET "EXP-IO_N<10>"   LOC = "A10" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L37N_GCLK12,                    Sch name = EXP_IO11_N
-#NET "EXP-IO_P<11>"   LOC = "G9"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L38P,                           Sch name = EXP_IO12_P
-#NET "EXP-IO_N<11>"   LOC = "F9"  | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L38N_VREF,                      Sch name = EXP_IO12_N
-#NET "EXP-IO_P<12>"   LOC = "B11" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L39P,                           Sch name = EXP_IO13_P
-#NET "EXP-IO_N<12>"   LOC = "A11" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L39N,                           Sch name = EXP_IO13_N
-#NET "EXP-IO_P<13>"   LOC = "B12" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L41P,                           Sch name = EXP_IO14_P
-#NET "EXP-IO_N<13>"   LOC = "A12" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L41N,                           Sch name = EXP_IO14_N
-#NET "EXP-IO_P<14>"   LOC = "C13" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L50P,                           Sch name = EXP_IO15_P
-#NET "EXP-IO_N<14>"   LOC = "A13" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L50N,                           Sch name = EXP_IO15_N
-#NET "EXP-IO_P<15>"   LOC = "B14" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L62P,                           Sch name = EXP_IO16_P
-#NET "EXP-IO_N<15>"   LOC = "A14" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L62N_VREF,                      Sch name = EXP_IO16_N
-#NET "EXP-IO_P<16>"   LOC = "F13" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L63P_SCP7,                      Sch name = EXP_IO17_P
-#NET "EXP-IO_N<16>"   LOC = "E13" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L63N_SCP6,                      Sch name = EXP_IO17_N
-#NET "EXP-IO_P<17>"   LOC = "C15" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L64P_SCP5,                      Sch name = EXP_IO18_P
-#NET "EXP-IO_N<17>"   LOC = "A15" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L64N_SCP4,                      Sch name = EXP_IO18_N
-#NET "EXP-IO_P<18>"   LOC = "D14" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L65P_SCP3,                      Sch name = EXP_IO19_P
-#NET "EXP-IO_N<18>"   LOC = "C14" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L65N_SCP2,                      Sch name = EXP_IO19_N
-#NET "EXP-IO_P<19>"   LOC = "B16" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L66P_SCP1,                      Sch name = EXP_IO20_P
-#NET "EXP-IO_N<19>"   LOC = "A16" | IOSTANDARD = "LVCMOS33";   #Bank = 0, Pin name = IO_L66N_SCP0,                      Sch name = EXP_IO20_N
-#Created by Constraints Editor (xc6slx16-csg324-2) - 2017/12/21
-#NET "clk" TNM_NET = clk;
-#TIMESPEC TS_clk = PERIOD "clk" 100 ns HIGH 50%;
-#Created by Constraints Editor (xc6slx16-csg324-3) - 2018/01/14
-#NET "clk" TNM_NET = clk;
-#TIMESPEC TS_clk = PERIOD "clk" 200 ns HIGH 50%;

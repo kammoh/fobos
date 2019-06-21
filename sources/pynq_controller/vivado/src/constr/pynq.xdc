@@ -1,50 +1,47 @@
-## This file is a general .xdc for the PYNQ-Z1 board Rev. C
-## To use it in a project:
-## - uncomment the lines corresponding to used pins
-## - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
+#############################################################################
+#                                                                           #
+#   Copyright 2019 CERG                                                     #
+#                                                                           #
+#   Licensed under the Apache License, Version 2.0 (the "License");         #
+#   you may not use this file except in compliance with the License.        #
+#   You may obtain a copy of the License at                                 #
+#                                                                           #
+#       http://www.apache.org/licenses/LICENSE-2.0                          #
+#                                                                           #
+#   Unless required by applicable law or agreed to in writing, software     #
+#   distributed under the License is distributed on an "AS IS" BASIS,       #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
+#   See the License for the specific language governing permissions and     #
+#   limitations under the License.                                          #
+#                                                                           #
+#############################################################################
+#JA
+#+----------+----------+----------+----------+
+#|          |  din3    |  do_ready|  dut_clk |
+#|          |          |          |          |
+#+----------+----------+----------+----------+
+#|  din0    |  din2    |  din1    |  do_valid|
+#|          |          |          |          |
+#+----------+----------+----------+----------+
 
-## Clock signal 125 MHz
-
-#set_property -dict { PACKAGE_PIN H16   IOSTANDARD LVCMOS33 } [get_ports { clk_in1 }]; #IO_L13P_T2_MRCC_35 Sch=sysclk
-#create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports { clk_in1 }];
-
-###Switches
-
-#set_property -dict { PACKAGE_PIN M20   IOSTANDARD LVCMOS33 } [get_ports { reset }]; #IO_L7N_T1_AD2N_35 Sch=sw[0]
-#set_property -dict { PACKAGE_PIN M19   IOSTANDARD LVCMOS33 } [get_ports { sw[1] }]; #IO_L7P_T1_AD2P_35 Sch=sw[1]
-
-##RGB LEDs
-
-#set_property -dict { PACKAGE_PIN L15   IOSTANDARD LVCMOS33 } [get_ports { led4_b }]; #IO_L22N_T3_AD7N_35 Sch=led4_b
-#set_property -dict { PACKAGE_PIN G17   IOSTANDARD LVCMOS33 } [get_ports { led4_g }]; #IO_L16P_T2_35 Sch=led4_g
-#set_property -dict { PACKAGE_PIN N15   IOSTANDARD LVCMOS33 } [get_ports { led4_r }]; #IO_L21P_T3_DQS_AD14P_35 Sch=led4_r
-#set_property -dict { PACKAGE_PIN G14   IOSTANDARD LVCMOS33 } [get_ports { led5_b }]; #IO_0_35 Sch=led5_b
-#set_property -dict { PACKAGE_PIN L14   IOSTANDARD LVCMOS33 } [get_ports { led5_g }]; #IO_L22P_T3_AD7P_35 Sch=led5_g
-#set_property -dict { PACKAGE_PIN M15   IOSTANDARD LVCMOS33 } [get_ports { led5_r }]; #IO_L23N_T3_35 Sch=led5_r
-
-##LEDs
-
-#set_property -dict { PACKAGE_PIN R14   IOSTANDARD LVCMOS33 } [get_ports { led[0] }]; #IO_L6N_T0_VREF_34 Sch=led[0]
-#set_property -dict { PACKAGE_PIN P14   IOSTANDARD LVCMOS33 } [get_ports { led[1] }]; #IO_L6P_T0_34 Sch=led[1]
-#set_property -dict { PACKAGE_PIN N16   IOSTANDARD LVCMOS33 } [get_ports { led[2] }]; #IO_L21N_T3_DQS_AD14N_35 Sch=led[2]
-#set_property -dict { PACKAGE_PIN M14   IOSTANDARD LVCMOS33 } [get_ports { led[3] }]; #IO_L23P_T3_35 Sch=led[3]
-
-##Buttons
-
-#set_property -dict { PACKAGE_PIN D19   IOSTANDARD LVCMOS33 } [get_ports { btn[0] }]; #IO_L4P_T0_35 Sch=btn[0]
-#set_property -dict { PACKAGE_PIN D20   IOSTANDARD LVCMOS33 } [get_ports { btn[1] }]; #IO_L4N_T0_35 Sch=btn[1]
-#set_property -dict { PACKAGE_PIN L20   IOSTANDARD LVCMOS33 } [get_ports { btn[2] }]; #IO_L9N_T1_DQS_AD3N_35 Sch=btn[2]
-#set_property -dict { PACKAGE_PIN L19   IOSTANDARD LVCMOS33 } [get_ports { btn[3] }]; #IO_L9P_T1_DQS_AD3P_35 Sch=btn[3]
+#JB
+#+----------+----------+----------+----------+
+#|  dout1   |  dout3   |  di_ready|  rst     |
+#|          |          |          |          |
+#+----------+----------+----------+----------+
+#|  dout0   |  dout2   |  di_valid|          |
+#|          |          |          |          |
+#+----------+----------+----------+----------+
 
 ##Pmod Header JA
 
 set_property -dict { PACKAGE_PIN Y18   IOSTANDARD LVCMOS33 } [get_ports { dut_clk }]; #IO_L17P_T2_34 Sch=ja_p[1]
 set_property -dict {PACKAGE_PIN Y19 IOSTANDARD LVCMOS33} [get_ports do_ready]
 set_property -dict {PACKAGE_PIN Y16 IOSTANDARD LVCMOS33} [get_ports {din[3]}]
-set_property -dict {PACKAGE_PIN Y17 IOSTANDARD LVCMOS33} [get_ports {din[1]}]
+#set_property -dict {PACKAGE_PIN Y17 IOSTANDARD LVCMOS33} [get_ports {din[1]}]
 set_property -dict {PACKAGE_PIN U18 IOSTANDARD LVCMOS33} [get_ports do_valid]
 ##repeated for Artix7 DUT
-#set_property -dict { PACKAGE_PIN U19 IOSTANDARD LVCMOS33 } [get_ports {din[1]}]; #IO_L12N_T1_MRCC_34 Sch=ja_n[3] 
+set_property -dict { PACKAGE_PIN U19 IOSTANDARD LVCMOS33 } [get_ports {din[1]}]; #IO_L12N_T1_MRCC_34 Sch=ja_n[3] 
 set_property -dict {PACKAGE_PIN W18 IOSTANDARD LVCMOS33} [get_ports {din[2]}]
 set_property -dict {PACKAGE_PIN W19 IOSTANDARD LVCMOS33} [get_ports {din[0]}]
 
