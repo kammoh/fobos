@@ -241,9 +241,9 @@ CONFIG.Output_Width {10} \
   set clk_wiz [ create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:5.4 clk_wiz ]
   set_property -dict [ list \
 CONFIG.CLKOUT1_DRIVES {BUFG} \
-CONFIG.CLKOUT1_JITTER {130.958} \
-CONFIG.CLKOUT1_PHASE_ERROR {98.575} \
-CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {100} \
+CONFIG.CLKOUT1_JITTER {631.442} \
+CONFIG.CLKOUT1_PHASE_ERROR {346.848} \
+CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {5} \
 CONFIG.CLKOUT2_DRIVES {BUFG} \
 CONFIG.CLKOUT3_DRIVES {BUFG} \
 CONFIG.CLKOUT4_DRIVES {BUFG} \
@@ -251,9 +251,9 @@ CONFIG.CLKOUT5_DRIVES {BUFG} \
 CONFIG.CLKOUT6_DRIVES {BUFG} \
 CONFIG.CLKOUT7_DRIVES {BUFG} \
 CONFIG.FEEDBACK_SOURCE {FDBK_AUTO} \
-CONFIG.MMCM_CLKFBOUT_MULT_F {10.000} \
-CONFIG.MMCM_CLKOUT0_DIVIDE_F {10.000} \
-CONFIG.MMCM_DIVCLK_DIVIDE {1} \
+CONFIG.MMCM_CLKFBOUT_MULT_F {32.000} \
+CONFIG.MMCM_CLKOUT0_DIVIDE_F {128.000} \
+CONFIG.MMCM_DIVCLK_DIVIDE {5} \
 CONFIG.PHASE_DUTY_CONFIG {true} \
 CONFIG.USE_DYN_PHASE_SHIFT {false} \
 CONFIG.USE_DYN_RECONFIG {true} \
@@ -272,15 +272,6 @@ CONFIG.USE_DYN_RECONFIG {true} \
 
   # Create instance: dutcomm_0, and set properties
   set dutcomm_0 [ create_bd_cell -type ip -vlnv user.org:user:dutcomm:1.0 dutcomm_0 ]
-
-  set_property -dict [ list \
-CONFIG.TDATA_NUM_BYTES {4} \
- ] [get_bd_intf_pins /dutcomm_0/M_AXIS]
-
-  set_property -dict [ list \
-CONFIG.NUM_READ_OUTSTANDING {1} \
-CONFIG.NUM_WRITE_OUTSTANDING {1} \
- ] [get_bd_intf_pins /dutcomm_0/S_AXI]
 
   # Create instance: openadc_interface_v1_0_0, and set properties
   set openadc_interface_v1_0_0 [ create_bd_cell -type ip -vlnv xilinx.com:user:openadc_interface_v1_0:1.0 openadc_interface_v1_0_0 ]
