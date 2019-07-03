@@ -17,7 +17,7 @@
 #############################################################################
 #JA
 #+----------+----------+----------+----------+
-#|          |  din3    |  do_ready|  dut_clk |
+#|          |  din3    |  do_ready|  rst |
 #|  G2      |  J2      |  L2      |  J1      |
 #+----------+----------+----------+----------+
 #|  din0    |  din2    |  din1    |  do_valid|
@@ -26,7 +26,7 @@
 
 #JXADC
 #+----------+----------+----------+----------+
-#|  dout1   |  dout3   |  di_ready|  rst     |
+#|  dout1   |  dout3   |  di_ready|  dut_clk     |
 #|  N2      |  M2      |  L3      |  J3      |
 #+----------+----------+----------+----------+
 #|  dout0   |  dout2   |  di_valid|          |
@@ -53,8 +53,8 @@ set_property IOSTANDARD LVCMOS33 [get_ports reset]
 ###################################################################
 ##Pmod Header JA
 ##Sch name = JA1
-set_property PACKAGE_PIN J1 [get_ports {dut_clk[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {dut_clk[0]}]
+set_property PACKAGE_PIN J1 [get_ports {dut_rst}]
+set_property IOSTANDARD LVCMOS33 [get_ports {dut_rst}]
 #Sch name = JA2
 set_property PACKAGE_PIN L2 [get_ports do_ready]
 set_property IOSTANDARD LVCMOS33 [get_ports do_ready]
@@ -84,8 +84,8 @@ set_property IOSTANDARD LVCMOS33 [get_ports trigger_out]
 ###################################################################
 #Pmod Header JXADC
 #Sch name = XA1_P
-set_property PACKAGE_PIN J3 [get_ports dut_rst]
-set_property IOSTANDARD LVCMOS33 [get_ports dut_rst]
+set_property PACKAGE_PIN J3 [get_ports {dut_clk[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {dut_clk[0]}]
 #Sch name = XA2_P
 set_property PACKAGE_PIN L3 [get_ports di_ready]
 set_property IOSTANDARD LVCMOS33 [get_ports di_ready]

@@ -15,18 +15,18 @@
 #   limitations under the License.                                          #
 #                                                                           #
 #############################################################################
-#JA
+#JC
 #+----------+----------+----------+----------+
-#|          |  din3    |  do_ready|  dut_clk |
+#|          |  din3    |  do_ready|  rst     |
 #|          |          |          |          |
 #+----------+----------+----------+----------+
 #|  din0    |  din2    |  din1    |  do_valid|
 #|          |          |          |          |
 #+----------+----------+----------+----------+
 
-#JB
+#JD
 #+----------+----------+----------+----------+
-#|  dout1   |  dout3   |  di_ready|  rst     |
+#|  dout1   |  dout3   |  di_ready|  clk     |
 #|          |          |          |          |
 #+----------+----------+----------+----------+
 #|  dout0   |  dout2   |  di_valid|          |
@@ -47,6 +47,6 @@ NET "do_ready"   LOC = "L7"  |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = I
 NET "do_valid"    LOC = "G1"  |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L47P_M3A0,                      Sch name = JC8
 NET "di_ready"   LOC = "F10" |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L40N,                           Sch name = JD2
 NET "di_valid"   LOC = "C12" |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L47N,                           Sch name = JD8
-NET "rst"       LOC = "G11" |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L40P,                           Sch name = JD1
+NET "clk"       LOC = "G11" |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L40P,                           Sch name = JD1
 # ======================== CLOCK SIGNAL ====================================
-NET "clk"       LOC = "H3"  |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L44N_GCLK20_M3A6,               Sch name = JC1
+NET "rst"       LOC = "H3"  |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L44N_GCLK20_M3A6,               Sch name = JC1

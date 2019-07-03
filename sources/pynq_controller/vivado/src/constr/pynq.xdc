@@ -17,7 +17,7 @@
 #############################################################################
 #JA
 #+----------+----------+----------+----------+
-#|          |  din3    |  do_ready|  dut_clk |
+#|          |  din3    |  do_ready|  rst     |
 #|          |          |          |          |
 #+----------+----------+----------+----------+
 #|  din0    |  din2    |  din1    |  do_valid|
@@ -26,7 +26,7 @@
 
 #JB
 #+----------+----------+----------+----------+
-#|  dout1   |  dout3   |  di_ready|  rst     |
+#|  dout1   |  dout3   |  di_ready|  dut_clk |
 #|          |          |          |          |
 #+----------+----------+----------+----------+
 #|  dout0   |  dout2   |  di_valid|          |
@@ -35,7 +35,7 @@
 
 ##Pmod Header JA
 
-set_property -dict { PACKAGE_PIN Y18   IOSTANDARD LVCMOS33 } [get_ports { dut_clk }]; #IO_L17P_T2_34 Sch=ja_p[1]
+set_property -dict { PACKAGE_PIN Y18   IOSTANDARD LVCMOS33 } [get_ports { rst }]; #IO_L17P_T2_34 Sch=ja_p[1]
 set_property -dict {PACKAGE_PIN Y19 IOSTANDARD LVCMOS33} [get_ports do_ready]
 set_property -dict {PACKAGE_PIN Y16 IOSTANDARD LVCMOS33} [get_ports {din[3]}]
 #set_property -dict {PACKAGE_PIN Y17 IOSTANDARD LVCMOS33} [get_ports {din[1]}]
@@ -47,7 +47,7 @@ set_property -dict {PACKAGE_PIN W19 IOSTANDARD LVCMOS33} [get_ports {din[0]}]
 
 #Pmod Header JB
 
-set_property -dict { PACKAGE_PIN W14   IOSTANDARD LVCMOS33 } [get_ports { dut_rst }]; #IO_L8P_T1_34 Sch=jb_p[1]
+set_property -dict { PACKAGE_PIN W14   IOSTANDARD LVCMOS33 } [get_ports { dut_clk }]; #IO_L8P_T1_34 Sch=jb_p[1]
 set_property -dict {PACKAGE_PIN Y14 IOSTANDARD LVCMOS33} [get_ports di_ready]
 set_property -dict {PACKAGE_PIN T11 IOSTANDARD LVCMOS33} [get_ports {dout[3]}]
 set_property -dict {PACKAGE_PIN T10 IOSTANDARD LVCMOS33} [get_ports {dout[1]}]

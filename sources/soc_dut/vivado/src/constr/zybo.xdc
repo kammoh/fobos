@@ -18,7 +18,7 @@
 #############################################################################
 #JE
 #+----------+----------+----------+----------+
-#|          |  din3    |  do_ready|  dut_clk |
+#|          |  din3    |  do_ready|  rst     |
 #|          |          |          |          |
 #+----------+----------+----------+----------+
 #|  din0    |  din2    |  din1    |  do_valid|
@@ -27,7 +27,7 @@
 
 #JD
 #+----------+----------+----------+----------+
-#|  dout1   |  dout3   |  di_ready|  rst     |
+#|  dout1   |  dout3   |  di_ready|  dut_clk |
 #|          |          |          |          |
 #+----------+----------+----------+----------+
 #|  dout0   |  dout2   |  di_valid|          |
@@ -43,12 +43,12 @@
 #|          |          |          |            |
 #+----------+----------+----------+------------+
 ##Clock signal
-set_property -dict {PACKAGE_PIN V12 IOSTANDARD LVCMOS33} [get_ports dut_clk]
+set_property -dict {PACKAGE_PIN T14 IOSTANDARD LVCMOS33} [get_ports dut_clk]
 create_clock -period 50.000 -name sys_clk_pin -waveform {0.000 25.000} -add [get_ports dut_clk]
 set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets dut_clk_IBUF]
 #################################################################################################
 #Pmod Header JD
-set_property -dict {PACKAGE_PIN T14 IOSTANDARD LVCMOS33} [get_ports dut_rst]
+#set_property -dict {PACKAGE_PIN T14 IOSTANDARD LVCMOS33} [get_ports dut_rst]
 set_property -dict {PACKAGE_PIN T15 IOSTANDARD LVCMOS33} [get_ports di_ready]
 set_property -dict {PACKAGE_PIN P14 IOSTANDARD LVCMOS33} [get_ports {dout[3]}]
 set_property -dict {PACKAGE_PIN R14 IOSTANDARD LVCMOS33} [get_ports {dout[1]}]
@@ -58,7 +58,7 @@ set_property -dict {PACKAGE_PIN V17 IOSTANDARD LVCMOS33} [get_ports {dout[2]}]
 set_property -dict {PACKAGE_PIN V18 IOSTANDARD LVCMOS33} [get_ports {dout[0]}]
 #################################################################################################
 #Pmod Header JE
-#set_property -dict { PACKAGE_PIN V12   IOSTANDARD LVCMOS33 } [get_ports { dutl_clk] }]; #IO_L4P_T0_34 Sch=JE1
+#set_property -dict { PACKAGE_PIN V12   IOSTANDARD LVCMOS33 } [get_ports { dut_rst] }]; #IO_L4P_T0_34 Sch=JE1
 set_property -dict {PACKAGE_PIN W16 IOSTANDARD LVCMOS33} [get_ports do_ready]
 set_property -dict {PACKAGE_PIN J15 IOSTANDARD LVCMOS33} [get_ports {din[3]}]
 #set_property -dict {PACKAGE_PIN H15 IOSTANDARD LVCMOS33} [get_ports {din[1]}]
@@ -66,3 +66,5 @@ set_property -dict {PACKAGE_PIN V13 IOSTANDARD LVCMOS33} [get_ports do_valid]
 set_property -dict {PACKAGE_PIN U17 IOSTANDARD LVCMOS33} [get_ports {din[1]}]
 set_property -dict {PACKAGE_PIN T17 IOSTANDARD LVCMOS33} [get_ports {din[2]}]
 set_property -dict {PACKAGE_PIN Y17 IOSTANDARD LVCMOS33} [get_ports {din[0]}]
+###trigger
+set_property -dict { PACKAGE_PIN V15   IOSTANDARD LVCMOS33 } [get_ports trigger]; #IO_L10P_T1_34 Sch=JC1_P
