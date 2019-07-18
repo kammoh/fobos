@@ -199,7 +199,7 @@ class Picoscope():
             if s < 2:
                 raise Exception('Requested sampling interval not possible for current resolution = {} bit'.format(self.sampleResolution))
             elif s >= 2 and s < 16:
-                n = int(math.log2(s / 2, 2) + 1)
+                n = int(math.log(s / 2, 2) + 1)
             elif s >= 16 and s < 1000000000:
                 n = int(s / 16 + 3)
 
