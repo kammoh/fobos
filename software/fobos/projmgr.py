@@ -8,6 +8,7 @@ class ProjectManager():
       self.projName     = ""
       self.workSpaceDir = ""
       self.captureDir   = ""
+      self.analysisDir  = ""
       self.TVFile       = "" ##test vector file
       self.fvrFile      = "" ##fixed-vs-random meta file.
 
@@ -100,6 +101,31 @@ class ProjectManager():
          return self.createCaptureDir()
       else:
          return self.captureDir
+
+   def createAnalysisDir(self):
+      """
+      creats a new directory to store analysis attempt. It uses numbers to 
+      """
+      cnt = 1
+      while os.path.isdir(os.path.join(self.getProjDir() , "analysis", "attempt-" + str(cnt))):
+         cnt+=1
+      
+      try:
+         analysisDir = os.path.join(self.getProjDir() , "analysis", "attempt-" + str(cnt))
+         os.makedirs(analysisDir)
+         self.analysisDir = analysisDir
+      except OSError as e:
+         print ("FATAL ERROR: Cannot create directory:%s" % (analysisDir))
+         exit()
+      else:
+          print ("Successfully created new capture directory at %s" %(analysisDir))
+          return self.analysisDir
+         
+   def getAnalysisDir(self):
+      if self.analysisDir == "":
+         return self.createAnalysisDir()
+      else:
+         return self.analysisDir
 
    def getTVFile(self):
       """

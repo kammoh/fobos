@@ -7,14 +7,14 @@ import fobos
 import fobos.picoscope
 #Constants################################################################################################
 WORKSPACE = "/home/aabdulga/fobosworkspace"
-PROJECT_NAME ="aes"
+PROJECT_NAME ="ascon"
 DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
 DUT_BIT_FILE = "FOBOS_DUT.bit"
-TRACE_NUM = 1000
-OUT_LEN = 16
-TIMEOUT = 10000
+TRACE_NUM = 2000
+OUT_LEN = 44
+TIMEOUT = 64000
 TRIG_WAIT = 1
 TRIG_LENGTH = 1
 TRIG_MODE_NORM = 0
@@ -24,7 +24,7 @@ ctrl = fobos.Basys3Ctrl('/dev/ttyUSB1', 115200, False)
 dgen = fobos.DataGenerator()
 
 #Configuration controller##################################################################################
-status = ctrl.setDUTClk(50)
+status = ctrl.setDUTClk(1)
 print binascii.hexlify(status)
 #ime.sleep(3)
 print 'Sending config ...'
@@ -66,7 +66,7 @@ projDir = pm.getProjDir()
 dut = fobos.Nexys3DUT()
 bitFile = os.path.join(projDir, DUT_BIT_FILE)
 dut.setBitFile(bitFile)
-#dut.program()
+dut.program()
 #exit()
 ########
 tvFileName = os.path.join(projDir, DIN_FILE_NAME)
@@ -86,11 +86,11 @@ shutil.copy(tvFileName, captureDir)
 #          'AUTOSCALE'          : 'NO',   # YES|NO    
 #          'IMPEDANCE'          : 'ONEMEG', #FIFTY|ONEMEG
 #          # VOLTAGE AND TIME RANGE OPTIONS        
-#          'CHANNEL1_RANGE'     : '0.100V',
+#          'CHANNEL1_RANGE'     : '0.200V',
 #          'CHANNEL2_RANGE'     : '6V',
 #          'CHANNEL3_RANGE'     : 'OFF', # ON|OFF|voltage range
 #          'CHANNEL4_RANGE'     : 'OFF', # ON|OFF|voltage range
-#          'TIME_RANGE'         :  '0.000040',
+#          'TIME_RANGE'         :  '0.000017',
 #          'TIMEBASE_REF'       : 'LEFT',    
 #          # TRIGGER OPTIONS
 #          'TRIGGER_SOURCE'     : 'CHANNEL2',
@@ -108,14 +108,15 @@ shutil.copy(tvFileName, captureDir)
 # scope.openConnection()
 # scope.applyConfig()
 ################Configure Picoscope
-# scope = fobos.picoscope.Picoscope(sampleResolution = 16, 
-#                      postTriggerSamples = 250 #samples
+# scope = fobos.picoscope.Picoscope(sampleResolution = 12, 
+#                      postTriggerSamples = 10000 #samples
 #                      )
 # scope.setChannel(channelName = 'CHANNEL_A', rangemv = '100mV')
 # #scope.setChannel(channelName = 'CHANNEL_B', rangemv = '5V')
 # #scope.setTrigger(channelName ='CHANNEL_B', direction = 'RISING_EDGE', thresholdmv = 200)
-# scope.setSamplingInterval(samplingIntervalns = 16) #T=1 ns, Fs= 1000MHz
-# scope.setTrigger(channelName ='EXTERNAL', direction = 'RISING_EDGE', thresholdmv = 200)
+# scope.setSamplingInterval(samplingIntervalns = 2) #T=2 ns, Fs= 500MHz
+# scope.setTrigger(channelName ='EXTERNAL', direction = 'RISING_EDGE', 
+#                thresholdmv = 200)
 # scope.setDataBuffers()
 
 #Get traces####################################################################################################

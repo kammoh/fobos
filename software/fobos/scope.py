@@ -13,7 +13,7 @@ class Scope():
       self.logger.warn("Hello")
       self.socket = socket(AF_INET, SOCK_STREAM)
       self.cutMode = 'FULL'
-      self.numSamples = 20000 #number of samples to be returned for scope
+      self.numSamples = 1000 #number of samples to be returned for scope
       self.conf = {
          'OSCILLOSCOPE'    : "", 'OSCILLOSCOPE_IP'  : "", 'OSCILLOSCOPE_PORT' : "", 
          'RESOURCE'        : "", 'AUTOSCALE'        : "", 'IMPEDANCE'         : "",        
@@ -146,7 +146,8 @@ class Scope():
 
    def readChannel(self, channelName):
       t1 = time.time()
-      self.send(":WAVEFORM:SOURCE " + channelName + ";MODE BYTE" + ";POINTS 16000" + '\n')
+      self.send(":WAVEFORM:SOURCE " + channelName + ";MODE BYTE" + '\n')
+      self.send(":WAVEFORM:POINTS " + str(self.numSamples) + '\n')
       self.send(":WAVEFORM:PREAMBLE?" + '\n')
       preamble = self.recv(400)
       preamble= preamble.split(',')
