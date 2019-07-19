@@ -12,6 +12,7 @@ matrix H to obtain the correlation matrix R
 import os
 import numpy as np
 import scipy.stats.stats as statModule
+import postprocess
 
 class CPA():
     """
@@ -351,7 +352,7 @@ def detectSampleSize(file_name):
     print "----It looks that the max number of samples in the first 10 traces is: " + str(maxNumOfSamples)
     return maxNumOfSamples
     
-def read_raw_traces(file_name, num_of_traces):
+def read_raw_traces(file_name, num_of_traces, crop_start, crop_end):
     print "Loading raw traces from file: " + file_name  
     print "Please wait ..."
     measurementFile = open(file_name, 'r')
@@ -359,7 +360,8 @@ def read_raw_traces(file_name, num_of_traces):
     global samples_per_trace
     samples_per_trace = detectSampleSize(measurementFile)
     ##create the array
-    raw_traces = np.empty((num_of_traces, samples_per_trace))
+    samples_to_read = crop_end - crop_start
+    raw_traces = np.empty((num_of_traces, samples_to_read))
     #samples_per_trace = 4000
     #need to reset file handle since we used it 
     measurementFile.seek(0)
@@ -367,7 +369,7 @@ def read_raw_traces(file_name, num_of_traces):
         #print "traceCount= " + str(traceCount)
         tempArrayMeasurement = np.load(measurementFile)
         tempArrayMeasurement = adjustSampleSize(samples_per_trace, tempArrayMeasurement)
-        raw_traces[traceCount,:] = tempArrayMeasurement
+        raw_traces[traceCount,:] = tempArrayMeasurement[crop_start: crop_end]
     print "Loading done."
     return raw_traces
 def plotCorr3D(C, fileName= None, show='no'):
@@ -404,6 +406,7 @@ def plotCorr(C, correctIndex,fileName= None, show='no'):
         row = C[i,:]
         plt.plot(row, '#aaaaaa', linewidth = 0.5)
     plt.plot(C[correctIndex, :], 'k', linewidth = 0.5)
+    
     plt.xlabel("Sample No.")
     plt.ylabel("Correlation (Pearson's r)")
     if fileName != None:
@@ -412,6 +415,7 @@ def plotCorr(C, correctIndex,fileName= None, show='no'):
         plt.show()
 
 def  findCorrectKey(C):
+    C = np.abs(C)
     maxCorrs = np.amax(C, 0)
     maxKeyIndexes = np.argmax(C, 0)
     maxKeyIndex = maxKeyIndexes[np.argmax(maxCorrs)]
@@ -501,7 +505,7 @@ def plotMTDGraph2(correctTime, correctKeyIndex, measuredPower,
         plt.show()
 
 def testPlainCipherModel(tracesFile, numTraces, cropStart, cropEnd, analysisDir,
-                plaintextFile, ciphertextFile):
+                plaintextFile, ciphertextFile, MTDStride):
     ## Test genIntermediateMatrix
     D = np.random.randint(0, 10, size=(10,1))
     K = np.random.randint(0, 10, size=(1 ,5))
@@ -514,8 +518,7 @@ def testPlainCipherModel(tracesFile, numTraces, cropStart, cropEnd, analysisDir,
     croppedMeasuredPower = measuredPower[:,cropStart:cropEnd] # 25-100f or 250 samples
     correctKey = []
     for byteNum in range(16):
-        C =  correlation_pearson(croppedMeasuredPower[0:numTraces,:], hypotheticalPower[byteNum][0:numTraces,:])
-        #C =  correlationPearsonOnlineVect(croppedMeasuredPower[0:1000,:], hypotheticalPower[byteNum][0:1000,:])
+        C =  correlationPearsonOnlineVect(croppedMeasuredPower[0:1000,:], hypotheticalPower[byteNum][0:1000,:])
         print("C=")
         print(C.shape)
         printHexMatrix(C, dtype='float')
@@ -525,9 +528,40 @@ def testPlainCipherModel(tracesFile, numTraces, cropStart, cropEnd, analysisDir,
         print("keyIndex= {}, max corr = {}, time= {}".format(hex(maxKeyIndex), maxCorr, maxCorrTime))
         plotCorr(C, maxKeyIndex, fileName= corrFile)
         plotMTDGraph2(maxCorrTime, maxKeyIndex, croppedMeasuredPower, hypotheticalPower[byteNum], 
-            stride=100, fileName=mtdFile, show='no')
+            stride=MTDStride, fileName=mtdFile, show='no')
         correctKey.append(format(maxKeyIndex, '02x'))
     print(correctKey)
+
+def doCPA(measuredPower, hypotheticalPower, numTraces,
+                 analysisDir, MTDStride):
+    ## Test genIntermediateMatrix
+    #D = np.random.randint(0, 10, size=(10,1))
+    #K = np.random.randint(0, 10, size=(1 ,5))
+    #cpa = CPA()
+    #hypotheticalPower = testAESPowerModel1(plaintextFile, ciphertextFile, numTraces)
+    #measuredPower = read_raw_traces(tracesFile, numTraces)
+    print(measuredPower.shape)
+    #print(hypotheticalPower.shape)
+    #croppedMeasuredPower = measuredPower[:,200:800] #for 200-800 for2000 samples
+    #croppedMeasuredPower = measuredPower[:,cropStart:cropEnd] # 25-100f or 250 samples
+    correctKey = []
+    for byteNum in range(16):
+        C =  correlation_pearson(measuredPower[0:numTraces,:], hypotheticalPower[byteNum][0:numTraces,:])
+        
+        #C =  correlationPearsonOnlineVect(croppedMeasuredPower[0:1000,:], hypotheticalPower[byteNum][0:1000,:])
+        print("C=")
+        print(C.shape)
+        printHexMatrix(C, dtype='float')
+        maxKeyIndex, maxCorr, maxCorrTime = findCorrectKey(C)
+        corrFile = os.path.join(analysisDir, 'correlation' + str(byteNum))
+        mtdFile = os.path.join(analysisDir, 'MTD' + str(byteNum))
+        print("keyIndex= {}, max corr = {}, time= {}".format(hex(maxKeyIndex), maxCorr, maxCorrTime))
+        plotCorr(C, maxKeyIndex, fileName= corrFile)
+        plotMTDGraph(maxCorrTime, maxKeyIndex, measuredPower, hypotheticalPower[byteNum], 
+            stride=MTDStride, fileName=mtdFile, show='no')
+        correctKey.append(format(maxKeyIndex, '02x'))
+    print(correctKey)
+    return C
 
 def testFirstRound():
     ## Test genIntermediateMatrix
@@ -620,21 +654,61 @@ def correlationPearsonOnline(t, h):
 
 def main():
     #testFirstRound()
-    BASE_DIR = "/home/aabdulga/fobosworkspace/aes_artix7/aes_artix_7_analysis/"
+    # BASE_DIR = "/home/aabdulga/fobosworkspace/aes_artix7_openadc/capture/attempt_diff_prob_50mhz_sampling_1mhz_dut_200K"
+    # TRACES_FILE = os.path.join(BASE_DIR, 'powerTraces.npy')
+    # PLAIN_FILE = os.path.join(BASE_DIR, 'pdi.txt')
+    # CIPHER_FILE = os.path.join(BASE_DIR, 'do.txt')
+    # ANALYSIS_DIR = os.path.join(BASE_DIR, 'analysis')
+    # #CROP_START = 350 worked for 2000 traces
+    # #CROP_END = 450
+    # CROP_START = 350
+    # CROP_END = 450
+    
+    # NUM_TRACES = 200000
+    # MTD_STRIDE = 2000
+    # testPlainCipherModel(tracesFile = TRACES_FILE, numTraces = NUM_TRACES,
+    #                      cropStart = CROP_START, cropEnd = CROP_END,
+    #                       analysisDir =  ANALYSIS_DIR,
+    #                     plaintextFile =  PLAIN_FILE, 
+    #                     ciphertextFile = CIPHER_FILE,
+    #                     MTDStride = MTD_STRIDE
+    #                     )
+
+    BASE_DIR = "/home/aabdulga/fobosworkspace/zybo_aes/capture/attempt-2"
     TRACES_FILE = os.path.join(BASE_DIR, 'powerTraces.npy')
     PLAIN_FILE = os.path.join(BASE_DIR, 'plaintext.txt')
     CIPHER_FILE = os.path.join(BASE_DIR, 'ciphertext.txt')
     ANALYSIS_DIR = os.path.join(BASE_DIR, 'analysis')
-    CROP_START = 200
-    CROP_END = 800
-    NUM_TRACES = 200000
-    testPlainCipherModel(tracesFile = TRACES_FILE, numTraces = NUM_TRACES,
-                         cropStart = CROP_START, cropEnd = CROP_END,
-                          analysisDir =  ANALYSIS_DIR,
-                        plaintextFile =  PLAIN_FILE, 
-                        ciphertextFile = CIPHER_FILE
+    HYPO_FILE = os.path.join(BASE_DIR, "hypotheticalPower.npy")
+
+
+    #CROP_START = 350 worked for 2000 traces
+    #CROP_END = 450
+    CROP_START = 1500
+    CROP_END = 3000
+    
+    NUM_TRACES = 1000000
+    MTD_STRIDE = 50000
+
+    # measuredPower = read_raw_traces(TRACES_FILE, NUM_TRACES, CROP_START, CROP_END)
+    # compressedPower = postprocess.compressData(measuredPower, 'MEAN', 10)
+    # np.save(os.path.join(ANALYSIS_DIR, "compressedPower.npy"), compressedPower)
+    compressedPower = np.load(os.path.join(ANALYSIS_DIR, "compressedPower.npy"))
+    print "Compression Done!"
+    print compressedPower.shape
+    
+    #hypotheticalPower = testAESPowerModel1(PLAIN_FILE, CIPHER_FILE, NUM_TRACES)
+    #np.save(HYPO_FILE, hypotheticalPower)
+    hypotheticalPower = np.load(HYPO_FILE)
+    
+    C = doCPA(measuredPower = compressedPower, 
+                         hypotheticalPower = hypotheticalPower,
+                         numTraces = NUM_TRACES,
+                         analysisDir =  ANALYSIS_DIR,
+                         MTDStride = MTD_STRIDE
                         )
 
+    np.savetxt("C.txt", C)
 
 if __name__ == '__main__':
     main()
