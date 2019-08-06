@@ -290,6 +290,27 @@ class Picoscope():
         trace = np.array(self.bufferA)
         return trace
 
+    def readTracemv(self):
+        # Check for data collection to finish using ps5000aIsReady
+        ready = ctypes.c_int16(0)
+        check = ctypes.c_int16(0)
+        while ready.value == check.value:
+            self.status["isReady"] = ps.ps5000aIsReady(self.chandle, ctypes.byref(ready))
+
+        overflow = ctypes.c_int16()
+        # create converted type maxSamples
+        self.cmaxSamples = ctypes.c_int32(self.maxSamples)
+        self.status["getValues"] = ps.ps5000aGetValues(self.chandle, 0, 
+                                ctypes.byref(self.cmaxSamples), 
+                                0, 0, 0, ctypes.byref(overflow))
+        assert_pico_ok(self.status["getValues"])
+        # convert ADC counts data to mV
+        #adc2mVChAMax =  adc2mV(bufferAMax, chARange, maxADC)
+        #adc2mVChBMax =  adc2mV(bufferBMax, chBRange, maxADC)
+        #trace = np.array(self.bufferA)
+        trace = np.array(adc2mV(self.bufferA, self.chARange, self.maxADC ))
+        return trace
+
     def closeConnection(self):
         self.status["stop"] = ps.ps5000aStop(chandle)
         assert_pico_ok(self.status["stop"])
