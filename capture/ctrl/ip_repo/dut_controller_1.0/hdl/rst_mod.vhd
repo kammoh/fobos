@@ -25,7 +25,10 @@ entity rst_mod is
            rst : in STD_LOGIC;
            dut_working : in STD_LOGIC;
            time_to_rst : in std_logic_vector(31 downto 0);
-           dut_rst_cmd : out STD_LOGIC);
+           dut_rst_cmd : out STD_LOGIC;
+           wait_for_rst : out std_logic
+           
+     );
 end rst_mod;
    
 architecture behav of rst_mod is
@@ -108,5 +111,6 @@ end process;
 ----
 cnt_exceed <= '1' when unsigned(rst_cnt) >= unsigned(time_to_rst) else '0';
 en_module <= '1' when time_to_rst > x"00000000" else '0'; --if timeout not set then nothing to do
+wait_for_rst <= en_module;
 
 end behav;

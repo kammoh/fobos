@@ -104,7 +104,8 @@ signal next_pdi_ld_cnt, pdi_ld_cnt, next_rdi_ld_cnt, rdi_ld_cnt : std_logic_vect
 signal next_sdi_ld_cnt, sdi_ld_cnt : std_logic_vector(log2_ceil(SW/4)-1 downto 0);
 signal next_do_rd_cnt, do_rd_cnt : std_logic_vector(log2_ceil(W/4)-1 downto 0);
 signal ld_cnt_init, rd_cnt_init : std_logic;
-
+--
+signal victim_rst : std_logic;
 begin
 
 -- FOBOS Protocol
@@ -120,6 +121,7 @@ begin
 --! Until supported, the complete expected pdi and sdi contents must be transmitted to FOBOS DUT for each trace
 
 -- insert victim algorithm here
+victim_rst <= rst or start;
 
 victim: entity work.aes_axi(behav)
 
@@ -132,7 +134,7 @@ victim: entity work.aes_axi(behav)
 
 port map(
 	clk => clk,
-	rst => start,  --! The FOBOS_DUT start signal meets requirements for synchronous resets used in 
+	rst => victim_rst,  --! The FOBOS_DUT start signal meets requirements for synchronous resets used in 
 		       --! CAESAR HW Development Package AEAD
 
 -- data signals

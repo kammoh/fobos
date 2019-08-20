@@ -4,21 +4,22 @@ import os
 import shutil
 import numpy
 import fobos
-import fobos.picoscope
+#import fobos.picoscope
 #Constants################################################################################################
-WORKSPACE = "/home/aabdulga/fobosworkspace"
-PROJECT_NAME ="ascon"
+WORKSPACE = "/home/bakry/fobosworkspace"
+PROJECT_NAME ="aes"
 DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
 DUT_BIT_FILE = "FOBOS_DUT.bit"
-TRACE_NUM = 2000
-OUT_LEN = 44
+TRACE_NUM = 4
+OUT_LEN = 16
 TIMEOUT = 64000
 TRIG_WAIT = 1
 TRIG_LENGTH = 1
 TRIG_MODE_NORM = 0
 TRIG_MODE_FULL = 1 
+TIME_TO_RST = 0
 #Instantiate FOBOS objects#################################################################################
 ctrl = fobos.Basys3Ctrl('/dev/ttyUSB1', 115200, False)
 dgen = fobos.DataGenerator()
@@ -26,6 +27,7 @@ dgen = fobos.DataGenerator()
 #Configuration controller##################################################################################
 status = ctrl.setDUTClk(1)
 print binascii.hexlify(status)
+status = ctrl.enableTestMode()
 #ime.sleep(3)
 print 'Sending config ...'
 status = ctrl.writeConfig(5, 0) #FORCE RESET
@@ -34,12 +36,14 @@ print 'Sending config ...'
 status = ctrl.writeConfig(6, 0) #RLEASE RESET
 print binascii.hexlify(status)
 print 'Sending config ...'
+status =  ctrl.setTimeToReset(TIME_TO_RST)
+print binascii.hexlify(status)
 #status = ctrl.writeConfig(0,16) #set OUT_LEN to 6
 status = ctrl.setOutLen(OUT_LEN)
 print binascii.hexlify(status)
 print 'Sending config ...'
-status = ctrl.writeConfig(7, TIMEOUT) #set TIMEOUT
-print binascii.hexlify(status)
+#status = ctrl.writeConfig(7, TIMEOUT) #set TIMEOUT
+#print binascii.hexlify(status)
 print 'Sending config ...'
 status = ctrl.writeConfig(1,TRIG_WAIT) #set OUT_LEN to 6
 print binascii.hexlify(status)
@@ -50,7 +54,7 @@ status = ctrl.writeConfig(3,TRIG_MODE_FULL) #set Trigger mode to FULL
 print binascii.hexlify(status)
 
 ####read config
-status, param = ctrl.readConfig(100)
+status, param = ctrl.readConfig(7)
 print 'parameter value:'
 print binascii.hexlify(param)
 status, param = ctrl.readConfig(1)
@@ -66,7 +70,7 @@ projDir = pm.getProjDir()
 dut = fobos.Nexys3DUT()
 bitFile = os.path.join(projDir, DUT_BIT_FILE)
 dut.setBitFile(bitFile)
-dut.program()
+#dut.program()
 #exit()
 ########
 tvFileName = os.path.join(projDir, DIN_FILE_NAME)
@@ -125,6 +129,7 @@ t1 = time.time()
 string = ''
 j = 0
 while j < TRACE_NUM:
+   raw_input()
    tc1 = time.time()
    # scope.arm()
    tc2 = time.time()

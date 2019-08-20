@@ -25,6 +25,7 @@ class Basys3Ctrl(FOBOSCtrl):
             self.ser = serial.Serial(port, baudRate)
         self.outLen = 0
         self.STATUS_LEN = 4
+        self.timeToReset = 0
         ##error codes
         self.OK      = bytearray([0x00, 0x00, 0x00, 0x00])
         self.ERROR   = bytearray([0x01, 0x00, 0x00, 0x00])
@@ -35,11 +36,11 @@ class Basys3Ctrl(FOBOSCtrl):
         """
         Writes config to the fobos  control board
         param: the number of the config, 
-        value: a 16 bit value for the config parameter
+        value: a 32 bit value for the config parameter
         returs: ack code
         """
         #               WR_CONFIG       4 byte message   config number    config value 
-        cmd = bytearray([0xF0, 0x03] + [0x00, 0x04] +  [0x00, param] + [ value / 256 , value % 256])
+        cmd = bytearray([0xF0, 0x03] + [0x00, 0x06] +  [0x00, param] + [ (value & 0xFF000000) >> 24, (value & 0x00FF0000) >> 16, (value & 0x0000FF00) >> 8, value & 0x000000FF ])
         print binascii.hexlify(cmd)
         c = self.ser.write(cmd)
         status = self.ser.read(self.STATUS_LEN)
@@ -50,7 +51,7 @@ class Basys3Ctrl(FOBOSCtrl):
         """
         Reads config from the fobos  control board
         param: the number of the config, 
-        returns: a 16 bit value for the config parameter
+        returns: a 32 bit value for the config parameter
         """
         #               RD_CONFIG       2 byte message   config number    
         value = bytearray([0])
@@ -84,8 +85,9 @@ class Basys3Ctrl(FOBOSCtrl):
         #read status
         status = self.ser.read(self.STATUS_LEN)
         result2 = ''
-        if status == self.OK:
+        if status == self.OK and self.timeToReset == 0:
             print "OK.    Status= %s" % binascii.hexlify(status)
+            #if self.timeToReset == 0: #no output when using dut reset
             result = self.ser.read(outLen)
             result = binascii.hexlify(result)
             ##get result in correct format
@@ -126,14 +128,39 @@ class Basys3Ctrl(FOBOSCtrl):
         """
         return self.writeConfig(FOBOSCtrl.TRG_TYPE, trigType)
 
+    def enableTestMode(self):
+        """
+        set test mode
+        """
+        return self.writeConfig(FOBOSCtrl.SET_TEST_MODE, FOBOSCtrl.ENABLED)
+
+    def setTimeToReset(self, dutCycles):
+        """
+        set time to reset
+        """
+        self.timeToReset = dutCycles
+        return self.writeConfig(FOBOSCtrl.TIME_TO_RST , dutCycles)
+
+    def getTimeToReset(self, dutCycles):
+        """
+        set time to reset
+        """
+        return self.readConfig(FOBOSCtrl.TIME_TO_RST)
+
+    def disableTestMode(self):
+        """
+        set test mode
+        """
+        return self.writeConfig(FOBOSCtrl.SET_TEST_MODE, FOBOSCtrl.DISABLED)
+
     def setDUTClk(self, clkFreqMhz):
         """
         set dut clock frequency in MHz
         """
-        if clkFreqMhz > 50 or clkFreqMhz < 0.5:
+        if clkFreqMhz > 100 or clkFreqMhz < 0.4:
             print("Error: DUT clock must be between 50MHz and 0.5MHz")
             print("Limit is because of PMOD connector and CLK wizard.")
             raise
-        return self.writeConfig(FOBOSCtrl.SET_DUT_CLK, clkFreqMhz)
+        return self.writeConfig(FOBOSCtrl.SET_DUT_CLK, clkFreqMhz * 1000)
     
 

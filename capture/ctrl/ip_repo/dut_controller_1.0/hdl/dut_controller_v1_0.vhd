@@ -30,6 +30,9 @@ entity dut_controller_v1_0 is
         op_done   : in std_logic;
         --reset module
         dut_rst : out std_logic;
+        ctrl_rst : out std_logic;
+        wait_for_rst : out std_logic;
+        rst_cmd     : out std_logic;
 
 		-- User ports ends
 		-- Do not modify the ports beyond this line
@@ -134,7 +137,9 @@ architecture arch_imp of dut_controller_v1_0 is
          rst : in STD_LOGIC;
          dut_working : in STD_LOGIC;
          time_to_rst : in std_logic_vector(31 downto 0);
-         dut_rst_cmd : out STD_LOGIC);
+         dut_rst_cmd : out STD_LOGIC;
+         wait_for_rst : out std_logic
+    );
     end component;
     
     --signals for trigger module
@@ -230,10 +235,12 @@ dut_controller_v1_0_S_AXI_inst : dut_controller_v1_0_S_AXI
            rst => rst,
            dut_working => dut_working,
            time_to_rst => time_to_rst,
-           dut_rst_cmd => dut_rst_cmd
-      );
-    
+           dut_rst_cmd => dut_rst_cmd,
+           wait_for_rst => wait_for_rst
+    );
+    rst_cmd <= dut_rst_cmd;
     dut_rst    <= dut_rst_cmd or force_rst;
+    ctrl_rst <= force_rst;
     
     --debug only
     d_timeout <= timeout;

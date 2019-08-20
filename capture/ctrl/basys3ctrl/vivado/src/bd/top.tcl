@@ -37,6 +37,13 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 # To test this script, run the following commands from Vivado Tcl console:
 # source top_script.tcl
 
+
+# The design that will be created by this Tcl script contains the following 
+# module references:
+# FOBOS_DUT
+
+# Please add the sources of those modules before sourcing this Tcl script.
+
 # If there is no project opened, this script will create a
 # project, but make sure you do not have an existing project
 # <./myproj/project_1.xpr> in the current working folder.
@@ -259,20 +266,50 @@ CONFIG.PHASE {0.000} \
  ] $sys_clock
   set trigger_out [ create_bd_port -dir O trigger_out ]
 
+  # Create instance: FOBOS_DUT_0, and set properties
+  set block_name FOBOS_DUT
+  set block_cell_name FOBOS_DUT_0
+  if { [catch {set FOBOS_DUT_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
+     catch {common::send_msg_id "BD_TCL-105" "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   } elseif { $FOBOS_DUT_0 eq "" } {
+     catch {common::send_msg_id "BD_TCL-106" "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   }
+  
   # Create instance: axi_fifo_mm_s_0, and set properties
   set axi_fifo_mm_s_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_fifo_mm_s:4.1 axi_fifo_mm_s_0 ]
   set_property -dict [ list \
-CONFIG.C_RX_FIFO_DEPTH {2048} \
+CONFIG.C_RX_FIFO_DEPTH {512} \
 CONFIG.C_RX_FIFO_PE_THRESHOLD {2} \
 CONFIG.C_RX_FIFO_PF_THRESHOLD {507} \
-CONFIG.C_TX_FIFO_DEPTH {2048} \
+CONFIG.C_TX_FIFO_DEPTH {512} \
 CONFIG.C_TX_FIFO_PE_THRESHOLD {2} \
 CONFIG.C_TX_FIFO_PF_THRESHOLD {507} \
 CONFIG.C_USE_TX_CTRL {0} \
  ] $axi_fifo_mm_s_0
 
+  # Create instance: axi_fifo_mm_s_test, and set properties
+  set axi_fifo_mm_s_test [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_fifo_mm_s:4.1 axi_fifo_mm_s_test ]
+  set_property -dict [ list \
+CONFIG.C_RX_FIFO_DEPTH {512} \
+CONFIG.C_RX_FIFO_PE_THRESHOLD {2} \
+CONFIG.C_RX_FIFO_PF_THRESHOLD {507} \
+CONFIG.C_TX_FIFO_DEPTH {512} \
+CONFIG.C_TX_FIFO_PE_THRESHOLD {2} \
+CONFIG.C_TX_FIFO_PF_THRESHOLD {507} \
+CONFIG.C_USE_TX_CTRL {0} \
+ ] $axi_fifo_mm_s_test
+
   # Create instance: axi_intc_0, and set properties
   set axi_intc_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_intc:4.1 axi_intc_0 ]
+
+  # Create instance: axi_timer_0, and set properties
+  set axi_timer_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_timer:2.0 axi_timer_0 ]
+  set_property -dict [ list \
+CONFIG.enable_timer2 {0} \
+CONFIG.mode_64bit {0} \
+ ] $axi_timer_0
 
   # Create instance: axi_uartlite_0, and set properties
   set axi_uartlite_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_uartlite:2.0 axi_uartlite_0 ]
@@ -287,6 +324,7 @@ CONFIG.USE_BOARD_FLOW {true} \
   set_property -dict [ list \
 CONFIG.CLKOUT1_JITTER {148.376} \
 CONFIG.CLKOUT1_PHASE_ERROR {128.132} \
+CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {100.000} \
 CONFIG.CLKOUT2_JITTER {270.159} \
 CONFIG.CLKOUT2_PHASE_ERROR {128.132} \
 CONFIG.CLKOUT2_REQUESTED_OUT_FREQ {5} \
@@ -310,8 +348,14 @@ CONFIG.MMCM_DIVCLK_DIVIDE {5} \
 CONFIG.USE_DYN_RECONFIG {true} \
  ] $clk_wiz_1
 
+  # Create instance: dut_controller_0, and set properties
+  set dut_controller_0 [ create_bd_cell -type ip -vlnv user.org:user:dut_controller:1.0 dut_controller_0 ]
+
   # Create instance: dut_controller_1, and set properties
   set dut_controller_1 [ create_bd_cell -type ip -vlnv user.org:user:dut_controller:1.0 dut_controller_1 ]
+
+  # Create instance: dutcomm_0, and set properties
+  set dutcomm_0 [ create_bd_cell -type ip -vlnv user.org:user:dutcomm:1.0 dutcomm_0 ]
 
   # Create instance: dutcomm_1, and set properties
   set dutcomm_1 [ create_bd_cell -type ip -vlnv user.org:user:dutcomm:1.0 dutcomm_1 ]
@@ -331,7 +375,7 @@ CONFIG.C_I_LMB {1} \
   # Create instance: microblaze_0_axi_periph, and set properties
   set microblaze_0_axi_periph [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 microblaze_0_axi_periph ]
   set_property -dict [ list \
-CONFIG.NUM_MI {6} \
+CONFIG.NUM_MI {10} \
  ] $microblaze_0_axi_periph
 
   # Create instance: microblaze_0_local_memory
@@ -351,6 +395,14 @@ CONFIG.C_SIZE {1} \
 CONFIG.LOGO_FILE {data/sym_notgate.png} \
  ] $util_vector_logic_0
 
+  # Create instance: util_vector_logic_1, and set properties
+  set util_vector_logic_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_vector_logic:2.0 util_vector_logic_1 ]
+  set_property -dict [ list \
+CONFIG.C_OPERATION {not} \
+CONFIG.C_SIZE {1} \
+CONFIG.LOGO_FILE {data/sym_notgate.png} \
+ ] $util_vector_logic_1
+
   # Create instance: xlconstant_0, and set properties
   set xlconstant_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 xlconstant_0 ]
   set_property -dict [ list \
@@ -359,7 +411,9 @@ CONFIG.CONST_VAL {0} \
 
   # Create interface connections
   connect_bd_intf_net -intf_net axi_fifo_mm_s_0_AXI_STR_TXD [get_bd_intf_pins axi_fifo_mm_s_0/AXI_STR_TXD] [get_bd_intf_pins dutcomm_1/S_AXIS]
+  connect_bd_intf_net -intf_net axi_fifo_mm_s_test_AXI_STR_TXD [get_bd_intf_pins axi_fifo_mm_s_test/AXI_STR_TXD] [get_bd_intf_pins dutcomm_0/S_AXIS]
   connect_bd_intf_net -intf_net axi_intc_0_interrupt [get_bd_intf_pins axi_intc_0/interrupt] [get_bd_intf_pins microblaze_0/INTERRUPT]
+  connect_bd_intf_net -intf_net dutcomm_0_M_AXIS [get_bd_intf_pins axi_fifo_mm_s_test/AXI_STR_RXD] [get_bd_intf_pins dutcomm_0/M_AXIS]
   connect_bd_intf_net -intf_net dutcomm_1_M_AXIS [get_bd_intf_pins axi_fifo_mm_s_0/AXI_STR_RXD] [get_bd_intf_pins dutcomm_1/M_AXIS]
   connect_bd_intf_net -intf_net microblaze_0_M_AXI_DP [get_bd_intf_pins microblaze_0/M_AXI_DP] [get_bd_intf_pins microblaze_0_axi_periph/S00_AXI]
   connect_bd_intf_net -intf_net microblaze_0_axi_periph_M00_AXI [get_bd_intf_pins axi_fifo_mm_s_0/S_AXI] [get_bd_intf_pins microblaze_0_axi_periph/M00_AXI]
@@ -368,21 +422,41 @@ CONFIG.CONST_VAL {0} \
   connect_bd_intf_net -intf_net microblaze_0_axi_periph_M03_AXI [get_bd_intf_pins axi_uartlite_0/S_AXI] [get_bd_intf_pins microblaze_0_axi_periph/M03_AXI]
   connect_bd_intf_net -intf_net microblaze_0_axi_periph_M04_AXI [get_bd_intf_pins dut_controller_1/S_AXI] [get_bd_intf_pins microblaze_0_axi_periph/M04_AXI]
   connect_bd_intf_net -intf_net microblaze_0_axi_periph_M05_AXI [get_bd_intf_pins clk_wiz_1/s_axi_lite] [get_bd_intf_pins microblaze_0_axi_periph/M05_AXI]
+  connect_bd_intf_net -intf_net microblaze_0_axi_periph_M06_AXI [get_bd_intf_pins axi_fifo_mm_s_test/S_AXI] [get_bd_intf_pins microblaze_0_axi_periph/M06_AXI]
+  connect_bd_intf_net -intf_net microblaze_0_axi_periph_M07_AXI [get_bd_intf_pins dutcomm_0/S_AXI] [get_bd_intf_pins microblaze_0_axi_periph/M07_AXI]
+  connect_bd_intf_net -intf_net microblaze_0_axi_periph_M08_AXI [get_bd_intf_pins dut_controller_0/S_AXI] [get_bd_intf_pins microblaze_0_axi_periph/M08_AXI]
+  connect_bd_intf_net -intf_net microblaze_0_axi_periph_M09_AXI [get_bd_intf_pins axi_timer_0/S_AXI] [get_bd_intf_pins microblaze_0_axi_periph/M09_AXI]
   connect_bd_intf_net -intf_net microblaze_0_debug [get_bd_intf_pins mdm_1/MBDEBUG_0] [get_bd_intf_pins microblaze_0/DEBUG]
   connect_bd_intf_net -intf_net microblaze_0_dlmb_1 [get_bd_intf_pins microblaze_0/DLMB] [get_bd_intf_pins microblaze_0_local_memory/DLMB]
   connect_bd_intf_net -intf_net microblaze_0_ilmb_1 [get_bd_intf_pins microblaze_0/ILMB] [get_bd_intf_pins microblaze_0_local_memory/ILMB]
 
   # Create port connections
+  connect_bd_net -net FOBOS_DUT_0_di_ready [get_bd_pins FOBOS_DUT_0/di_ready] [get_bd_pins dutcomm_0/di_ready]
+  connect_bd_net -net FOBOS_DUT_0_do_valid [get_bd_pins FOBOS_DUT_0/do_valid] [get_bd_pins dutcomm_0/do_valid]
+  connect_bd_net -net FOBOS_DUT_0_dout [get_bd_pins FOBOS_DUT_0/dout] [get_bd_pins dutcomm_0/dout]
   connect_bd_net -net axi_uartlite_0_interrupt [get_bd_pins axi_intc_0/intr] [get_bd_pins axi_uartlite_0/interrupt]
   connect_bd_net -net axi_uartlite_0_tx [get_bd_ports RsTx] [get_bd_pins axi_uartlite_0/tx]
   connect_bd_net -net clk_wiz_1_locked [get_bd_pins clk_wiz_0/locked] [get_bd_pins rst_clk_wiz_1_100M/dcm_locked]
   connect_bd_net -net clk_wiz_1_locked1 [get_bd_pins clk_wiz_1/locked] [get_bd_pins rst_clk_wiz_1_5M/dcm_locked]
-  connect_bd_net -net clk_wiz_dut_clk_out1 [get_bd_pins axi_fifo_mm_s_0/s_axi_aclk] [get_bd_pins clk_wiz_1/clk_out1] [get_bd_pins dut_controller_1/s_axi_aclk] [get_bd_pins dutcomm_1/m_axis_aclk] [get_bd_pins dutcomm_1/s_axi_aclk] [get_bd_pins dutcomm_1/s_axis_aclk] [get_bd_pins microblaze_0_axi_periph/M00_ACLK] [get_bd_pins microblaze_0_axi_periph/M01_ACLK] [get_bd_pins microblaze_0_axi_periph/M04_ACLK] [get_bd_pins rst_clk_wiz_1_5M/slowest_sync_clk] [get_bd_pins util_vector_logic_0/Op1]
+  connect_bd_net -net clk_wiz_dut_clk_out1 [get_bd_pins axi_fifo_mm_s_0/s_axi_aclk] [get_bd_pins axi_fifo_mm_s_test/s_axi_aclk] [get_bd_pins clk_wiz_1/clk_out1] [get_bd_pins dut_controller_0/s_axi_aclk] [get_bd_pins dut_controller_1/s_axi_aclk] [get_bd_pins dutcomm_0/m_axis_aclk] [get_bd_pins dutcomm_0/s_axi_aclk] [get_bd_pins dutcomm_0/s_axis_aclk] [get_bd_pins dutcomm_1/m_axis_aclk] [get_bd_pins dutcomm_1/s_axi_aclk] [get_bd_pins dutcomm_1/s_axis_aclk] [get_bd_pins microblaze_0_axi_periph/M00_ACLK] [get_bd_pins microblaze_0_axi_periph/M01_ACLK] [get_bd_pins microblaze_0_axi_periph/M04_ACLK] [get_bd_pins microblaze_0_axi_periph/M06_ACLK] [get_bd_pins microblaze_0_axi_periph/M07_ACLK] [get_bd_pins microblaze_0_axi_periph/M08_ACLK] [get_bd_pins rst_clk_wiz_1_5M/slowest_sync_clk] [get_bd_pins util_vector_logic_0/Op1] [get_bd_pins util_vector_logic_1/Op1]
   connect_bd_net -net di_ready_1 [get_bd_ports di_ready] [get_bd_pins dutcomm_1/di_ready]
   connect_bd_net -net do_valid_1 [get_bd_ports do_valid] [get_bd_pins dutcomm_1/do_valid]
   connect_bd_net -net dout_1 [get_bd_ports dout] [get_bd_pins dutcomm_1/dout]
-  connect_bd_net -net dut_controller_1_dut_rst [get_bd_ports dut_rst] [get_bd_pins dut_controller_1/dut_rst] [get_bd_pins dutcomm_1/rst]
+  connect_bd_net -net dut_controller_0_ctrl_rst [get_bd_pins dut_controller_0/ctrl_rst] [get_bd_pins dutcomm_0/rst]
+  connect_bd_net -net dut_controller_0_dut_rst [get_bd_pins FOBOS_DUT_0/rst] [get_bd_pins dut_controller_0/dut_rst]
+  connect_bd_net -net dut_controller_0_rst_cmd [get_bd_pins dut_controller_0/rst_cmd] [get_bd_pins dutcomm_0/rst_cmd]
+  connect_bd_net -net dut_controller_0_wait_for_rst [get_bd_pins dut_controller_0/wait_for_rst] [get_bd_pins dutcomm_0/wait_for_rst]
+  connect_bd_net -net dut_controller_1_ctrl_rst [get_bd_pins dut_controller_1/ctrl_rst] [get_bd_pins dutcomm_1/rst]
+  connect_bd_net -net dut_controller_1_dut_rst [get_bd_ports dut_rst] [get_bd_pins dut_controller_1/dut_rst]
+  connect_bd_net -net dut_controller_1_rst_cmd [get_bd_pins dut_controller_1/rst_cmd] [get_bd_pins dutcomm_1/rst_cmd]
   connect_bd_net -net dut_controller_1_trigger_out [get_bd_ports trigger_out] [get_bd_pins dut_controller_1/trigger_out]
+  connect_bd_net -net dut_controller_1_wait_for_rst [get_bd_pins dut_controller_1/wait_for_rst] [get_bd_pins dutcomm_1/wait_for_rst]
+  connect_bd_net -net dutcomm_0_di_valid [get_bd_pins FOBOS_DUT_0/di_valid] [get_bd_pins dutcomm_0/di_valid]
+  connect_bd_net -net dutcomm_0_din [get_bd_pins FOBOS_DUT_0/din] [get_bd_pins dutcomm_0/din]
+  connect_bd_net -net dutcomm_0_do_ready [get_bd_pins FOBOS_DUT_0/do_ready] [get_bd_pins dutcomm_0/do_ready]
+  connect_bd_net -net dutcomm_0_dut_working [get_bd_pins dut_controller_0/dut_working] [get_bd_pins dutcomm_0/dut_working]
+  connect_bd_net -net dutcomm_0_op_done [get_bd_pins dut_controller_0/op_done] [get_bd_pins dutcomm_0/op_done]
+  connect_bd_net -net dutcomm_0_started [get_bd_pins dut_controller_0/snd_start] [get_bd_pins dutcomm_0/started]
   connect_bd_net -net dutcomm_1_di_valid [get_bd_ports di_valid] [get_bd_pins dutcomm_1/di_valid]
   connect_bd_net -net dutcomm_1_din [get_bd_ports din] [get_bd_pins dutcomm_1/din]
   connect_bd_net -net dutcomm_1_do_ready [get_bd_ports do_ready] [get_bd_pins dutcomm_1/do_ready]
@@ -390,25 +464,30 @@ CONFIG.CONST_VAL {0} \
   connect_bd_net -net dutcomm_1_op_done [get_bd_pins dut_controller_1/op_done] [get_bd_pins dutcomm_1/op_done]
   connect_bd_net -net dutcomm_1_started [get_bd_pins dut_controller_1/snd_start] [get_bd_pins dutcomm_1/started]
   connect_bd_net -net mdm_1_debug_sys_rst [get_bd_pins mdm_1/Debug_SYS_Rst] [get_bd_pins rst_clk_wiz_1_100M/mb_debug_sys_rst]
-  connect_bd_net -net microblaze_0_Clk [get_bd_pins axi_intc_0/s_axi_aclk] [get_bd_pins axi_uartlite_0/s_axi_aclk] [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins clk_wiz_1/clk_in1] [get_bd_pins clk_wiz_1/s_axi_aclk] [get_bd_pins microblaze_0/Clk] [get_bd_pins microblaze_0_axi_periph/ACLK] [get_bd_pins microblaze_0_axi_periph/M02_ACLK] [get_bd_pins microblaze_0_axi_periph/M03_ACLK] [get_bd_pins microblaze_0_axi_periph/M05_ACLK] [get_bd_pins microblaze_0_axi_periph/S00_ACLK] [get_bd_pins microblaze_0_local_memory/LMB_Clk] [get_bd_pins rst_clk_wiz_1_100M/slowest_sync_clk]
+  connect_bd_net -net microblaze_0_Clk [get_bd_pins axi_intc_0/s_axi_aclk] [get_bd_pins axi_timer_0/s_axi_aclk] [get_bd_pins axi_uartlite_0/s_axi_aclk] [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins clk_wiz_1/clk_in1] [get_bd_pins clk_wiz_1/s_axi_aclk] [get_bd_pins microblaze_0/Clk] [get_bd_pins microblaze_0_axi_periph/ACLK] [get_bd_pins microblaze_0_axi_periph/M02_ACLK] [get_bd_pins microblaze_0_axi_periph/M03_ACLK] [get_bd_pins microblaze_0_axi_periph/M05_ACLK] [get_bd_pins microblaze_0_axi_periph/M09_ACLK] [get_bd_pins microblaze_0_axi_periph/S00_ACLK] [get_bd_pins microblaze_0_local_memory/LMB_Clk] [get_bd_pins rst_clk_wiz_1_100M/slowest_sync_clk]
   connect_bd_net -net reset_1 [get_bd_ports reset] [get_bd_pins clk_wiz_0/reset] [get_bd_pins rst_clk_wiz_1_100M/ext_reset_in] [get_bd_pins rst_clk_wiz_1_5M/ext_reset_in]
   connect_bd_net -net rst_clk_wiz_1_100M_bus_struct_reset [get_bd_pins microblaze_0_local_memory/SYS_Rst] [get_bd_pins rst_clk_wiz_1_100M/bus_struct_reset]
   connect_bd_net -net rst_clk_wiz_1_100M_interconnect_aresetn [get_bd_pins microblaze_0_axi_periph/ARESETN] [get_bd_pins rst_clk_wiz_1_100M/interconnect_aresetn]
   connect_bd_net -net rst_clk_wiz_1_100M_mb_reset [get_bd_pins microblaze_0/Reset] [get_bd_pins rst_clk_wiz_1_100M/mb_reset]
-  connect_bd_net -net rst_clk_wiz_1_100M_peripheral_aresetn [get_bd_pins axi_intc_0/s_axi_aresetn] [get_bd_pins axi_uartlite_0/s_axi_aresetn] [get_bd_pins clk_wiz_1/s_axi_aresetn] [get_bd_pins microblaze_0_axi_periph/M02_ARESETN] [get_bd_pins microblaze_0_axi_periph/M03_ARESETN] [get_bd_pins microblaze_0_axi_periph/M05_ARESETN] [get_bd_pins microblaze_0_axi_periph/S00_ARESETN] [get_bd_pins rst_clk_wiz_1_100M/peripheral_aresetn]
-  connect_bd_net -net rst_clk_wiz_1_5M_peripheral_aresetn [get_bd_pins axi_fifo_mm_s_0/s_axi_aresetn] [get_bd_pins dut_controller_1/s_axi_aresetn] [get_bd_pins dutcomm_1/m_axis_aresetn] [get_bd_pins dutcomm_1/s_axi_aresetn] [get_bd_pins dutcomm_1/s_axis_aresetn] [get_bd_pins microblaze_0_axi_periph/M00_ARESETN] [get_bd_pins microblaze_0_axi_periph/M01_ARESETN] [get_bd_pins microblaze_0_axi_periph/M04_ARESETN] [get_bd_pins rst_clk_wiz_1_5M/peripheral_aresetn]
+  connect_bd_net -net rst_clk_wiz_1_100M_peripheral_aresetn [get_bd_pins axi_intc_0/s_axi_aresetn] [get_bd_pins axi_timer_0/s_axi_aresetn] [get_bd_pins axi_uartlite_0/s_axi_aresetn] [get_bd_pins clk_wiz_1/s_axi_aresetn] [get_bd_pins microblaze_0_axi_periph/M02_ARESETN] [get_bd_pins microblaze_0_axi_periph/M03_ARESETN] [get_bd_pins microblaze_0_axi_periph/M05_ARESETN] [get_bd_pins microblaze_0_axi_periph/M09_ARESETN] [get_bd_pins microblaze_0_axi_periph/S00_ARESETN] [get_bd_pins rst_clk_wiz_1_100M/peripheral_aresetn]
+  connect_bd_net -net rst_clk_wiz_1_5M_peripheral_aresetn [get_bd_pins axi_fifo_mm_s_0/s_axi_aresetn] [get_bd_pins axi_fifo_mm_s_test/s_axi_aresetn] [get_bd_pins dut_controller_0/s_axi_aresetn] [get_bd_pins dut_controller_1/s_axi_aresetn] [get_bd_pins dutcomm_0/m_axis_aresetn] [get_bd_pins dutcomm_0/s_axi_aresetn] [get_bd_pins dutcomm_0/s_axis_aresetn] [get_bd_pins dutcomm_1/m_axis_aresetn] [get_bd_pins dutcomm_1/s_axi_aresetn] [get_bd_pins dutcomm_1/s_axis_aresetn] [get_bd_pins microblaze_0_axi_periph/M00_ARESETN] [get_bd_pins microblaze_0_axi_periph/M01_ARESETN] [get_bd_pins microblaze_0_axi_periph/M04_ARESETN] [get_bd_pins microblaze_0_axi_periph/M06_ARESETN] [get_bd_pins microblaze_0_axi_periph/M07_ARESETN] [get_bd_pins microblaze_0_axi_periph/M08_ARESETN] [get_bd_pins rst_clk_wiz_1_5M/peripheral_aresetn]
   connect_bd_net -net rx_1 [get_bd_ports RsRx] [get_bd_pins axi_uartlite_0/rx]
   connect_bd_net -net sys_clock_1 [get_bd_ports sys_clock] [get_bd_pins clk_wiz_0/clk_in1]
   connect_bd_net -net util_vector_logic_0_Res [get_bd_ports dut_clk] [get_bd_pins util_vector_logic_0/Res]
+  connect_bd_net -net util_vector_logic_1_Res [get_bd_pins FOBOS_DUT_0/clk] [get_bd_pins util_vector_logic_1/Res]
   connect_bd_net -net xlconstant_0_dout [get_bd_pins dutcomm_1/handshake_d2c] [get_bd_pins xlconstant_0/dout]
 
   # Create address segments
   create_bd_addr_seg -range 0x00010000 -offset 0x44A00000 [get_bd_addr_spaces microblaze_0/Data] [get_bd_addr_segs axi_fifo_mm_s_0/S_AXI/Mem0] SEG_axi_fifo_mm_s_0_Mem0
+  create_bd_addr_seg -range 0x00010000 -offset 0x44A40000 [get_bd_addr_spaces microblaze_0/Data] [get_bd_addr_segs axi_fifo_mm_s_test/S_AXI/Mem0] SEG_axi_fifo_mm_s_test_Mem0
   create_bd_addr_seg -range 0x00010000 -offset 0x41200000 [get_bd_addr_spaces microblaze_0/Data] [get_bd_addr_segs axi_intc_0/S_AXI/Reg] SEG_axi_intc_0_Reg
+  create_bd_addr_seg -range 0x00010000 -offset 0x41C00000 [get_bd_addr_spaces microblaze_0/Data] [get_bd_addr_segs axi_timer_0/S_AXI/Reg] SEG_axi_timer_0_Reg
   create_bd_addr_seg -range 0x00010000 -offset 0x40600000 [get_bd_addr_spaces microblaze_0/Data] [get_bd_addr_segs axi_uartlite_0/S_AXI/Reg] SEG_axi_uartlite_0_Reg
   create_bd_addr_seg -range 0x00010000 -offset 0x44A30000 [get_bd_addr_spaces microblaze_0/Data] [get_bd_addr_segs clk_wiz_1/s_axi_lite/Reg] SEG_clk_wiz_1_Reg
   create_bd_addr_seg -range 0x00020000 -offset 0x00000000 [get_bd_addr_spaces microblaze_0/Data] [get_bd_addr_segs microblaze_0_local_memory/dlmb_bram_if_cntlr/SLMB/Mem] SEG_dlmb_bram_if_cntlr_Mem
+  create_bd_addr_seg -range 0x00010000 -offset 0x44A60000 [get_bd_addr_spaces microblaze_0/Data] [get_bd_addr_segs dut_controller_0/S_AXI/S_AXI_reg] SEG_dut_controller_0_S_AXI_reg
   create_bd_addr_seg -range 0x00010000 -offset 0x44A20000 [get_bd_addr_spaces microblaze_0/Data] [get_bd_addr_segs dut_controller_1/S_AXI/S_AXI_reg] SEG_dut_controller_1_S_AXI_reg
+  create_bd_addr_seg -range 0x00010000 -offset 0x44A50000 [get_bd_addr_spaces microblaze_0/Data] [get_bd_addr_segs dutcomm_0/S_AXI/S_AXI_reg] SEG_dutcomm_0_S_AXI_reg
   create_bd_addr_seg -range 0x00010000 -offset 0x44A10000 [get_bd_addr_spaces microblaze_0/Data] [get_bd_addr_segs dutcomm_1/S_AXI/S_AXI_reg] SEG_dutcomm_1_S_AXI_reg
   create_bd_addr_seg -range 0x00020000 -offset 0x00000000 [get_bd_addr_spaces microblaze_0/Instruction] [get_bd_addr_segs microblaze_0_local_memory/ilmb_bram_if_cntlr/SLMB/Mem] SEG_ilmb_bram_if_cntlr_Mem
 
@@ -427,4 +506,6 @@ CONFIG.CONST_VAL {0} \
 
 create_root_design ""
 
+
+common::send_msg_id "BD_TCL-1000" "WARNING" "This Tcl script was generated from a block design that has not been validated. It is possible that design <$design_name> may result in errors during validation."
 

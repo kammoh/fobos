@@ -23,7 +23,6 @@ FOBOSWorkspace
 workspace
 temp
 _impact.cmd
-<<<<<<< HEAD
 *.jou
 *.str
 sources/pynq_controller/vivado/pynq_controller/
@@ -37,4 +36,4 @@ sources/pynq_controller/vivado/build_proj_modified.tcl
 sources/pynq_controller/vivado/pynq_controller/
 sources/soc_dut/vivado/soc_dut/
 build_proj_modified.tcl
-
+capture/ctrl/basys3ctrl/vivado/basys3ctrl

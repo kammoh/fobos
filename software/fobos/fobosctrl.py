@@ -9,7 +9,7 @@ class FOBOSCtrl:
 
     ##General Constants
    ACK_LEN = 4    ##acknowledgement length in bytes
-   PARAM_LEN = 2  ##config prarameter length in bytes
+   PARAM_LEN = 4  ##config prarameter length in bytes
    ###config parameters numbers. Each number can serve as register number 
    ##or array index. These parameters must be sent to the hardware board.
    OUT_LEN     = 0
@@ -21,9 +21,15 @@ class FOBOSCtrl:
    RELEASE_RST = 6
    TIMEOUT     = 7
    SET_DUT_CLK = 8
+   SET_TEST_MODE = 9
    #Trigger parameters
    TRG_NORM   =    0                                                            
    TRG_FULL      = 1
    TRG_NORM_CLK  = 2  
    TRG_FULL_CLK  = 3
+   #test mode parameters
+   ENABLED =     1
+   DISABLED =    0
+
+
 

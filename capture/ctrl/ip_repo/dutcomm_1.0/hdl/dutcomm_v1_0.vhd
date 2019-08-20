@@ -33,6 +33,8 @@ entity dutcomm_v1_0 is
         op_done         : out std_logic; --tell others that operation (i.e. encryption) is done.
         dut_working     : out std_logic;
         started         : out std_logic;
+        wait_for_rst    : in std_logic;
+        rst_cmd         : in std_logic;
         --shared half duplex interface
         handshake_c2d : out std_logic; 
         handshake_d2c  : in std_logic;
@@ -192,7 +194,9 @@ begin
                 shared_handshake_out => handshake_c2d,
                 shared_handshake_in  => handshake_d2c,
                 dbus => dio,
-                direction_out => io
+                direction_out => io,
+                wait_for_rst => wait_for_rst,
+                rst_cmd => rst_cmd
             );	
     
 	-- User logic ends

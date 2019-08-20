@@ -47,20 +47,23 @@ entity dutCommCtrl is
         op_done         : out std_logic;
         dut_working     : out std_logic;
         started         : out std_logic;
-        expected_out_len : in std_logic_vector(31 downto 0) 
+        expected_out_len : in std_logic_vector(31 downto 0);
+        wait_for_rst    : in std_logic;
+        rst_cmd : in std_logic
         ---     
     );
 end dutCommCtrl;
 
 architecture Behav of dutCommCtrl is
 
-type STATE is (S_IDLE, S_WAIT_TXVALID, S_WAIT_READY, S_SND, S_WAIT_VALID, S_RCV, S_DONE );
+type STATE is (S_IDLE, S_WAIT_TXVALID, S_WAIT_READY, S_SND, S_WAIT_RST, S_WAIT_VALID, S_RCV, S_DONE );
 signal current_state,next_state:state;
 --status codes
 constant IDLE       : std_logic_vector(7 downto 0) := x"01";
 constant C_TX_VALID   : std_logic_vector(7 downto 0) := x"02";
 constant WAIT_READY : std_logic_vector(7 downto 0) := x"05";
 constant SND        : std_logic_vector(7 downto 0) := x"0a";
+constant WAIT_RST   : std_logic_vector(7 downto 0) := x"0c";
 constant WAIT_VALID : std_logic_vector(7 downto 0) := x"0f";
 constant RCV        : std_logic_vector(7 downto 0) := x"15";
 constant DONE       : std_logic_vector(7 downto 0) := x"1a";
@@ -150,6 +153,21 @@ case current_state is
             --this is becaus di_ready is set to zero half-cycle early.
             --drain the fifo
             tx_ready <= '1'; 
+            next_state <= S_WAIT_RST;
+        end if;
+        
+    when S_WAIT_RST =>
+        --no output will be returned in this case. we wait unitl dut_rst. this 
+        --should not reset this ip or it will forget all settings
+        status <= WAIT_RST;
+        dut_working <= '1';
+        if wait_for_rst = '1' then
+            if rst_cmd ='1' then
+                next_state <= S_DONE;
+            else
+                next_state <= S_WAIT_RST;
+            end if;
+        else
             next_state <= S_WAIT_VALID;
         end if;
     

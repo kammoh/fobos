@@ -50,7 +50,10 @@ entity dutcomm_wrapper is
        shared_handshake_out : out std_logic; 
        shared_handshake_in  : in std_logic;
        dbus : inout STD_LOGIC_VECTOR (3 downto 0);
-       direction_out : out std_logic);
+       direction_out : out std_logic;
+       wait_for_rst : in std_logic;
+       rst_cmd : in std_logic
+       );
        
 end dutcomm_wrapper;
 
@@ -99,7 +102,9 @@ begin
             op_done => op_done,
             dut_working => dut_working,
             started     => started,
-            expected_out_len => expected_out_len
+            expected_out_len => expected_out_len,
+            wait_for_rst => wait_for_rst,
+            rst_cmd => rst_cmd
         );
     hd_int: entity work.half_duplex_interface(behav)
         generic map(

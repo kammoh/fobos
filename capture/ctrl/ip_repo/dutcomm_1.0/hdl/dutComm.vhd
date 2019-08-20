@@ -44,7 +44,9 @@ entity dutComm is
         op_done     : out std_logic; --tell others that operation (i.e. encryption) is done.
         dut_working : out std_logic;
         started     : out std_logic;
-        expected_out_len : in std_logic_vector(31 downto 0) 
+        expected_out_len : in std_logic_vector(31 downto 0);
+        wait_for_rst  : in std_logic;
+        rst_cmd     : in std_logic
 
         
      );
@@ -142,7 +144,9 @@ ctrl: entity work.dutCommCtrl(behav)
         op_done => op_done,
         dut_working => dut_working,
         started => started,
-        expected_out_len => expected_out_len
+        expected_out_len => expected_out_len,
+        wait_for_rst => wait_for_rst,
+        rst_cmd => rst_cmd
         ---     
     );
      
