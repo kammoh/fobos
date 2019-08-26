@@ -12,7 +12,7 @@ DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
 DUT_BIT_FILE = "FOBOS_DUT.bit"
-TRACE_NUM = 4
+TRACE_NUM = 1000
 OUT_LEN = 16
 TIMEOUT = 64000
 TRIG_WAIT = 1
@@ -129,7 +129,7 @@ t1 = time.time()
 string = ''
 j = 0
 while j < TRACE_NUM:
-   raw_input()
+   #raw_input()
    tc1 = time.time()
    # scope.arm()
    tc2 = time.time()

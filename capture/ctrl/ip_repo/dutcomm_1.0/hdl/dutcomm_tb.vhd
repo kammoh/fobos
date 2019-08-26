@@ -48,6 +48,8 @@ signal op_done     : std_logic; --tell others that operation (i.e. encryption) i
 signal dut_working : std_logic;
 signal started     : std_logic;
 signal expected_out_len : std_logic_vector(31 downto 0);
+signal wait_for_rst : std_logic := '0';
+signal rst_cmd      : std_logic := '0';
 ------FIFO
 signal fifo_dout_valid, fifo_dout_ready, fifo_din_valid, fifo_din_ready: std_logic;
 signal fifo_din, fifo_dout : std_logic_vector(31 downto 0);
@@ -73,13 +75,15 @@ begin
             do_valid => do_valid,
             do_ready => do_ready,
             dut_rst => dut_rst,
-            start => start,
+            --start => start,
             status => status,
             snd_start => snd_start,
             op_done => op_done,
             dut_working => dut_working,
             started     => started,
-            expected_out_len => expected_out_len
+            expected_out_len => expected_out_len,
+            wait_for_rst => wait_for_rst,
+            rst_cmd => rst_cmd
         );
         
 dut: entity work.FOBOS_DUT(structural)
