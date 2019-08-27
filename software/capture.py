@@ -6,14 +6,14 @@ import numpy
 import fobos
 #import fobos.picoscope
 #Constants################################################################################################
-WORKSPACE = "/home/bakry/fobosworkspace"
-PROJECT_NAME ="aes"
+WORKSPACE = "/nhome/aabdulga/fobosworkspace"
+PROJECT_NAME ="test"
 DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
 DUT_BIT_FILE = "FOBOS_DUT.bit"
 TRACE_NUM = 1000
-OUT_LEN = 16
+OUT_LEN = 7
 TIMEOUT = 64000
 TRIG_WAIT = 1
 TRIG_LENGTH = 1

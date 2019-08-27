@@ -71,6 +71,7 @@ constant DONE       : std_logic_vector(7 downto 0) := x"1a";
 signal tlast_cnt : unsigned(31 downto 0);
 signal clr_tlast_cnt, en_tlast_cnt, last_word : std_logic;
 signal s_rx_valid : std_logic;
+signal s_do_ready : std_logic;
 
 begin
 
@@ -91,7 +92,7 @@ begin
 direction       <= '0';
 di_valid        <= '0';
 tx_ready        <= '0';
-do_ready        <= '0';
+s_do_ready        <= '0';
 s_rx_valid      <= '0';
 --rx_last         <= '0';
 op_done         <= '0';
@@ -174,7 +175,7 @@ case current_state is
     when S_WAIT_VALID =>
         direction <= '1'; --get data from dut
         status <= WAIT_VALID;
-        do_ready <= '1';
+        s_do_ready <= '1';
         if do_valid = '1' then
             next_state <= S_RCV;
             dout_cnt_en <= '1';
@@ -188,10 +189,10 @@ case current_state is
         direction <= '1';
         status <= RCV;
         if rx_ready = '1' then
-            do_ready <= '1';
+            s_do_ready <= '1';
         end if;
         if do_valid = '1' then 
-            if dout_cnt_last = '1' then
+            if dout_cnt_last = '1' or last_word = '1' then
                 s_rx_valid <= '1';
                 if rx_ready = '1' then
                     dout_cnt_clr <= '1';
@@ -223,11 +224,11 @@ end case;
 
 end process;
 
- 
+do_ready <= s_do_ready;
 rx_valid <= s_rx_valid;
 
 ---tlast logic
-en_tlast_cnt <= '1' when rx_ready = '1' and s_rx_valid = '1' else '0';
+en_tlast_cnt <= '1' when s_do_ready = '1' and do_valid = '1' else '0';
 last_word <= '1' when tlast_cnt >= unsigned(expected_out_len) - 1  else '0';
 rx_last <= '1' when last_word = '1' and s_rx_valid = '1' else '0';
 

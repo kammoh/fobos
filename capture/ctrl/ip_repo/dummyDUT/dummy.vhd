@@ -32,7 +32,7 @@ use ieee.std_logic_unsigned.all;
 entity dummy is
     Generic(
 	       N : integer := 8;
-	       NUMWORDS : integer := 16
+	       NUMWORDS : integer := 6
 	);
     Port ( clk : in  STD_LOGIC;
            rst : in  STD_LOGIC;
@@ -109,7 +109,8 @@ case current_state is
 end case; 
 
 END process;
-do_data <= pdi_data xor sdi_data;
+--do_data <= pdi_data xor sdi_data;
+do_data <= pdi_data;
 
 count: process(clk)
 begin
@@ -121,7 +122,7 @@ next_cnt <= (others => '0')  when cnt_clr = '1' else
                 cnt + 1      when cnt_en  = '1' else
                 cnt;
                 
-cnt_done <= '1' when (cnt = x"10") else '0';
+cnt_done <= '1' when (cnt = NUMWORDS) else '0';
                 
 end behav;
 

@@ -145,7 +145,7 @@ victim: entity work.dummy(behav)
 
     generic map  (
         N          =>  8,
-        NUMWORDS         => 16
+        NUMWORDS         => 7
     )
 
 port map(

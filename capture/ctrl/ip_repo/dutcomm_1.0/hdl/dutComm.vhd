@@ -63,6 +63,8 @@ signal dout_cnt_clr,dout_cnt_en: std_logic;
 signal dout_cnt_last          : std_logic;
 signal sipo_reg : std_logic_vector(27 downto 0);
 signal sipo_en : std_logic;
+signal sel_rx_data : std_logic_vector(2 downto 0);
+
 
 begin
 ---din_mux
@@ -112,7 +114,20 @@ next_dout_cnt <= (others => '0')  when dout_cnt_clr = '1' else
                 dout_cnt;
 
 dout_cnt_last <= '1' when dout_cnt = "111" else '0';
-rx_data <= sipo_reg & dout;
+
+--rx_data <= sipo_reg & dout;
+--need to shift data if not a complete 32-bit word
+
+sel_rx_data <= dout_cnt + 1;
+with sel_rx_data(2 downto 1) select rx_data <=
+    sipo_reg & dout                        when   "00",
+    sipo_reg(19 downto 0) & dout & x"00"   when   "11",
+    sipo_reg(11 downto 0) & dout & x"0000" when "10",
+    sipo_reg(3 downto 0) & dout & x"000000" when "01",
+    x"00000000" when others;
+    
+    
+    
 
 -------------------------------------------------------------
 ---controller

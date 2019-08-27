@@ -57,6 +57,7 @@
 /*DUTCOMM Register offsets*************************************************************/
 #define COMM_STATUS_REG_OFFSET     	0x00
 #define INT_TYPE_REG_OFFSET       	0x08
+#define OUT_LEN_REG_OFFSET          0x0C
 /*Constants********************************************************************/
 #define CONFIG_ARR_SIZE            	32
 #define INPUT_BUFF_SIZE            	8192
@@ -121,6 +122,7 @@ void delay(long loops);
 u32 writeClk0Div(int divInt, int divFrac);
 
 /*Command service***************************************************************/
+void setOutLen(int value);
 void forceReset();
 void releaseReset();
 void setTimeToReset(u32 cycles);
@@ -441,8 +443,15 @@ int TxSend(XLlFifo *InstancePtr, u32  *SourceAddr, u32 dataSize)
    int j;
    u32 sendData;
    u32 tmp;
+   int numWords;
+   if (dataSize % 4 != 0){
+	   numWords = dataSize / 4 + 1;
+   }else{
+	   numWords = dataSize;
+   }
 
-   for (j=0 ; j < (int)dataSize / 4  ; j++){
+   //for (j=0 ; j < (int)dataSize / 4  ; j++){
+   for (j=0 ; j < numWords  ; j++){
       if( XLlFifo_iTxVacancy(InstancePtr) ){
          sendData = *(SourceAddr +j);
          //Fix endianess
@@ -520,6 +529,9 @@ void DUTCTRL_write(u32 offset, u32 value){
 	}
 }
 /******************************************************************************/
+void setOutLen(int value){
+       DUTCOMM_write(OUT_LEN_REG_OFFSET, 2 * value);//need data length in 4-bit words
+}
 //Reset module
 void forceReset(){
     DUTCTRL_write(FRC_RST_REG_OFFSET, 1);
@@ -567,7 +579,8 @@ int applyConfig(int confNum, u32 value){
    //write configuration to hardware registers if needed
    switch(confNum){
       case OUT_LEN:
-            //no need to do anything else
+            setOutLen(value);
+
             break;
       case TRG_WAIT:
             setTriggerWait(value);

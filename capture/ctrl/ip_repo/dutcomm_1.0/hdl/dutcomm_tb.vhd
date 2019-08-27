@@ -88,8 +88,8 @@ begin
         
 dut: entity work.FOBOS_DUT(structural)
         generic map(       
-            W => 128,
-            SW => 128                                    
+            W => 8,
+            SW => 8                                    
         )
         port map(
             clk => clk,
@@ -140,52 +140,110 @@ begin
     rst <= '0';
     fifo_din_valid <= '0';
     ----
-    expected_out_len <=   x"00000004"; --4 words--16 bytes
+    expected_out_len <=   x"0000000e"; --14 4-bit words--7 bytes
     
-    ---Fill fifo
-    wait for 4*clk_period;
-    fifo_din <= x"00c00010";
-    fifo_din_valid <= '1';
-    wait for clk_period;
-    fifo_din <= x"e2c62052";
-    fifo_din_valid <= '1';
-    wait for clk_period;
-    fifo_din <= x"78f788dc";
-    fifo_din_valid <= '1';
-    wait for clk_period;
-    fifo_din <= x"74693892";
-    fifo_din_valid <= '1';
-    wait for clk_period;
-    fifo_din <= x"6f315df5";
-    fifo_din_valid <= '1';
-    wait for clk_period;
-    fifo_din <= x"00c10010";
-    fifo_din_valid <= '1';
-    wait for clk_period;
-    fifo_din <= x"01234567";
-    fifo_din_valid <= '1';
-    wait for clk_period;
-    fifo_din <= x"89abcdef";
-    fifo_din_valid <= '1';
-    wait for clk_period;
-    fifo_din <= x"00112233";
-    fifo_din_valid <= '1';
-    wait for clk_period;
-    fifo_din <= x"44556677";
-    fifo_din_valid <= '1';
-    wait for clk_period;
-    fifo_din <= x"00810010";
-    fifo_din_valid <= '1';
-    wait for clk_period;
-    fifo_din <= x"00800001";
-    fifo_din_valid <= '1';
-    wait for clk_period;
+--    ---Fill fifo
+--    wait for 4*clk_period;
+--    fifo_din <= x"00c00010";
+--    fifo_din_valid <= '1';
+--    wait for clk_period;
+--    fifo_din <= x"e2c62052";
+--    fifo_din_valid <= '1';
+--    wait for clk_period;
+--    fifo_din <= x"78f788dc";
+--    fifo_din_valid <= '1';
+--    wait for clk_period;
+--    fifo_din <= x"74693892";
+--    fifo_din_valid <= '1';
+--    wait for clk_period;
+--    fifo_din <= x"6f315df5";
+--    fifo_din_valid <= '1';
+--    wait for clk_period;
+--    fifo_din <= x"00c10010";
+--    fifo_din_valid <= '1';
+--    wait for clk_period;
+--    fifo_din <= x"01234567";
+--    fifo_din_valid <= '1';
+--    wait for clk_period;
+--    fifo_din <= x"89abcdef";
+--    fifo_din_valid <= '1';
+--    wait for clk_period;
+--    fifo_din <= x"00112233";
+--    fifo_din_valid <= '1';
+--    wait for clk_period;
+--    fifo_din <= x"44556677";
+--    fifo_din_valid <= '1';
+--    wait for clk_period;
+--    fifo_din <= x"00810010";
+--    fifo_din_valid <= '1';
+--    wait for clk_period;
 --    fifo_din <= x"00800001";
 --    fifo_din_valid <= '1';
 --    wait for clk_period;
-    fifo_din_valid <= '0';
-    ---end fill fifo
+----    fifo_din <= x"00800001";
+----    fifo_din_valid <= '1';
+----    wait for clk_period;
+--    fifo_din_valid <= '0';
+--    ---end fill fifo
     
+    
+--    ---00c00003bc73c700c10003e2867d0081001000800001
+--    ----
+--    ---Fill fifo
+--        wait for 4*clk_period;
+--        fifo_din <= x"00c00003";
+--        fifo_din_valid <= '1';
+--        wait for clk_period;
+--        fifo_din <= x"bc73c700";
+--        fifo_din_valid <= '1';
+--        wait for clk_period;
+--        fifo_din <= x"c10003e2";
+--        fifo_din_valid <= '1';
+--        wait for clk_period;
+--        fifo_din <= x"867d0081";
+--        fifo_din_valid <= '1';
+--        wait for clk_period;
+--        fifo_din <= x"00030080";
+--        fifo_din_valid <= '1';
+--        wait for clk_period;
+--        fifo_din <= x"00010000";
+--        fifo_din_valid <= '1';
+--        wait for clk_period;
+--        fifo_din_valid <= '0';
+        
+        
+-- wait for 4*clk_period;
+               
+               
+               fifo_din <= x"00c00007";
+               fifo_din_valid <= '1';
+               wait for clk_period;
+               fifo_din <= x"00112233";
+               fifo_din_valid <= '1';
+               wait for clk_period;
+               fifo_din <= x"44556600";
+               fifo_din_valid <= '1';
+               wait for clk_period;
+               fifo_din <= x"c10007e2";
+               fifo_din_valid <= '1';
+               wait for clk_period;
+               fifo_din <= x"1e2099f7";
+               fifo_din_valid <= '1';
+               wait for clk_period;
+               fifo_din <= x"48000081";
+               fifo_din_valid <= '1';
+               wait for clk_period;
+               fifo_din <= x"00070080";
+               fifo_din_valid <= '1';
+               wait for clk_period;
+               fifo_din <= x"00010000";
+               fifo_din_valid <= '1';
+               wait for clk_period;
+
+               fifo_din_valid <= '0';     
+  
+  
+  --00c000079efaacdbcb9f5800c10007e21e2099f748000081000700800001  
     wait for 4 * clk_period;
     ---start sending data
     enable_fifo_out <= '1';
