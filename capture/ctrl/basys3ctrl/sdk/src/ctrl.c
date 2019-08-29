@@ -26,89 +26,87 @@
 #include "xtmrctr.h"
 #include "dutcomm.h"
 #include "dut_controller.h"
+#include "seven_seg.h"
 /*Hardware constants***********************************************************/
-#define DUTCOMM_BASE				XPAR_DUTCOMM_1_S_AXI_BASEADDR
-#define FIFO_DEV_ID					XPAR_AXI_FIFO_0_DEVICE_ID
-#define DUT_CTRL_BASE            	XPAR_DUT_CONTROLLER_1_S_AXI_BASEADDR
-#define UARTLITE_DEVICE_ID         	XPAR_UARTLITE_0_DEVICE_ID
-#define INTC_DEVICE_ID            	XPAR_INTC_0_DEVICE_ID
-#define UARTLITE_INT_IRQ_ID      	XPAR_INTC_0_UARTLITE_0_VEC_ID
-#define DUT_CLKWIZ_BASE				XPAR_CLK_WIZ_1_BASEADDR
-#define TMRCTR_DEVICE_ID	XPAR_TMRCTR_0_DEVICE_ID
-
+#define DUTCOMM_BASE        XPAR_DUTCOMM_1_S_AXI_BASEADDR
+#define FIFO_DEV_ID              XPAR_AXI_FIFO_0_DEVICE_ID
+#define DUT_CTRL_BASE            XPAR_DUT_CONTROLLER_1_S_AXI_BASEADDR
+#define UARTLITE_DEVICE_ID       XPAR_UARTLITE_0_DEVICE_ID
+#define INTC_DEVICE_ID           XPAR_INTC_0_DEVICE_ID
+#define UARTLITE_INT_IRQ_ID      XPAR_INTC_0_UARTLITE_0_VEC_ID
+#define DUT_CLKWIZ_BASE          XPAR_CLK_WIZ_1_BASEADDR
+#define TMRCTR_DEVICE_ID         XPAR_TMRCTR_0_DEVICE_ID
 //test hardware
-#define TEST_DUTCOMM_BASE			XPAR_DUTCOMM_0_S_AXI_BASEADDR
-#define TEST_DUT_CTRL_BASE		    XPAR_DUT_CONTROLLER_0_S_AXI_BASEADDR
-#define TEST_FIFO_BASE				XPAR_AXI_FIFO_MM_S_TEST_BASEADDR
-#define TEST_FIFO_DEV_ID			XPAR_AXI_FIFO_MM_S_TEST_DEVICE_ID
+#define TEST_DUTCOMM_BASE        XPAR_DUTCOMM_0_S_AXI_BASEADDR
+#define TEST_DUT_CTRL_BASE       XPAR_DUT_CONTROLLER_0_S_AXI_BASEADDR
+#define TEST_FIFO_BASE           XPAR_AXI_FIFO_MM_S_TEST_BASEADDR
+#define TEST_FIFO_DEV_ID         XPAR_AXI_FIFO_MM_S_TEST_DEVICE_ID
 /*DUT_controller Register offsets*************************************************************/
 //Trigger module
-#define TRG_LEN_REG_OFFSET        	0x00
-#define TRG_WAIT_REG_OFFSET       	0x04
-#define TRG_MODE_REG_OFFSET       	0x08
+#define TRG_LEN_REG_OFFSET       0x00
+#define TRG_WAIT_REG_OFFSET      0x04
+#define TRG_MODE_REG_OFFSET      0x08
 //Reset module
-#define FRC_RST_REG_OFFSET          0x1C
-#define TIME2RST_REG_OFFSET       	0x18
+#define FRC_RST_REG_OFFSET       0x1C
+#define TIME2RST_REG_OFFSET      0x18
 //Timeout module
-#define TIMOUT_REG_OFFSET         	0x0C
-#define CTRL_STATUS_REG_OFFSET      0x14
+#define TIMOUT_REG_OFFSET        0x0C
+#define CTRL_STATUS_REG_OFFSET   0x14
 /*DUT_CTRL status codes******************************************************************/
-#define CTRL_TIMEOUT               	4
+#define CTRL_TIMEOUT             4
 /*DUTCOMM Register offsets*************************************************************/
-#define COMM_STATUS_REG_OFFSET     	0x00
-#define INT_TYPE_REG_OFFSET       	0x08
-#define OUT_LEN_REG_OFFSET          0x0C
+#define COMM_STATUS_REG_OFFSET   0x00
+#define INT_TYPE_REG_OFFSET      0x08
+#define OUT_LEN_REG_OFFSET       0x0C
 /*Constants********************************************************************/
-#define CONFIG_ARR_SIZE            	32
-#define INPUT_BUFF_SIZE            	8192
-#define OUTPUT_BUFF_SIZE        	4096
-#define WORD_SIZE               	4         	// Size of words in bytes
-#define STATUS_LEN                 	4         	//Acknowledgment length in bytes
-#define HEADER_SIZE                	4         	//command field size in bytes
-#define PARAM_LEN               	4   		//config parameter length in bytes
+#define CONFIG_ARR_SIZE          32
+#define INPUT_BUFF_SIZE          8192
+#define OUTPUT_BUFF_SIZE         4096
+#define WORD_SIZE                4         // Size of words in bytes
+#define STATUS_LEN               4         //Acknowledgment length in bytes
+#define HEADER_SIZE              4         //command field size in bytes
+#define PARAM_LEN                4         //config parameter length in bytes
 /******************************************************************************/
-#define ENABLED						1
-#define DISABLED					0
-#define S_OK                  		0
-#define S_ERROR                  	1
-#define S_TIMEOUT               	2
+#define ENABLED                  1
+#define DISABLED                 0
+#define S_OK                     0  
+#define S_ERROR                  1
+#define S_TIMEOUT                2
 /*PC-to-Ctrl protocol commands*************************************************/
-#define PROC_DATA                  	0xF001   //process data command
-#define RD_CONFIG                  	0xF002   //read configuration command
-#define WR_CONFIG                  	0xF003   //write configuration  command
+#define PROC_DATA                0xF001   //process data command
+#define RD_CONFIG                0xF002   //read configuration command
+#define WR_CONFIG                0xF003   //write configuration  command
 /*Configuration commands*******************************************************/
 //config command numbers. Each number encodes an action to be done by the controller
 //command parameter may be stored in a register or array index.
-#define OUT_LEN                    	0
+#define OUT_LEN                  0
 //trigger module
-#define TRG_WAIT                   	1
-#define TRG_LEN                    	2
-#define TRG_MODE                   	3
+#define TRG_WAIT                 1
+#define TRG_LEN                  2
+#define TRG_MODE                 3
 //reset module
-#define TIME_TO_RST                	4
-#define FORCE_RST                  	5
-#define RELEASE_RST                	6
+#define TIME_TO_RST              4
+#define FORCE_RST                5
+#define RELEASE_RST              6
 //timeout module
-#define TIMEOUT                     7
-#define SET_DUT_CLK					8
-#define SET_TEST_MODE				9
+#define TIMEOUT                  7
+#define SET_DUT_CLK              8
+#define SET_TEST_MODE            9
 /*DUT COMM Status codes********************************************************/
 #define DONE                     0x1a
 /******************************************************************************/
 #define CLKWIZ_mWriteReg(BaseAddress, RegOffset, Data) \
-  	Xil_Out32((BaseAddress) + (RegOffset), (u32)(Data))
+   Xil_Out32((BaseAddress) + (RegOffset), (u32)(Data))
 
 #define CLKWIZ_mReadReg(BaseAddress, RegOffset) \
-    Xil_In32((BaseAddress) + (RegOffset))
+   Xil_In32((BaseAddress) + (RegOffset))
 /**************************************************************************/
-u32 okStatus      = S_OK;
-u32 errorStatus    = S_ERROR;
+u32 okStatus = S_OK;
+u32 errorStatus = S_ERROR;
 u32 timeoutStatus = S_TIMEOUT;
 int testMode = ENABLED;
 //configuration parameters
 u32 config[CONFIG_ARR_SIZE];
-
-
 
 int run();
 int SetupInterruptSystem(XUartLite *UartLitePtr);
@@ -159,7 +157,6 @@ int main(void)
    //default timeout 5 sec
    config[TIMEOUT] = 5 * 100000000; //100MHz clk for the timer
 
-
    u16 DeviceId = UARTLITE_DEVICE_ID;
    Status = XUartLite_Initialize(&UartLite, DeviceId);
    if (Status != XST_SUCCESS) {
@@ -184,8 +181,11 @@ int main(void)
    XTmrCtr *TmrCtrInstancePtr = &TimerCounter;
    Status = XTmrCtr_Initialize(TmrCtrInstancePtr, DeviceId);
    if (Status != XST_SUCCESS) {
-   		return XST_FAILURE;
+   return XST_FAILURE;
    }
+
+   //logo: CERG
+   write7Seg(D_C, D_E, D_R, D_G);
    Status = run();
    if (Status != XST_SUCCESS) {
       xil_printf("Ctrl software failed\r\n");
@@ -223,8 +223,7 @@ int initFifos(XLlFifo *InstancePtr, u16 DeviceId)
    XLlFifo_IntClear(InstancePtr,0xffffffff);
    Status = XLlFifo_Status(InstancePtr);
    if(Status != 0x0) {
-      xil_printf("\n ERROR : Reset value of ISR0 : 0x%x\t Expected : 0x0\n\r",
-            XLlFifo_Status(InstancePtr));
+      xil_printf("Error wrong reset value.\n");
       return XST_FAILURE;
    }
    return Status;
@@ -253,86 +252,82 @@ int run()
       XUartLite_Recv(&UartLite, headerBuffer, HEADER_SIZE);
       //wait until header is received
       while ((TotalReceivedCount != HEADER_SIZE));
-         TotalReceivedCount = 0;
-         cmd = headerBuffer[0] * 256 + headerBuffer[1];
-         bytesToRec = headerBuffer[2] * 256 + headerBuffer[3];
-         //get the data
-         XUartLite_Recv(&UartLite, ReceiveBuffer, bytesToRec);
-         while ((TotalReceivedCount != bytesToRec));
+      TotalReceivedCount = 0;
+      cmd = headerBuffer[0] * 256 + headerBuffer[1];
+      bytesToRec = headerBuffer[2] * 256 + headerBuffer[3];
+      //get the data
+      XUartLite_Recv(&UartLite, ReceiveBuffer, bytesToRec);
+      while ((TotalReceivedCount != bytesToRec));
 
-         //process depending on data type
-         switch(cmd){
-            case WR_CONFIG:
-               confNum =  ReceiveBuffer[0] * 256 + ReceiveBuffer[1];
-               value =  ReceiveBuffer[2] * 256 * 256 *256 + ReceiveBuffer[3] *
-            		    256 *256 +
-						ReceiveBuffer[4] * 256 + ReceiveBuffer[5];
-               Status = applyConfig(confNum, value);
-               //send ack back
-               TotalSentCount = 0;
+      //process depending on data type
+      switch(cmd){
+         case WR_CONFIG:
+            confNum =  ReceiveBuffer[0] * 256 + ReceiveBuffer[1];
+            value =  ReceiveBuffer[2] * 256 * 256 *256 + ReceiveBuffer[3] *
+                     256 *256 + ReceiveBuffer[4] * 256 + ReceiveBuffer[5];
+            Status = applyConfig(confNum, value);
+            //send ack back
+            TotalSentCount = 0;
+            //send status
+            if(Status == S_OK){
+               XUartLite_Send(&UartLite, &okStatus, STATUS_LEN);
+            }else{
+               XUartLite_Send(&UartLite, &errorStatus, STATUS_LEN);
+            }
+            while (TotalSentCount != STATUS_LEN);
+            TotalSentCount = 0;
+            break;
+
+         case RD_CONFIG:
+            confNum =  ReceiveBuffer[0] * 256 + ReceiveBuffer[1];
+            if(confNum > CONFIG_ARR_SIZE - 1){
+               XUartLite_Send(&UartLite, &errorStatus, STATUS_LEN);
+               break;
+            }else{
+                  XUartLite_Send(&UartLite, &okStatus, STATUS_LEN);
+            }
+            while (TotalSentCount != STATUS_LEN);
+            TotalSentCount = 0;
+            value = config[confNum];
+            SendBuffer[0] = (value & 0xff000000) >> 24;
+            SendBuffer[1] = (value & 0x00ff0000) >> 16;
+            SendBuffer[2] = (value & 0x0000ff00) >> 8;
+            SendBuffer[3] = (value & 0xff0000ff);
+            //SendBuffer[1] = value % 256;
+            //SendBuffer[0] = value / 256;
+            //send it back
+            TotalSentCount = 0;
+            XUartLite_Send(&UartLite, SendBuffer, PARAM_LEN);
+            while (TotalSentCount != PARAM_LEN);
+            TotalSentCount = 0;
+            break;
+
+         case PROC_DATA:
+            testVectorSize = bytesToRec;
+            Status = processData(testVectorSize);
+            //xil_printf("Data size %d \n", testVectorSize);
+            if (Status == S_OK){
                //send status
-               if(Status == S_OK){
-                  XUartLite_Send(&UartLite, &okStatus, STATUS_LEN);
-               }else{
-                  XUartLite_Send(&UartLite, &errorStatus, STATUS_LEN);
-               }
+               XUartLite_Send(&UartLite, &okStatus, STATUS_LEN);
                while (TotalSentCount != STATUS_LEN);
                TotalSentCount = 0;
-               break;
-
-            case RD_CONFIG:
-               confNum =  ReceiveBuffer[0] * 256 + ReceiveBuffer[1];
-               if(confNum > CONFIG_ARR_SIZE - 1){
-                  XUartLite_Send(&UartLite, &errorStatus, STATUS_LEN);
-                  break;
-               }else{
-                  XUartLite_Send(&UartLite, &okStatus, STATUS_LEN);
-               }
-               while (TotalSentCount != STATUS_LEN);
-               TotalSentCount = 0;
-               value = config[confNum];
-               SendBuffer[0] = (value & 0xff000000) >> 24;
-               SendBuffer[1] = (value & 0x00ff0000) >> 16;
-               SendBuffer[2] = (value & 0x0000ff00) >> 8;
-               SendBuffer[3] = (value & 0xff0000ff);
-               //SendBuffer[1] = value % 256;
-               //SendBuffer[0] = value / 256;
-               //send it back
-               TotalSentCount = 0;
-               XUartLite_Send(&UartLite, SendBuffer, PARAM_LEN);
-               while (TotalSentCount != PARAM_LEN);
-               TotalSentCount = 0;
-               break;
-
-            case PROC_DATA:
-               testVectorSize = bytesToRec;
-               Status = processData(testVectorSize);
-               //xil_printf("Data size %d \n", testVectorSize);
-               if (Status == S_OK){
-                  //send status
-
-            	  XUartLite_Send(&UartLite, &okStatus, STATUS_LEN);
-            	  while (TotalSentCount != STATUS_LEN);
-
-
-            	  TotalSentCount = 0;
-                  //send response
-            	  if(config[TIME_TO_RST] == 0){
-					  XUartLite_Send(&UartLite, SendBuffer, config[OUT_LEN]);
-					  while (TotalSentCount != config[OUT_LEN]);
-					  TotalSentCount = 0;
-            	  }
-               }else if(Status == S_TIMEOUT){
-                  XUartLite_Send(&UartLite, &timeoutStatus, STATUS_LEN);
-                  while (TotalSentCount != STATUS_LEN);
+               //send response
+               if(config[TIME_TO_RST] == 0){
+                  XUartLite_Send(&UartLite, SendBuffer, config[OUT_LEN]);
+                  while (TotalSentCount != config[OUT_LEN]);
                   TotalSentCount = 0;
                }
-               break;
+            }else if(Status == S_TIMEOUT){
+               XUartLite_Send(&UartLite, &timeoutStatus, STATUS_LEN);
+               while (TotalSentCount != STATUS_LEN);
+               TotalSentCount = 0;
+            }
+            break;
 
-            default:
-               break;
-         }
-      }
+         default:
+            break;
+      }//case
+   }//while
    return XST_SUCCESS;
 }
 /******************************************************************************/
@@ -349,9 +344,9 @@ int processData(u32 testVectorSize){
    }
    t0 = XTmrCtr_GetValue(&TimerCounter, 0);
    if(testMode == ENABLED){
-	   Status = TxSend(&TestFifoInstance, ReceiveBuffer,testVectorSize);
+   Status = TxSend(&TestFifoInstance, ReceiveBuffer,testVectorSize);
    }else{
-	   Status = TxSend(&FifoInstance, ReceiveBuffer,testVectorSize);
+   Status = TxSend(&FifoInstance, ReceiveBuffer,testVectorSize);
    }
    //xil_printf("Data sent!!\n");
    if (Status != S_OK){
@@ -365,9 +360,9 @@ int processData(u32 testVectorSize){
    while(!resultReady()){
       //check if timeout
       //reset all
-	  t = XTmrCtr_GetValue(&TimerCounter, 0);
+      t = XTmrCtr_GetValue(&TimerCounter, 0);
       //if (DUT_CONTROLLER_mReadReg(DUT_CTRL_BASE, CTRL_STATUS_REG_OFFSET) == CTRL_TIMEOUT){
-	  if(t > config[TIMEOUT]){
+      if(t > config[TIMEOUT]){
          //resetAll();
          forceReset();
          //reset fifo
@@ -377,23 +372,22 @@ int processData(u32 testVectorSize){
          return S_TIMEOUT;
       }
    }
-  if(config[TIME_TO_RST] == 0){//if we will reset dut, expect no result
-	   if(testMode == ENABLED){
-		   Status = RxReceive(&TestFifoInstance, SendBuffer);
-	   }else{
-		   Status = RxReceive(&FifoInstance, SendBuffer);
-	   }
-  }
-
+   if(config[TIME_TO_RST] == 0){//if we will reset dut, expect no result
+      if(testMode == ENABLED){
+         Status = RxReceive(&TestFifoInstance, SendBuffer);
+      }else{
+         Status = RxReceive(&FifoInstance, SendBuffer);
+      }
+   }
    //if (Status != XST_SUCCESS){
    return S_OK;
 }
 
 int resultReady(){
-	if(testMode == ENABLED)
-		return ((DUTCOMM_mReadReg(TEST_DUTCOMM_BASE,4) & 0x000000FF) == DONE);
-	else
-		return ((DUTCOMM_mReadReg(DUTCOMM_BASE,4) & 0x000000FF) == DONE);
+   if(testMode == ENABLED)
+      return ((DUTCOMM_mReadReg(TEST_DUTCOMM_BASE,4) & 0x000000FF) == DONE);
+   else
+      return ((DUTCOMM_mReadReg(DUTCOMM_BASE,4) & 0x000000FF) == DONE);
 }
 
 /****************************************************************************/
@@ -445,11 +439,10 @@ int TxSend(XLlFifo *InstancePtr, u32  *SourceAddr, u32 dataSize)
    u32 tmp;
    int numWords;
    if (dataSize % 4 != 0){
-	   numWords = dataSize / 4 + 1;
+      numWords = dataSize / 4 + 1;
    }else{
-	   numWords = dataSize;
+      numWords = dataSize;
    }
-
    //for (j=0 ; j < (int)dataSize / 4  ; j++){
    for (j=0 ; j < numWords  ; j++){
       if( XLlFifo_iTxVacancy(InstancePtr) ){
@@ -467,12 +460,12 @@ int TxSend(XLlFifo *InstancePtr, u32  *SourceAddr, u32 dataSize)
    //xil_printf(" waiting for txDone... \r\n");
    int t;
    while( !(XLlFifo_IsTxDone(InstancePtr)) ){
-//	  if(testMode == ENABLED){
-//		  status = DUT_CONTROLLER_mReadReg(TEST_DUT_CTRL_BASE, CTRL_STATUS_REG_OFFSET);
-//	  }else{
-//		  status = DUT_CONTROLLER_mReadReg(DUT_CTRL_BASE, CTRL_STATUS_REG_OFFSET);
-//	  }
-	  t = XTmrCtr_GetValue(&TimerCounter, 0);
+      //  if(testMode == ENABLED){
+      //  status = DUT_CONTROLLER_mReadReg(TEST_DUT_CTRL_BASE, CTRL_STATUS_REG_OFFSET);
+      //  }else{
+      //  status = DUT_CONTROLLER_mReadReg(DUT_CTRL_BASE, CTRL_STATUS_REG_OFFSET);
+      //  }
+      t = XTmrCtr_GetValue(&TimerCounter, 0);
       if (t > config[TIMEOUT]){
          return S_TIMEOUT;
       }
@@ -514,62 +507,62 @@ int RxReceive (XLlFifo *InstancePtr, u32* DestinationAddr)
 }
 /******************************************************************************/
 void DUTCOMM_write(u32 offset, u32 value){
-	if(testMode == ENABLED){
-		DUTCOMM_mWriteReg(TEST_DUTCOMM_BASE, offset, value);
-	}else{
-		DUTCOMM_mWriteReg(DUTCOMM_BASE, offset, value);
-	}
+   if(testMode == ENABLED){
+      DUTCOMM_mWriteReg(TEST_DUTCOMM_BASE, offset, value);
+   }else{
+      DUTCOMM_mWriteReg(DUTCOMM_BASE, offset, value);
+   }
 }
 /******************************************************************************/
 void DUTCTRL_write(u32 offset, u32 value){
-	if(testMode == ENABLED){
-		DUT_CONTROLLER_mWriteReg(TEST_DUT_CTRL_BASE, offset, value);
-	}else{
-		DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, offset, value);
-	}
+   if(testMode == ENABLED){
+      DUT_CONTROLLER_mWriteReg(TEST_DUT_CTRL_BASE, offset, value);
+   }else{
+      DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, offset, value);
+   }
 }
 /******************************************************************************/
 void setOutLen(int value){
-       DUTCOMM_write(OUT_LEN_REG_OFFSET, 2 * value);//need data length in 4-bit words
+   DUTCOMM_write(OUT_LEN_REG_OFFSET, 2 * value);//need data length in 4-bit words
 }
 //Reset module
 void forceReset(){
-    DUTCTRL_write(FRC_RST_REG_OFFSET, 1);
+   DUTCTRL_write(FRC_RST_REG_OFFSET, 1);
 }
 
 void releaseReset(){
-	DUTCTRL_write(FRC_RST_REG_OFFSET, 0);
-	setInterfaceType();
+   DUTCTRL_write(FRC_RST_REG_OFFSET, 0);
+   setInterfaceType();
 }
 
 void setTimeToReset(u32 cycles){
-	DUTCTRL_write(TIME2RST_REG_OFFSET, cycles);
-	//no output if dut will reset
-	if(cycles != 0) config[OUT_LEN] = 0;
+   DUTCTRL_write(TIME2RST_REG_OFFSET, cycles);
+   //no output if dut will reset
+   if(cycles != 0) config[OUT_LEN] = 0;
 }
 
 //Timeout module
 void setTimeOut(u32 timeout){
-	DUTCTRL_write(TIME2RST_REG_OFFSET, timeout);
+   DUTCTRL_write(TIME2RST_REG_OFFSET, timeout);
 }
 
 //trigger
 void setTriggerLength(u32 length){
-	DUTCTRL_write(TRG_LEN_REG_OFFSET, length);
+   DUTCTRL_write(TRG_LEN_REG_OFFSET, length);
 }
 
 void setTriggerWait(u32 wait){
-	DUTCTRL_write(TRG_WAIT_REG_OFFSET, wait);
+   DUTCTRL_write(TRG_WAIT_REG_OFFSET, wait);
 }
 
 void setTriggerMode(u32 mode){
-	DUTCTRL_write(TRG_MODE_REG_OFFSET, mode);
+   DUTCTRL_write(TRG_MODE_REG_OFFSET, mode);
 }
 
 void setInterfaceType(){
-       //This version uses legacy interface only only.
-       DUTCOMM_write(INT_TYPE_REG_OFFSET, 1);
-       DUTCOMM_write(INT_TYPE_REG_OFFSET, 1);
+   //This version uses legacy interface only only.
+   DUTCOMM_write(INT_TYPE_REG_OFFSET, 1);
+   DUTCOMM_write(INT_TYPE_REG_OFFSET, 1);
 }
 
 /*****************************************************************************/
@@ -580,7 +573,6 @@ int applyConfig(int confNum, u32 value){
    switch(confNum){
       case OUT_LEN:
             setOutLen(value);
-
             break;
       case TRG_WAIT:
             setTriggerWait(value);
@@ -604,16 +596,16 @@ int applyConfig(int confNum, u32 value){
             setTimeOut(value);
             break;
       case SET_DUT_CLK:
-    	  	setClock0Freq(value/1000); //KHz to MHz
-    	  	forceReset();
-    	  	//reset fifo
-    	  	XLlFifo_Reset(&FifoInstance);
-    	  	releaseReset();
-    	  	setInterfaceType(); //Interface type is forgotten after clock adjust. Set it back!
-    	  	break;
+            setClock0Freq(value/1000); //KHz to MHz
+            forceReset();
+            //reset fifo
+            XLlFifo_Reset(&FifoInstance);
+            releaseReset();
+            setInterfaceType(); //Interface type is forgotten after clock adjust. Set it back!
+      break;
       case SET_TEST_MODE:
-    	    testMode = value;
-    	    break;
+        testMode = value;
+        break;
 
       default:
             status = S_ERROR;
@@ -624,12 +616,12 @@ int applyConfig(int confNum, u32 value){
 }
 ///*Clock wizard driver********************************************************/
 u32 writeClk0Div(int divInt, int divFrac){
-	u32 div;
-	div = CLKWIZ_mReadReg(DUT_CLKWIZ_BASE, 0x208);
-	div = (div & 0xffffff00) | (divInt & 0xFF);
-	div = (div & 0xfffc00ff) | ((divFrac & 0x3FF) << 8);
-	CLKWIZ_mWriteReg(DUT_CLKWIZ_BASE, 0x208, div);
-	return div;
+   u32 div;
+   div = CLKWIZ_mReadReg(DUT_CLKWIZ_BASE, 0x208);
+   div = (div & 0xffffff00) | (divInt & 0xFF);
+   div = (div & 0xfffc00ff) | ((divFrac & 0x3FF) << 8);
+   CLKWIZ_mWriteReg(DUT_CLKWIZ_BASE, 0x208, div);
+   return div;
 
 }
 
