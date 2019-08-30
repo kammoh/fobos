@@ -4,27 +4,27 @@ import os
 import shutil
 import numpy
 import fobos
-#import fobos.picoscope
-#Constants################################################################################################
+# Import fobos.picoscope
+# Constants###########################################################
 WORKSPACE = "/nhome/aabdulga/fobosworkspace"
-PROJECT_NAME ="test"
+PROJECT_NAME = "test"
 DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
 DUT_BIT_FILE = "FOBOS_DUT.bit"
-TRACE_NUM = 1000
+SERIAL_PORT = '/dev/ttyUSB1'
+TRACE_NUM = 5
 OUT_LEN = 7
 TIMEOUT = 64000
 TRIG_WAIT = 1
 TRIG_LENGTH = 1
 TRIG_MODE_NORM = 0
-TRIG_MODE_FULL = 1 
+TRIG_MODE_FULL = 1
 TIME_TO_RST = 0
 #Instantiate FOBOS objects#################################################################################
-ctrl = fobos.Basys3Ctrl('/dev/ttyUSB1', 115200, False)
+ctrl = fobos.Basys3Ctrl(SERIAL_PORT)
 dgen = fobos.DataGenerator()
-
-#Configuration controller##################################################################################
+# Configuration controller##################################################################################
 status = ctrl.setDUTClk(1)
 print binascii.hexlify(status)
 status = ctrl.enableTestMode()

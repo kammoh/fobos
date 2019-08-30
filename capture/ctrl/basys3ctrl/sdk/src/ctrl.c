@@ -155,8 +155,7 @@ int main(void)
       config[i] = 0;
    }
    //default timeout 5 sec
-   config[TIMEOUT] = 5 * 100000000; //100MHz clk for the timer
-
+   setTimeOut(5);
    u16 DeviceId = UARTLITE_DEVICE_ID;
    Status = XUartLite_Initialize(&UartLite, DeviceId);
    if (Status != XST_SUCCESS) {
@@ -543,7 +542,7 @@ void setTimeToReset(u32 cycles){
 
 //Timeout module
 void setTimeOut(u32 timeout){
-   DUTCTRL_write(TIME2RST_REG_OFFSET, timeout);
+    config[TIMEOUT] = timeout * 100000000;
 }
 
 //trigger

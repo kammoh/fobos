@@ -1,13 +1,31 @@
-##FOBOS control board class
-##GMU
-##Author: Abubakr Abdulgadir
-##Aug 7 2018
-##This class hides the Control Board hardware and provides easy to use 
-##methods to configure and run operations on the DUT
-##This class will interface to Digilent Basys3 board
-##The board includes a Microblaze softcore 
-##This uses a protocol to talk to Basys3
-##The connection used is a UART/USB
+#############################################################################
+#                                                                           #
+#   Copyright 2019 CERG                                                     #
+#                                                                           #
+#   Licensed under the Apache License, Version 2.0 (the "License");         #
+#   you may not use this file except in compliance with the License.        #
+#   You may obtain a copy of the License at                                 #
+#                                                                           #
+#       http://www.apache.org/licenses/LICENSE-2.0                          #
+#                                                                           #
+#   Unless required by applicable law or agreed to in writing, software     #
+#   distributed under the License is distributed on an "AS IS" BASIS,       #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
+#   See the License for the specific language governing permissions and     #
+#   limitations under the License.                                          #
+#                                                                           #
+#############################################################################
+# FOBOS Basys3 control board class
+# Author: Abubakr Abdulgadir
+# GMU
+# Aug 7 2018
+# This class hides the Control Board hardware and provides easy to use
+# methods to configure and run operations on the DUT
+# This class will interface to Digilent Basys3 board
+# The board includes a Microblaze softcore
+# This uses a protocol to talk to Basys3
+# The connection used is a UART/USB'
+
 import serial
 import binascii
 from fobosctrl import FOBOSCtrl
@@ -15,152 +33,297 @@ from dummyserial import DummySerial
 
 
 class Basys3Ctrl(FOBOSCtrl):
+    """
+    Class to wrap protocol to interface with Basys3 controller.
+    """
 
-
-    def __init__(self, port, baudRate = 115200, dummy=False):
+    def __init__(self, port, baudRate=115200, dummy=False):
+        """Init method
+        Parameters:
+        -----
+        port : string
+            The serial port where the Basys3 board is connected
+            (e.g /dev/ttyUSB1).
+        baudRate : int
+            Baud rate. Default is 115200.
+        dummy : boolean
+            When set to true, no communication with Basys3 is done.
+            This is to test the software only.
+            Default is False.
+        """
         self.model = "Basys3"
-        if dummy == True:
+        if dummy is True:
             self.ser = DummySerial()
         else:
             self.ser = serial.Serial(port, baudRate)
         self.outLen = 0
         self.STATUS_LEN = 4
         self.timeToReset = 0
-        ##error codes
-        self.OK      = bytearray([0x00, 0x00, 0x00, 0x00])
-        self.ERROR   = bytearray([0x01, 0x00, 0x00, 0x00])
+        # error codes
+        self.OK = bytearray([0x00, 0x00, 0x00, 0x00])
+        self.ERROR = bytearray([0x01, 0x00, 0x00, 0x00])
         self.TIMEOUT = bytearray([0x02, 0x00, 0x00, 0x00])
 
-    
     def writeConfig(self, param, value):
         """
-        Writes config to the fobos  control board
-        param: the number of the config, 
+        param: the number of the config,
         value: a 32 bit value for the config parameter
         returs: ack code
         """
-        #               WR_CONFIG       4 byte message   config number    config value 
+        """Write config parameter/command to ctrl board
+        Parameters:
+        -----
+        param : int
+            The number of the config parameter/command
+        value: int
+            The value of the parameter.
+        Returns:
+        -----
+        string
+        "00000000" OK
+        "10000000" ERROR
+        """
+        #        WR_CONFIG       4 byte message   config number    config value
         cmd = bytearray([0xF0, 0x03] + [0x00, 0x06] +  [0x00, param] + [ (value & 0xFF000000) >> 24, (value & 0x00FF0000) >> 16, (value & 0x0000FF00) >> 8, value & 0x000000FF ])
         print binascii.hexlify(cmd)
-        c = self.ser.write(cmd)
+        self.ser.write(cmd)
         status = self.ser.read(self.STATUS_LEN)
         print "Status= %s" % binascii.hexlify(status)
         return status
-    
+
     def readConfig(self, param):
+        """Reads config parameter from the fobos  control board.
+        Parameters:
+        -----
+        param :
+            The number of the config parameter/command
+        Returns:
+        -----
+        string, string
+        status
+            "00000000" OK
+            "10000000" ERROR
+        value
+            A string that represents 32 bit unsigned integer in hex format.
         """
-        Reads config from the fobos  control board
-        param: the number of the config, 
-        returns: a 32 bit value for the config parameter
-        """
-        #               RD_CONFIG       2 byte message   config number    
+        #               RD_CONFIG       2 byte message   config number
         value = bytearray([0])
-        cmd = bytearray([0xF0, 0x02] + [0x00, 0x02] +  [0x00, param] )
+        cmd = bytearray([0xF0, 0x02] + [0x00, 0x02] + [0x00, param])
         print binascii.hexlify(cmd)
-        c = self.ser.write(cmd)
+        self.ser.write(cmd)
         status = self.ser.read(self.STATUS_LEN)
         if status == self.OK:
             print "OK.    Status= %s" % binascii.hexlify(status)
             value = self.ser.read(FOBOSCtrl.PARAM_LEN)
         else:
             print "ERROR. Status= %s" % binascii.hexlify(status)
-        
         return status, value
-    
+
     def processData(self, data, outLen):
         """
         Sends data to FOBOS hardware for processing, e.g. encryption
-        data: The data to be processes. This is a hexadecimal string.
-        returns: the result of processing, e.g. ciphertext
+        Parameters:
+        -----
+        data: string
+            The data to be processed. This is a hexadecimal string.
+        Returns:
+        -----
+        status : string
+            "00000000" OK
+            "20000000" TIMOUT
+        result : string
+            The result from DUT (i.e. ciphertext)
         """
         result = bytearray([0])
-        vectorLen = len(data) / 2 #hex: two characters = 1 byte 
+        # hex: two characters = 1 byte
+        vectorLen = len(data) / 2
         lenLsb = vectorLen % 256
         lenMsb = vectorLen / 256
         #               PROCESS_DATA    message len         data
-        cmd = bytearray([0xF0, 0x01] + [lenMsb, lenLsb]) +  bytearray.fromhex(data.strip())
-        #cmd = bytearray([0xF0, 0x01] + [lenMsb, lenLsb]) + data
+        cmd = bytearray([0xF0, 0x01] + [lenMsb, lenLsb]) + bytearray.fromhex(data.strip())
         print binascii.hexlify(cmd)
-        c = self.ser.write(cmd)
-        #read status
+        self.ser.write(cmd)
+        # Read status
         status = self.ser.read(self.STATUS_LEN)
         result2 = ''
         if status == self.OK and self.timeToReset == 0:
             print "OK.    Status= %s" % binascii.hexlify(status)
-            #if self.timeToReset == 0: #no output when using dut reset
             result = self.ser.read(outLen)
             result = binascii.hexlify(result)
-            ##get result in correct format
+            # get result in correct format
             for i in range(len(result)):
                 if (i % 2 == 0 and i != 0):
                     result2 += ' '
-                result2 += result[i]   
+                result2 += result[i]
         else:
             print "TIMEOUT. Status= %s" % binascii.hexlify(status)
-        
         return status, result2
 
     def getModel(self):
+        """
+        The model of the control board
+        Returns:
+        -----
+        model: srting
+            The model of the control board
+        """
         return self.model
-    
+
     def setOutLen(self, outLen):
         """
         set Expected Output Length (outLen)
+        parameters:
+        -----
+        outLen : int
+            The number of output bytes to be returned by the DUT
+            (e.g 16 for AES-128)
+        Returns: int
+            Status
         """
         self.outLen = outLen
         return self.writeConfig(FOBOSCtrl.OUT_LEN, outLen)
-    
-    def setTrigWait(self, trigWait):
+
+    def setTriggerWait(self, trigWait):
         """
         set number of trigger wait cycles
+        parameters:
+        -----
+        trigWait : int
+            The number of DUT cycles after di_ready geos to 0
+            to issue the trigger.
+        Returns: int
+            Status
         """
         return self.writeConfig(FOBOSCtrl.TRIG_WAIT, trigWait)
-        
-    def setTrigLen(self, trigLen):
-        """
-        set number of trigger length in cycles
-        """
-        return self.writeConfig(FOBOSCtrl.TRG_LEN, trigLen)    
-    
-    def setTrigType(self, trigType):
-        """
-        set trigger type
-        """
-        return self.writeConfig(FOBOSCtrl.TRG_TYPE, trigType)
 
-    def enableTestMode(self):
+    def setTriggerLen(self, trigLen):
         """
-        set test mode
+        set trigger length
+        parameters:
+        -----
+        trigLen : int
+            The number of DUT cycles to keep trigger set.
+        Returns: int
+            Status
         """
-        return self.writeConfig(FOBOSCtrl.SET_TEST_MODE, FOBOSCtrl.ENABLED)
+        return self.writeConfig(FOBOSCtrl.TRG_LEN, trigLen)
+
+    def setTriggerMode(self, trigType):
+        """
+        set trigger mode
+        parameters:
+        -----
+        trigType : int
+            Possible values
+            TRG_NORM      = 0
+            TRG_FULL      = 1
+            TRG_NORM_CLK  = 2
+            TRG_FULL_CLK  = 3
+        Returns: int
+        -----
+            Status
+        """
+        return self.writeConfig(FOBOSCtrl.TRG_MODE, trigType)
 
     def setTimeToReset(self, dutCycles):
         """
-        set time to reset
+        set number of clock cycles after di_ready goes to 0
+        to reset the DUT.
+        parameters:
+        -----
+        dutCycles : int
+            The number of DUT cycles to reset the DUT.
+        Returns: int
         """
         self.timeToReset = dutCycles
-        return self.writeConfig(FOBOSCtrl.TIME_TO_RST , dutCycles)
+        return self.writeConfig(FOBOSCtrl.TIME_TO_RST, dutCycles)
 
-    def getTimeToReset(self, dutCycles):
+    def getTimeToReset(self):
         """
-        set time to reset
+        get number of clock cycles after di_ready goes to 0
+        to reset the DUT.
+        Returns:
+        -----
+        int
+            The number of clock cycle to reset DUT.
         """
-        return self.readConfig(FOBOSCtrl.TIME_TO_RST)
+        return self.timeToReset
+
+    def setTimeout(self, seconds):
+        """
+        set number of seconds to stop waiting for DUT result.
+        parameters:
+        -----
+        seconds : int
+            Time in seconds. Range 1-40 seconds.
+        Returns: int
+        """
+        self.timeout = seconds
+        return self.writeConfig(FOBOSCtrl.TIMEOUT, seconds)
+
+    def enableTestMode(self):
+        """
+        enable test mode. When this mode is enabled, the controller
+        sends test-vectors to its internal dummy DUT.
+
+        Returns:
+        -----
+        int
+            Status
+        """
+        return self.writeConfig(FOBOSCtrl.SET_TEST_MODE, FOBOSCtrl.ENABLED)
 
     def disableTestMode(self):
         """
-        set test mode
+        Disable test mode. In this mode the ctrl board uses the real DUT.
+        This is the default mode.
+
+        Returns:
+        -----
+        int
+            status
         """
         return self.writeConfig(FOBOSCtrl.SET_TEST_MODE, FOBOSCtrl.DISABLED)
 
+    def forceReset(self):
+        """
+        Reset DUT
+
+        Returns:
+        -----
+        int
+            status
+        """
+        return self.writeConfig(FOBOSCtrl.FORCE_RST, 0)
+
+    def releaseReset(self):
+        """
+        Release  DUT reset signal
+
+        Returns:
+        -----
+        int
+            status
+        """
+        return self.writeConfig(FOBOSCtrl.RELEASE_RST, 0)
+
+
     def setDUTClk(self, clkFreqMhz):
         """
-        set dut clock frequency in MHz
+        set DUT clock frequency generated by the control board.
+        range is between 0.4 MHz - 100 MHz.
+        parameters:
+        -----
+        clkFreqMhz : float
+            The DUT clock frequency in Mhz
+        Returns:
+        -----
+        int
+            status
         """
+
         if clkFreqMhz > 100 or clkFreqMhz < 0.4:
             print("Error: DUT clock must be between 50MHz and 0.5MHz")
             print("Limit is because of PMOD connector and CLK wizard.")
             raise
         return self.writeConfig(FOBOSCtrl.SET_DUT_CLK, clkFreqMhz * 1000)
-    
-
