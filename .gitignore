@@ -37,3 +37,8 @@ sources/pynq_controller/vivado/pynq_controller/
 sources/soc_dut/vivado/soc_dut/
 build_proj_modified.tcl
 capture/ctrl/basys3ctrl/vivado/basys3ctrl
+#Sigasi files
+.project
+.settings/
+.library_mapping.xml
+

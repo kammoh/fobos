@@ -1,6 +1,20 @@
-##This class encapsulates PicoScope 5000 
-###Reuirement:
-#Installation:
+#############################################################################
+#                                                                           #
+#   Copyright 2019 CERG                                                     #
+#                                                                           #
+#   Licensed under the Apache License, Version 2.0 (the "License");         #
+#   you may not use this file except in compliance with the License.        #
+#   You may obtain a copy of the License at                                 #
+#                                                                           #
+#       http://www.apache.org/licenses/LICENSE-2.0                          #
+#                                                                           #
+#   Unless required by applicable law or agreed to in writing, software     #
+#   distributed under the License is distributed on an "AS IS" BASIS,       #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
+#   See the License for the specific language governing permissions and     #
+#   limitations under the License.                                          #
+#                                                                           #
+#############################################################################
 
 import ctypes
 import numpy as np
@@ -9,10 +23,11 @@ from picosdk.ps5000a import ps5000a as ps
 import matplotlib.pyplot as plt
 from picosdk.functions import adc2mV, assert_pico_ok, mV2adc
 
+
 class Picoscope():
 
-    def __init__(self,sampleResolution = 8, preTriggerSamples = 0,
-                    postTriggerSamples = 1000):
+    def __init__(self, sampleResolution=8, preTriggerSamples=0,
+                 postTriggerSamples=1000):
         """
         Open oscilloscope
         """
@@ -26,27 +41,31 @@ class Picoscope():
         elif sampleResolution == 12:
             res = "PS5000A_DR_12BIT"
         elif sampleResolution == 14:
-            res= "PS5000A_DR_14BIT"
+            res = "PS5000A_DR_14BIT"
         elif sampleResolution == 15:
             res = "PS5000A_DR_15BIT"
         elif sampleResolution == 16:
             res = "PS5000A_DR_16BIT"
         else:
-            raise Exception("Scope resolution not supported. Please select one of 8,12,14,15,16")
-        resolution =ps.PS5000A_DEVICE_RESOLUTION[res]
+            raise Exception("Scope resolution not supported." +
+                            " Please select one of 8,12,14,15,16")
+        resolution = ps.PS5000A_DEVICE_RESOLUTION[res]
         self.sampleResolution = sampleResolution
-      
-        self.status["openunit"] = ps.ps5000aOpenUnit(ctypes.byref(self.chandle), None, resolution)
+        self.status["openunit"] = ps.ps5000aOpenUnit(
+            ctypes.byref(self.chandle),
+            None, resolution)
 
         try:
             assert_pico_ok(self.status["openunit"])
         except: # PicoNotOkError:
             powerStatus = self.status["openunit"]
             if powerStatus == 286:
-                self.status["changePowerSource"] = ps.ps5000aChangePowerSource(self.chandle, 
+                self.status["changePowerSource"] = ps.ps5000aChangePowerSource(
+                    self.chandle,
                     powerStatus)
             elif powerStatus == 282:
-                self.status["changePowerSource"] = ps.ps5000aChangePowerSource(self.chandle, 
+                self.status["changePowerSource"] = ps.ps5000aChangePowerSource(
+                    self.chandle,
                     powerStatus)
             else:
                 raise Exception("Error initializing PicoScope")
@@ -54,17 +73,30 @@ class Picoscope():
             assert_pico_ok(self.status["changePowerSource"])
 
         self.disableAllChannel()
-        ###Set number of samples
+        # Set number of samples
         self.preTriggerSamples = preTriggerSamples
         self.postTriggerSamples = postTriggerSamples
         self.maxSamples = self.preTriggerSamples + self.postTriggerSamples
-        ###Max ADC value depends on resolution. Prog manual page 11
+        # Max ADC value depends on resolution. Prog manual page 11
         self.maxADC = ctypes.c_int16()
-        self.status["maximumValue"] = ps.ps5000aMaximumValue(self.chandle, 
+        self.status["maximumValue"] = ps.ps5000aMaximumValue(
+            self.chandle,
             ctypes.byref(self.maxADC))
         assert_pico_ok(self.status["maximumValue"])
 
-    def setChannel(self, channelName = 'CHANNEL_A', coupling = 'DC', rangemv = '1V'):
+    def setChannel(self, channelName='CHANNEL_A',
+                   coupling='DC', rangemv='1V'):
+        """
+        Configure volatge range and coupling for a channel.
+        parameters:
+        -----
+        channelName : string
+            possible values : CHANNEL_A | CHANNEL_B
+        coupling : string
+            possible values DC | AC
+        ranegmv : string
+            Voltage range 10MV - 500MV, 1V-20V
+        """
         # Set up channel A
         # handle = chandle
         if channelName == 'CHANNEL_A':
@@ -106,10 +138,10 @@ class Picoscope():
             srange = "PS5000A_10V"
         elif rangemv == '20V':
             srange = "PS5000A_20V"
-        else: 
+        else:
             raise Exception("Scope voltage range supported. Supported ranges:" +
                     "\t10mV, 20mV, 50mV, 100mV, 200mV, 500mV, 1V, 2V, 5V, 10V, 20V.")
-            
+
 
         chRange = ps.PS5000A_RANGE[srange]
         # analogue offset = 0 V
@@ -131,8 +163,6 @@ class Picoscope():
         couplingType = ps.PS5000A_COUPLING['PS5000A_DC']
         self.status['CHANNEL_A'] = ps.ps5000aSetChannel(self.chandle, channel, 0, 
                             couplingType, chRange, 0)
-        
-
         channel = ps.PS5000A_CHANNEL['PS5000A_CHANNEL_B']
         chRange = ps.PS5000A_RANGE['PS5000A_1V']
         couplingType = ps.PS5000A_COUPLING['PS5000A_DC']
@@ -143,8 +173,15 @@ class Picoscope():
         self.chBEnabled = False
 
 
-    def setTrigger(self, channelName= 'CHANNEL_A', thresholdmv = 500, 
+    def setTrigger(self, channelName= 'CHANNEL_A', thresholdmv = 500,
                     direction = 'RISING_EDGE', autoTriggerDelay = 2000):
+        """
+        Configure trigger channel
+        parameters
+        -----
+        channelName : string
+            possible values : CHANNEL_A|CHANNEL_B|EXTERNAL
+        """
         # Set up single trigger
         # handle = chandle
         # enabled = 1
@@ -167,19 +204,19 @@ class Picoscope():
         # delay = 0 s
         # auto Trigger = 1000 ms
         if direction == 'RISING_EDGE':
-            direction  = ps.PS5000A_THRESHOLD_DIRECTION['PS5000A_RISING']
+            direction = ps.PS5000A_THRESHOLD_DIRECTION['PS5000A_RISING']
         else:
-            direction  = ps.PS5000A_THRESHOLD_DIRECTION['PS5000A_FALLING']
+            direction = ps.PS5000A_THRESHOLD_DIRECTION['PS5000A_FALLING']
 
         self.status["trigger"] = ps.ps5000aSetSimpleTrigger(self.chandle,
-                                1,          #enable
-                                source,
-                                threshold, 
-                                direction,
-                                0,          #delay
-                                autoTriggerDelay        #auto trigger ms
-                                )
-        assert_pico_ok(self.status["trigger"])     
+                                                            1,  # enable
+                                                            source,
+                                                            threshold,
+                                                            direction,
+                                                            0,  # delay
+                                                            autoTriggerDelay # auto trigger ms
+                                                            )
+        assert_pico_ok(self.status["trigger"])
 
     def setSamplingInterval(self, samplingIntervalns):
         """
@@ -228,46 +265,50 @@ class Picoscope():
 
         self.timeIntervalns = ctypes.c_float()
         self.returnedMaxSamples = ctypes.c_int32()
-        self.status["getTimebase2"] = ps.ps5000aGetTimebase2(self.chandle, 
-                                self.timebase, 
-                                self.maxSamples, ctypes.byref(self.timeIntervalns), 
-                                ctypes.byref(self.returnedMaxSamples), 0)
+        self.status["getTimebase2"] = ps.ps5000aGetTimebase2(
+            self.chandle,
+            self.timebase,
+            self.maxSamples,
+            ctypes.byref(self.timeIntervalns),
+            ctypes.byref(self.returnedMaxSamples), 0)
         print('Actual Sampling Interval ns: {}'.format(self.timeIntervalns))
         print('Max Samples: {}'.format(self.returnedMaxSamples))
         assert_pico_ok(self.status["getTimebase2"])
-        
 
     def setDataBuffers(self):
-        if self.chAEnabled == True:
+        if self.chAEnabled is True:
             self.bufferA = (ctypes.c_int16 * self.maxSamples)()
             self.bufferB = (ctypes.c_int16 * self.maxSamples)()
             source = ps.PS5000A_CHANNEL["PS5000A_CHANNEL_A"]
-            self.status["setDataBuffersA"] = ps.ps5000aSetDataBuffer(self.chandle,
-                                    source, 
-                                    ctypes.byref(self.bufferA),
-                                    self.maxSamples,
-                                    0,
-                                    0)
+            self.status["setDataBuffersA"] = ps.ps5000aSetDataBuffer(
+                self.chandle,
+                source,
+                ctypes.byref(self.bufferA),
+                self.maxSamples,
+                0,
+                0)
             assert_pico_ok(self.status["setDataBuffersA"])
 
-        if self.chBEnabled == True:
+        if self.chBEnabled is True:
             source = ps.PS5000A_CHANNEL["PS5000A_CHANNEL_B"]
-            self.status["setDataBuffersB"] = ps.ps5000aSetDataBuffer(self.chandle,
-                                    source, 
-                                    ctypes.byref(self.bufferB), 
-                                    self.maxSamples, 
-                                    0,
-                                    0)
+            self.status["setDataBuffersB"] = ps.ps5000aSetDataBuffer(
+                self.chandle,
+                source,
+                ctypes.byref(self.bufferB),
+                self.maxSamples,
+                0,
+                0)
             assert_pico_ok(self.status["setDataBuffersB"])
 
     def arm(self):
-        self.status["runBlock"] = ps.ps5000aRunBlock(self.chandle, 
-                                    self.preTriggerSamples, 
-                                    self.postTriggerSamples, 
-                                    self.timebase, 
-                                    None,
-                                    0, #segment index 
-                                    None, None)
+        self.status["runBlock"] = ps.ps5000aRunBlock(
+            self.chandle,
+            self.preTriggerSamples,
+            self.postTriggerSamples,
+            self.timebase,
+            None,
+            0,  # segment index
+            None, None)
         assert_pico_ok(self.status["runBlock"])
 
     def readTrace(self):
@@ -275,14 +316,16 @@ class Picoscope():
         ready = ctypes.c_int16(0)
         check = ctypes.c_int16(0)
         while ready.value == check.value:
-            self.status["isReady"] = ps.ps5000aIsReady(self.chandle, ctypes.byref(ready))
+            self.status["isReady"] = ps.ps5000aIsReady(self.chandle,
+                                                       ctypes.byref(ready))
 
         overflow = ctypes.c_int16()
         # create converted type maxSamples
         self.cmaxSamples = ctypes.c_int32(self.maxSamples)
-        self.status["getValues"] = ps.ps5000aGetValues(self.chandle, 0, 
-                                ctypes.byref(self.cmaxSamples), 
-                                0, 0, 0, ctypes.byref(overflow))
+        self.status["getValues"] = ps.ps5000aGetValues(
+            self.chandle, 0,
+            ctypes.byref(self.cmaxSamples),
+            0, 0, 0, ctypes.byref(overflow))
         assert_pico_ok(self.status["getValues"])
         # convert ADC counts data to mV
         #adc2mVChAMax =  adc2mV(bufferAMax, chARange, maxADC)
@@ -291,30 +334,32 @@ class Picoscope():
         return trace
 
     def closeConnection(self):
-        self.status["stop"] = ps.ps5000aStop(chandle)
+        self.status["stop"] = ps.ps5000aStop(self.chandle)
         assert_pico_ok(self.status["stop"])
 
         # Close unit Disconnect the scope
         # handle = chandle
-        self.status["close"]=ps.ps5000aCloseUnit(chandle)
+        self.status["close"] = ps.ps5000aCloseUnit(self.chandle)
         assert_pico_ok(self.status["close"])
 
         # display status returns
         print(self.status)
 
+
 def main():
-    #Setup
-    scope = Picoscope(sampleResolution = 8, requestedSamplingInterval = 2)
-    scope.setChannel(channelName = 'CHANNEL_A', rangemv = '1V')
-    scope.setTrigger(channelName ='CHANNEL_A', direction = 'RISING_EDGE', thresholdmv = 200)
+    # Setup
+    scope = Picoscope(sampleResolution=8, requestedSamplingInterval=2)
+    scope.setChannel(channelName='CHANNEL_A', rangemv='1V')
+    scope.setTrigger(channelName='CHANNEL_A', direction='RISING_EDGE',
+                     thresholdmv=200)
     scope.setDataBuffers()
-    ###in loop
+    # in loop
     scope.arm()
     trace = scope.getTrace()
 
     plt.plot(trace)
     plt.show()
 
+
 if __name__ == '__main__':
     main()
-        
