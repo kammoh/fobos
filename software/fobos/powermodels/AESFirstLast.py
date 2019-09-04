@@ -1,36 +1,38 @@
 import numpy as np
 
+
 def getHypotheticalPower(plaintextFile, ciphertextFile, numTraces):
     plaintext = loadTextMatrix(plaintextFile)
-    #plaintext = loadTextMatrix('./plaintext1.txt', 3)
+    # plaintext = loadTextMatrix('./plaintext1.txt', 3)
     print("plaintext=")
-    printHexMatrix(plaintext[:,0:5])
+    printHexMatrix(plaintext[:, 0:5])
     ciphertext = loadTextMatrix(ciphertextFile)
-    #numTraces = ciphertext.shape[0]
-    plaintext = plaintext[0:numTraces,:]
+    # numTraces = ciphertext.shape[0]
+    plaintext = plaintext[0:numTraces, :]
     ciphertext = ciphertext[0:numTraces, :]
-    #plaintext = loadTextMatrix('./plaintext1.txt', 3)
+    # plaintext = loadTextMatrix('./plaintext1.txt', 3)
     print("ciphertext=")
     printHexMatrix(ciphertext)
     hypotheticalPower = []
     for byteNum in range(16):
-        sbox_pt_key = vectAESSboxOutFirstRound(plaintext[:, byteNum].reshape(numTraces,1))
+        sbox_pt_key = vectAESSboxOutFirstRound(plaintext[:, byteNum].reshape(numTraces, 1))
         #res =  firstRound(plaintext[:,0], 0)
         print("sbox_pt_key=")
-        printHexMatrix(sbox_pt_key[:,0:1])
+        printHexMatrix(sbox_pt_key[:, 0:1])
         #####
-        sbox_ct = vectAESSboxOut(ciphertext[:, byteNum].reshape(numTraces,1))
-        #res =  firstRound(plaintext[:,0], 0)
+        sbox_ct = vectAESSboxOut(ciphertext[:, byteNum].reshape(numTraces, 1))
+        # res =  firstRound(plaintext[:,0], 0)
         print("sbox_ct=")
-        printHexMatrix(sbox_ct[:,0:1])
+        printHexMatrix(sbox_ct[:, 0:1])
         #####
         oneBytePower = vectTestAESPowerModel(sbox_ct, sbox_pt_key)
         hypotheticalPower.append(oneBytePower)
         print("hypothetical power =")
-        printHexMatrix(oneBytePower[:,0:1])
+        printHexMatrix(oneBytePower[:, 0:1])
 
     return hypotheticalPower
-    
+
+
 sbox = [0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67,
         0x2b, 0xfe, 0xd7, 0xab, 0x76, 0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59,
         0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0, 0xb7,
@@ -60,50 +62,42 @@ sbox = [0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67,
 def getSbox(p, k):
     return sbox[p]
 
+
 def firstRound(p, k):
     return sbox[p ^ k]
 
 
 def getByteHW(a):
-    return (a&1) + ((a&2)>>1) + ((a&4)>>2) + ((a&8)>>3) \
-            + ((a&16)>>4) + ((a&32)>>5) + ((a&64)>>6) + ((a&128)>>7)
+    return (a & 1) + ((a & 2) >> 1) + ((a & 4) >> 2) + ((a & 8) >> 3) \
+        + ((a & 16) >> 4) + ((a & 32) >> 5) + ((a & 64) >> 6) \
+        + ((a & 128) >> 7)
+
 
 def vectTestAESPowerModel(P1, P2):
-    HW = np.array([0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 
-
-        2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 1, 2, 2, 3, 2, 3, 3, 4, 
-
-        2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 
-
-        4, 5, 5, 6, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 
-
-        2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 2, 3, 3, 4, 
-
-        3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 
-
-        4, 5, 5, 6, 5, 6, 6, 7, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 
-
-        3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 
-
-        2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 
-
-        4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 2, 3, 3, 4, 3, 4, 4, 5, 
-
-        3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 
-
-        5, 6, 6, 7, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 
-
-        4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8], dtype=np.uint8)
+    HW = np.array([0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3,
+                   2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 1, 2, 2, 3, 2, 3, 3, 4,
+                   2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5,
+                   4, 5, 5, 6, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+                   2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 2, 3, 3, 4,
+                   3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6,
+                   4, 5, 5, 6, 5, 6, 6, 7, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4,
+                   3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+                   2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5,
+                   4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 2, 3, 3, 4, 3, 4, 4, 5,
+                   3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6,
+                   5, 6, 6, 7, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+                   4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8],
+                  dtype=np.uint8)
 
     vectGetByteHW = np.vectorize(getByteHW)
     numPlainTexts = P1.shape[0]
     z = np.zeros((1, P1.shape[1]), dtype=np.uint8)
     tmp = np.vstack((z, P1))
-    P1 = tmp[0:numPlainTexts,:]
+    P1 = tmp[0:numPlainTexts, :]
     O = np.empty(P2.shape, dtype=np.uint8)
     for k in range(P2.shape[1]):
-        x= P1[:,k] ^ P2[:,k]
-        O[:,k] = HW[P1[:,k] ^ P2[:,k]]
+        x = P1[:, k] ^ P2[:, k]
+        O[:, k] = HW[P1[:, k] ^ P2[:, k]]
     return O
 
 def vectAESSboxOut(P):

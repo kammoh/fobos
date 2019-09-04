@@ -263,5 +263,5 @@ def main():
     sc.closeConnection()
 
 
-if __name == "__main__":
+if __name__ == "__main__":
     main()
