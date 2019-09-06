@@ -1,7 +1,55 @@
+#############################################################################
+#                                                                           #
+#   Copyright 2019 CERG                                                     #
+#                                                                           #
+#   Licensed under the Apache License, Version 2.0 (the "License");         #
+#   you may not use this file except in compliance with the License.        #
+#   You may obtain a copy of the License at                                 #
+#                                                                           #
+#       http://www.apache.org/licenses/LICENSE-2.0                          #
+#                                                                           #
+#   Unless required by applicable law or agreed to in writing, software     #
+#   distributed under the License is distributed on an "AS IS" BASIS,       #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
+#   See the License for the specific language governing permissions and     #
+#   limitations under the License.                                          #
+#                                                                           #
+#############################################################################
+
+"""
+AES-128 FirstLast power model
+Generates hypothetical power for the AES design
+used in FOBOS example.
+the power model is
+H(i,j) = HD(Sbox[CT(i-1)],  Sbox(PT(i) xor KeyGuess(j)))
+This implementation is optimized using vectorization
+"""
 import numpy as np
 
 
 def getHypotheticalPower(plaintextFile, ciphertextFile, numTraces):
+    """
+    AES-128 FirstLast power model
+    Generates hypothetical power for the AES design
+    used in FOBOS example
+    the power model is
+    H(i,j) = HD(Sbox[CT(i-1)],  Sbox(PT(i) xor KeyGuess(j)))
+    This implementation is optimized using vectorization
+
+    parameters:
+    -------
+    plaintextFile: string
+        Plain text file name. The file contains plaintext in Hex format
+        with space seperating bytes. The file will be loaded using
+        np.loadtxt
+    ciphertextFile: string
+        Cipher text file name. The file contains ciphertext in Hex format
+        with space seperating bytes The file will be loaded using
+        np.loadtxt
+    numTraces:
+        The number of encryption operations performed.
+
+    """
     plaintext = loadTextMatrix(plaintextFile)
     # plaintext = loadTextMatrix('./plaintext1.txt', 3)
     print("plaintext=")
@@ -16,7 +64,7 @@ def getHypotheticalPower(plaintextFile, ciphertextFile, numTraces):
     hypotheticalPower = []
     for byteNum in range(16):
         sbox_pt_key = vectAESSboxOutFirstRound(plaintext[:, byteNum].reshape(numTraces, 1))
-        #res =  firstRound(plaintext[:,0], 0)
+        # res =  firstRound(plaintext[:,0], 0)
         print("sbox_pt_key=")
         printHexMatrix(sbox_pt_key[:, 0:1])
         #####
@@ -25,7 +73,7 @@ def getHypotheticalPower(plaintextFile, ciphertextFile, numTraces):
         print("sbox_ct=")
         printHexMatrix(sbox_ct[:, 0:1])
         #####
-        oneBytePower = vectTestAESPowerModel(sbox_ct, sbox_pt_key)
+        oneBytePower = vectGetHD(sbox_ct, sbox_pt_key)
         hypotheticalPower.append(oneBytePower)
         print("hypothetical power =")
         printHexMatrix(oneBytePower[:, 0:1])
@@ -58,8 +106,10 @@ sbox = [0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67,
         0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0,
         0x54, 0xbb, 0x16]
 
+# Functions to be vectorized
 
-def getSbox(p, k):
+
+def getSbox(p):
     return sbox[p]
 
 
@@ -67,13 +117,16 @@ def firstRound(p, k):
     return sbox[p ^ k]
 
 
-def getByteHW(a):
-    return (a & 1) + ((a & 2) >> 1) + ((a & 4) >> 2) + ((a & 8) >> 3) \
-        + ((a & 16) >> 4) + ((a & 32) >> 5) + ((a & 64) >> 6) \
-        + ((a & 128) >> 7)
-
-
-def vectTestAESPowerModel(P1, P2):
+def vectGetHD(D1, D2):
+    """
+    Vectorized function to calculate Hamming Distance
+    parameters
+    -------
+    D1: Nx M nmupy array
+        Each element is the value of the register
+    D2: Nx M nmupy array
+        Each element is the value of the register
+    """
     HW = np.array([0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3,
                    2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 1, 2, 2, 3, 2, 3, 3, 4,
                    2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5,
@@ -89,20 +142,19 @@ def vectTestAESPowerModel(P1, P2):
                    4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8],
                   dtype=np.uint8)
 
-    vectGetByteHW = np.vectorize(getByteHW)
-    numPlainTexts = P1.shape[0]
-    z = np.zeros((1, P1.shape[1]), dtype=np.uint8)
-    tmp = np.vstack((z, P1))
-    P1 = tmp[0:numPlainTexts, :]
-    O = np.empty(P2.shape, dtype=np.uint8)
-    for k in range(P2.shape[1]):
-        x = P1[:, k] ^ P2[:, k]
-        O[:, k] = HW[P1[:, k] ^ P2[:, k]]
-    return O
+    numPlainTexts = D1.shape[0]
+    z = np.zeros((1, D1.shape[1]), dtype=np.uint8)
+    tmp = np.vstack((z, D1))
+    D1 = tmp[0:numPlainTexts, :]
+    result = np.empty(D2.shape, dtype=np.uint8)
+    for k in range(D2.shape[1]):
+        result[:, k] = HW[D1[:, k] ^ D2[:, k]]
+    return result
+
 
 def vectAESSboxOut(P):
     """
-    calculates one byte of the AES sbox output 
+    calculates one byte of the AES sbox output
     parameters:
     P : a colomn vector of the sbox input.
     returns:
@@ -110,38 +162,15 @@ def vectAESSboxOut(P):
     """
     vectFirstRound = np.vectorize(getSbox)
     numKeyHypotheses = 256
-    #print(P)
+    # print(P)
     numPlainTexts = P.shape[0]
-    O = np.empty((numPlainTexts, numKeyHypotheses), dtype=np.uint8)
+    result = np.empty((numPlainTexts, numKeyHypotheses), dtype=np.uint8)
     for k in range(numKeyHypotheses):
-        O[:,k] = vectFirstRound(P.reshape(numPlainTexts,), k)
-    return O
-    
+        result[:, k] = vectFirstRound(P.reshape(numPlainTexts,))
+    return result
 
+#################################################################
 
-
-    #################################################################
-def printHexMatrix(A, printAll=False, dtype='int'):
-    import sys
-    lim = 10
-    if (printAll == True or A.shape[0] < 10):
-        lim = A.shape[0]
-    for i in range(lim):
-        for j in range(A.shape[1]):
-            if dtype == 'float':
-                sys.stdout.write(str(A[i,j]) + "\t")
-            else:
-                sys.stdout.write("0x" + format(int(A[i,j]), '02x') + "\t")
-        sys.stdout.write("\n")
-
-def loadTextMatrix(fileName, numCols = 16):
-    """
-    file format: hex values delimited by spaces
-    MAKE sure that there is no space at the end of line
-    """
-    return np.loadtxt(fileName, dtype='uint8', delimiter=' ',
-                 converters={_:lambda s: int(s, 16) for _ in range(numCols)})
-##################################################################
 
 def vectAESSboxOutFirstRound(P):
     """
@@ -154,9 +183,33 @@ def vectAESSboxOutFirstRound(P):
     """
     vectFirstRound = np.vectorize(firstRound)
     numKeyHypotheses = 256
-    #print(P)
+    # print(P)
     numPlainTexts = P.shape[0]
-    O = np.empty((numPlainTexts, numKeyHypotheses), dtype=np.uint8)
+    result = np.empty((numPlainTexts, numKeyHypotheses), dtype=np.uint8)
     for k in range(numKeyHypotheses):
-        O[:,k] = vectFirstRound(P.reshape(numPlainTexts,), k)
-    return O
+        result[:, k] = vectFirstRound(P.reshape(numPlainTexts,), k)
+    return result
+
+
+def printHexMatrix(A, printAll=False, dtype='int'):
+    import sys
+    lim = 10
+    if (printAll is True or A.shape[0] < 10):
+        lim = A.shape[0]
+    for i in range(lim):
+        for j in range(A.shape[1]):
+            if dtype == 'float':
+                sys.stdout.write(str(A[i, j]) + "\t")
+            else:
+                sys.stdout.write("0x" + format(int(A[i, j]), '02x') + "\t")
+        sys.stdout.write("\n")
+
+
+def loadTextMatrix(fileName, numCols=16):
+    """
+    file format: hex values delimited by spaces
+    MAKE sure that there is no space at the end of line
+    """
+    return np.loadtxt(
+        fileName, dtype='uint8', delimiter=' ',
+        converters={_: lambda s: int(s, 16) for _ in range(numCols)})
