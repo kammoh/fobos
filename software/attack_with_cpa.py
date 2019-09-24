@@ -9,8 +9,8 @@ import fobos.powermodels.AESFirstLast as powermodel
 
 def main():
     # Configure project directories################################
-    WORKSPACE = "/home/aabdulga/fobosworkspace/zybo_aes/capture/"
-    PROJECT_NAME = "zybo_aes_basys3_1mhz_dut_625_cpu_clk"
+    WORKSPACE = "/home/aabdulga/fobosworkspace/aes_artix7_openadc/capture"
+    PROJECT_NAME = "attempt_shunt_lna_50mhz_samp_1mhz_dut"
     pm = projmgr.ProjectManager()
     pm.setWorkSpaceDir(WORKSPACE)
     pm.setProjName(PROJECT_NAME)
@@ -18,32 +18,32 @@ def main():
     analysisDir = pm.getAnalysisDir()
     ######
     TRACES_FILE = os.path.join(projDir, 'powerTraces.npy')
-    PLAIN_FILE = os.path.join(projDir, 'plaintext.txt')
-    CIPHER_FILE = os.path.join(projDir, 'ciphertext.txt')
+    PLAIN_FILE = os.path.join(projDir, 'pdi.txt')
+    CIPHER_FILE = os.path.join(projDir, 'do.txt')
     HYPO_FILE = os.path.join(projDir, "hypotheticalPower.npy")
 
-    CROP_START = 1500
-    CROP_END = 3000
+    CROP_START = 175
+    CROP_END = 225
 
-    NUM_TRACES = 100
-    MTD_STRIDE = 1
+    NUM_TRACES = 20000
+    MTD_STRIDE = 1000
     traceSet = traceset.TraceSet(traceNum=NUM_TRACES,
                                  fileName=TRACES_FILE,
                                  cropStart=CROP_START,
                                  cropEnd=CROP_END)
 
     measuredPower = traceSet.traces
-    compressedPower = postprocess.compressData(measuredPower, 'MEAN', 10)
-    np.save(os.path.join(analysisDir, "compressedPower.npy"), compressedPower)
+    #compressedPower = postprocess.compressData(measuredPower, 'MEAN', 10)
+    #np.save(os.path.join(analysisDir, "compressedPower.npy"), compressedPower)
     #compressedPower = np.load(os.path.join(ANALYSIS_DIR, "compressedPower.npy"))
-    print "Compression Done!"
-    print compressedPower.shape
+    #print "Compression Done!"
+    #print compressedPower.shape
     hypotheticalPower = powermodel.getHypotheticalPower(PLAIN_FILE,
                                                         CIPHER_FILE,
                                                         NUM_TRACES)
     # hypotheticalPower = np.load(HYPO_FILE)
     cpaAttacker = cpa.CPA()
-    C = cpaAttacker.doCPA(measuredPower=compressedPower,
+    C = cpaAttacker.doCPA(measuredPower=measuredPower,
                           hypotheticalPower=hypotheticalPower,
                           numTraces=NUM_TRACES,
                           analysisDir=analysisDir,
