@@ -1,0 +1,227 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>DUT Board Setup &mdash; Flexible Opensource workBench fOr Side-channel analysis (FOBOS) 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data Acquisition - Processing Data" href="capture_data.html" />
+    <link rel="prev" title="DUT Algorithm Development" href="dutdev.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Flexible Opensource workBench fOr Side-channel analysis (FOBOS)
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tvgen.html">Test Vector Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dutdev.html">DUT Algorithm Development</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DUT Board Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#digilent-nexy3-spartan-6-fpga">Digilent Nexy3 (Spartan 6 FPGA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#digilent-nexys4-artix7-fpga">Digilent Nexys4 (Artix7 FPGA)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="capture_data.html">Data Acquisition - Processing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capture_scope.html">Data Acquisition - Collecting Traces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controller_features.html">Control Board Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpa.html">Running Correlation Power Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example.html">Breaking AES Implementation With CPA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t_test.html">T-test Leakage Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_doc.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Flexible Opensource workBench fOr Side-channel analysis (FOBOS)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>DUT Board Setup</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dut_board_setup.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dut-board-setup">
+<h1>DUT Board Setup<a class="headerlink" href="#dut-board-setup" title="Permalink to this headline">¶</a></h1>
+<p>A DUT (Design Under Test) board must be connected to the control board to run SCA.</p>
+<div class="section" id="digilent-nexy3-spartan-6-fpga">
+<h2>Digilent Nexy3 (Spartan 6 FPGA)<a class="headerlink" href="#digilent-nexy3-spartan-6-fpga" title="Permalink to this headline">¶</a></h2>
+<p>TODO</p>
+</div>
+<div class="section" id="digilent-nexys4-artix7-fpga">
+<h2>Digilent Nexys4 (Artix7 FPGA)<a class="headerlink" href="#digilent-nexys4-artix7-fpga" title="Permalink to this headline">¶</a></h2>
+<p>TODO</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="capture_data.html" class="btn btn-neutral float-right" title="Data Acquisition - Processing Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dutdev.html" class="btn btn-neutral float-left" title="DUT Algorithm Development" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CERG
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

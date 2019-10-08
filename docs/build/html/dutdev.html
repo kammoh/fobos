@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>DUT Algorithm Development &mdash; Flexible Opensource workBench fOr Side-channel analysis (FOBOS) 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DUT Board Setup" href="dut_board_setup.html" />
+    <link rel="prev" title="Test Vector Generation" href="tvgen.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Flexible Opensource workBench fOr Side-channel analysis (FOBOS)
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tvgen.html">Test Vector Generation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DUT Algorithm Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-flow-description">Data flow description:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dummy-dut-example">Dummy DUT Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dut_board_setup.html">DUT Board Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capture_data.html">Data Acquisition - Processing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capture_scope.html">Data Acquisition - Collecting Traces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controller_features.html">Control Board Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpa.html">Running Correlation Power Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example.html">Breaking AES Implementation With CPA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t_test.html">T-test Leakage Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_doc.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Flexible Opensource workBench fOr Side-channel analysis (FOBOS)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>DUT Algorithm Development</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dutdev.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dut-algorithm-development">
+<h1>DUT Algorithm Development<a class="headerlink" href="#dut-algorithm-development" title="Permalink to this headline">¶</a></h1>
+<p>This document describes how to interface the DUT (Design Under Test) or victim to the DUT Wrapper.
+The DUT is the algorithm to be attacked or tested.
+The DUT or victim algorithm is user provided. However, the DUT wrapper is included with FOBOS.
+The DUT Wrapper handles communication to the control board and includes FIFOs to store input data for the DUT along with output FIFO.</p>
+<div class="section" id="data-flow-description">
+<h2>Data flow description:<a class="headerlink" href="#data-flow-description" title="Permalink to this headline">¶</a></h2>
+<p>Test vectors are sent form PC one at a time to the control board which stores them breifly in a FIFO.
+The PC sends a command indicating test vector is complete. This will initiates the process of sending the data from the controller to the DUT through the interface shown in the figure above.
+The DUT wrapper then puts data in the correct FIFOs (PDI, SDI and RDI).
+Once the DUT wrapper receives the start command from the controller, it de-assersts the reset signal and the DUT will run and use the data in the FIFOs. The output of the DUT is stored in the DO fifo. Once the DO FIFO accumulates EXPECTED_OUTPUT bytes, the DUT wrapper will send this data to the control board which forwards it to the PC.</p>
+<p>The DUT Wrapper – DUT interface</p>
+<p>The protocol follows a simle AXI stream protocol.
+The DUT (victim) is instantiated as follows in the FOBOS_DUT.vhd file.</p>
+<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="n">victim</span><span class="o">:</span> <span class="k">entity</span> <span class="nc">work</span><span class="p">.</span><span class="n">victim</span><span class="p">(</span><span class="n">behav</span><span class="p">)</span>
+    <span class="c1">-- Choices for W and SW are independently any multiple of 4, defined in generics above</span>
+    <span class="k">generic</span> <span class="k">map</span>  <span class="p">(</span>
+        <span class="n">G_W</span>          <span class="o">=&gt;</span> <span class="n">W</span><span class="p">,</span> <span class="c1">-- ! pdi and do width (mulltiple of 4)</span>
+        <span class="n">G_SW</span>         <span class="o">=&gt;</span> <span class="n">SW</span> <span class="c1">-- ! sdi width (multiple of 4)</span>
+    <span class="p">)</span>
+    <span class="k">port</span> <span class="k">map</span><span class="p">(</span>
+        <span class="n">clk</span> <span class="o">=&gt;</span> <span class="n">clk</span><span class="p">,</span>
+        <span class="n">rst</span> <span class="o">=&gt;</span> <span class="n">start</span><span class="p">,</span>
+        <span class="c1">-- data signals</span>
+        <span class="n">pdi_data</span>  <span class="o">=&gt;</span> <span class="n">pdi_data</span><span class="p">,</span>
+        <span class="n">pdi_valid</span> <span class="o">=&gt;</span> <span class="n">pdi_valid</span><span class="p">,</span>
+        <span class="n">pdi_ready</span> <span class="o">=&gt;</span> <span class="n">pdi_ready</span><span class="p">,</span>
+        <span class="n">sdi_data</span> <span class="o">=&gt;</span> <span class="n">sdi_data</span><span class="p">,</span>
+        <span class="n">sdi_valid</span> <span class="o">=&gt;</span> <span class="n">sdi_valid</span><span class="p">,</span>
+        <span class="n">sdi_ready</span> <span class="o">=&gt;</span> <span class="n">sdi_ready</span><span class="p">,</span>
+        <span class="n">do_data</span> <span class="o">=&gt;</span> <span class="n">result_data</span><span class="p">,</span>
+        <span class="n">do_ready</span> <span class="o">=&gt;</span> <span class="n">result_ready</span><span class="p">,</span>
+        <span class="n">do_valid</span> <span class="o">=&gt;</span> <span class="n">result_valid</span>
+
+    <span class="c1">--  ! if rdi_interface for side-channel protected versions is required,</span>
+    <span class="c1">--  ! uncomment the rdi interface</span>
+    <span class="c1">--  ,rdi_data =&gt; rdi_data,</span>
+    <span class="c1">--  rdi_ready =&gt; rdi_ready,</span>
+    <span class="c1">--  rdi_valid =&gt; rdi_valid</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>The generic W is the PDI and DO width.
+The generic SW is the SDI width.</p>
+<p>It is highly recommended that the DUT is tested using the sources/dut/fobos_dut_tb.vhd test bench and ensure that the result data in the do port is valid. This testbench needs one test vector to be stored in the file dinFile.txt (see  testVectorGeneration in doc/QickStart).</p>
+</div>
+<div class="section" id="dummy-dut-example">
+<h2>Dummy DUT Example<a class="headerlink" href="#dummy-dut-example" title="Permalink to this headline">¶</a></h2>
+<p>You can find an example dummy dut in</p>
+<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="k">library</span> <span class="nn">IEEE</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">IEEE.STD_LOGIC_1164.</span><span class="k">ALL</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">ieee.std_logic_unsigned.</span><span class="k">all</span><span class="p">;</span>
+<span class="k">entity</span> <span class="nc">dummy</span> <span class="k">is</span>
+    <span class="k">Generic</span><span class="p">(</span>
+        <span class="n">N</span>        <span class="o">:</span> <span class="kt">integer</span> <span class="o">:=</span> <span class="mi">8</span><span class="p">;</span>
+        <span class="n">NUMWORDS</span> <span class="o">:</span> <span class="kt">integer</span> <span class="o">:=</span> <span class="mi">6</span>
+    <span class="p">);</span>
+    <span class="k">port</span><span class="p">(</span><span class="n">clk</span>       <span class="o">:</span> <span class="k">in</span>  <span class="kt">STD_LOGIC</span><span class="p">;</span>
+         <span class="n">rst</span>       <span class="o">:</span> <span class="k">in</span>  <span class="kt">STD_LOGIC</span><span class="p">;</span>
+         <span class="n">pdi_data</span>  <span class="o">:</span> <span class="k">in</span>  <span class="kt">STD_LOGIC_VECTOR</span><span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">downto</span> <span class="mi">0</span><span class="p">);</span>
+         <span class="n">pdi_valid</span> <span class="o">:</span> <span class="k">in</span>  <span class="kt">STD_LOGIC</span><span class="p">;</span>
+         <span class="n">pdi_ready</span> <span class="o">:</span> <span class="k">out</span> <span class="kt">STD_LOGIC</span><span class="p">;</span>
+         <span class="n">sdi_data</span>  <span class="o">:</span> <span class="k">in</span>  <span class="kt">STD_LOGIC_VECTOR</span><span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">downto</span> <span class="mi">0</span><span class="p">);</span>
+         <span class="n">sdi_valid</span> <span class="o">:</span> <span class="k">in</span>  <span class="kt">STD_LOGIC</span><span class="p">;</span>
+         <span class="n">sdi_ready</span> <span class="o">:</span> <span class="k">out</span> <span class="kt">STD_LOGIC</span><span class="p">;</span>
+         <span class="n">do_data</span>   <span class="o">:</span> <span class="k">out</span> <span class="kt">STD_LOGIC_VECTOR</span><span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">downto</span> <span class="mi">0</span><span class="p">);</span>
+         <span class="n">do_valid</span>  <span class="o">:</span> <span class="k">out</span> <span class="kt">STD_LOGIC</span><span class="p">;</span>
+         <span class="n">do_ready</span>  <span class="o">:</span> <span class="k">in</span>  <span class="kt">STD_LOGIC</span>
+        <span class="p">);</span>
+<span class="k">end</span> <span class="nc">dummy</span><span class="p">;</span>
+
+<span class="k">architecture</span> <span class="nc">behav</span> <span class="k">of</span> <span class="nc">dummy</span> <span class="k">is</span>
+    <span class="k">type</span> <span class="n">state</span> <span class="k">is</span> <span class="p">(</span><span class="n">IDLE</span><span class="p">,</span> <span class="n">RUN</span><span class="p">);</span>
+    <span class="k">signal</span> <span class="n">current_state</span>             <span class="o">:</span> <span class="n">state</span><span class="p">;</span>
+    <span class="k">signal</span> <span class="n">next_state</span>                <span class="o">:</span> <span class="n">state</span><span class="p">;</span>
+    <span class="k">signal</span> <span class="n">cnt_clr</span><span class="p">,</span> <span class="n">cnt_en</span><span class="p">,</span> <span class="n">cnt_done</span> <span class="o">:</span> <span class="kt">std_logic</span><span class="p">;</span>
+    <span class="k">signal</span> <span class="n">cnt</span><span class="p">,</span> <span class="n">next_cnt</span>             <span class="o">:</span> <span class="kt">std_logic_vector</span><span class="p">(</span><span class="mi">15</span> <span class="k">downto</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="k">begin</span>
+
+    <span class="n">ctrl</span> <span class="o">:</span> <span class="k">process</span><span class="p">(</span><span class="n">clk</span><span class="p">)</span>
+    <span class="k">begin</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">rising_edge</span><span class="p">(</span><span class="n">clk</span><span class="p">))</span> <span class="k">then</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">rst</span> <span class="o">=</span> <span class="sc">&#39;1&#39;</span><span class="p">)</span> <span class="k">then</span>
+                <span class="n">current_state</span> <span class="o">&lt;=</span> <span class="n">IDLE</span><span class="p">;</span>
+            <span class="k">else</span>
+                <span class="n">current_state</span> <span class="o">&lt;=</span> <span class="n">next_state</span><span class="p">;</span>
+            <span class="k">end</span> <span class="k">if</span><span class="p">;</span>
+
+        <span class="k">end</span> <span class="k">if</span><span class="p">;</span>
+
+    <span class="k">end</span> <span class="k">process</span><span class="p">;</span>
+
+    <span class="n">comb</span> <span class="o">:</span> <span class="k">process</span><span class="p">(</span><span class="n">current_state</span><span class="p">,</span> <span class="n">pdi_valid</span><span class="p">,</span> <span class="n">sdi_valid</span><span class="p">,</span> <span class="n">do_ready</span><span class="p">,</span> <span class="n">cnt_done</span><span class="p">)</span>
+    <span class="k">begin</span>
+        <span class="c1">-- defaults</span>
+        <span class="n">pdi_ready</span> <span class="o">&lt;=</span> <span class="sc">&#39;0&#39;</span><span class="p">;</span>
+        <span class="n">sdi_ready</span> <span class="o">&lt;=</span> <span class="sc">&#39;0&#39;</span><span class="p">;</span>
+        <span class="n">do_valid</span>  <span class="o">&lt;=</span> <span class="sc">&#39;0&#39;</span><span class="p">;</span>
+        <span class="n">cnt_clr</span>   <span class="o">&lt;=</span> <span class="sc">&#39;0&#39;</span><span class="p">;</span>
+        <span class="n">cnt_en</span>    <span class="o">&lt;=</span> <span class="sc">&#39;0&#39;</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="n">current_state</span> <span class="k">is</span>
+            <span class="k">when</span> <span class="n">IDLE</span> <span class="o">=&gt;</span>
+                <span class="n">cnt_clr</span> <span class="o">&lt;=</span> <span class="sc">&#39;1&#39;</span><span class="p">;</span>
+                <span class="k">if</span> <span class="n">pdi_valid</span> <span class="o">=</span> <span class="sc">&#39;1&#39;</span> <span class="k">and</span> <span class="n">sdi_valid</span> <span class="o">=</span> <span class="sc">&#39;1&#39;</span> <span class="k">and</span> <span class="n">do_ready</span> <span class="o">=</span> <span class="sc">&#39;1&#39;</span> <span class="k">then</span>
+                    <span class="n">next_state</span> <span class="o">&lt;=</span> <span class="n">RUN</span><span class="p">;</span>
+                <span class="k">else</span>
+                    <span class="n">next_state</span> <span class="o">&lt;=</span> <span class="n">IDLE</span><span class="p">;</span>
+                <span class="k">end</span> <span class="k">if</span><span class="p">;</span>
+
+            <span class="k">when</span> <span class="n">RUN</span> <span class="o">=&gt;</span>
+                <span class="k">if</span> <span class="n">cnt_done</span> <span class="o">=</span> <span class="sc">&#39;1&#39;</span> <span class="k">then</span>
+                    <span class="n">next_state</span> <span class="o">&lt;=</span> <span class="n">IDLE</span><span class="p">;</span>
+                <span class="k">else</span>
+                    <span class="k">if</span> <span class="n">pdi_valid</span> <span class="o">=</span> <span class="sc">&#39;1&#39;</span> <span class="k">and</span> <span class="n">sdi_valid</span> <span class="o">=</span> <span class="sc">&#39;1&#39;</span> <span class="k">and</span> <span class="n">do_ready</span> <span class="o">=</span> <span class="sc">&#39;1&#39;</span> <span class="k">then</span>
+                        <span class="n">pdi_ready</span> <span class="o">&lt;=</span> <span class="sc">&#39;1&#39;</span><span class="p">;</span>
+                        <span class="n">sdi_ready</span> <span class="o">&lt;=</span> <span class="sc">&#39;1&#39;</span><span class="p">;</span>
+                        <span class="n">do_valid</span>  <span class="o">&lt;=</span> <span class="sc">&#39;1&#39;</span><span class="p">;</span>
+                        <span class="n">cnt_en</span>    <span class="o">&lt;=</span> <span class="sc">&#39;1&#39;</span><span class="p">;</span>
+                    <span class="k">end</span> <span class="k">if</span><span class="p">;</span>
+                    <span class="n">next_state</span> <span class="o">&lt;=</span> <span class="n">RUN</span><span class="p">;</span>
+                <span class="k">end</span> <span class="k">if</span><span class="p">;</span>
+
+            <span class="k">when</span> <span class="k">others</span> <span class="o">=&gt;</span>
+                <span class="n">next_state</span> <span class="o">&lt;=</span> <span class="n">IDLE</span><span class="p">;</span>
+
+        <span class="k">end</span> <span class="k">case</span><span class="p">;</span>
+
+    <span class="k">end</span> <span class="k">process</span><span class="p">;</span>
+    <span class="c1">--do_data &lt;= pdi_data xor sdi_data;</span>
+    <span class="n">do_data</span> <span class="o">&lt;=</span> <span class="n">pdi_data</span><span class="p">;</span>
+
+    <span class="n">count</span> <span class="o">:</span> <span class="k">process</span><span class="p">(</span><span class="n">clk</span><span class="p">)</span>
+    <span class="k">begin</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">rising_edge</span><span class="p">(</span><span class="n">clk</span><span class="p">))</span> <span class="k">then</span>
+            <span class="n">cnt</span> <span class="o">&lt;=</span> <span class="n">next_cnt</span><span class="p">;</span>
+        <span class="k">end</span> <span class="k">if</span><span class="p">;</span>
+    <span class="k">end</span> <span class="k">process</span><span class="p">;</span>
+    <span class="n">next_cnt</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="k">others</span> <span class="o">=&gt;</span> <span class="sc">&#39;0&#39;</span><span class="p">)</span> <span class="k">when</span> <span class="n">cnt_clr</span> <span class="o">=</span> <span class="sc">&#39;1&#39;</span>
+                <span class="k">else</span> <span class="n">cnt</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">when</span> <span class="n">cnt_en</span> <span class="o">=</span> <span class="sc">&#39;1&#39;</span>
+                <span class="k">else</span> <span class="n">cnt</span><span class="p">;</span>
+
+    <span class="n">cnt_done</span> <span class="o">&lt;=</span> <span class="sc">&#39;1&#39;</span> <span class="k">when</span> <span class="p">(</span><span class="n">cnt</span> <span class="o">=</span> <span class="n">NUMWORDS</span><span class="p">)</span> <span class="k">else</span> <span class="sc">&#39;0&#39;</span><span class="p">;</span>
+
+<span class="k">end</span> <span class="nc">behav</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dut_board_setup.html" class="btn btn-neutral float-right" title="DUT Board Setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tvgen.html" class="btn btn-neutral float-left" title="Test Vector Generation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CERG
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>T-test Leakage Assessment &mdash; Flexible Opensource workBench fOr Side-channel analysis (FOBOS) 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="reference_doc.html" />
+    <link rel="prev" title="Breaking AES Implementation With CPA" href="aes_cpa_example.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Flexible Opensource workBench fOr Side-channel analysis (FOBOS)
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tvgen.html">Test Vector Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dutdev.html">DUT Algorithm Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dut_board_setup.html">DUT Board Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capture_data.html">Data Acquisition - Processing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capture_scope.html">Data Acquisition - Collecting Traces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controller_features.html">Control Board Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpa.html">Running Correlation Power Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example.html">Breaking AES Implementation With CPA</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">T-test Leakage Assessment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#t-test-flow">T-test Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-vector-generation">Test vector generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#peforming-a-t-test">Peforming a t-test</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference_doc.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Flexible Opensource workBench fOr Side-channel analysis (FOBOS)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>T-test Leakage Assessment</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/t_test.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="t-test-leakage-assessment">
+<h1>T-test Leakage Assessment<a class="headerlink" href="#t-test-leakage-assessment" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="t-test-flow">
+<h2>T-test Flow<a class="headerlink" href="#t-test-flow" title="Permalink to this headline">¶</a></h2>
+<p>Welch’s T-test is used as a tool for leakage assessment. This guide describes using FOBOS to perform a fixed-vs-random t-test.</p>
+<p>To perform a t-test you need to generate test-vectors that interleaves fixed and random traces.
+FOBOS data acquisition is run t get the traces, then the traces are splitted into two sets and the statistical Welch’s t-test is done.</p>
+<div class="figure align-center" id="id1">
+<img alt="_images/t_test_flow.png" src="_images/t_test_flow.png" />
+<p class="caption"><span class="caption-text">T test flow</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="test-vector-generation">
+<h2>Test vector generation<a class="headerlink" href="#test-vector-generation" title="Permalink to this headline">¶</a></h2>
+<p>The user generates the test-vector file and a meta file that specifies with test vectors are random and which are fixed.
+Fixed-vs-random t-test uses interleaved fixed and random test vectors. We can select a fixed test vector D and create as set of test vectors that  interleaves D and a randomly selected test vector. The interleaving is random.
+For example the following test vector can be used to perform a t-test on an algorithm implemented on FOBOS DUT.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="mi">00</span><span class="n">C001607000000020000000D600000CB0B1B2B3B4B</span> <span class="o">...</span>
+</span><span class="mi">00</span><span class="n">C001607000000020000000D600000C0EEB8882501</span> <span class="o">...</span>
+<span class="mi">00</span><span class="n">C001607000000020000000D600000CF402296C454</span> <span class="o">...</span>
+<span class="hll"><span class="mi">00</span><span class="n">C001607000000020000000D600000CB0B1B2B3B4B</span> <span class="o">...</span>
+</span><span class="mi">00</span><span class="n">C001607000000020000000D600000CE919E2FC539</span> <span class="o">...</span>
+<span class="hll"><span class="mi">00</span><span class="n">C001607000000020000000D600000CB0B1B2B3B4B</span> <span class="o">...</span>
+</span><span class="hll"><span class="mi">00</span><span class="n">C001607000000020000000D600000CB0B1B2B3B4B</span> <span class="o">...</span>
+</span><span class="o">.</span>
+<span class="o">.</span>
+</pre></div>
+</div>
+<p>The corresponding fvrchoicefile specifies which traces are random ‘1’ and which are fixed ‘0’.
+For example the fvrchoicefile that corresponds to the test-vectors above is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0110100</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="tvgen.html#tvgen-label"><span class="std std-ref">Test Vector Generation</span></a> for more information.</p>
+</div>
+<div class="section" id="peforming-a-t-test">
+<h2>Peforming a t-test<a class="headerlink" href="#peforming-a-t-test" title="Permalink to this headline">¶</a></h2>
+<p>Once traces have been collected, scripts are used to perform the t-test.</p>
+<p>1- Copy the <em>cleanTraces.py</em>, <em>splitter.py</em> and <em>t-test2.py</em>  scipts from fobos/software/tools/t-test to the locatation where you have the power
+traces you collected.</p>
+<p>2- Make sure you have your trace file named <em>powerTraces.npy</em> and your fvr choice file named <em>fvrchoicefile.txt</em>. These need to be at The
+same directory as the scripts copied in step 1.</p>
+<p>3- Convert the power traces format using the read_traces.py. Blow, you can find the parameters used with this script.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python read_traces.py -h
+<span class="c1">###### readtraces.py script</span>
+usage: read_traces.py <span class="o">[</span>-h<span class="o">]</span> source_file destination_file num_of_traces
+
+positional arguments:
+source_file       Traces from FOBOS dataAcquisition
+destination_file  .npy file that store traces as MxN Nupmy array.
+num_of_traces     .npy file that store traces as MxN Nupmy array.
+
+optional arguments:
+-h, --help        show this <span class="nb">help</span> message and <span class="nb">exit</span>
+</pre></div>
+</div>
+<p>For exmple, the following command takes the powerTraces.npy file and coverts it to cleanTraces.npy and it uses only the
+first 2000 traces.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">read_traces</span><span class="o">.</span><span class="n">py</span> <span class="n">powerTraces</span><span class="o">.</span><span class="n">npy</span> <span class="n">cleanTraces</span><span class="o">.</span><span class="n">npy</span> <span class="mi">2000</span>
+</pre></div>
+</div>
+<p>4-  Next, we split the cleanTraces.npy file into two trace files</p>
+<ul class="simple">
+<li><p><em>traces0.npy</em> for the traces that came from the fixed test vector</p></li>
+<li><p><em>traces1.npy</em> for traces that came from using the random test veectors.</p></li>
+</ul>
+<p>To do this, splitter.py needs the fvrchoicefile.txt file. It also needs to know how many traces to consider.
+These are configurable parameters in the script. Here is all the parameters you can edit in splitter.py:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">######Parameters</span>
+<span class="n">MAX_TRACE</span><span class="o">=</span><span class="mi">2000</span>
+<span class="n">traces0File</span> <span class="o">=</span> <span class="s1">&#39;traces0.npy&#39;</span>
+<span class="n">traces1File</span> <span class="o">=</span> <span class="s1">&#39;traces1.npy&#39;</span>
+<span class="n">fvrFile</span> <span class="o">=</span> <span class="s1">&#39;fvrchoicefile.txt&#39;</span>
+<span class="n">cleanTraceFile</span> <span class="o">=</span> <span class="s1">&#39;cleanTraces.npy&#39;</span>
+<span class="c1">##########################</span>
+</pre></div>
+</div>
+<p>Once you configure the parameters, you can run splitter using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">splitter</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>The reuslt will be 2 files called traces0.npy and traces1.npy.</p>
+<p>5- The two files are now ready to be fed into the <em>t-test2.py</em> script to perform the t-test. Here are the parameters that this script needs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python t-test2.py -h
+usage: t-test2.py [-h] trace_file0 trace_file1 plot_file
+
+positional arguments:
+trace_file0  .npy file that store traces as MxN Nupmy array
+trace_file1  .npy file that store traces as MxN Nupmy array
+plot_file    File name to store the output figure
+
+optional arguments:
+-h, --help   show this help message and exit
+</pre></div>
+</div>
+<p>Before running the script, also edit the plotting parameters in the script. These parameters specify the limits on the x and y axis.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameters ########</span>
+<span class="n">start_ylim</span> <span class="o">=</span> <span class="o">-</span><span class="mi">40</span>
+<span class="n">end_ylim</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">start_xlim</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">end_xlim</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="c1">#####################</span>
+</pre></div>
+</div>
+<p>This limits the t-values to -40-40 and displays samples from 0 to 1000 on the x-axis.</p>
+<p>Once you configure all the parameters, you can run the t-test using the following command.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">t</span><span class="o">-</span><span class="n">test2</span><span class="o">.</span><span class="n">py</span> <span class="n">traces0</span><span class="o">.</span><span class="n">npy</span> <span class="n">traces1</span><span class="o">.</span><span class="n">npy</span> <span class="n">result_t_test</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+<p>The output will be a file called result_t_test.png that shows the t-values on the y-axis and samples in the x-axis.
+Here is sample file that shows a failing test and a successful one:</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/aes_gcm_unprotected.png"><img alt="_images/aes_gcm_unprotected.png" src="_images/aes_gcm_unprotected.png" style="width: 400.0px; height: 300.0px;" /></a>
+<p class="caption"><span class="caption-text">T test on an unprotected AES-GCM implementation.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/aes_gcm_protected.png"><img alt="_images/aes_gcm_protected.png" src="_images/aes_gcm_protected.png" style="width: 400.0px; height: 300.0px;" /></a>
+<p class="caption"><span class="caption-text">T test on a protected AES-GCM implementation.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="reference_doc.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="aes_cpa_example.html" class="btn btn-neutral float-left" title="Breaking AES Implementation With CPA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CERG
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

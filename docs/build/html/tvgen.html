@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Test Vector Generation &mdash; Flexible Opensource workBench fOr Side-channel analysis (FOBOS) 2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DUT Algorithm Development" href="dutdev.html" />
+    <link rel="prev" title="Setup" href="setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Flexible Opensource workBench fOr Side-channel analysis (FOBOS)
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Test Vector Generation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#supported-commands">Supported commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-script">Using the script</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dutdev.html">DUT Algorithm Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dut_board_setup.html">DUT Board Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capture_data.html">Data Acquisition - Processing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capture_scope.html">Data Acquisition - Collecting Traces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controller_features.html">Control Board Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpa.html">Running Correlation Power Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example.html">Breaking AES Implementation With CPA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="t_test.html">T-test Leakage Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_doc.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Flexible Opensource workBench fOr Side-channel analysis (FOBOS)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Test Vector Generation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/tvgen.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="test-vector-generation">
+<span id="tvgen-label"></span><h1>Test Vector Generation<a class="headerlink" href="#test-vector-generation" title="Permalink to this headline">¶</a></h1>
+<p>The user must prepare test vectors before running data acquisition. User defined scripts or scripts provided with FOBOS can be used.
+The data acquisition scripts will send the test vectors one at a time and collect traces from the oscilloscope.
+The blockCipherTVGen.py can be used to generate test vectors to be used by block ciphers. The script is located at fobos/sources</p>
+<p>Here is a brief description for the test vector format</p>
+<div class="section" id="supported-commands">
+<h2>Supported commands<a class="headerlink" href="#supported-commands" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>00C0 # pdi fifo (length in bytes to follow)</p></li>
+<li><p>00C1 # sdi fifo (length in bytes to follow)</p></li>
+<li><p>00C2 # rdi fifo (length in bytes to follow)</p></li>
+<li><p>0081 # store expected output size (expected output size in bytes to follow)</p></li>
+<li><p>0080 # select command register (command to follow)</p></li>
+</ul>
+<p>FOBOS Protocol Example</p>
+<p>Here is an example of a signle test vector of the FOBOS protocol format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">00</span><span class="n">C0</span> <span class="c1"># pdi fifo (length in bytes to follow); FOBOS_CONTROL must assert di_valid</span>
+<span class="mi">0008</span> <span class="c1"># 8 bytes</span>
+<span class="n">FFFF</span>
+<span class="n">FFFF</span>
+<span class="n">FFFF</span>
+<span class="n">FFFF</span> <span class="c1"># 8 bytes, 16 bits at a time</span>
+<span class="mi">00</span><span class="n">C1</span> <span class="c1"># sdi fifo (length in bytes to follow)</span>
+<span class="mi">000</span><span class="n">A</span> <span class="c1"># 10 bytes</span>
+<span class="mi">0000</span>
+<span class="mi">0000</span>
+<span class="mi">0000</span>
+<span class="mi">0000</span>
+<span class="mi">0000</span> <span class="c1"># 10 bytes, 16 bits at a time</span>
+<span class="mi">0081</span> <span class="c1"># store expected output size</span>
+<span class="mi">0008</span> <span class="c1"># 8 bytes of output expected</span>
+<span class="mi">0080</span> <span class="c1"># select command register</span>
+<span class="mi">0001</span> <span class="c1"># &quot;start signal&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-the-script">
+<h2>Using the script<a class="headerlink" href="#using-the-script" title="Permalink to this headline">¶</a></h2>
+<p>The blockCipherTVGen.py is located at fobos/sources.
+There are two steps to use it:</p>
+<p>1- Set user defined parameters.
+2- Run the script. It will generate the test vector file and plaintext file (not required for acquisition).</p>
+<p>User Defined Parameters</p>
+<p>############user defined settings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRACE_NUM</span> <span class="o">=</span> <span class="o">&lt;&gt;</span>               <span class="c1">#Number of traces (plaintexts blocks to be sent to DUT) e.g 1000</span>
+<span class="n">PDI_LENGTH</span> <span class="o">=</span> <span class="o">&lt;&gt;</span>               <span class="c1">#Plaintext length in byets e.g 16</span>
+<span class="n">SDI_LENGTH</span> <span class="o">=</span> <span class="o">&lt;&gt;</span>               <span class="c1">#Key length in bytes e.g. 16</span>
+<span class="n">EXPECTED_OUT</span> <span class="o">=</span> <span class="o">&lt;&gt;</span>         <span class="c1">#Expected output in bytes i.e ciphertext length e.g 16</span>
+<span class="n">DIN_FILE</span> <span class="o">=</span> <span class="o">&lt;&gt;</span>                      <span class="c1">#desitination file name e.g dinFile.txt</span>
+<span class="n">FIXED_KEY</span> <span class="o">=</span> <span class="o">&lt;&gt;</span>                 <span class="c1">#Fixed key = yes | no e.g &#39;no&#39;</span>
+<span class="n">KEY</span> <span class="o">=</span>  <span class="o">&lt;&gt;</span>                              <span class="c1"># Fixed key (if needed) e.g. &#39;00112233445566778899AABBCCDDEEFF&#39;</span>
+</pre></div>
+</div>
+<p>Example</p>
+<p>Here is an example to generate 4 test vectors with 16 byte blocks, key and ciphertext. Key is fixed in this case:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">############user defined settings</span>
+<span class="n">TRACE_NUM</span> <span class="o">=</span> <span class="mi">4</span>             <span class="c1">#Number of traces</span>
+<span class="n">PDI_LENGTH</span> <span class="o">=</span> <span class="mi">16</span>           <span class="c1">#In byets</span>
+<span class="n">SDI_LENGTH</span> <span class="o">=</span> <span class="mi">16</span>            <span class="c1">#In bytes</span>
+<span class="n">EXPECTED_OUT</span> <span class="o">=</span> <span class="mi">16</span>          <span class="c1">#expected output in bytes</span>
+<span class="n">DIN_FILE</span> <span class="o">=</span> <span class="s1">&#39;dinFile.txt&#39;</span>  <span class="c1">#desitination file name</span>
+<span class="n">FIXED_KEY</span> <span class="o">=</span> <span class="s1">&#39;yes&#39;</span>          <span class="c1">#Fixed key = yes | no</span>
+<span class="n">KEY</span> <span class="o">=</span>  <span class="s1">&#39;00112233445566778899AABBCCDDEEFF&#39;</span> <span class="c1"># Fixed key (if needed)</span>
+</pre></div>
+</div>
+<p>$ python blockCipherTVGen.py</p>
+<p>Here is how the generated dinFile.txt looks like.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat dinFile.txt
+00C00010B4900D0ECC646D4858C9125B3B61F76700C1001000112233445566778899AABBCCDDEEFF0081001000800001
+00C00010E1361496BA8F078ED02DC1283C2F98C200C1001000112233445566778899AABBCCDDEEFF0081001000800001
+00C0001050424A6E6EEED8C15D7DB737771FBE7400C1001000112233445566778899AABBCCDDEEFF0081001000800001
+00C00010FCC8863498CD255ED57F864FD02824A800C1001000112233445566778899AABBCCDDEEFF0081001000800001
+</pre></div>
+</div>
+<p>This file can now be used in FOBOS as a test vector file.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dutdev.html" class="btn btn-neutral float-right" title="DUT Algorithm Development" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="setup.html" class="btn btn-neutral float-left" title="Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CERG
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
