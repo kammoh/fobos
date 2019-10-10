@@ -363,12 +363,12 @@ int processData(u32 testVectorSize){
       //if (DUT_CONTROLLER_mReadReg(DUT_CTRL_BASE, CTRL_STATUS_REG_OFFSET) == CTRL_TIMEOUT){
       if(t > config[TIMEOUT]){
          //resetAll();
-         forceReset();
+      /////   forceReset();
          //reset fifo
-         XLlFifo_Reset(&FifoInstance);
-         XLlFifo_Reset(&TestFifoInstance);
-         releaseReset();
-         return S_TIMEOUT;
+      /////   XLlFifo_Reset(&FifoInstance);
+      /////   XLlFifo_Reset(&TestFifoInstance);
+      ////   releaseReset();
+      ////   return S_TIMEOUT;
       }
    }
    if(config[TIME_TO_RST] == 0){//if we will reset dut, expect no result
@@ -465,9 +465,9 @@ int TxSend(XLlFifo *InstancePtr, u32  *SourceAddr, u32 dataSize)
       //  status = DUT_CONTROLLER_mReadReg(DUT_CTRL_BASE, CTRL_STATUS_REG_OFFSET);
       //  }
       t = XTmrCtr_GetValue(&TimerCounter, 0);
-      if (t > config[TIMEOUT]){
-         return S_TIMEOUT;
-      }
+      //////if (t > config[TIMEOUT]){
+      /////   return S_TIMEOUT;
+      /////}
    }
    //xil_printf("txDone... \r\n");
    return S_OK;

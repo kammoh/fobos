@@ -50,3 +50,4 @@ NET "di_valid"   LOC = "C12" |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = I
 NET "clk"       LOC = "G11" |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L40P,                           Sch name = JD1
 # ======================== CLOCK SIGNAL ====================================
 NET "rst"       LOC = "H3"  |IOSTANDARD = "LVCMOS33";   #Bank = 3, Pin name = IO_L44N_GCLK20_M3A6,               Sch name = JC1
+NET "clk" CLOCK_DEDICATED_ROUTE = FALSE

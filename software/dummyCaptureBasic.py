@@ -15,60 +15,29 @@
 #   limitations under the License.                                          #
 #                                                                           #
 #############################################################################
-import os
-import shutil
 import fobos
 # Constants###########################################################
-WORKSPACE = "../workspace"
-PROJECT_NAME = "dummyProject"
-DIN_FILE_NAME = "dinFile.txt"
-CIPHER_FILE = "ciphertext.txt"
-TRACE_FILE = "powerTraces.npy"
-DUT_BIT_FILE = "FOBOS_DUT.bit"
 SERIAL_PORT = '/dev/ttyUSB1'
-TRACE_NUM = 100
-DUT_CLk = 1
+TRACE_NUM = 5
 OUT_LEN = 7
-TIMEOUT = 5
-TRIG_WAIT = 1
-TRIG_LENGTH = 1
-TRIG_MODE_NORM = 0
-TRIG_MODE_FULL = 1
-TIME_TO_RST = 0
 # Instantiate FOBOS objects###########################################
+print("Sending configuration...")
 ctrl = fobos.Basys3Ctrl(SERIAL_PORT)
-ctrl.setDUTClk(DUT_CLk)
 ctrl.enableTestMode()
-ctrl.setTimeToReset(TIME_TO_RST)
 ctrl.setOutLen(OUT_LEN)
-ctrl.setTimeout(TIMEOUT)
-ctrl.setTriggerWait(TRIG_WAIT)
-ctrl.setTriggerLen(TRIG_LENGTH)
-ctrl.setTriggerMode(TRIG_MODE_FULL)
+# Run DUT operations
+testVectors = ['00c0000761996dc996d4ac00c100070f7821507a22a00081000700800001',
+               '00c00007fd8771fe717de400c100073e1fe5b4aa357c0081000700800001',
+               '00c0000782051f5484702200c10007980d05d4ea25bc0081000700800001',
+               '00c0000767881b702afe5200c10007b08a5e036de72b0081000700800001',
+               '00c0000726a1d601ccdf7a00c1000773539e52672d5d0081000700800001']
 
-# Configure project directories#########################################
-pm = fobos.ProjectManager()
-pm.setWorkSpaceDir(WORKSPACE)
-pm.setProjName(PROJECT_NAME)
-projDir = pm.getProjDir()
-
-tvFileName = os.path.join(projDir, DIN_FILE_NAME)
-tvFile = open(tvFileName, "r")
-captureDir = pm.getCaptureDir()
-cipherFileName = os.path.join(captureDir, CIPHER_FILE)
-cipherFile = open(cipherFileName, "w")
-shutil.copy(tvFileName, captureDir)
-# Get traces############################################################
 print 'Sending data..'
 traceNum = 0
 while traceNum < TRACE_NUM:
-    data = tvFile.readline()
+    data = testVectors[traceNum]
     status, result = ctrl.processData(data, OUT_LEN)
     if status != fobos.OK:
         print "TIMEOUT"
     print(result)
-    cipherFile.write(result + "\n")
     traceNum += 1
-
-tvFile.close()
-cipherFile.close()
