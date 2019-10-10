@@ -155,6 +155,7 @@ int main(void)
       config[i] = 0;
    }
    //default timeout 5 sec
+   testMode = 0;
    setTimeOut(5);
    u16 DeviceId = UARTLITE_DEVICE_ID;
    Status = XUartLite_Initialize(&UartLite, DeviceId);
@@ -363,12 +364,12 @@ int processData(u32 testVectorSize){
       //if (DUT_CONTROLLER_mReadReg(DUT_CTRL_BASE, CTRL_STATUS_REG_OFFSET) == CTRL_TIMEOUT){
       if(t > config[TIMEOUT]){
          //resetAll();
-      /////   forceReset();
+         forceReset();
          //reset fifo
-      /////   XLlFifo_Reset(&FifoInstance);
-      /////   XLlFifo_Reset(&TestFifoInstance);
-      ////   releaseReset();
-      ////   return S_TIMEOUT;
+         XLlFifo_Reset(&FifoInstance);
+         XLlFifo_Reset(&TestFifoInstance);
+         releaseReset();
+         return S_TIMEOUT;
       }
    }
    if(config[TIME_TO_RST] == 0){//if we will reset dut, expect no result
@@ -440,7 +441,7 @@ int TxSend(XLlFifo *InstancePtr, u32  *SourceAddr, u32 dataSize)
    if (dataSize % 4 != 0){
       numWords = dataSize / 4 + 1;
    }else{
-      numWords = dataSize;
+      numWords = dataSize/ 4;
    }
    //for (j=0 ; j < (int)dataSize / 4  ; j++){
    for (j=0 ; j < numWords  ; j++){
@@ -465,9 +466,9 @@ int TxSend(XLlFifo *InstancePtr, u32  *SourceAddr, u32 dataSize)
       //  status = DUT_CONTROLLER_mReadReg(DUT_CTRL_BASE, CTRL_STATUS_REG_OFFSET);
       //  }
       t = XTmrCtr_GetValue(&TimerCounter, 0);
-      //////if (t > config[TIMEOUT]){
-      /////   return S_TIMEOUT;
-      /////}
+      if (t > config[TIMEOUT]){
+         return S_TIMEOUT;
+      }
    }
    //xil_printf("txDone... \r\n");
    return S_OK;
@@ -560,8 +561,9 @@ void setTriggerMode(u32 mode){
 
 void setInterfaceType(){
    //This version uses legacy interface only only.
-   DUTCOMM_write(INT_TYPE_REG_OFFSET, 1);
-   DUTCOMM_write(INT_TYPE_REG_OFFSET, 1);
+   //for both test and real DUT
+   DUTCOMM_mWriteReg(TEST_DUTCOMM_BASE, INT_TYPE_REG_OFFSET, 1);
+   DUTCOMM_mWriteReg(DUTCOMM_BASE, INT_TYPE_REG_OFFSET, 1);
 }
 
 /*****************************************************************************/
