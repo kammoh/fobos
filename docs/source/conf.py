@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Flexible Opensource workBench fOr Side-channel analysis (FOBOS)'
+project = 'FOBOS 2.0'
 copyright = '2019, CERG'
 author = 'Abubakr Abdulgadir, Jens-Peter Kaps'
 

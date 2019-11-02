@@ -1,8 +1,9 @@
 DUT Algorithm Development
 *************************
 
-This document describes how to interface the DUT (Design Under Test) or victim to the DUT Wrapper.
-The DUT is the algorithm to be attacked or tested.
+This document describes how to interface the DUT wrapper and the Function Core (victim).
+The  Function Core (a.k.a victim), is the algorithm to be tested. The DUT wrapper is hardware that is instantaited at the same
+FPGA as the function core and used to communication to the control board.
 The DUT or victim algorithm is user provided. However, the DUT wrapper is included with FOBOS.
 The DUT Wrapper handles communication to the control board and includes FIFOs to store input data for the DUT along with output FIFO.
 
@@ -10,15 +11,20 @@ The DUT Wrapper handles communication to the control board and includes FIFOs to
 Data flow description:
 ======================
 
-Test vectors are sent form PC one at a time to the control board which stores them breifly in a FIFO.
-The PC sends a command indicating test vector is complete. This will initiates the process of sending the data from the controller to the DUT through the interface shown in the figure above.
+Test vectors are sent form PC one at a time to the control board which stores them breifly.
+The control board starts sending the test vector to the DUT board through the interface described below.
 The DUT wrapper then puts data in the correct FIFOs (PDI, SDI and RDI).
-Once the DUT wrapper receives the start command from the controller, it de-assersts the reset signal and the DUT will run and use the data in the FIFOs. The output of the DUT is stored in the DO fifo. Once the DO FIFO accumulates EXPECTED_OUTPUT bytes, the DUT wrapper will send this data to the control board which forwards it to the PC.
+Once the DUT wrapper receives the start command from the controller, it de-assersts the reset signal and the function core will run and consume the data in the FIFOs. 
+The output of the function core is stored in the DO fifo. 
+Once the DO FIFO accumulates EXPECTED_OUTPUT bytes, the DUT wrapper will send this data to the control board which forwards it to the PC.
 
 
-The DUT Wrapper – DUT interface
+The DUT Wrapper <–> DUT interface
+=================================
+The protocol follows a simple AXI stream protocol. The 'valid' signals indicates data from source are valid and 'ready' signals 
+indicates destination is ready to use data. When both 'valid' and 'ready' signals are set to logic 1, data is transfered.
+All the data signals shown in the listing below, are connected to the FIFOs PDI, SDI, RDI and DO.
 
-The protocol follows a simle AXI stream protocol.
 The DUT (victim) is instantiated as follows in the FOBOS_DUT.vhd file.
 
 .. code-block:: vhdl
@@ -55,12 +61,13 @@ The generic W is the PDI and DO width.
 The generic SW is the SDI width.
 
 
-It is highly recommended that the DUT is tested using the sources/dut/fobos_dut_tb.vhd test bench and ensure that the result data in the do port is valid. This testbench needs one test vector to be stored in the file dinFile.txt (see  testVectorGeneration in doc/QickStart).
+It is highly recommended that the DUT is tested using the capture/dut/fpga_dut/fobos_dut_tb.vhd test bench and ensure that the result data in the do port is valid. 
+This testbench needs one test vector to be stored in the file dinFile.txt.
 
 Dummy DUT Example
 =================
 
-You can find an example dummy dut in 
+You can find an example dummy dut in capture/dut/example_duts/dummy1
 
 
 .. code-block:: vhdl

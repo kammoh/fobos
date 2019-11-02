@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>DUT Algorithm Development &mdash; Flexible Opensource workBench fOr Side-channel analysis (FOBOS) 2.0 documentation</title>
+  <title>DUT Algorithm Development &mdash; FOBOS 2.0 2.0 documentation</title>
   
 
   
@@ -50,7 +50,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Flexible Opensource workBench fOr Side-channel analysis (FOBOS)
+            <a href="index.html" class="icon icon-home"> FOBOS 2.0
           
 
           
@@ -86,6 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="tvgen.html">Test Vector Generation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">DUT Algorithm Development</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#data-flow-description">Data flow description:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-dut-wrapper-dut-interface">The DUT Wrapper &lt;–&gt; DUT interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dummy-dut-example">Dummy DUT Example</a></li>
 </ul>
 </li>
@@ -112,7 +113,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Flexible Opensource workBench fOr Side-channel analysis (FOBOS)</a>
+          <a href="index.html">FOBOS 2.0</a>
         
       </nav>
 
@@ -164,19 +165,26 @@
             
   <div class="section" id="dut-algorithm-development">
 <h1>DUT Algorithm Development<a class="headerlink" href="#dut-algorithm-development" title="Permalink to this headline">¶</a></h1>
-<p>This document describes how to interface the DUT (Design Under Test) or victim to the DUT Wrapper.
-The DUT is the algorithm to be attacked or tested.
+<p>This document describes how to interface the DUT wrapper and the Function Core (victim).
+The  Function Core (a.k.a victim), is the algorithm to be tested. The DUT wrapper is hardware that is instantaited at the same
+FPGA as the function core and used to communication to the control board.
 The DUT or victim algorithm is user provided. However, the DUT wrapper is included with FOBOS.
 The DUT Wrapper handles communication to the control board and includes FIFOs to store input data for the DUT along with output FIFO.</p>
 <div class="section" id="data-flow-description">
 <h2>Data flow description:<a class="headerlink" href="#data-flow-description" title="Permalink to this headline">¶</a></h2>
-<p>Test vectors are sent form PC one at a time to the control board which stores them breifly in a FIFO.
-The PC sends a command indicating test vector is complete. This will initiates the process of sending the data from the controller to the DUT through the interface shown in the figure above.
+<p>Test vectors are sent form PC one at a time to the control board which stores them breifly.
+The control board starts sending the test vector to the DUT board through the interface described below.
 The DUT wrapper then puts data in the correct FIFOs (PDI, SDI and RDI).
-Once the DUT wrapper receives the start command from the controller, it de-assersts the reset signal and the DUT will run and use the data in the FIFOs. The output of the DUT is stored in the DO fifo. Once the DO FIFO accumulates EXPECTED_OUTPUT bytes, the DUT wrapper will send this data to the control board which forwards it to the PC.</p>
-<p>The DUT Wrapper – DUT interface</p>
-<p>The protocol follows a simle AXI stream protocol.
-The DUT (victim) is instantiated as follows in the FOBOS_DUT.vhd file.</p>
+Once the DUT wrapper receives the start command from the controller, it de-assersts the reset signal and the function core will run and consume the data in the FIFOs.
+The output of the function core is stored in the DO fifo.
+Once the DO FIFO accumulates EXPECTED_OUTPUT bytes, the DUT wrapper will send this data to the control board which forwards it to the PC.</p>
+</div>
+<div class="section" id="the-dut-wrapper-dut-interface">
+<h2>The DUT Wrapper &lt;–&gt; DUT interface<a class="headerlink" href="#the-dut-wrapper-dut-interface" title="Permalink to this headline">¶</a></h2>
+<p>The protocol follows a simple AXI stream protocol. The ‘valid’ signals indicates data from source are valid and ‘ready’ signals
+indicates destination is ready to use data. When both ‘valid’ and ‘ready’ signals are set to logic 1, data is transfered.
+All the data signals shown in the listing below, are connected to the FIFOs PDI, SDI, RDI and DO.</p>
+<p>The DUT (victim) is instantiated as follows in the FOBOS_DUT.vhd file.</p>
 <div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="n">victim</span><span class="o">:</span> <span class="k">entity</span> <span class="nc">work</span><span class="p">.</span><span class="n">victim</span><span class="p">(</span><span class="n">behav</span><span class="p">)</span>
     <span class="c1">-- Choices for W and SW are independently any multiple of 4, defined in generics above</span>
     <span class="k">generic</span> <span class="k">map</span>  <span class="p">(</span>
@@ -207,7 +215,8 @@ The DUT (victim) is instantiated as follows in the FOBOS_DUT.vhd file.</p>
 </div>
 <p>The generic W is the PDI and DO width.
 The generic SW is the SDI width.</p>
-<p>It is highly recommended that the DUT is tested using the sources/dut/fobos_dut_tb.vhd test bench and ensure that the result data in the do port is valid. This testbench needs one test vector to be stored in the file dinFile.txt (see  testVectorGeneration in doc/QickStart).</p>
+<p>It is highly recommended that the DUT is tested using the capture/dut/fpga_dut/fobos_dut_tb.vhd test bench and ensure that the result data in the do port is valid.
+This testbench needs one test vector to be stored in the file dinFile.txt.</p>
 </div>
 <div class="section" id="dummy-dut-example">
 <h2>Dummy DUT Example<a class="headerlink" href="#dummy-dut-example" title="Permalink to this headline">¶</a></h2>

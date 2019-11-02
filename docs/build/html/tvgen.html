@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Test Vector Generation &mdash; Flexible Opensource workBench fOr Side-channel analysis (FOBOS) 2.0 documentation</title>
+  <title>Test Vector Generation &mdash; FOBOS 2.0 2.0 documentation</title>
   
 
   
@@ -50,7 +50,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Flexible Opensource workBench fOr Side-channel analysis (FOBOS)
+            <a href="index.html" class="icon icon-home"> FOBOS 2.0
           
 
           
@@ -84,8 +84,14 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Test Vector Generation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#supported-commands">Supported commands</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#using-the-script">Using the script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#supported-commands">Supported commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fobos-protocol-example">FOBOS Protocol Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-blockciphertvgen-py-script">Using the blockCipherTVGen.py script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-generating-aes-128-test-vectors">Example: Generating AES-128 test vectors</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dutdev.html">DUT Algorithm Development</a></li>
@@ -112,7 +118,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Flexible Opensource workBench fOr Side-channel analysis (FOBOS)</a>
+          <a href="index.html">FOBOS 2.0</a>
         
       </nav>
 
@@ -165,9 +171,26 @@
   <div class="section" id="test-vector-generation">
 <span id="tvgen-label"></span><h1>Test Vector Generation<a class="headerlink" href="#test-vector-generation" title="Permalink to this headline">¶</a></h1>
 <p>The user must prepare test vectors before running data acquisition. User defined scripts or scripts provided with FOBOS can be used.
-The data acquisition scripts will send the test vectors one at a time and collect traces from the oscilloscope.
-The blockCipherTVGen.py can be used to generate test vectors to be used by block ciphers. The script is located at fobos/sources</p>
-<p>Here is a brief description for the test vector format</p>
+The data acquisition scripts will send the test vectors one at a time and collect traces from the oscilloscope.</p>
+<p>Cryptographic hardware interfaces typically use multiple data types as input to cryptographic cores.
+For example, some algorithms might need plaintext/ciphertext, cryptographic keys, and random data.
+We provide a simple wrapper to split data provided by the control board to separate streams.
+This wrapper is directly compatible with CAESAR Hardware API interface and is expected to be directly compatible with a future Hardware API for Lightweight Cryptography (LWC API).
+We developed a simple, yet versatile protocol to enable the wrapper to split the data types.
+The wrapper receives data from the control board and distributes it into three FIFOs:</p>
+<ol class="arabic simple">
+<li><p>The Public Data Input (PDI) FIFO (i.e. plaintext)</p></li>
+<li><p>The Secret Data Input (SDI) FIFO (i.e. key)</p></li>
+<li><p>The Random Data Input (RDI) FIFO which stores random data which can be used for protected implementations that use masking schemes.</p></li>
+</ol>
+<p>Once the wrapper prepares the data for the function core, it starts the core which consumes the data in the input FIFOs and produces output.
+The wrapper accumulates the output into a fourth FIFO called the Data Out (DO) FIFO until the expected number of bytes are stored.
+Then, the wrapper returns the data to the control board which forwards it back to the PC.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/fobos2-block.png"><img alt="_images/fobos2-block.png" src="_images/fobos2-block.png" style="height: 300px;" /></a>
+<p class="caption"><span class="caption-text">FOBOS2 block diagram</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>The following is a brief description for the test vector format</p>
 <div class="section" id="supported-commands">
 <h2>Supported commands<a class="headerlink" href="#supported-commands" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -177,21 +200,22 @@ The blockCipherTVGen.py can be used to generate test vectors to be used by block
 <li><p>0081 # store expected output size (expected output size in bytes to follow)</p></li>
 <li><p>0080 # select command register (command to follow)</p></li>
 </ul>
-<p>FOBOS Protocol Example</p>
-<p>Here is an example of a signle test vector of the FOBOS protocol format:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">00</span><span class="n">C0</span> <span class="c1"># pdi fifo (length in bytes to follow); FOBOS_CONTROL must assert di_valid</span>
+<div class="section" id="fobos-protocol-example">
+<h3>FOBOS Protocol Example<a class="headerlink" href="#fobos-protocol-example" title="Permalink to this headline">¶</a></h3>
+<p>Here is an example of a signle test vector(split into multiple lines):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">00</span><span class="n">C0</span> <span class="c1"># pdi fifo (length in bytes to follow)</span>
 <span class="mi">0008</span> <span class="c1"># 8 bytes</span>
+<span class="n">FFFF</span> <span class="c1"># 8 bytes of pdi</span>
 <span class="n">FFFF</span>
 <span class="n">FFFF</span>
 <span class="n">FFFF</span>
-<span class="n">FFFF</span> <span class="c1"># 8 bytes, 16 bits at a time</span>
 <span class="mi">00</span><span class="n">C1</span> <span class="c1"># sdi fifo (length in bytes to follow)</span>
 <span class="mi">000</span><span class="n">A</span> <span class="c1"># 10 bytes</span>
+<span class="mi">0000</span> <span class="c1"># 10 bytes of sdi</span>
 <span class="mi">0000</span>
 <span class="mi">0000</span>
 <span class="mi">0000</span>
 <span class="mi">0000</span>
-<span class="mi">0000</span> <span class="c1"># 10 bytes, 16 bits at a time</span>
 <span class="mi">0081</span> <span class="c1"># store expected output size</span>
 <span class="mi">0008</span> <span class="c1"># 8 bytes of output expected</span>
 <span class="mi">0080</span> <span class="c1"># select command register</span>
@@ -199,45 +223,56 @@ The blockCipherTVGen.py can be used to generate test vectors to be used by block
 </pre></div>
 </div>
 </div>
-<div class="section" id="using-the-script">
-<h2>Using the script<a class="headerlink" href="#using-the-script" title="Permalink to this headline">¶</a></h2>
-<p>The blockCipherTVGen.py is located at fobos/sources.
+</div>
+<div class="section" id="using-the-blockciphertvgen-py-script">
+<h2>Using the blockCipherTVGen.py script<a class="headerlink" href="#using-the-blockciphertvgen-py-script" title="Permalink to this headline">¶</a></h2>
+<p>The blockCipherTVGen.py can be used to generate test vectors to be used by block ciphers. The script is located at fobos/software/tvgen/
 There are two steps to use it:</p>
-<p>1- Set user defined parameters.
-2- Run the script. It will generate the test vector file and plaintext file (not required for acquisition).</p>
-<p>User Defined Parameters</p>
-<p>############user defined settings:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRACE_NUM</span> <span class="o">=</span> <span class="o">&lt;&gt;</span>               <span class="c1">#Number of traces (plaintexts blocks to be sent to DUT) e.g 1000</span>
-<span class="n">PDI_LENGTH</span> <span class="o">=</span> <span class="o">&lt;&gt;</span>               <span class="c1">#Plaintext length in byets e.g 16</span>
-<span class="n">SDI_LENGTH</span> <span class="o">=</span> <span class="o">&lt;&gt;</span>               <span class="c1">#Key length in bytes e.g. 16</span>
-<span class="n">EXPECTED_OUT</span> <span class="o">=</span> <span class="o">&lt;&gt;</span>         <span class="c1">#Expected output in bytes i.e ciphertext length e.g 16</span>
-<span class="n">DIN_FILE</span> <span class="o">=</span> <span class="o">&lt;&gt;</span>                      <span class="c1">#desitination file name e.g dinFile.txt</span>
-<span class="n">FIXED_KEY</span> <span class="o">=</span> <span class="o">&lt;&gt;</span>                 <span class="c1">#Fixed key = yes | no e.g &#39;no&#39;</span>
-<span class="n">KEY</span> <span class="o">=</span>  <span class="o">&lt;&gt;</span>                              <span class="c1"># Fixed key (if needed) e.g. &#39;00112233445566778899AABBCCDDEEFF&#39;</span>
-</pre></div>
-</div>
-<p>Example</p>
-<p>Here is an example to generate 4 test vectors with 16 byte blocks, key and ciphertext. Key is fixed in this case:</p>
+<ol class="arabic simple">
+<li><p>Set user defined parameters.</p></li>
+<li><p>Run the script. It will generate the test vector file and plaintext file (not required for acquisition).</p></li>
+</ol>
+<div class="section" id="example-generating-aes-128-test-vectors">
+<h3>Example: Generating AES-128 test vectors<a class="headerlink" href="#example-generating-aes-128-test-vectors" title="Permalink to this headline">¶</a></h3>
+<p>AES-128 takes 16 bytes (128 bits) plaintext, 16 key and returns 16 byte ciphertext.
+Here is an example to generate 4 test vectors with 16 byte blocks, key and ciphertext. Key is fixed in this case.</p>
+<p>Settings:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">############user defined settings</span>
-<span class="n">TRACE_NUM</span> <span class="o">=</span> <span class="mi">4</span>             <span class="c1">#Number of traces</span>
-<span class="n">PDI_LENGTH</span> <span class="o">=</span> <span class="mi">16</span>           <span class="c1">#In byets</span>
-<span class="n">SDI_LENGTH</span> <span class="o">=</span> <span class="mi">16</span>            <span class="c1">#In bytes</span>
-<span class="n">EXPECTED_OUT</span> <span class="o">=</span> <span class="mi">16</span>          <span class="c1">#expected output in bytes</span>
-<span class="n">DIN_FILE</span> <span class="o">=</span> <span class="s1">&#39;dinFile.txt&#39;</span>  <span class="c1">#desitination file name</span>
-<span class="n">FIXED_KEY</span> <span class="o">=</span> <span class="s1">&#39;yes&#39;</span>          <span class="c1">#Fixed key = yes | no</span>
-<span class="n">KEY</span> <span class="o">=</span>  <span class="s1">&#39;00112233445566778899AABBCCDDEEFF&#39;</span> <span class="c1"># Fixed key (if needed)</span>
+<span class="n">TRACE_NUM</span> <span class="o">=</span> <span class="mi">1000</span>                           <span class="c1"># Number of traces</span>
+<span class="n">PDI_LENGTH</span> <span class="o">=</span> <span class="mi">16</span>                            <span class="c1"># In byets</span>
+<span class="n">SDI_LENGTH</span> <span class="o">=</span> <span class="mi">16</span>                            <span class="c1"># In bytes</span>
+<span class="n">EXPECTED_OUT</span> <span class="o">=</span> <span class="mi">16</span>                          <span class="c1"># Expected output in bytes</span>
+<span class="n">DIN_FILE</span> <span class="o">=</span> <span class="s1">&#39;dinFile.txt&#39;</span>                   <span class="c1"># Desitination file name</span>
+<span class="n">PLAINTEXT_FILE</span> <span class="o">=</span> <span class="s1">&#39;plaintext.txt&#39;</span>           <span class="c1"># Desitination file name</span>
+<span class="n">FIXED_KEY</span> <span class="o">=</span> <span class="s1">&#39;yes&#39;</span>                          <span class="c1"># Fixed key = yes | no</span>
+<span class="n">KEY</span> <span class="o">=</span> <span class="s1">&#39;123456789009876ABCDFE12456789ABF&#39;</span>   <span class="c1"># Fixed key</span>
 </pre></div>
 </div>
-<p>$ python blockCipherTVGen.py</p>
+<p>To run the script, use the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python blockCipherTVGen.py
+</pre></div>
+</div>
 <p>Here is how the generated dinFile.txt looks like.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat dinFile.txt
-00C00010B4900D0ECC646D4858C9125B3B61F76700C1001000112233445566778899AABBCCDDEEFF0081001000800001
-00C00010E1361496BA8F078ED02DC1283C2F98C200C1001000112233445566778899AABBCCDDEEFF0081001000800001
-00C0001050424A6E6EEED8C15D7DB737771FBE7400C1001000112233445566778899AABBCCDDEEFF0081001000800001
-00C00010FCC8863498CD255ED57F864FD02824A800C1001000112233445566778899AABBCCDDEEFF0081001000800001
+00C000103AD5305EBD0C99C7482263E2D7ECEAED00C10010123456789009876ABCDFE12456789ABF0081001000800001
+00C000105C09504D713BF9B5925601E671EA257800C10010123456789009876ABCDFE12456789ABF0081001000800001
+00C00010A6D6DE2548E4CCF446ECA8E620E4E55500C10010123456789009876ABCDFE12456789ABF0081001000800001
+00C00010E0792CDE9AFDA7EAC33A8D0EADE524CB00C10010123456789009876ABCDFE12456789ABF0081001000800001
+00C000104A09A00A4C4268F0B6F4FCE4F514A6BB00C10010123456789009876ABCDFE12456789ABF0081001000800001
 </pre></div>
 </div>
 <p>This file can now be used in FOBOS as a test vector file.</p>
+<p>A plaintext.txt file is also generated, it includes only the PDI portion dinFile.txt:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat plaintext.txt
+3A D5 30 5E BD 0C 99 C7 48 22 63 E2 D7 EC EA ED
+5C 09 50 4D 71 3B F9 B5 92 56 01 E6 71 EA 25 78
+A6 D6 DE 25 48 E4 CC F4 46 EC A8 E6 20 E4 E5 55
+E0 79 2C DE 9A FD A7 EA C3 3A 8D 0E AD E5 24 CB
+4A 09 A0 0A 4C 42 68 F0 B6 F4 FC E4 F5 14 A6 BB
+</pre></div>
+</div>
+<p>This file can be used later by the analysis module.</p>
+</div>
 </div>
 </div>
 

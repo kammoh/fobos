@@ -1,3 +1,5 @@
+.. _dut_board_setup-label:
+
 DUT Board Setup
 ***************
 

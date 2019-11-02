@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Setup &mdash; Flexible Opensource workBench fOr Side-channel analysis (FOBOS) 2.0 documentation</title>
+  <title>Setup &mdash; FOBOS 2.0 2.0 documentation</title>
   
 
   
@@ -50,7 +50,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Flexible Opensource workBench fOr Side-channel analysis (FOBOS)
+            <a href="index.html" class="icon icon-home"> FOBOS 2.0
           
 
           
@@ -84,8 +84,9 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Setup</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#software-installation">Software Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#hardware-setup">Hardware Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#software-setup">Software Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#control-board-setup">Control board Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-the-control-board">Testing the control board</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tvgen.html">Test Vector Generation</a></li>
@@ -113,7 +114,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Flexible Opensource workBench fOr Side-channel analysis (FOBOS)</a>
+          <a href="index.html">FOBOS 2.0</a>
         
       </nav>
 
@@ -165,18 +166,21 @@
             
   <div class="section" id="setup">
 <h1>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h1>
-<p>Below, we describe how to setup FOBOS hardware and software and test that everything is working.</p>
+<p>Below, we describe how to setup FOBOS 2.0 hardware and software and test that everything is working.
+This page only describes setting up the control board and software for acquisition and anlysis.
+For DUT board please refer to <a class="reference internal" href="dut_board_setup.html#dut-board-setup-label"><span class="std std-ref">DUT Board Setup</span></a>.</p>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li><p>Digilent Basys3 board</p></li>
-<li><p>A PC with Linux installed</p></li>
-<li><p>Python2 installed</p></li>
-<li><p>Xilinx Vivado 2017.2</p></li>
+<li><p>Digilent Basys3 board (control board).</p></li>
+<li><p>A PC with Linux installed.</p></li>
+<li><p>Python2.7 installed.</p></li>
+<li><p>Xilinx Vivado 2017.2.</p></li>
+<li><p>Picoscope 5000 series.</p></li>
 </ol>
 </div>
-<div class="section" id="software-installation">
-<h2>Software Installation<a class="headerlink" href="#software-installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="software-setup">
+<h2>Software Setup<a class="headerlink" href="#software-setup" title="Permalink to this headline">¶</a></h2>
 <p>Note: The following installation procedure is tested on Linux Ubuntu 16.04.</p>
 <ol class="arabic simple">
 <li><p>Download FOBOS from the <a class="reference external" href="https://cryptography.gmu.edu/fobos/getfobos.php">FOBOS home page</a>.</p></li>
@@ -186,21 +190,18 @@
 </pre></div>
 </div>
 <ol class="arabic simple" start="3">
-<li><p>Use the following commands to install the necessary Python packages:</p></li>
+<li><p>Use the following commands to install pip and few necessary Python packages:</p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install python-pip
-$ sudo pip install numpy
-$ sudo pip install pyserial
-$ sudo pip install matplotlib
-$ sudo pip install scipy
-$ sudo pip install configparser
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install python-pip
+$ tar xvfz fobos-v2.0.tgz
+$ pip isnatll -r requirements.txt
 </pre></div>
 </div>
 </div>
-<div class="section" id="hardware-setup">
-<h2>Hardware Setup<a class="headerlink" href="#hardware-setup" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="control-board-setup">
+<h2>Control board Setup<a class="headerlink" href="#control-board-setup" title="Permalink to this headline">¶</a></h2>
 <p>Follow these steps to compile the control software, generate the bitstream and program
-the configuration memory of the control board.</p>
+the the control board.</p>
 <ol class="arabic simple">
 <li><p>Build the control board Vivado project.</p></li>
 </ol>
@@ -216,7 +217,7 @@ $ make project
 <p class="caption"><span class="caption-text">Open Vivado project</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <ol class="arabic simple" start="3">
-<li><p>In the Flow Navigator window, click ‘Generate Bitstream’.</p></li>
+<li><p>In Vivado’s Flow Navigator window, click ‘Generate Bitstream’.</p></li>
 <li><p>After bitstream is generated, export the hardware. Click File &gt; Export &gt; Export Hardware … make sure to select ‘Include bitstream’.</p></li>
 </ol>
 <div class="figure align-center" id="id2">
@@ -230,7 +231,7 @@ $ make project
 <img alt="_images/launch_sdk.png" src="_images/launch_sdk.png" />
 <p class="caption"><span class="caption-text">Launch SDK</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-<p>6. In the SDK, create a new empty project(File&gt; New application project). After you right the project name and select
+<p>6. In the SDK, create a new empty project(File&gt; New application project). Set the project name to <em>ctrl</em> and select
 the hardware platform, click Next and make sure you select ‘Empty project’.</p>
 <div class="figure align-center" id="id4">
 <img alt="_images/create_sdk_app.png" src="_images/create_sdk_app.png" />
@@ -246,46 +247,41 @@ make sure to check “Advanced-&gt; Create links in the workspace” and “Crea
 <p class="caption"><span class="caption-text">Launch SDK</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 <ol class="arabic simple" start="8">
-<li><p>Right-click on the project you just created and select Build Configurations &gt; Set Active &gt; Release. Then right-click again and select Build Project.</p></li>
+<li><p>Program the control borad FPGA. Connect the Basys3 board to your PC via USB. In the Xilinx Tools menu, select Program FPGA -&gt; program.</p></li>
+<li><p>Run the control software. Make sure to select the <em>ctrl</em> project created in step 6 then go to the Run menu and select ‘Run’.</p></li>
+<li><p>You should see the word CERG in the seven-segment display of the Basys3 board.</p></li>
 </ol>
-<p>9. Make sure that there are no debug flags. Right-click the release folder under the project and select Properties. In the window that appears
-select C/C++ Build &gt; Settings &gt; Microblaze gcc Compiler &gt; Debugging and set Debug Level to ‘None’.</p>
-<div class="figure align-center" id="id6">
-<img alt="_images/release_settings.png" src="_images/release_settings.png" />
-<p class="caption"><span class="caption-text">Remove Debugging</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
-<p>Now the SDK generates an elf file for the controller software in fobos/capture/ctrl/basys3ctrl/vivado/basys3ctrl/basys3ctrl.sdk/ctrl/Release/.</p>
-<ol class="arabic simple" start="10">
-<li><p>Go back to Vivado &gt; IP Integrator &gt; Open Block Design.</p></li>
-<li><p>Right-click on the Microblaze processor and select ‘Associate ELF Files…’. Browse to the ctrl.elf file generated by the SDK.</p></li>
-</ol>
-<div class="figure align-center" id="id7">
-<img alt="_images/release_settings.png" src="_images/release_settings.png" />
-<p class="caption"><span class="caption-text">Associate ELF File</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<div class="section" id="testing-the-control-board">
+<h2>Testing the control board<a class="headerlink" href="#testing-the-control-board" title="Permalink to this headline">¶</a></h2>
+<p>To make sure the control board is working, you can run the <em>dymmyCapture.py</em> script in the fobos/software directory.
+This script send data to the board wich echos data back.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd path-to-fobos/software
+$ python dummyCaptureBasic.py
+Sending configuration...
+f0030006000900000001
+Status= 00000000
+f0030006000000000007
+Status= 00000000
+Sending data..
+f001001e00c0000761996dc996d4ac00c100070f7821507a22a00081000700800001
+OK.    Status= 00000000
+61 99 6d c9 96 d4 ac
+f001001e00c00007fd8771fe717de400c100073e1fe5b4aa357c0081000700800001
+OK.    Status= 00000000
+fd 87 71 fe 71 7d e4
+f001001e00c0000782051f5484702200c10007980d05d4ea25bc0081000700800001
+OK.    Status= 00000000
+82 05 1f 54 84 70 22
+f001001e00c0000767881b702afe5200c10007b08a5e036de72b0081000700800001
+OK.    Status= 00000000
+67 88 1b 70 2a fe 52
+f001001e00c0000726a1d601ccdf7a00c1000773539e52672d5d0081000700800001
+OK.    Status= 00000000
+26 a1 d6 01 cc df 7a
+</pre></div>
 </div>
-<ol class="arabic simple" start="12">
-<li><p>Click Generate Bitstream.</p></li>
-<li><p>After the bitstream is generated, click Open Hardware Manager &gt; Open Target &gt; Auto Connect.</p></li>
-</ol>
-<p>14. Add the configuration memory device. In the Hardware window, right-click on the FPGA device and select ‘Add Configuration Memory Device …’.
-In the search area enter s25fl032p-spi-x1_x2_x4 and select the Spansion spi memory.</p>
-<ol class="arabic simple" start="14">
-<li><p>Under the Hardware window, right-click on the memory device and select ‘Program Configuration Memory Device’</p></li>
-</ol>
-<div class="figure align-center" id="id8">
-<img alt="_images/program_mem.png" src="_images/program_mem.png" />
-<p class="caption"><span class="caption-text">Configuration Memory</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</div>
-<ol class="arabic simple" start="15">
-<li><p>In the window that appears, browse to the .bin file PATH and select Erase, Program and Verify.</p></li>
-</ol>
-<div class="figure align-center" id="id9">
-<img alt="_images/basys3_program_flash.png" src="_images/basys3_program_flash.png" />
-<p class="caption"><span class="caption-text">Program Configuration Memory</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</div>
-<ol class="arabic simple" start="16">
-<li><p>Now, power cycle your Basys3 board and your controller is ready to use!</p></li>
-</ol>
+<p>If you see this output, your control board is now ready!</p>
 </div>
 </div>
 
