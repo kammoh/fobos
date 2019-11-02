@@ -1,5 +1,5 @@
 ###Make file to re-create the project and synthesize it from sources
-create_project:
+project:
 	vivado -mode batch -source build_proj.tcl
 synth: create_project
 	vivado -mode batch -source synth.tcl
