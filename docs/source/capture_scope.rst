@@ -10,16 +10,16 @@ This example code uses the Picoscope 5000 series (5244D) oscilloscope. To setup 
 refer to the manufacturer website.
 We expect that modifying the code to work with other series to be easy since the manufacturer provides an SDK.
 
-Power Measurement
------------------
+Power Measurement (Nexy3 DUT)
+-----------------------------
 
 The oscilloscope must be able to measure a voltage propotional to the power consumed by the device.
 You can use a current probe (e.g Tektronix CT-1). As shown below, we modified the DUT board so that we
-have jumper the power line (core FPGA voltage).
-we then used a bench power supply to power the FPGA. Note that the power wire goes through the current probe.
+have a jumper on the power line (core FPGA voltage).
+We then used a bench power supply to power the FPGA. Note that the power wire goes through the current probe.
 The power probe senses the current variations in the power wire and coverts that to volatge for the oscilloscope.
 
-TODO add figg
+TODO add fig
 
 An alternative method is to inster a hunt resistor in the power line and then measure the volatge drop 
 across the resistor.

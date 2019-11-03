@@ -38,8 +38,8 @@ Features
    introduction
    setup
    tvgen
-   dutdev
    dut_board_setup
+   dutdev
    capture_data
    capture_scope
    controller_features

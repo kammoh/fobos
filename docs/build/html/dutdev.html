@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="DUT Board Setup" href="dut_board_setup.html" />
-    <link rel="prev" title="Test Vector Generation" href="tvgen.html" /> 
+    <link rel="next" title="Data Acquisition - Processing Data" href="capture_data.html" />
+    <link rel="prev" title="DUT Board Setup" href="dut_board_setup.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,13 +84,15 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tvgen.html">Test Vector Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dut_board_setup.html">DUT Board Setup</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">DUT Algorithm Development</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#data-flow-description">Data flow description:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-dut-wrapper-dut-interface">The DUT Wrapper &lt;–&gt; DUT interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dummy-dut-example">Dummy DUT Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generating-the-dummy-dut-bitstream">Generating the dummy DUT bitstream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-dummu-dut-example-on-nexys3-dut">Running the dummu DUT example (on Nexys3 DUT)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dut_board_setup.html">DUT Board Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="capture_data.html">Data Acquisition - Processing Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="capture_scope.html">Data Acquisition - Collecting Traces</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controller_features.html">Control Board Feature</a></li>
@@ -220,14 +222,17 @@ This testbench needs one test vector to be stored in the file dinFile.txt.</p>
 </div>
 <div class="section" id="dummy-dut-example">
 <h2>Dummy DUT Example<a class="headerlink" href="#dummy-dut-example" title="Permalink to this headline">¶</a></h2>
-<p>You can find an example dummy dut in</p>
+<p>You can find an example dummy dut in capture/dut/example_cores/dummy1.
+This dummy core is used to test FOBOS DUT.
+It simply echos back NUMWORDS of PDI sent in the test vector.
+The dummy core in the listing below, echos 7 8-bit words the PDI from the test vector received from the DUT wrapper.</p>
 <div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="k">library</span> <span class="nn">IEEE</span><span class="p">;</span>
 <span class="k">use</span> <span class="nn">IEEE.STD_LOGIC_1164.</span><span class="k">ALL</span><span class="p">;</span>
 <span class="k">use</span> <span class="nn">ieee.std_logic_unsigned.</span><span class="k">all</span><span class="p">;</span>
 <span class="k">entity</span> <span class="nc">dummy</span> <span class="k">is</span>
     <span class="k">Generic</span><span class="p">(</span>
         <span class="n">N</span>        <span class="o">:</span> <span class="kt">integer</span> <span class="o">:=</span> <span class="mi">8</span><span class="p">;</span>
-        <span class="n">NUMWORDS</span> <span class="o">:</span> <span class="kt">integer</span> <span class="o">:=</span> <span class="mi">6</span>
+        <span class="n">NUMWORDS</span> <span class="o">:</span> <span class="kt">integer</span> <span class="o">:=</span> <span class="mi">7</span>
     <span class="p">);</span>
     <span class="k">port</span><span class="p">(</span><span class="n">clk</span>       <span class="o">:</span> <span class="k">in</span>  <span class="kt">STD_LOGIC</span><span class="p">;</span>
          <span class="n">rst</span>       <span class="o">:</span> <span class="k">in</span>  <span class="kt">STD_LOGIC</span><span class="p">;</span>
@@ -321,6 +326,76 @@ This testbench needs one test vector to be stored in the file dinFile.txt.</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="generating-the-dummy-dut-bitstream">
+<h2>Generating the dummy DUT bitstream<a class="headerlink" href="#generating-the-dummy-dut-bitstream" title="Permalink to this headline">¶</a></h2>
+<p>This procedure describes how to genrate the bitstream for the dummy DUT. You don’t need to perform
+this procedure to run the dummy example since the bitstream is already generated.
+However, this procedure aims to show how to instantiate a function core in FOBOS DUT wrapper.</p>
+<p>1. Create a project in Vivado (or ISE) and add all vhdl files from capture/dut/fpga_dut (except half_duplex_du.vhd)
+and capture/dut/example_cores/dummy1.</p>
+<ol class="arabic simple" start="2">
+<li><p>Note that in FOBOS_DUT.vhd, the dummy dut is instantaited as follows:</p></li>
+</ol>
+<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="n">victim</span><span class="o">:</span> <span class="k">entity</span> <span class="nc">work</span><span class="p">.</span><span class="n">dummy</span><span class="p">(</span><span class="n">behav</span><span class="p">)</span>
+
+<span class="c1">-- Choices for W and SW are independently any multiple of 4, defined in generics above</span>
+
+    <span class="k">generic</span> <span class="k">map</span>  <span class="p">(</span>
+        <span class="n">N</span>          <span class="o">=&gt;</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="n">NUMWORDS</span>        <span class="o">=&gt;</span> <span class="mi">7</span>
+    <span class="p">)</span>
+
+<span class="k">port</span> <span class="k">map</span><span class="p">(</span>
+    <span class="n">clk</span> <span class="o">=&gt;</span> <span class="n">clk</span><span class="p">,</span>
+    <span class="n">rst</span> <span class="o">=&gt;</span> <span class="n">start</span><span class="p">,</span>  <span class="c1">--! The FOBOS_DUT start signal meets requirements</span>
+                   <span class="c1">--!for synchronous resets used in</span>
+                   <span class="c1">--! CAESAR HW Development Package AEAD</span>
+
+<span class="c1">-- data signals</span>
+
+    <span class="n">pdi_data</span>  <span class="o">=&gt;</span> <span class="n">pdi_data</span><span class="p">,</span>
+    <span class="n">pdi_valid</span> <span class="o">=&gt;</span> <span class="n">pdi_valid</span><span class="p">,</span>
+    <span class="n">pdi_ready</span> <span class="o">=&gt;</span> <span class="n">pdi_ready</span><span class="p">,</span>
+
+<span class="n">sdi_data</span> <span class="o">=&gt;</span> <span class="n">sdi_data</span><span class="p">,</span>
+    <span class="n">sdi_valid</span> <span class="o">=&gt;</span> <span class="n">sdi_valid</span><span class="p">,</span>
+    <span class="n">sdi_ready</span> <span class="o">=&gt;</span> <span class="n">sdi_ready</span><span class="p">,</span>
+
+    <span class="n">do_data</span> <span class="o">=&gt;</span> <span class="n">result_data</span><span class="p">,</span>
+    <span class="n">do_ready</span> <span class="o">=&gt;</span> <span class="n">result_ready</span><span class="p">,</span>
+    <span class="n">do_valid</span> <span class="o">=&gt;</span> <span class="n">result_valid</span>
+
+<span class="c1">----! if rdi_interface for side-channel protected versions is required,</span>
+<span class="c1">----! uncomment the rdi interface</span>
+<span class="c1">--  ,rdi_data =&gt; rdi_data,</span>
+<span class="c1">--  rdi_ready =&gt; rdi_ready,</span>
+<span class="c1">--  rdi_valid =&gt; rdi_valid</span>
+
+<span class="p">);</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Note that the W and SW (PDI and SDI width) generics in FOBOS_DUT.vhd are set to 8.</p></li>
+<li><p>Add the constain file CW305.xdc (or Nexys3.ucf for Nexys3 DUT) from capture/dut/fpga_dut.</p></li>
+<li><p>Find your bitstream file FOBOS_DUT.bit in the Vivado/ISE project folders.</p></li>
+</ol>
+</div>
+<div class="section" id="running-the-dummu-dut-example-on-nexys3-dut">
+<h2>Running the dummu DUT example (on Nexys3 DUT)<a class="headerlink" href="#running-the-dummu-dut-example-on-nexys3-dut" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p>Make sure your hardware is setup properly and the DUT is connected to the control board.</p></li>
+<li><p>Run the dummyDUTCapture.py script as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd path-to-fobos/software
+$ python dummyDUTCapture.py
+</pre></div>
+</div>
+</li>
+</ol>
+<p>This script is preconfigured to use the fobos/workspace/DummyProject as a project folder.
+The folder includes a pre-generated bitstream file that FOBOS will use to program the Nexys3 DUT.
+This requires digilent Adept tool ‘djtgcfg’ to be installed and callable from the Linux shell.
+The project folder also includes a pre-generated test vector file ‘dinFile.txt’</p>
+</div>
 </div>
 
 
@@ -331,10 +406,10 @@ This testbench needs one test vector to be stored in the file dinFile.txt.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="dut_board_setup.html" class="btn btn-neutral float-right" title="DUT Board Setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="capture_data.html" class="btn btn-neutral float-right" title="Data Acquisition - Processing Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="tvgen.html" class="btn btn-neutral float-left" title="Test Vector Generation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="dut_board_setup.html" class="btn btn-neutral float-left" title="DUT Board Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

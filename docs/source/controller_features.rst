@@ -40,3 +40,36 @@ Timeout Setting
 In some cases, due to communication error or DUT non-responsiveness the control board asserts a timeout error message to the control PC when a configurable time has elapsed. The default value is 5 seconds which is enough for almost all cases. Once timeout is reached, the control board resets the DUT, resets any pending DUT data transfers and return the a timeout status to the capture software.
 To set the timeout value, use the method:
     ctrl.setTimeout(TIMEOUT)
+
+
+Port mapping
+============
+
+Below, we show how the pins on the Basys3 PMOD ports are assinged. ::
+
+    #JA
+    #+----------+----------+----------+----------+
+    #|          |  din3    |  do_ready|  rst     |
+    #|  G2      |  J2      |  L2      |  J1      |
+    #+----------+----------+----------+----------+
+    #|  din0    |  din2    |  din1    |  do_valid|
+    #|  G3      |  H2      |  K2      |  H1      |
+    #+----------+----------+----------+----------+
+
+    #JXADC
+    #+----------+----------+----------+----------+
+    #|  dout1   |  dout3   |  di_ready|  dut_clk |
+    #|  N2      |  M2      |  L3      |  J3      |
+    #+----------+----------+----------+----------+
+    #|  dout0   |  dout2   |  di_valid|          |
+    #|  N1      |  M1      |  M3      |  K3      |
+    #+----------+----------+----------+----------+
+
+    #JC
+    #+----------+----------+----------+------------+
+    #|          |          |          | trigger_out|
+    #|          |          |          |            |
+    #+----------+----------+----------+------------+
+    #|          |          |          |            |
+    #|          |          |          |            |
+    #+----------+----------+----------+------------+

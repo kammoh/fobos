@@ -67,8 +67,10 @@ This testbench needs one test vector to be stored in the file dinFile.txt.
 Dummy DUT Example
 =================
 
-You can find an example dummy dut in 
-
+You can find an example dummy dut in capture/dut/example_cores/dummy1.
+This dummy core is used to test FOBOS DUT.
+It simply echos back NUMWORDS of PDI sent in the test vector.
+The dummy core in the listing below, echos 7 8-bit words the PDI from the test vector received from the DUT wrapper.
 
 .. code-block:: vhdl
 
@@ -78,7 +80,7 @@ You can find an example dummy dut in
     entity dummy is
         Generic(
             N        : integer := 8;
-            NUMWORDS : integer := 6
+            NUMWORDS : integer := 7
         );
         port(clk       : in  STD_LOGIC;
              rst       : in  STD_LOGIC;
@@ -169,3 +171,74 @@ You can find an example dummy dut in
         cnt_done <= '1' when (cnt = NUMWORDS) else '0';
 
     end behav;
+
+Generating the dummy DUT bitstream
+==================================
+
+This procedure describes how to genrate the bitstream for the dummy DUT. You don't need to perform
+this procedure to run the dummy example since the bitstream is already generated.
+However, this procedure aims to show how to instantiate a function core in FOBOS DUT wrapper.
+
+
+1. Create a project in Vivado (or ISE) and add all vhdl files from capture/dut/fpga_dut (except half_duplex_du.vhd)
+and capture/dut/example_cores/dummy1.
+
+2. Note that in FOBOS_DUT.vhd, the dummy dut is instantaited as follows:
+
+
+.. code-block:: vhdl
+
+    victim: entity work.dummy(behav)
+
+    -- Choices for W and SW are independently any multiple of 4, defined in generics above
+
+        generic map  (
+            N          => 8,
+            NUMWORDS        => 7
+        )
+
+    port map(
+        clk => clk,
+        rst => start,  --! The FOBOS_DUT start signal meets requirements 
+                       --!for synchronous resets used in 
+                       --! CAESAR HW Development Package AEAD
+
+    -- data signals
+
+        pdi_data  => pdi_data,
+        pdi_valid => pdi_valid,
+        pdi_ready => pdi_ready,
+
+    sdi_data => sdi_data,
+        sdi_valid => sdi_valid,
+        sdi_ready => sdi_ready,
+
+        do_data => result_data,
+        do_ready => result_ready,
+        do_valid => result_valid
+
+    ----! if rdi_interface for side-channel protected versions is required, 
+    ----! uncomment the rdi interface
+    --  ,rdi_data => rdi_data,
+    --  rdi_ready => rdi_ready,
+    --	rdi_valid => rdi_valid
+
+    );
+
+3. Note that the W and SW (PDI and SDI width) generics in FOBOS_DUT.vhd are set to 8.
+4. Add the constain file CW305.xdc (or Nexys3.ucf for Nexys3 DUT) from capture/dut/fpga_dut.
+5. Find your bitstream file FOBOS_DUT.bit in the Vivado/ISE project folders.
+
+Running the dummu DUT example (on Nexys3 DUT)
+=============================================
+
+1. Make sure your hardware is setup properly and the DUT is connected to the control board.
+2. Run the dummyDUTCapture.py script as follows::
+
+    $ cd path-to-fobos/software
+    $ python dummyDUTCapture.py
+
+This script is preconfigured to use the fobos/workspace/DummyProject as a project folder.
+The folder includes a pre-generated bitstream file that FOBOS will use to program the Nexys3 DUT.
+This requires digilent Adept tool 'djtgcfg' to be installed and callable from the Linux shell.
+The project folder also includes a pre-generated test vector file 'dinFile.txt'

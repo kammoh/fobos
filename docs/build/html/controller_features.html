@@ -84,8 +84,8 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tvgen.html">Test Vector Generation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dutdev.html">DUT Algorithm Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dut_board_setup.html">DUT Board Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dutdev.html">DUT Algorithm Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="capture_data.html">Data Acquisition - Processing Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="capture_scope.html">Data Acquisition - Collecting Traces</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Control Board Feature</a><ul>
@@ -93,6 +93,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#setting-dut-clock">Setting DUT Clock</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dut-reset-feature">DUT Reset Feature</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#timeout-setting">Timeout Setting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#port-mapping">Port mapping</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cpa.html">Running Correlation Power Analysis</a></li>
@@ -217,6 +218,38 @@ To set the timeout value, use the method:</p>
 <blockquote>
 <div><p>ctrl.setTimeout(TIMEOUT)</p>
 </div></blockquote>
+</div>
+<div class="section" id="port-mapping">
+<h2>Port mapping<a class="headerlink" href="#port-mapping" title="Permalink to this headline">¶</a></h2>
+<p>Below, we show how the pins on the Basys3 PMOD ports are assinged.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#JA</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|          |  din3    |  do_ready|  rst     |</span>
+<span class="c1">#|  G2      |  J2      |  L2      |  J1      |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|  din0    |  din2    |  din1    |  do_valid|</span>
+<span class="c1">#|  G3      |  H2      |  K2      |  H1      |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+
+<span class="c1">#JXADC</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|  dout1   |  dout3   |  di_ready|  dut_clk |</span>
+<span class="c1">#|  N2      |  M2      |  L3      |  J3      |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|  dout0   |  dout2   |  di_valid|          |</span>
+<span class="c1">#|  N1      |  M1      |  M3      |  K3      |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+
+<span class="c1">#JC</span>
+<span class="c1">#+----------+----------+----------+------------+</span>
+<span class="c1">#|          |          |          | trigger_out|</span>
+<span class="c1">#|          |          |          |            |</span>
+<span class="c1">#+----------+----------+----------+------------+</span>
+<span class="c1">#|          |          |          |            |</span>
+<span class="c1">#|          |          |          |            |</span>
+<span class="c1">#+----------+----------+----------+------------+</span>
+</pre></div>
+</div>
 </div>
 </div>
 

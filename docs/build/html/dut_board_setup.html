@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Data Acquisition - Processing Data" href="capture_data.html" />
-    <link rel="prev" title="DUT Algorithm Development" href="dutdev.html" /> 
+    <link rel="next" title="DUT Algorithm Development" href="dutdev.html" />
+    <link rel="prev" title="Test Vector Generation" href="tvgen.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,12 +84,16 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tvgen.html">Test Vector Generation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dutdev.html">DUT Algorithm Development</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">DUT Board Setup</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#digilent-nexy3-spartan-6-fpga">Digilent Nexy3 (Spartan 6 FPGA)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#digilent-nexys4-artix7-fpga">Digilent Nexys4 (Artix7 FPGA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#digilent-nexy3-spartan-6-fpga">Digilent Nexy3 (Spartan 6 FPGA)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#connection-to-basys3-control-board">Connection to Basys3 control board</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#board-modification">Board modification</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#newae-cw305-artix7-fpga">NewAE CW305 (Artix7 FPGA)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dutdev.html">DUT Algorithm Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="capture_data.html">Data Acquisition - Processing Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="capture_scope.html">Data Acquisition - Collecting Traces</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controller_features.html">Control Board Feature</a></li>
@@ -164,14 +168,93 @@
             
   <div class="section" id="dut-board-setup">
 <span id="dut-board-setup-label"></span><h1>DUT Board Setup<a class="headerlink" href="#dut-board-setup" title="Permalink to this headline">¶</a></h1>
-<p>A DUT (Design Under Test) board must be connected to the control board to run SCA.</p>
+<p>A DUT (Design Under Test) board must be connected to the control board to run SCA. Here,
+we show how to connect and (modify board if needed) so that it can be used in FOBOS.</p>
 <div class="section" id="digilent-nexy3-spartan-6-fpga">
 <h2>Digilent Nexy3 (Spartan 6 FPGA)<a class="headerlink" href="#digilent-nexy3-spartan-6-fpga" title="Permalink to this headline">¶</a></h2>
-<p>TODO</p>
+<div class="section" id="connection-to-basys3-control-board">
+<h3>Connection to Basys3 control board<a class="headerlink" href="#connection-to-basys3-control-board" title="Permalink to this headline">¶</a></h3>
+<p>The PMOD ports on both boards are used to transfer data. The ports should be connected as follows</p>
+<ul class="simple">
+<li><p>Basys3 JA -&gt; Nexys3 JC</p></li>
+<li><p>Basys3 JXADC -&gt; Nexys3 JD</p></li>
+</ul>
+<p>The connector must connect each pin to its corresponding pin in the other board. The GND of the two
+ports must be connected, However, the Vcc SHOULD NOT be connected.</p>
+<p>The pin mapping in the Nexys3 DUT is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#JC</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|          |  din3    |  do_ready|  rst     |</span>
+<span class="c1">#|          |          |          |          |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|  din0    |  din2    |  din1    |  do_valid|</span>
+<span class="c1">#|          |          |          |          |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+
+<span class="c1">#JD</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|  dout1   |  dout3   |  di_ready|  clk     |</span>
+<span class="c1">#|          |          |          |          |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|  dout0   |  dout2   |  di_valid|          |</span>
+<span class="c1">#|          |          |          |          |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+</pre></div>
 </div>
-<div class="section" id="digilent-nexys4-artix7-fpga">
-<h2>Digilent Nexys4 (Artix7 FPGA)<a class="headerlink" href="#digilent-nexys4-artix7-fpga" title="Permalink to this headline">¶</a></h2>
-<p>TODO</p>
+<p>The pin mapping in the Basys3 control board is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#JA</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|          |  din3    |  do_ready|  rst |</span>
+<span class="c1">#|  G2      |  J2      |  L2      |  J1      |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|  din0    |  din2    |  din1    |  do_valid|</span>
+<span class="c1">#|  G3      |  H2      |  K2      |  H1      |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+
+<span class="c1">#JXADC</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|  dout1   |  dout3   |  di_ready|  dut_clk     |</span>
+<span class="c1">#|  N2      |  M2      |  L3      |  J3      |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|  dout0   |  dout2   |  di_valid|          |</span>
+<span class="c1">#|  N1      |  M1      |  M3      |  K3      |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="board-modification">
+<h3>Board modification<a class="headerlink" href="#board-modification" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>To make perfoming SCA attacks, all capacitors on the FPGA core voltage rail have been removed.</p></li>
+<li><p>The board is modified to be able to access the FPGA core voltage rail.</p></li>
+<li><p>To measere power, an inductive power porbe may be used (e.g. Tektronix CT-1).</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="newae-cw305-artix7-fpga">
+<h2>NewAE CW305 (Artix7 FPGA)<a class="headerlink" href="#newae-cw305-artix7-fpga" title="Permalink to this headline">¶</a></h2>
+<p>The PMOD ports JA and JXADC in the Basys3 control board should be connected to 40-pin port JP3.
+The pin mapping in the NewAE CW305 is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">######JP3</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|          |  din3    |  do_ready|  rst     |</span>
+<span class="c1">#|  NC      |  D16     |  E16     |  F12     |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|  din0    |  din2    |  din1    |  do_valid|</span>
+<span class="c1">#|  D15     |  E15     |  E13     |  F15     |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|  dout1   |  dout3   |  di_ready|  clk     |</span>
+<span class="c1">#|  B12     |  A13     |  B15     |  C11     |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+<span class="c1">#|  dout0   |  dout2   |  di_valid|          |</span>
+<span class="c1">#|  A12     |  A14     |  A15     |  C12     |</span>
+<span class="c1">#+----------+----------+----------+----------+</span>
+</pre></div>
+</div>
+<p>To measure the power, you can connect your oscilloscope to test poin X4. For more information,
+refer to the manufacturer web-site.</p>
 </div>
 </div>
 
@@ -183,10 +266,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="capture_data.html" class="btn btn-neutral float-right" title="Data Acquisition - Processing Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="dutdev.html" class="btn btn-neutral float-right" title="DUT Algorithm Development" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="dutdev.html" class="btn btn-neutral float-left" title="DUT Algorithm Development" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="tvgen.html" class="btn btn-neutral float-left" title="Test Vector Generation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
