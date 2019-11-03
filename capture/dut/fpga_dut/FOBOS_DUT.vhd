@@ -36,8 +36,8 @@ use work.fobos_dut_pkg.all;
 entity FOBOS_DUT is
 
 generic(       
-    W : integer:=128; -- pdi and do width (mulltiple of 4)
-    SW: integer:=128  -- sdi width (multiple of 4)                                    
+    W : integer:=8; -- pdi and do width (mulltiple of 4)
+    SW: integer:=8  -- sdi width (multiple of 4)                                    
 );
 port(
 	clk : in std_logic;
@@ -121,14 +121,14 @@ begin
 
 -- insert victim algorithm here
 
-victim: entity work.aes_axi(behav)
+victim: entity work.dummy(behav)
 
 -- Choices for W and SW are independently any multiple of 4, defined in generics above
 
---    generic map  (
---        G_W          => W,
---        G_SW         => SW
---    )
+    generic map  (
+        N          => 8,
+        NUMWORDS        => 7
+    )
 
 port map(
 	clk => clk,
