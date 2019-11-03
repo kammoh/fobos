@@ -20,16 +20,16 @@ import shutil
 import fobos
 # Constants###########################################################
 WORKSPACE = "../workspace"
-PROJECT_NAME = "aes"
+PROJECT_NAME = "dummyProject"
 DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
-DUT_BIT_FILE = "FOBOS_DUT_aes.bit"
-SERIAL_PORT = '/dev/ttyUSB1'
+DUT_BIT_FILE = "FOBOS_DUT_dummy1.bit"
+SERIAL_PORT = '/dev/ttyUSB0'
 TRACE_NUM = 100
-DUT_CLk = 10
-OUT_LEN = 16
-TIMEOUT = 40
+DUT_CLk = 1
+OUT_LEN = 7
+TIMEOUT = 5
 TRIG_WAIT = 1
 TRIG_LENGTH = 1
 TRIG_MODE_NORM = 0
@@ -46,34 +46,52 @@ ctrl.setTriggerWait(TRIG_WAIT)
 ctrl.setTriggerLen(TRIG_LENGTH)
 ctrl.setTriggerMode(TRIG_MODE_FULL)
 
+
 # Configure project directories#########################################
 pm = fobos.ProjectManager()
 pm.setWorkSpaceDir(WORKSPACE)
 pm.setProjName(PROJECT_NAME)
 projDir = pm.getProjDir()
+
 # program DUT ##########################################################
 dut = fobos.Nexys3DUT()
 bitFile = os.path.join(projDir, DUT_BIT_FILE)
 dut.setBitFile(bitFile)
 dut.program()
-# prepare i/o files ####################################################
+
 tvFileName = os.path.join(projDir, DIN_FILE_NAME)
 tvFile = open(tvFileName, "r")
 captureDir = pm.getCaptureDir()
 cipherFileName = os.path.join(captureDir, CIPHER_FILE)
 cipherFile = open(cipherFileName, "w")
+traceFileName = os.path.join(captureDir, TRACE_FILE)
+traceFile = open(traceFileName, "w")
 shutil.copy(tvFileName, captureDir)
+# Scope 
+scope = fobos.picoscope.Picoscope(sampleResolution = 12, 
+                     postTriggerSamples = 10000 #samples
+
+scope.setChannel(channelName = 'CHANNEL_A', rangemv = '100mV')
+scope.setSamplingInterval(samplingIntervalns = 2) #T=2 ns, Fs= 500MHz
+scope.setTrigger(channelName ='EXTERNAL', direction = 'RISING_EDGE', 
+               thresholdmv = 200)
+scope.setDataBuffers()
+
 # Get traces############################################################
 print 'Sending data..'
 traceNum = 0
 while traceNum < TRACE_NUM:
+    scope.arm()
     data = tvFile.readline()
     status, result = ctrl.processData(data, OUT_LEN)
     if status != fobos.OK:
         print "TIMEOUT"
     print(result)
+    trace = scope.readTrace()
+    numpy.save(traceFile, trace)
     cipherFile.write(result + "\n")
     traceNum += 1
 
+traceFile.close()
 tvFile.close()
 cipherFile.close()

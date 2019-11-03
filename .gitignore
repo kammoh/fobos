@@ -20,7 +20,8 @@ __MACOSX
 *.log
 *.str
 FOBOSWorkspace
-workspace
+workspace/aes/capture
+workspace/dummyProject/capture
 temp
 _impact.cmd
 *.jou
