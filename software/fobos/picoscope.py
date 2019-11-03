@@ -333,7 +333,7 @@ class Picoscope():
         trace = np.array(self.bufferA)
         return trace
 
-    def readTracemv(self):
+    def readTracev(self):
         # Check for data collection to finish using ps5000aIsReady
         ready = ctypes.c_int16(0)
         check = ctypes.c_int16(0)
@@ -351,7 +351,7 @@ class Picoscope():
         #adc2mVChAMax =  adc2mV(bufferAMax, chARange, maxADC)
         #adc2mVChBMax =  adc2mV(bufferBMax, chBRange, maxADC)
         #trace = np.array(self.bufferA)
-        trace = np.array(adc2mV(self.bufferA, self.chARange, self.maxADC ))
+        trace = np.array(adc2mV(self.bufferA, self.chARange, self.maxADC )) / 1000.0
         return trace
 
     def closeConnection(self):
