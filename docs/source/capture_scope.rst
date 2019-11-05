@@ -14,17 +14,15 @@ Power Measurement (Nexy3 DUT)
 -----------------------------
 
 The oscilloscope must be able to measure a voltage propotional to the power consumed by the device.
-You can use a current probe (e.g Tektronix CT-1). As shown below, we modified the DUT board so that we
+You can use a current probe (e.g Tektronix CT-1). We modified the DUT board so that we
 have a jumper on the power line (core FPGA voltage).
-We then used a bench power supply to power the FPGA. Note that the power wire goes through the current probe.
+We then used a bench power supply to power the FPGA (1.2V). Note that the power wire should go through the current probe.
 The power probe senses the current variations in the power wire and coverts that to volatge for the oscilloscope.
 
-TODO add fig
 
-An alternative method is to inster a hunt resistor in the power line and then measure the volatge drop 
+An alternative method is to insert a shunt resistor in the power line and then measure the volatge drop 
 across the resistor.
 
-TODO: add fig
 
 Trace Collection Example
 ------------------------
@@ -35,7 +33,7 @@ Trace Collection Example
     import numpy as np
     import fobos
     # Constants###########################################################
-    SERIAL_PORT = '/dev/ttyUSB2'
+    SERIAL_PORT = '/dev/ttyUSB1'
     TRACE_NUM = 5
     OUT_LEN = 7
     # Instantiate FOBOS objects###########################################
@@ -83,6 +81,7 @@ Lines  15 sets sampleResolution to 8 bit and number of samples to be collected t
 Line 18 enables channel A and sets its range to 100 mV.
 Line 19 sets the sampling interval (T) to 2 nano seconds. This implies that ampling rate is 1/T = 500 M Sample/s.
 Line 20 configers the EXTERNAL (Ext) channel to be used for trigger on risinge edge with a threshold of 200 mV.
+Trigger channel must be connected to the control board trigger output.
 Line 22 allocates memory buffers to store oscilloscope data.
 
 In the main loop, we use the arm() (line 34) function to tell the oscilloscope to be ready to get the trigger and store the 
@@ -90,9 +89,9 @@ data. Once the crypto operation is over, we can collect the trace from the memor
 readTrace() method (line 40). The trace is saved into a file in line 41.
 For more information about the PicoScope class see :class:`Picoscope`.
 
-Visualizing Traces
-------------------
+.. Visualizing Traces
+.. ------------------
 
-TODO: prepare the viewPlots.py for realease.
-You can use the plotTrace.py script to plot the traces form the file.
-Otherwise you can use matplotlib to plot data as needed.
+.. TODO: prepare the viewPlots.py for realease.
+.. You can use the plotTrace.py script to plot the traces form the file.
+.. Otherwise you can use matplotlib to plot data as needed.

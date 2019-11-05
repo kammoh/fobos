@@ -2,10 +2,10 @@ DUT Algorithm Development
 *************************
 
 This document describes how to interface the DUT wrapper and the Function Core (victim).
-The  Function Core (a.k.a victim), is the algorithm to be tested. The DUT wrapper is hardware that is instantaited at the same
+The  Function Core (a.k.a victim), is the algorithm to be tested. The DUT wrapper is hardware that is instantaited on the same
 FPGA as the function core and used to communication to the control board.
-The DUT or victim algorithm is user provided. However, the DUT wrapper is included with FOBOS.
-The DUT Wrapper handles communication to the control board and includes FIFOs to store input data for the DUT along with output FIFO.
+The function core is user provided. However, the DUT wrapper is included with FOBOS.
+The DUT Wrapper handles communication to the control board and includes FIFOs to store input and output data.
 
 
 Data flow description:
@@ -14,18 +14,18 @@ Data flow description:
 Test vectors are sent form PC one at a time to the control board which stores them breifly.
 The control board starts sending the test vector to the DUT board through the interface described below.
 The DUT wrapper then puts data in the correct FIFOs (PDI, SDI and RDI).
-Once the DUT wrapper receives the start command from the controller, it de-assersts the reset signal and the function core will run and consume the data in the FIFOs. 
+Once the DUT wrapper receives the start command from the controller, it de-assersts the function core reset signal and the function core will run and consume the data in the FIFOs. 
 The output of the function core is stored in the DO fifo. 
 Once the DO FIFO accumulates EXPECTED_OUTPUT bytes, the DUT wrapper will send this data to the control board which forwards it to the PC.
 
 
-The DUT Wrapper <–> DUT interface
-=================================
+The DUT Wrapper <–> Function core interface
+===========================================
 The protocol follows a simple AXI stream protocol. The 'valid' signals indicates data from source are valid and 'ready' signals 
 indicates destination is ready to use data. When both 'valid' and 'ready' signals are set to logic 1, data is transfered.
 All the data signals shown in the listing below, are connected to the FIFOs PDI, SDI, RDI and DO.
 
-The DUT (victim) is instantiated as follows in the FOBOS_DUT.vhd file.
+The function core (victim) is instantiated as follows in the FOBOS_DUT.vhd file.
 
 .. code-block:: vhdl
 
@@ -57,20 +57,21 @@ The DUT (victim) is instantiated as follows in the FOBOS_DUT.vhd file.
         --  rdi_valid => rdi_valid
     );
 
-The generic W is the PDI and DO width.
+The generic W is the PDI and DO width in bits.
 The generic SW is the SDI width.
 
 
-It is highly recommended that the DUT is tested using the capture/dut/fpga_dut/fobos_dut_tb.vhd test bench and ensure that the result data in the do port is valid. 
-This testbench needs one test vector to be stored in the file dinFile.txt.
+It is highly recommended that the DUT is tested using the capture/dut/fpga_dut/fobos_dut_tb.vhd test bench and ensure 
+that the output is valid. 
+This testbench needs one test vector to be stored in the file dinFile.txt and generates doutFile.txt output file.
 
 Dummy DUT Example
 =================
 
-You can find an example dummy dut in capture/dut/example_cores/dummy1.
+You can find an example dummy DUT in fobos/capture/dut/example_cores/dummy1.
 This dummy core is used to test FOBOS DUT.
-It simply echos back NUMWORDS of PDI sent in the test vector.
-The dummy core in the listing below, echos 7 8-bit words the PDI from the test vector received from the DUT wrapper.
+It simply echos back configurable number of words of the PDI sent in the test vector.
+The dummy core in the listing below, echos seven 8-bit words of the PDI from the test vector received from the DUT wrapper.
 
 .. code-block:: vhdl
 
@@ -180,8 +181,8 @@ this procedure to run the dummy example since the bitstream is already generated
 However, this procedure aims to show how to instantiate a function core in FOBOS DUT wrapper.
 
 
-1. Create a project in Vivado (or ISE) and add all vhdl files from capture/dut/fpga_dut (except half_duplex_du.vhd)
-and capture/dut/example_cores/dummy1.
+1. Create a project in Vivado (or ISE) and add all vhdl files from fobos/capture/dut/fpga_dut (except half_duplex_du.vhd)
+and fobos/capture/dut/example_cores/dummy1.
 
 2. Note that in FOBOS_DUT.vhd, the dummy dut is instantaited as follows:
 
@@ -226,8 +227,9 @@ and capture/dut/example_cores/dummy1.
     );
 
 3. Note that the W and SW (PDI and SDI width) generics in FOBOS_DUT.vhd are set to 8.
-4. Add the constain file CW305.xdc (or Nexys3.ucf for Nexys3 DUT) from capture/dut/fpga_dut.
-5. Find your bitstream file FOBOS_DUT.bit in the Vivado/ISE project folders.
+4. Add the constain file CW305.xdc for NewAE CW305 (or Nexys3.ucf for Nexys3 DUT) from fobos/capture/dut/fpga_dut.
+5. Generate the bitstream.
+6. Find your bitstream file FOBOS_DUT.bit in the Vivado/ISE project folders.
 
 Running the dummu DUT example (on Nexys3 DUT)
 =============================================
@@ -241,4 +243,4 @@ Running the dummu DUT example (on Nexys3 DUT)
 This script is preconfigured to use the fobos/workspace/DummyProject as a project folder.
 The folder includes a pre-generated bitstream file that FOBOS will use to program the Nexys3 DUT.
 This requires digilent Adept tool 'djtgcfg' to be installed and callable from the Linux shell.
-The project folder also includes a pre-generated test vector file 'dinFile.txt'
+The project folder also includes a pre-generated test vector file 'dinFile.txt'.

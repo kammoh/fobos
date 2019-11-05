@@ -89,15 +89,15 @@
 <li class="toctree-l1"><a class="reference internal" href="capture_data.html">Data Acquisition - Processing Data</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Data Acquisition - Collecting Traces</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#picoscope-setup">PicoScope Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#power-measurement">Power Measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#power-measurement-nexy3-dut">Power Measurement (Nexy3 DUT)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#trace-collection-example">Trace Collection Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#visualizing-traces">Visualizing Traces</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="controller_features.html">Control Board Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cpa.html">Running Correlation Power Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example.html">Breaking AES Implementation With CPA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example2.html">AES CPA Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="t_test.html">T-test Leakage Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="x_test.html">Chi-Squared Test Leakage Assessment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference_doc.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
@@ -173,17 +173,15 @@
 refer to the manufacturer website.
 We expect that modifying the code to work with other series to be easy since the manufacturer provides an SDK.</p>
 </div>
-<div class="section" id="power-measurement">
-<h2>Power Measurement<a class="headerlink" href="#power-measurement" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="power-measurement-nexy3-dut">
+<h2>Power Measurement (Nexy3 DUT)<a class="headerlink" href="#power-measurement-nexy3-dut" title="Permalink to this headline">¶</a></h2>
 <p>The oscilloscope must be able to measure a voltage propotional to the power consumed by the device.
-You can use a current probe (e.g Tektronix CT-1). As shown below, we modified the DUT board so that we
-have jumper the power line (core FPGA voltage).
-we then used a bench power supply to power the FPGA. Note that the power wire goes through the current probe.
+You can use a current probe (e.g Tektronix CT-1). We modified the DUT board so that we
+have a jumper on the power line (core FPGA voltage).
+We then used a bench power supply to power the FPGA (1.2V). Note that the power wire should go through the current probe.
 The power probe senses the current variations in the power wire and coverts that to volatge for the oscilloscope.</p>
-<p>TODO add figg</p>
-<p>An alternative method is to inster a hunt resistor in the power line and then measure the volatge drop
+<p>An alternative method is to insert a shunt resistor in the power line and then measure the volatge drop
 across the resistor.</p>
-<p>TODO: add fig</p>
 </div>
 <div class="section" id="trace-collection-example">
 <h2>Trace Collection Example<a class="headerlink" href="#trace-collection-example" title="Permalink to this headline">¶</a></h2>
@@ -231,7 +229,7 @@ across the resistor.</p>
 42</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">fobos</span>
 <span class="c1"># Constants###########################################################</span>
-<span class="n">SERIAL_PORT</span> <span class="o">=</span> <span class="s1">&#39;/dev/ttyUSB2&#39;</span>
+<span class="n">SERIAL_PORT</span> <span class="o">=</span> <span class="s1">&#39;/dev/ttyUSB1&#39;</span>
 <span class="n">TRACE_NUM</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">OUT_LEN</span> <span class="o">=</span> <span class="mi">7</span>
 <span class="c1"># Instantiate FOBOS objects###########################################</span>
@@ -279,17 +277,12 @@ Lines  15 sets sampleResolution to 8 bit and number of samples to be collected t
 Line 18 enables channel A and sets its range to 100 mV.
 Line 19 sets the sampling interval (T) to 2 nano seconds. This implies that ampling rate is 1/T = 500 M Sample/s.
 Line 20 configers the EXTERNAL (Ext) channel to be used for trigger on risinge edge with a threshold of 200 mV.
+Trigger channel must be connected to the control board trigger output.
 Line 22 allocates memory buffers to store oscilloscope data.</p>
 <p>In the main loop, we use the arm() (line 34) function to tell the oscilloscope to be ready to get the trigger and store the
 data. Once the crypto operation is over, we can collect the trace from the memory as a numpy array using the
 readTrace() method (line 40). The trace is saved into a file in line 41.
 For more information about the PicoScope class see <a class="reference internal" href="reference_doc.html#Picoscope" title="Picoscope"><code class="xref py py-class docutils literal notranslate"><span class="pre">Picoscope</span></code></a>.</p>
-</div>
-<div class="section" id="visualizing-traces">
-<h2>Visualizing Traces<a class="headerlink" href="#visualizing-traces" title="Permalink to this headline">¶</a></h2>
-<p>TODO: prepare the viewPlots.py for realease.
-You can use the plotTrace.py script to plot the traces form the file.
-Otherwise you can use matplotlib to plot data as needed.</p>
 </div>
 </div>
 

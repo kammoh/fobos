@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Breaking AES Implementation With CPA" href="aes_cpa_example.html" />
+    <link rel="next" title="AES CPA Example" href="aes_cpa_example2.html" />
     <link rel="prev" title="Control Board Feature" href="controller_features.html" /> 
 </head>
 
@@ -100,8 +100,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example.html">Breaking AES Implementation With CPA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example2.html">AES CPA Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="t_test.html">T-test Leakage Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="x_test.html">Chi-Squared Test Leakage Assessment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference_doc.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
@@ -171,13 +172,15 @@
   <div class="section" id="running-correlation-power-analysis">
 <h1>Running Correlation Power Analysis<a class="headerlink" href="#running-correlation-power-analysis" title="Permalink to this headline">¶</a></h1>
 <p>One of the most used variants of Deferential Power Analysis (DPA) is Correlation Power Analysis (CPA). In this document, we show the theory
-behind CPA before showing concrete examples.</p>
+behind CPA before showing concrete examples.
+This discussion follows the notation and concepts discussed in
+the book “Power Analysis Attacks - Revealing the secrets of Smart Cards” by Mangard, Oswald and Popp.</p>
 <div class="section" id="how-cpa-works">
 <h2>How CPA Works?<a class="headerlink" href="#how-cpa-works" title="Permalink to this headline">¶</a></h2>
 <p>Correlation Power Analysis uses an intermediate value that is a function of part of the key and known data.
 The power consumption of the devices when the intermediate value is processed is estimated for each key guess.
 A statistical method is then used to find out which key was most likely used by correlating the hypothetical power and the real power consumption.
-below we discuss this process in detail. The discussion and notation is based on [mangard-dpa-book]</p>
+below we discuss this process in detail.</p>
 <div class="figure align-center" id="id1">
 <img alt="_images/cpa_flow.png" src="_images/cpa_flow.png" />
 <p class="caption"><span class="caption-text">CPA Flow</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
@@ -237,7 +240,7 @@ The index of the highest element in the matrix <strong>R</strong> <em>ck</em>, <
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="aes_cpa_example.html" class="btn btn-neutral float-right" title="Breaking AES Implementation With CPA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="aes_cpa_example2.html" class="btn btn-neutral float-right" title="AES CPA Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="controller_features.html" class="btn btn-neutral float-left" title="Control Board Feature" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -6,7 +6,7 @@ T-test Flow
 Welch’s T-test is used as a tool for leakage assessment. This guide describes using FOBOS to perform a fixed-vs-random t-test.
 
 To perform a t-test you need to generate test-vectors that interleaves fixed and random traces.
-FOBOS data acquisition is run t get the traces, then the traces are splitted into two sets and the statistical Welch's t-test is done.
+FOBOS data acquisition is run to get the traces, then the traces are splitted into two sets and the statistical Welch's t-test is performed.
 
 
 .. figure::  figures/t_test_flow.png
@@ -17,8 +17,8 @@ FOBOS data acquisition is run t get the traces, then the traces are splitted int
 Test vector generation
 ----------------------
 
-The user generates the test-vector file and a meta file that specifies with test vectors are random and which are fixed.
-Fixed-vs-random t-test uses interleaved fixed and random test vectors. We can select a fixed test vector D and create as set of test vectors that  interleaves D and a randomly selected test vector. The interleaving is random.
+The user generates the test-vector file and a meta file that specifies which test vectors are random and which are fixed.
+Fixed-vs-random t-test uses interleaved fixed and random test vectors. We can select a fixed test vector D and create a set of test vectors that  interleaves D and a randomly selected test vector. The interleaving is random.
 For example the following test vector can be used to perform a t-test on an algorithm implemented on FOBOS DUT.
 
 
@@ -52,8 +52,8 @@ Once traces have been collected, scripts are used to perform the t-test.
 1- Copy the *cleanTraces.py*, *splitter.py* and *t-test2.py*  scipts from fobos/software/tools/t-test to the locatation where you have the power 
 traces you collected.
 
-2- Make sure you have your trace file named *powerTraces.npy* and your fvr choice file named *fvrchoicefile.txt*. These need to be at The
-same directory as the scripts copied in step 1.
+2- Make sure you have your trace file named *powerTraces.npy* and your fvr choice file named *fvrchoicefile.txt*. 
+These files need to be at the same directory as the scripts copied in step 1.
 
 3- Convert the power traces format using the read_traces.py. Blow, you can find the parameters used with this script.
 
@@ -82,7 +82,7 @@ first 2000 traces.
 4-  Next, we split the cleanTraces.npy file into two trace files
 
 - *traces0.npy* for the traces that came from the fixed test vector
-- *traces1.npy* for traces that came from using the random test veectors.
+- *traces1.npy* for traces that came from using the random test vectors.
 
 To do this, splitter.py needs the fvrchoicefile.txt file. It also needs to know how many traces to consider.
 These are configurable parameters in the script. Here is all the parameters you can edit in splitter.py:

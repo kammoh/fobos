@@ -97,8 +97,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cpa.html">Running Correlation Power Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example.html">Breaking AES Implementation With CPA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example2.html">AES CPA Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="t_test.html">T-test Leakage Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="x_test.html">Chi-Squared Test Leakage Assessment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference_doc.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
@@ -203,7 +204,7 @@ To set it, use the following method:</p>
 </div>
 <div class="section" id="dut-reset-feature">
 <h2>DUT Reset Feature<a class="headerlink" href="#dut-reset-feature" title="Permalink to this headline">¶</a></h2>
-<p>In some cases, the control board may need to reset the DUT due to an error condition or because the interesting part of the victim algorithm has already executed. This is specifically valuable for ciphers that take a long time to complete. In this case, the cipher runs for a configurable number of clock cycles and then is reset without waiting for it to complete. This helps reduce acquisition time.
+<p>In some cases, the control board may need to reset the DUT because the interesting part of the victim algorithm has already executed. This is specifically valuable for ciphers that take a long time to complete. In this case, the cipher runs for a configurable number of clock cycles and then is reset without waiting for it to complete. This helps reduce acquisition time.
 The number of cycles is counted after di_ready goes to 0.
 Note: When you use this feature, no output is returned from the DUT.
 To set it use the following command and set TIME_TO_RESET to any number other than zero. This number is set to zero by default which disables this feature.</p>
@@ -213,7 +214,9 @@ To set it use the following command and set TIME_TO_RESET to any number other th
 </div>
 <div class="section" id="timeout-setting">
 <h2>Timeout Setting<a class="headerlink" href="#timeout-setting" title="Permalink to this headline">¶</a></h2>
-<p>In some cases, due to communication error or DUT non-responsiveness the control board asserts a timeout error message to the control PC when a configurable time has elapsed. The default value is 5 seconds which is enough for almost all cases. Once timeout is reached, the control board resets the DUT, resets any pending DUT data transfers and return the a timeout status to the capture software.
+<p>In some cases, due to communication error or DUT non-responsiveness the control board sends a
+timeout error message to the control PC when a configurable time has elapsed. The default value is 5
+seconds which is enough for almost all cases. Once timeout is reached, the control board resets the DUT, clears any pending DUT data transfers and return the a timeout status to the capture software.
 To set the timeout value, use the method:</p>
 <blockquote>
 <div><p>ctrl.setTimeout(TIMEOUT)</p>

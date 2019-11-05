@@ -95,8 +95,9 @@
 <li class="toctree-l1"><a class="reference internal" href="capture_scope.html">Data Acquisition - Collecting Traces</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controller_features.html">Control Board Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cpa.html">Running Correlation Power Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example.html">Breaking AES Implementation With CPA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example2.html">AES CPA Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="t_test.html">T-test Leakage Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="x_test.html">Chi-Squared Test Leakage Assessment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference_doc.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
@@ -165,11 +166,15 @@
             
   <div class="section" id="data-acquisition-processing-data">
 <h1>Data Acquisition - Processing Data<a class="headerlink" href="#data-acquisition-processing-data" title="Permalink to this headline">¶</a></h1>
-<p>After test vectors have been generated, user can run dataAcquisition.py. The PC will send one test vector at a time to the control board, which sends it to DUT. The control board will trigger the oscilloscope to capture the trace. The process will be repeated until all traces are collected.</p>
+<p>After test vectors have been generated, user can run data acquisition (capture). The PC will send one test vector at a time to the control board, which sends it to DUT. The control board will trigger the oscilloscope to capture the trace. The process will be repeated until all traces are collected.</p>
 <div class="section" id="fobos-control-dut-protocol">
 <h2>FOBOS control-DUT protocol<a class="headerlink" href="#fobos-control-dut-protocol" title="Permalink to this headline">¶</a></h2>
-<p>The control board receives test vectors from the PC one at a time. Then, it sends the vector to the DUT which uses the header information in the vector to put the data (plaintext, key etc.) into the correct FIFOs. The DUT wrapper then allows the victim algorithm to run by setting the victim reset to zero. The victim then drains the FIFOs (sdi and pdi FIFOs) and stores the output in the dout FIFO. Once the dout FIFO accumulates the expected amount of data, the DUT wrapper sends data to the controller which sends it to the PC.</p>
-<p>The following diagram shows the components of FOBOS including the handshake signals used.</p>
+<p>The control board receives test vectors from the PC one at a time. Then, it sends the vector to the DUT
+which uses the header information in the vector to put the data (plaintext, key etc.) into the correct FIFOs.
+The DUT wrapper then allows the victim algorithm to run by setting the victim reset to zero. The victim then drains the FIFOs
+(sdi and pdi FIFOs) and stores the output in the DO FIFO. Once the DO FIFO accumulates the expected amount of data,
+the DUT wrapper sends data to the controller which sends it to the PC.</p>
+<p>The following diagram shows the components of FOBOS.</p>
 <div class="figure align-center" id="id1">
 <img alt="_images/fobos2-block.png" src="_images/fobos2-block.png" />
 <p class="caption"><span class="caption-text">FOBOS2 Block Diagram</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
@@ -206,7 +211,7 @@ PDI without sending the data to the DUT.</p>
 25
 26</pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="kn">import</span> <span class="nn">fobos</span>
  <span class="c1"># Constants###########################################################</span>
- <span class="n">SERIAL_PORT</span> <span class="o">=</span> <span class="s1">&#39;/dev/ttyUSB2&#39;</span>
+ <span class="n">SERIAL_PORT</span> <span class="o">=</span> <span class="s1">&#39;/dev/ttyUSB1&#39;</span>
  <span class="n">TRACE_NUM</span> <span class="o">=</span> <span class="mi">5</span>
  <span class="n">OUT_LEN</span> <span class="o">=</span> <span class="mi">7</span>
  <span class="c1"># Instantiate FOBOS objects###########################################</span>
@@ -233,7 +238,8 @@ PDI without sending the data to the DUT.</p>
 </pre></div>
 </td></tr></table></div>
 <p>If you run the code above, the control board will echo the PDI as shown below.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python dummyCaptureBasic.py
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd path-to-fobos/software
+$ python dummyCaptureBasic.py
 Sending configuration...
 f0030006000900000001
 Status= 00000000
@@ -260,7 +266,7 @@ OK.    Status= 00000000
 </div>
 <div class="section" id="an-extended-example">
 <h2>An Extended Example<a class="headerlink" href="#an-extended-example" title="Permalink to this headline">¶</a></h2>
-<p>The following example shows how to test the conteroller using the internal test feature. However, this time
+<p>The following example shows how to test the controller using the internal test feature. However, this time
 we show more features like setting the DUT clock and timeout etc.</p>
 <div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -322,8 +328,8 @@ we show more features like setting the DUT clock and timeout etc.</p>
  <span class="kn">import</span> <span class="nn">shutil</span>
  <span class="kn">import</span> <span class="nn">fobos</span>
  <span class="c1"># Constants###########################################################</span>
- <span class="n">WORKSPACE</span> <span class="o">=</span> <span class="s2">&quot;/nhome/aabdulga/fobosworkspace&quot;</span>
- <span class="n">PROJECT_NAME</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span>
+ <span class="n">WORKSPACE</span> <span class="o">=</span> <span class="s2">&quot;../workspace/fobosworkspace&quot;</span>
+ <span class="n">PROJECT_NAME</span> <span class="o">=</span> <span class="s2">&quot;dummyProject&quot;</span>
  <span class="n">DIN_FILE_NAME</span> <span class="o">=</span> <span class="s2">&quot;dinFile.txt&quot;</span>
  <span class="n">CIPHER_FILE</span> <span class="o">=</span> <span class="s2">&quot;ciphertext.txt&quot;</span>
  <span class="n">TRACE_FILE</span> <span class="o">=</span> <span class="s2">&quot;powerTraces.npy&quot;</span>

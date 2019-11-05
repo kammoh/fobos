@@ -65,7 +65,7 @@ The pin mapping in the Basys3 control board is as follows: ::
 Board modification
 ------------------
 
-- To make perfoming SCA attacks, all capacitors on the FPGA core voltage rail have been removed.
+- To make perfoming SCA attacks easier, all capacitors on the FPGA core voltage rail have been removed.
 - The board is modified to be able to access the FPGA core voltage rail.
 - To measere power, an inductive power porbe may be used (e.g. Tektronix CT-1).
 

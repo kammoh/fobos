@@ -212,7 +212,7 @@ CPA Class
         :param str analysisDir: Full path of the directory to store analysis results.
         :param int MTDStride: The number of traces to add in each step when plotting the MTD graph.
         
-DataGenerator Class (TO DO: Add method with fixed key)
+DataGenerator Class
 ------------------------------------------------------
 
 .. py:class:: DataGenerator()

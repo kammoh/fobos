@@ -96,8 +96,9 @@
 <li class="toctree-l1"><a class="reference internal" href="capture_scope.html">Data Acquisition - Collecting Traces</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controller_features.html">Control Board Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cpa.html">Running Correlation Power Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example.html">Breaking AES Implementation With CPA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example2.html">AES CPA Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="t_test.html">T-test Leakage Assessment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="x_test.html">Chi-Squared Test Leakage Assessment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference_doc.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
@@ -239,7 +240,7 @@ the hardware platform, click Next and make sure you select ‘Empty project’.<
 </div>
 <ol class="arabic simple" start="7">
 <li><p>Link all the .c and .h files in the fobos/capture/ctrl/basys3ctrl/sdk/src/ to the project
-(right-click on project/src folder -&gt; Import -&gt; General-&gt; file system -&gt; browse to folder).
+(right-click on ctrl/src folder -&gt; Import -&gt; General-&gt; file system -&gt; browse to folder).
 make sure to check “Advanced-&gt; Create links in the workspace” and “Create virtual folders” .</p></li>
 </ol>
 <div class="figure align-center" id="id5">
@@ -254,7 +255,7 @@ make sure to check “Advanced-&gt; Create links in the workspace” and “Crea
 </div>
 <div class="section" id="testing-the-control-board">
 <h2>Testing the control board<a class="headerlink" href="#testing-the-control-board" title="Permalink to this headline">¶</a></h2>
-<p>To make sure the control board is working, you can run the <em>dymmyCapture.py</em> script in the fobos/software directory.
+<p>To make sure the control board is working, you can run the <em>dymmyCaptureBasic.py</em> script in the fobos/software directory.
 This script send data to the board wich echos data back.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd path-to-fobos/software
 $ python dummyCaptureBasic.py

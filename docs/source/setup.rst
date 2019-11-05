@@ -77,7 +77,7 @@ the hardware platform, click Next and make sure you select 'Empty project'.
    Create Project
 
 7. Link all the .c and .h files in the fobos/capture/ctrl/basys3ctrl/sdk/src/ to the project 
-   (right-click on project/src folder -> Import -> General-> file system -> browse to folder). 
+   (right-click on ctrl/src folder -> Import -> General-> file system -> browse to folder). 
    make sure to check "Advanced-> Create links in the workspace" and "Create virtual folders" .
 
 .. figure::  figures/import_sdk_src.png
@@ -140,7 +140,7 @@ the hardware platform, click Next and make sure you select 'Empty project'.
 Testing the control board
 =========================
 
-To make sure the control board is working, you can run the *dymmyCapture.py* script in the fobos/software directory.
+To make sure the control board is working, you can run the *dymmyCaptureBasic.py* script in the fobos/software directory.
 This script send data to the board wich echos data back.
 
 .. code-block::

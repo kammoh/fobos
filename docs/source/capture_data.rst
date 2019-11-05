@@ -1,13 +1,17 @@
 Data Acquisition - Processing Data
 **********************************
-After test vectors have been generated, user can run dataAcquisition.py. The PC will send one test vector at a time to the control board, which sends it to DUT. The control board will trigger the oscilloscope to capture the trace. The process will be repeated until all traces are collected.
+After test vectors have been generated, user can run data acquisition (capture). The PC will send one test vector at a time to the control board, which sends it to DUT. The control board will trigger the oscilloscope to capture the trace. The process will be repeated until all traces are collected.
  
 FOBOS control-DUT protocol
 --------------------------
 
-The control board receives test vectors from the PC one at a time. Then, it sends the vector to the DUT which uses the header information in the vector to put the data (plaintext, key etc.) into the correct FIFOs. The DUT wrapper then allows the victim algorithm to run by setting the victim reset to zero. The victim then drains the FIFOs (sdi and pdi FIFOs) and stores the output in the dout FIFO. Once the dout FIFO accumulates the expected amount of data, the DUT wrapper sends data to the controller which sends it to the PC.
+The control board receives test vectors from the PC one at a time. Then, it sends the vector to the DUT 
+which uses the header information in the vector to put the data (plaintext, key etc.) into the correct FIFOs. 
+The DUT wrapper then allows the victim algorithm to run by setting the victim reset to zero. The victim then drains the FIFOs 
+(sdi and pdi FIFOs) and stores the output in the DO FIFO. Once the DO FIFO accumulates the expected amount of data, 
+the DUT wrapper sends data to the controller which sends it to the PC.
 
-The following diagram shows the components of FOBOS including the handshake signals used.
+The following diagram shows the components of FOBOS.
 
 .. figure::  figures/fobos2-block.png
    :align:   center
@@ -25,7 +29,7 @@ PDI without sending the data to the DUT.
 
     import fobos
     # Constants###########################################################
-    SERIAL_PORT = '/dev/ttyUSB2'
+    SERIAL_PORT = '/dev/ttyUSB1'
     TRACE_NUM = 5
     OUT_LEN = 7
     # Instantiate FOBOS objects###########################################
@@ -54,6 +58,7 @@ If you run the code above, the control board will echo the PDI as shown below.
 
 .. code-block::
     
+    $ cd path-to-fobos/software
     $ python dummyCaptureBasic.py 
     Sending configuration...
     f0030006000900000001
@@ -80,7 +85,7 @@ If you run the code above, the control board will echo the PDI as shown below.
 An Extended Example
 -------------------
 
-The following example shows how to test the conteroller using the internal test feature. However, this time
+The following example shows how to test the controller using the internal test feature. However, this time
 we show more features like setting the DUT clock and timeout etc.
 
 .. code-block::
@@ -90,8 +95,8 @@ we show more features like setting the DUT clock and timeout etc.
     import shutil
     import fobos
     # Constants###########################################################
-    WORKSPACE = "/nhome/aabdulga/fobosworkspace"
-    PROJECT_NAME = "test"
+    WORKSPACE = "../workspace/fobosworkspace"
+    PROJECT_NAME = "dummyProject"
     DIN_FILE_NAME = "dinFile.txt"
     CIPHER_FILE = "ciphertext.txt"
     TRACE_FILE = "powerTraces.npy"

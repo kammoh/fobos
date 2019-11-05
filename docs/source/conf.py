@@ -19,7 +19,7 @@
 
 project = 'FOBOS 2.0'
 copyright = '2019, CERG'
-author = 'Abubakr Abdulgadir, Jens-Peter Kaps'
+author = 'Abubakr Abdulgadir, William Diehl and Jens-Peter Kaps'
 
 # The full version, including alpha/beta/rc tags
 release = '2.0'

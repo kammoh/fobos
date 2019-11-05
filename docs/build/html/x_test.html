@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>X Test &mdash; FOBOS 2.0 2.0 documentation</title>
+  <title>Chi-Squared Test Leakage Assessment &mdash; FOBOS 2.0 2.0 documentation</title>
   
 
   
@@ -34,7 +34,9 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="reference_doc.html" />
+    <link rel="prev" title="T-test Leakage Assessment" href="t_test.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -78,7 +80,7 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tvgen.html">Test Vector Generation</a></li>
@@ -88,8 +90,9 @@
 <li class="toctree-l1"><a class="reference internal" href="capture_scope.html">Data Acquisition - Collecting Traces</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controller_features.html">Control Board Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cpa.html">Running Correlation Power Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example.html">Breaking AES Implementation With CPA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aes_cpa_example2.html">AES CPA Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="t_test.html">T-test Leakage Assessment</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Chi-Squared Test Leakage Assessment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference_doc.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
@@ -137,7 +140,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>X Test</li>
+      <li>Chi-Squared Test Leakage Assessment</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -156,9 +159,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="x-test">
-<h1>X Test<a class="headerlink" href="#x-test" title="Permalink to this headline">¶</a></h1>
-<p>TODO:</p>
+  <div class="section" id="chi-squared-test-leakage-assessment">
+<h1>Chi-Squared Test Leakage Assessment<a class="headerlink" href="#chi-squared-test-leakage-assessment" title="Permalink to this headline">¶</a></h1>
+<p>The chi-squared test can be used with the t-test to assess leakage.
+The chi-squared script that is provided uses ‘random’ and ‘fixed’ classes so the inputs
+to the script are the same as the ones used for t-test2.py. For more information, please refer
+to the T-test page.
+The script is named x-test3.py and is located in fobos/software/tools/x-test.
+To run the test, use the following command.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python x-test3.py traces0.npy traces1.npy result_x_test.png
+</pre></div>
+</div>
+<p>Where all the input files are similar to the t-test inputs.</p>
+<p>Below, we show a chi-sqaured test that show a leakage and one that does not. In these two graphs we
+choose a threshold of 10^-5 and reason that the implementation is leaking if p-values are below the threshold.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/x_test_ascon_unpr_s6_new.png"><img alt="_images/x_test_ascon_unpr_s6_new.png" src="_images/x_test_ascon_unpr_s6_new.png" style="height: 350px;" /></a>
+<p class="caption"><span class="caption-text">Chi-squared test on Unprotected Ascon</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/x_test_ascon_pr_s6_new.png"><img alt="_images/x_test_ascon_pr_s6_new.png" src="_images/x_test_ascon_pr_s6_new.png" style="height: 350px;" /></a>
+<p class="caption"><span class="caption-text">Chi-squared test on Protected Ascon</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 
 
@@ -166,6 +188,15 @@
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="reference_doc.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="t_test.html" class="btn btn-neutral float-left" title="T-test Leakage Assessment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

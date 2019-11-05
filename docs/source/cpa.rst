@@ -3,13 +3,16 @@ Running Correlation Power Analysis
 
 One of the most used variants of Deferential Power Analysis (DPA) is Correlation Power Analysis (CPA). In this document, we show the theory 
 behind CPA before showing concrete examples.
+This discussion follows the notation and concepts discussed in 
+the book "Power Analysis Attacks - Revealing the secrets of Smart Cards" by Mangard, Oswald and Popp.
+
 
 How CPA Works?
 ==============
 Correlation Power Analysis uses an intermediate value that is a function of part of the key and known data.
 The power consumption of the devices when the intermediate value is processed is estimated for each key guess.
 A statistical method is then used to find out which key was most likely used by correlating the hypothetical power and the real power consumption.
-below we discuss this process in detail. The discussion and notation is based on [mangard-dpa-book]
+below we discuss this process in detail.
 
 .. figure::  figures/cpa_flow.png
    :align:   center
@@ -70,3 +73,4 @@ Note that column *i* in matrix **H** is the hypothetical power if **k**\ :sub:`i
 
 The element **R**\ :sub:`i,j` measures how similar the column *i* in **H** to column *j* in **T**.
 The index of the highest element in the matrix **R** *ck*, *ct* are the in index of the key and the sample in time of the supposedly correct key since it indicates that the corresponding columns in **H** and **T** are similar so it is likely that the guessed key was indeed used in the device.
+

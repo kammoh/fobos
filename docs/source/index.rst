@@ -18,16 +18,16 @@ Also, scripts to perform leakage assesment are included.
 
    Typical FOBOS2 Setup
 
-Features
-========
-- Run cryptographic implementations on FPGAs and measurse power consumption.
-- Uses commercially available FPGA boards.
-- Separate control and Device Under Test (DUT) boards.
-- Supports fast USB3-base oscilloscope (Picoscope).
-- Support Digilient Basys3 control board.
-- Supports Digilent Nexys3 (Spartan6 FPGA) and NewAE CW305 (Artix7 FPGA).
-- Analysis software to perform Correlation Power Analysis (CPA).
-- Leakage assesment using TVLA and Chi-squared test. 
+.. Features
+.. ========
+.. - Run cryptographic implementations on FPGAs and measurse power consumption.
+.. - Uses commercially available FPGA boards.
+.. - Separate control and Device Under Test (DUT) boards.
+.. - Supports fast USB3-base oscilloscope (Picoscope).
+.. - Support Digilient Basys3 control board.
+.. - Supports Digilent Nexys3 (Spartan6 FPGA) and NewAE CW305 (Artix7 FPGA).
+.. - Analysis software to perform Correlation Power Analysis (CPA).
+.. - Leakage assesment using TVLA and Chi-squared test. 
 
 
 .. toctree::
@@ -44,8 +44,9 @@ Features
    capture_scope
    controller_features
    cpa
-   aes_cpa_example
+   aes_cpa_example2
    t_test
+   x_test
    reference_doc
    license
 

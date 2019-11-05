@@ -27,7 +27,7 @@ To set it, use the following method:
 
 DUT Reset Feature
 =================
-In some cases, the control board may need to reset the DUT due to an error condition or because the interesting part of the victim algorithm has already executed. This is specifically valuable for ciphers that take a long time to complete. In this case, the cipher runs for a configurable number of clock cycles and then is reset without waiting for it to complete. This helps reduce acquisition time.
+In some cases, the control board may need to reset the DUT because the interesting part of the victim algorithm has already executed. This is specifically valuable for ciphers that take a long time to complete. In this case, the cipher runs for a configurable number of clock cycles and then is reset without waiting for it to complete. This helps reduce acquisition time.
 The number of cycles is counted after di_ready goes to 0.
 Note: When you use this feature, no output is returned from the DUT.
 To set it use the following command and set TIME_TO_RESET to any number other than zero. This number is set to zero by default which disables this feature.
@@ -37,7 +37,9 @@ To set it use the following command and set TIME_TO_RESET to any number other th
 
 Timeout Setting
 ===============
-In some cases, due to communication error or DUT non-responsiveness the control board asserts a timeout error message to the control PC when a configurable time has elapsed. The default value is 5 seconds which is enough for almost all cases. Once timeout is reached, the control board resets the DUT, resets any pending DUT data transfers and return the a timeout status to the capture software.
+In some cases, due to communication error or DUT non-responsiveness the control board sends a 
+timeout error message to the control PC when a configurable time has elapsed. The default value is 5 
+seconds which is enough for almost all cases. Once timeout is reached, the control board resets the DUT, clears any pending DUT data transfers and return the a timeout status to the capture software.
 To set the timeout value, use the method:
     ctrl.setTimeout(TIMEOUT)
 
