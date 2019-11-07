@@ -185,7 +185,7 @@ across the resistor.</p>
 </div>
 <div class="section" id="trace-collection-example">
 <h2>Trace Collection Example<a class="headerlink" href="#trace-collection-example" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -226,14 +226,14 @@ across the resistor.</p>
 39
 40
 41
-42</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+42</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">fobos</span>
 <span class="c1"># Constants###########################################################</span>
 <span class="n">SERIAL_PORT</span> <span class="o">=</span> <span class="s1">&#39;/dev/ttyUSB1&#39;</span>
 <span class="n">TRACE_NUM</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">OUT_LEN</span> <span class="o">=</span> <span class="mi">7</span>
 <span class="c1"># Instantiate FOBOS objects###########################################</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sending configuration...&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Sending configuration...&quot;</span><span class="p">)</span>
 <span class="n">ctrl</span> <span class="o">=</span> <span class="n">fobos</span><span class="o">.</span><span class="n">Basys3Ctrl</span><span class="p">(</span><span class="n">SERIAL_PORT</span><span class="p">)</span>
 <span class="n">ctrl</span><span class="o">.</span><span class="n">enableTestMode</span><span class="p">()</span>
 <span class="n">ctrl</span><span class="o">.</span><span class="n">setOutLen</span><span class="p">(</span><span class="n">OUT_LEN</span><span class="p">)</span>
@@ -256,15 +256,15 @@ across the resistor.</p>
             <span class="s1">&#39;00c0000767881b702afe5200c10007b08a5e036de72b0081000700800001&#39;</span><span class="p">,</span>
             <span class="s1">&#39;00c0000726a1d601ccdf7a00c1000773539e52672d5d0081000700800001&#39;</span><span class="p">]</span>
 
-<span class="nb">print</span> <span class="s1">&#39;Sending data..&#39;</span>
+<span class="k">print</span> <span class="s1">&#39;Sending data..&#39;</span>
 <span class="n">traceNum</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">while</span> <span class="n">traceNum</span> <span class="o">&lt;</span> <span class="n">TRACE_NUM</span><span class="p">:</span>
     <span class="n">scope</span><span class="o">.</span><span class="n">arm</span><span class="p">()</span> <span class="c1"># arm scope. Now, it expects a trigger at any time.</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">testVectors</span><span class="p">[</span><span class="n">traceNum</span><span class="p">]</span>
     <span class="n">status</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">processData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">OUT_LEN</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="n">fobos</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
-        <span class="nb">print</span> <span class="s2">&quot;TIMEOUT&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s2">&quot;TIMEOUT&quot;</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
     <span class="n">trace</span> <span class="o">=</span> <span class="n">scope</span><span class="o">.</span><span class="n">readTrace</span><span class="p">()</span> <span class="c1"># get trace from oscilloscope buffers.</span>
     <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">traceFile</span><span class="p">,</span> <span class="n">trace</span><span class="p">)</span> <span class="c1"># save the trace in the trace file.</span>
     <span class="n">traceNum</span> <span class="o">+=</span> <span class="mi">1</span>

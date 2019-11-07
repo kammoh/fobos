@@ -24,7 +24,7 @@ A Basic Example
 Below, we show an example of using the controller internal test feature. When enabled, the controller process the data and echo back the
 PDI without sending the data to the DUT.
 
-.. code-block::
+.. code-block:: python
    :linenos:
 
     import fobos
@@ -56,7 +56,7 @@ PDI without sending the data to the DUT.
 
 If you run the code above, the control board will echo the PDI as shown below.
 
-.. code-block::
+.. code-block:: python
     
     $ cd path-to-fobos/software
     $ python dummyCaptureBasic.py 
@@ -88,7 +88,7 @@ An Extended Example
 The following example shows how to test the controller using the internal test feature. However, this time
 we show more features like setting the DUT clock and timeout etc.
 
-.. code-block::
+.. code-block:: python
    :linenos:
 
     import os

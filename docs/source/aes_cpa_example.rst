@@ -22,7 +22,7 @@ The cipher was implemented on Digilent Nexys3 board which features a Xilinx Spar
 
 Here are few first blocks of the plain text
 
-.. code-block::
+.. code-block:: none
 
     51720187c36e0c8523acb8535a870703
     b334ba70d60f5af510abd747708bde7b
@@ -35,7 +35,7 @@ For each trace, the value *d* that goes into the calculation is the first (LSB) 
 
 Here are the first few elements in the vector **d**.
 
-.. code-block::
+.. code-block:: none
 
     03
     7b
@@ -54,7 +54,7 @@ f(d, k) = sbox(pt\ :sub:`i` xor key)
 The result will be stored in a martix **V** which is 100000 x 265 where the first column is the value of the intermediate when k=0 for all data values *d*.
 Here are few elements of the matrix **V** calculated form the data above.
 
-.. code-block::
+.. code-block:: none
    :emphasize-lines: 1
 
     k=0     k=1     k=2     k=3     k=4   ...
@@ -77,7 +77,7 @@ For example, when the output of the sbox changes from 0x7b to 0x21, the hamming 
 
 The result is a *100000 x 256* matrix called **H**. These are the same dimensions as the matrix **V**.
 
-.. code-block::
+.. code-block:: none
    :emphasize-lines: 1
 
     k=0  k=1  k=2  k=3  k=4...

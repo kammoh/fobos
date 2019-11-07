@@ -9,49 +9,19 @@
 \usepackage[utf8]{inputenc}
 \ifdefined\DeclareUnicodeCharacter
 % support both utf8 and utf8x syntaxes
-  \ifdefined\DeclareUnicodeCharacterAsOptional
-    \def\sphinxDUC#1{\DeclareUnicodeCharacter{"#1}}
-  \else
-    \let\sphinxDUC\DeclareUnicodeCharacter
-  \fi
-  \sphinxDUC{00A0}{\nobreakspace}
-  \sphinxDUC{2500}{\sphinxunichar{2500}}
-  \sphinxDUC{2502}{\sphinxunichar{2502}}
-  \sphinxDUC{2514}{\sphinxunichar{2514}}
-  \sphinxDUC{251C}{\sphinxunichar{251C}}
-  \sphinxDUC{2572}{\textbackslash}
+\edef\sphinxdqmaybe{\ifdefined\DeclareUnicodeCharacterAsOptional\string"\fi}
+  \DeclareUnicodeCharacter{\sphinxdqmaybe00A0}{\nobreakspace}
+  \DeclareUnicodeCharacter{\sphinxdqmaybe2500}{\sphinxunichar{2500}}
+  \DeclareUnicodeCharacter{\sphinxdqmaybe2502}{\sphinxunichar{2502}}
+  \DeclareUnicodeCharacter{\sphinxdqmaybe2514}{\sphinxunichar{2514}}
+  \DeclareUnicodeCharacter{\sphinxdqmaybe251C}{\sphinxunichar{251C}}
+  \DeclareUnicodeCharacter{\sphinxdqmaybe2572}{\textbackslash}
 \fi
 \usepackage{cmap}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,amstext}
 \usepackage{babel}
-
-
-
 \usepackage{times}
-\expandafter\ifx\csname T@LGR\endcsname\relax
-\else
-% LGR was declared as font encoding
-  \substitutefont{LGR}{\rmdefault}{cmr}
-  \substitutefont{LGR}{\sfdefault}{cmss}
-  \substitutefont{LGR}{\ttdefault}{cmtt}
-\fi
-\expandafter\ifx\csname T@X2\endcsname\relax
-  \expandafter\ifx\csname T@T2A\endcsname\relax
-  \else
-  % T2A was declared as font encoding
-    \substitutefont{T2A}{\rmdefault}{cmr}
-    \substitutefont{T2A}{\sfdefault}{cmss}
-    \substitutefont{T2A}{\ttdefault}{cmtt}
-  \fi
-\else
-% X2 was declared as font encoding
-  \substitutefont{X2}{\rmdefault}{cmr}
-  \substitutefont{X2}{\sfdefault}{cmss}
-  \substitutefont{X2}{\ttdefault}{cmtt}
-\fi
-
-
 \usepackage[Bjarne]{fncychap}
 \usepackage{sphinx}
 
@@ -65,15 +35,32 @@
 % Set up styles of URL: it should be placed after hyperref.
 \urlstyle{same}
 
-\usepackage{sphinxmessages}
+\addto\captionsenglish{\renewcommand{\figurename}{Fig.\@ }}
+\makeatletter
+\def\fnum@figure{\figurename\thefigure{}}
+\makeatother
+\addto\captionsenglish{\renewcommand{\tablename}{Table }}
+\makeatletter
+\def\fnum@table{\tablename\thetable{}}
+\makeatother
+\addto\captionsenglish{\renewcommand{\literalblockname}{Listing}}
+
+\addto\captionsenglish{\renewcommand{\literalblockcontinuedname}{continued from previous page}}
+\addto\captionsenglish{\renewcommand{\literalblockcontinuesname}{continues on next page}}
+\addto\captionsenglish{\renewcommand{\sphinxnonalphabeticalgroupname}{Non-alphabetical}}
+\addto\captionsenglish{\renewcommand{\sphinxsymbolsname}{Symbols}}
+\addto\captionsenglish{\renewcommand{\sphinxnumbersname}{Numbers}}
+
+\addto\extrasenglish{\def\pageautorefname{page}}
+
 \setcounter{tocdepth}{1}
 
 
 
 \title{FOBOS 2.0}
-\date{Nov 04, 2019}
+\date{Nov 07, 2019}
 \release{2.0}
-\author{Abubakr Abdulgadir, William Diehl and Jens-Peter Kaps}
+\author{}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
 \makeindex
@@ -154,7 +141,9 @@ For DUT board please refer to {\hyperref[\detokenize{dut_board_setup:dut-board-s
 
 \section{Requirements}
 \label{\detokenize{setup:requirements}}\begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \item {} 
 Digilent Basys3 board (control board).
 
@@ -177,7 +166,9 @@ Picoscope 5000 series.
 \label{\detokenize{setup:software-setup}}
 Note: The following installation procedure is tested on Linux Ubuntu 16.04.
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \item {} 
 Download FOBOS from the \sphinxhref{https://cryptography.gmu.edu/fobos/getfobos.php}{FOBOS home page}.
 
@@ -190,7 +181,9 @@ Extract the archive into the directory of your choice
 \PYGZdl{} tar xvfz fobos\PYGZhy{}v2.0.tgz
 \end{sphinxVerbatim}
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \setcounter{enumi}{2}
 \item {} 
 Use the following commands to install pip and few necessary Python packages:
@@ -209,7 +202,9 @@ Use the following commands to install pip and few necessary Python packages:
 Follow these steps to compile the control software, generate the bitstream and program
 the the control board.
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \item {} 
 Build the control board Vivado project.
 
@@ -220,7 +215,9 @@ Build the control board Vivado project.
 \PYGZdl{} make project
 \end{sphinxVerbatim}
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \setcounter{enumi}{1}
 \item {} 
 A Vivado project will be created at fobos/capture/ctrl/basys3ctrl/vivado/basys3ctrl. Open it using Vivado.
@@ -234,7 +231,9 @@ A Vivado project will be created at fobos/capture/ctrl/basys3ctrl/vivado/basys3c
 \noindent\sphinxincludegraphics{{open_project}.png}
 \caption{Open Vivado project}\label{\detokenize{setup:id1}}\end{figure}
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \setcounter{enumi}{2}
 \item {} 
 In Vivado’s Flow Navigator window, click ‘Generate Bitstream’.
@@ -251,7 +250,9 @@ After bitstream is generated, export the hardware. Click File \textgreater{} Exp
 \noindent\sphinxincludegraphics{{export_hardware}.png}
 \caption{Export Hardware}\label{\detokenize{setup:id2}}\end{figure}
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \setcounter{enumi}{4}
 \item {} 
 Launch the Xilinx SDK (File \textgreater{} Launch SDK).
@@ -275,7 +276,9 @@ the hardware platform, click Next and make sure you select ‘Empty project’.
 \noindent\sphinxincludegraphics{{create_sdk_app}.png}
 \caption{Create Project}\label{\detokenize{setup:id4}}\end{figure}
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \setcounter{enumi}{6}
 \item {} 
 Link all the .c and .h files in the fobos/capture/ctrl/basys3ctrl/sdk/src/ to the project
@@ -291,7 +294,9 @@ make sure to check “Advanced-\textgreater{} Create links in the workspace” a
 \noindent\sphinxincludegraphics{{import_sdk_src}.png}
 \caption{Launch SDK}\label{\detokenize{setup:id5}}\end{figure}
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \setcounter{enumi}{7}
 \item {} 
 Program the control borad FPGA. Connect the Basys3 board to your PC via USB. In the Xilinx Tools menu, select Program FPGA -\textgreater{} program.
@@ -311,29 +316,29 @@ To make sure the control board is working, you can run the \sphinxstyleemphasis{
 This script send data to the board wich echos data back.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYGZdl{} cd path\PYGZhy{}to\PYGZhy{}fobos/software
+\PYGZdl{} \PYG{n+nb}{cd} path\PYGZhy{}to\PYGZhy{}fobos/software
 \PYGZdl{} python dummyCaptureBasic.py
 Sending configuration...
 f0030006000900000001
-Status= 00000000
+\PYG{n+nv}{Status}\PYG{o}{=} \PYG{l+m}{00000000}
 f0030006000000000007
-Status= 00000000
+\PYG{n+nv}{Status}\PYG{o}{=} \PYG{l+m}{00000000}
 Sending data..
 f001001e00c0000761996dc996d4ac00c100070f7821507a22a00081000700800001
-OK.    Status= 00000000
-61 99 6d c9 96 d4 ac
+OK.    \PYG{n+nv}{Status}\PYG{o}{=} \PYG{l+m}{00000000}
+\PYG{l+m}{61} \PYG{l+m}{99} 6d c9 \PYG{l+m}{96} d4 ac
 f001001e00c00007fd8771fe717de400c100073e1fe5b4aa357c0081000700800001
-OK.    Status= 00000000
-fd 87 71 fe 71 7d e4
+OK.    \PYG{n+nv}{Status}\PYG{o}{=} \PYG{l+m}{00000000}
+fd \PYG{l+m}{87} \PYG{l+m}{71} fe \PYG{l+m}{71} 7d e4
 f001001e00c0000782051f5484702200c10007980d05d4ea25bc0081000700800001
-OK.    Status= 00000000
-82 05 1f 54 84 70 22
+OK.    \PYG{n+nv}{Status}\PYG{o}{=} \PYG{l+m}{00000000}
+\PYG{l+m}{82} \PYG{l+m}{05} 1f \PYG{l+m}{54} \PYG{l+m}{84} \PYG{l+m}{70} \PYG{l+m}{22}
 f001001e00c0000767881b702afe5200c10007b08a5e036de72b0081000700800001
-OK.    Status= 00000000
-67 88 1b 70 2a fe 52
+OK.    \PYG{n+nv}{Status}\PYG{o}{=} \PYG{l+m}{00000000}
+\PYG{l+m}{67} \PYG{l+m}{88} 1b \PYG{l+m}{70} 2a fe \PYG{l+m}{52}
 f001001e00c0000726a1d601ccdf7a00c1000773539e52672d5d0081000700800001
-OK.    Status= 00000000
-26 a1 d6 01 cc df 7a
+OK.    \PYG{n+nv}{Status}\PYG{o}{=} \PYG{l+m}{00000000}
+\PYG{l+m}{26} a1 d6 \PYG{l+m}{01} cc df 7a
 \end{sphinxVerbatim}
 
 If you see this output, your control board is now ready!
@@ -351,7 +356,9 @@ This wrapper is directly compatible with CAESAR Hardware API interface and is ex
 We developed a simple, yet versatile protocol to enable the wrapper to split the data types.
 The wrapper receives data from the control board and distributes it into three FIFOs:
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \item {} 
 The Public Data Input (PDI) FIFO (i.e. plaintext)
 
@@ -427,7 +434,9 @@ Here is an example of a signle test vector(split into multiple lines):
 The blockCipherTVGen.py can be used to generate test vectors to be used by block ciphers. The script is located at fobos/software/tvgen/
 There are two steps to use it:
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \item {} 
 Set user defined parameters.
 
@@ -781,7 +790,9 @@ However, this procedure aims to show how to instantiate a function core in FOBOS
 1. Create a project in Vivado (or ISE) and add all vhdl files from fobos/capture/dut/fpga\_dut (except half\_duplex\_du.vhd)
 and fobos/capture/dut/example\_cores/dummy1.
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \setcounter{enumi}{1}
 \item {} 
 Note that in FOBOS\_DUT.vhd, the dummy dut is instantaited as follows:
@@ -827,7 +838,9 @@ Note that in FOBOS\_DUT.vhd, the dummy dut is instantaited as follows:
 \PYG{p}{)}\PYG{p}{;}
 \end{sphinxVerbatim}
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \setcounter{enumi}{2}
 \item {} 
 Note that the W and SW (PDI and SDI width) generics in FOBOS\_DUT.vhd are set to 8.
@@ -846,7 +859,9 @@ Find your bitstream file FOBOS\_DUT.bit in the Vivado/ISE project folders.
 
 \section{Running the dummu DUT example (on Nexys3 DUT)}
 \label{\detokenize{dutdev:running-the-dummu-dut-example-on-nexys3-dut}}\begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \item {} 
 Make sure your hardware is setup properly and the DUT is connected to the control board.
 
@@ -901,7 +916,7 @@ PDI without sending the data to the DUT.
  \PYG{n}{TRACE\PYGZus{}NUM} \PYG{o}{=} \PYG{l+m+mi}{5}
  \PYG{n}{OUT\PYGZus{}LEN} \PYG{o}{=} \PYG{l+m+mi}{7}
  \PYG{c+c1}{\PYGZsh{} Instantiate FOBOS objects\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}}
- \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Sending configuration...}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+ \PYG{k}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Sending configuration...}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
  \PYG{n}{ctrl} \PYG{o}{=} \PYG{n}{fobos}\PYG{o}{.}\PYG{n}{Basys3Ctrl}\PYG{p}{(}\PYG{n}{SERIAL\PYGZus{}PORT}\PYG{p}{)}
  \PYG{n}{ctrl}\PYG{o}{.}\PYG{n}{enableTestMode}\PYG{p}{(}\PYG{p}{)}
  \PYG{n}{ctrl}\PYG{o}{.}\PYG{n}{setOutLen}\PYG{p}{(}\PYG{n}{OUT\PYGZus{}LEN}\PYG{p}{)}
@@ -912,14 +927,14 @@ PDI without sending the data to the DUT.
                 \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{00c0000767881b702afe5200c10007b08a5e036de72b0081000700800001}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,}
                 \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{00c0000726a1d601ccdf7a00c1000773539e52672d5d0081000700800001}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}
 
- \PYG{n+nb}{print} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Sending data..}\PYG{l+s+s1}{\PYGZsq{}}
+ \PYG{k}{print} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Sending data..}\PYG{l+s+s1}{\PYGZsq{}}
  \PYG{n}{traceNum} \PYG{o}{=} \PYG{l+m+mi}{0}
  \PYG{k}{while} \PYG{n}{traceNum} \PYG{o}{\PYGZlt{}} \PYG{n}{TRACE\PYGZus{}NUM}\PYG{p}{:}
      \PYG{n}{data} \PYG{o}{=} \PYG{n}{testVectors}\PYG{p}{[}\PYG{n}{traceNum}\PYG{p}{]}
      \PYG{n}{status}\PYG{p}{,} \PYG{n}{result} \PYG{o}{=} \PYG{n}{ctrl}\PYG{o}{.}\PYG{n}{processData}\PYG{p}{(}\PYG{n}{data}\PYG{p}{,} \PYG{n}{OUT\PYGZus{}LEN}\PYG{p}{)}
      \PYG{k}{if} \PYG{n}{status} \PYG{o}{!=} \PYG{n}{fobos}\PYG{o}{.}\PYG{n}{OK}\PYG{p}{:}
-         \PYG{n+nb}{print} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TIMEOUT}\PYG{l+s+s2}{\PYGZdq{}}
-     \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{result}\PYG{p}{)}
+         \PYG{k}{print} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TIMEOUT}\PYG{l+s+s2}{\PYGZdq{}}
+     \PYG{k}{print}\PYG{p}{(}\PYG{n}{result}\PYG{p}{)}
      \PYG{n}{traceNum} \PYG{o}{+}\PYG{o}{=} \PYG{l+m+mi}{1}
 \end{sphinxVerbatim}
 
@@ -1002,14 +1017,14 @@ we show more features like setting the DUT clock and timeout etc.
  \PYG{n}{cipherFile} \PYG{o}{=} \PYG{n+nb}{open}\PYG{p}{(}\PYG{n}{cipherFileName}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{w}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
  \PYG{n}{shutil}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{(}\PYG{n}{tvFileName}\PYG{p}{,} \PYG{n}{captureDir}\PYG{p}{)}
  \PYG{c+c1}{\PYGZsh{} Get traces\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}}
- \PYG{n+nb}{print} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Sending data..}\PYG{l+s+s1}{\PYGZsq{}}
+ \PYG{k}{print} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Sending data..}\PYG{l+s+s1}{\PYGZsq{}}
  \PYG{n}{traceNum} \PYG{o}{=} \PYG{l+m+mi}{0}
  \PYG{k}{while} \PYG{n}{traceNum} \PYG{o}{\PYGZlt{}} \PYG{n}{TRACE\PYGZus{}NUM}\PYG{p}{:}
      \PYG{n}{data} \PYG{o}{=} \PYG{n}{tvFile}\PYG{o}{.}\PYG{n}{readline}\PYG{p}{(}\PYG{p}{)}
      \PYG{n}{status}\PYG{p}{,} \PYG{n}{result} \PYG{o}{=} \PYG{n}{ctrl}\PYG{o}{.}\PYG{n}{processData}\PYG{p}{(}\PYG{n}{data}\PYG{p}{,} \PYG{n}{OUT\PYGZus{}LEN}\PYG{p}{)}
      \PYG{k}{if} \PYG{n}{status} \PYG{o}{!=} \PYG{n}{fobos}\PYG{p}{:}
-         \PYG{n+nb}{print} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TIMEOUT}\PYG{l+s+s2}{\PYGZdq{}}
-     \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{result}\PYG{p}{)}
+         \PYG{k}{print} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TIMEOUT}\PYG{l+s+s2}{\PYGZdq{}}
+     \PYG{k}{print}\PYG{p}{(}\PYG{n}{result}\PYG{p}{)}
      \PYG{n}{cipherFile}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{result} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
      \PYG{n}{traceNum} \PYG{o}{+}\PYG{o}{=} \PYG{l+m+mi}{1}
 
@@ -1082,14 +1097,14 @@ across the resistor.
 \section{Trace Collection Example}
 \label{\detokenize{capture_scope:trace-collection-example}}
 \begin{sphinxVerbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k+kn}{as} \PYG{n+nn}{np}
 \PYG{k+kn}{import} \PYG{n+nn}{fobos}
 \PYG{c+c1}{\PYGZsh{} Constants\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}}
 \PYG{n}{SERIAL\PYGZus{}PORT} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{/dev/ttyUSB1}\PYG{l+s+s1}{\PYGZsq{}}
 \PYG{n}{TRACE\PYGZus{}NUM} \PYG{o}{=} \PYG{l+m+mi}{5}
 \PYG{n}{OUT\PYGZus{}LEN} \PYG{o}{=} \PYG{l+m+mi}{7}
 \PYG{c+c1}{\PYGZsh{} Instantiate FOBOS objects\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}}
-\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Sending configuration...}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\PYG{k}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Sending configuration...}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
 \PYG{n}{ctrl} \PYG{o}{=} \PYG{n}{fobos}\PYG{o}{.}\PYG{n}{Basys3Ctrl}\PYG{p}{(}\PYG{n}{SERIAL\PYGZus{}PORT}\PYG{p}{)}
 \PYG{n}{ctrl}\PYG{o}{.}\PYG{n}{enableTestMode}\PYG{p}{(}\PYG{p}{)}
 \PYG{n}{ctrl}\PYG{o}{.}\PYG{n}{setOutLen}\PYG{p}{(}\PYG{n}{OUT\PYGZus{}LEN}\PYG{p}{)}
@@ -1112,15 +1127,15 @@ across the resistor.
             \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{00c0000767881b702afe5200c10007b08a5e036de72b0081000700800001}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,}
             \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{00c0000726a1d601ccdf7a00c1000773539e52672d5d0081000700800001}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}
 
-\PYG{n+nb}{print} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Sending data..}\PYG{l+s+s1}{\PYGZsq{}}
+\PYG{k}{print} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Sending data..}\PYG{l+s+s1}{\PYGZsq{}}
 \PYG{n}{traceNum} \PYG{o}{=} \PYG{l+m+mi}{0}
 \PYG{k}{while} \PYG{n}{traceNum} \PYG{o}{\PYGZlt{}} \PYG{n}{TRACE\PYGZus{}NUM}\PYG{p}{:}
     \PYG{n}{scope}\PYG{o}{.}\PYG{n}{arm}\PYG{p}{(}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} arm scope. Now, it expects a trigger at any time.}
     \PYG{n}{data} \PYG{o}{=} \PYG{n}{testVectors}\PYG{p}{[}\PYG{n}{traceNum}\PYG{p}{]}
     \PYG{n}{status}\PYG{p}{,} \PYG{n}{result} \PYG{o}{=} \PYG{n}{ctrl}\PYG{o}{.}\PYG{n}{processData}\PYG{p}{(}\PYG{n}{data}\PYG{p}{,} \PYG{n}{OUT\PYGZus{}LEN}\PYG{p}{)}
     \PYG{k}{if} \PYG{n}{status} \PYG{o}{!=} \PYG{n}{fobos}\PYG{o}{.}\PYG{n}{OK}\PYG{p}{:}
-        \PYG{n+nb}{print} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TIMEOUT}\PYG{l+s+s2}{\PYGZdq{}}
-    \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{result}\PYG{p}{)}
+        \PYG{k}{print} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TIMEOUT}\PYG{l+s+s2}{\PYGZdq{}}
+    \PYG{k}{print}\PYG{p}{(}\PYG{n}{result}\PYG{p}{)}
     \PYG{n}{trace} \PYG{o}{=} \PYG{n}{scope}\PYG{o}{.}\PYG{n}{readTrace}\PYG{p}{(}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} get trace from oscilloscope buffers.}
     \PYG{n}{np}\PYG{o}{.}\PYG{n}{save}\PYG{p}{(}\PYG{n}{traceFile}\PYG{p}{,} \PYG{n}{trace}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} save the trace in the trace file.}
     \PYG{n}{traceNum} \PYG{o}{+}\PYG{o}{=} \PYG{l+m+mi}{1}
@@ -1314,7 +1329,9 @@ Note that each column in \sphinxstylestrong{V} is the intermediate value calcula
 Now we have calculated the intermediate values matrix \sphinxstylestrong{V}, we estimate the power consumption when each value in \sphinxstylestrong{V} is processed in the device.
 Two power models are widely used:
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \item {} 
 The Hamming Weight model (HW). this model counts the ones in the value e.g HW(1100 0000) = 2
 
@@ -1378,12 +1395,12 @@ stored in fobos/workspace/aes\_artix7\_picoscope :
 
 \begin{sphinxVerbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 \PYG{k+kn}{import} \PYG{n+nn}{os}
-\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
-\PYG{k+kn}{import} \PYG{n+nn}{fobos}\PYG{n+nn}{.}\PYG{n+nn}{traceset} \PYG{k}{as} \PYG{n+nn}{traceset}
-\PYG{k+kn}{import} \PYG{n+nn}{fobos}\PYG{n+nn}{.}\PYG{n+nn}{cpa} \PYG{k}{as} \PYG{n+nn}{cpa}
-\PYG{k+kn}{import} \PYG{n+nn}{fobos}\PYG{n+nn}{.}\PYG{n+nn}{postprocess} \PYG{k}{as} \PYG{n+nn}{postprocess}
-\PYG{k+kn}{import} \PYG{n+nn}{fobos}\PYG{n+nn}{.}\PYG{n+nn}{projmgr} \PYG{k}{as} \PYG{n+nn}{projmgr}
-\PYG{k+kn}{import} \PYG{n+nn}{fobos}\PYG{n+nn}{.}\PYG{n+nn}{powermodels}\PYG{n+nn}{.}\PYG{n+nn}{AESFirstLast} \PYG{k}{as} \PYG{n+nn}{powermodel}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k+kn}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{fobos.traceset} \PYG{k+kn}{as} \PYG{n+nn}{traceset}
+\PYG{k+kn}{import} \PYG{n+nn}{fobos.cpa} \PYG{k+kn}{as} \PYG{n+nn}{cpa}
+\PYG{k+kn}{import} \PYG{n+nn}{fobos.postprocess} \PYG{k+kn}{as} \PYG{n+nn}{postprocess}
+\PYG{k+kn}{import} \PYG{n+nn}{fobos.projmgr} \PYG{k+kn}{as} \PYG{n+nn}{projmgr}
+\PYG{k+kn}{import} \PYG{n+nn}{fobos.powermodels.AESFirstLast} \PYG{k+kn}{as} \PYG{n+nn}{powermodel}
 
 \PYG{k}{def} \PYG{n+nf}{main}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
     \PYG{c+c1}{\PYGZsh{} Configure project directories\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}}
@@ -1481,15 +1498,15 @@ For example the following test vector can be used to perform a t-test on an algo
 
 \fvset{hllines={, 1, 4, 6, 7,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{l+m+mi}{00}\PYG{n}{C001607000000020000000D600000CB0B1B2B3B4B} \PYG{o}{.}\PYG{o}{.}\PYG{o}{.}
-\PYG{l+m+mi}{00}\PYG{n}{C001607000000020000000D600000C0EEB8882501} \PYG{o}{.}\PYG{o}{.}\PYG{o}{.}
-\PYG{l+m+mi}{00}\PYG{n}{C001607000000020000000D600000CF402296C454} \PYG{o}{.}\PYG{o}{.}\PYG{o}{.}
-\PYG{l+m+mi}{00}\PYG{n}{C001607000000020000000D600000CB0B1B2B3B4B} \PYG{o}{.}\PYG{o}{.}\PYG{o}{.}
-\PYG{l+m+mi}{00}\PYG{n}{C001607000000020000000D600000CE919E2FC539} \PYG{o}{.}\PYG{o}{.}\PYG{o}{.}
-\PYG{l+m+mi}{00}\PYG{n}{C001607000000020000000D600000CB0B1B2B3B4B} \PYG{o}{.}\PYG{o}{.}\PYG{o}{.}
-\PYG{l+m+mi}{00}\PYG{n}{C001607000000020000000D600000CB0B1B2B3B4B} \PYG{o}{.}\PYG{o}{.}\PYG{o}{.}
-\PYG{o}{.}
-\PYG{o}{.}
+00C001607000000020000000D600000CB0B1B2B3B4B ...
+00C001607000000020000000D600000C0EEB8882501 ...
+00C001607000000020000000D600000CF402296C454 ...
+00C001607000000020000000D600000CB0B1B2B3B4B ...
+00C001607000000020000000D600000CE919E2FC539 ...
+00C001607000000020000000D600000CB0B1B2B3B4B ...
+00C001607000000020000000D600000CB0B1B2B3B4B ...
+.
+.
 \end{sphinxVerbatim}
 \sphinxresetverbatimhllines
 
@@ -1497,7 +1514,7 @@ The corresponding fvrchoicefile specifies which traces are random ‘1’ and wh
 For example the fvrchoicefile that corresponds to the test-vectors above is
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{l+m+mi}{0110100} \PYG{o}{.}\PYG{o}{.}\PYG{o}{.}
+0110100 ...
 \end{sphinxVerbatim}
 
 See {\hyperref[\detokenize{tvgen:tvgen-label}]{\sphinxcrossref{\DUrole{std,std-ref}{Test Vector Generation}}}} for more information.
@@ -1533,7 +1550,7 @@ For exmple, the following command takes the powerTraces.npy file and coverts it 
 first 2000 traces.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n}{python} \PYG{n}{read\PYGZus{}traces}\PYG{o}{.}\PYG{n}{py} \PYG{n}{powerTraces}\PYG{o}{.}\PYG{n}{npy} \PYG{n}{cleanTraces}\PYG{o}{.}\PYG{n}{npy} \PYG{l+m+mi}{2000}
+python read\PYGZus{}traces.py powerTraces.npy cleanTraces.npy \PYG{l+m}{2000}
 \end{sphinxVerbatim}
 
 4-  Next, we split the cleanTraces.npy file into two trace files
@@ -1562,7 +1579,7 @@ These are configurable parameters in the script. Here is all the parameters you 
 Once you configure the parameters, you can run splitter using:
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n}{python} \PYG{n}{splitter}\PYG{o}{.}\PYG{n}{py}
+python splitter.py
 \end{sphinxVerbatim}
 
 The reuslt will be 2 files called traces0.npy and traces1.npy.
@@ -1571,7 +1588,7 @@ The reuslt will be 2 files called traces0.npy and traces1.npy.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYGZdl{} python t\PYGZhy{}test2.py \PYGZhy{}h
-usage: t\PYGZhy{}test2.py [\PYGZhy{}h] trace\PYGZus{}file0 trace\PYGZus{}file1 plot\PYGZus{}file
+usage: t\PYGZhy{}test2.py \PYG{o}{[}\PYGZhy{}h\PYG{o}{]} trace\PYGZus{}file0 trace\PYGZus{}file1 plot\PYGZus{}file
 
 positional arguments:
 trace\PYGZus{}file0  .npy file that store traces as MxN Nupmy array
@@ -1579,7 +1596,7 @@ trace\PYGZus{}file1  .npy file that store traces as MxN Nupmy array
 plot\PYGZus{}file    File name to store the output figure
 
 optional arguments:
-\PYGZhy{}h, \PYGZhy{}\PYGZhy{}help   show this help message and exit
+\PYGZhy{}h, \PYGZhy{}\PYGZhy{}help   show this \PYG{n+nb}{help} message and \PYG{n+nb}{exit}
 \end{sphinxVerbatim}
 
 Before running the script, also edit the plotting parameters in the script. These parameters specify the limits on the x and y axis.
@@ -1598,7 +1615,7 @@ This limits the t-values to -40-40 and displays samples from 0 to 1000 on the x-
 Once you configure all the parameters, you can run the t-test using the following command.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n}{python} \PYG{n}{t}\PYG{o}{\PYGZhy{}}\PYG{n}{test2}\PYG{o}{.}\PYG{n}{py} \PYG{n}{traces0}\PYG{o}{.}\PYG{n}{npy} \PYG{n}{traces1}\PYG{o}{.}\PYG{n}{npy} \PYG{n}{result\PYGZus{}t\PYGZus{}test}\PYG{o}{.}\PYG{n}{png}
+python t\PYGZhy{}test2.py traces0.npy traces1.npy result\PYGZus{}t\PYGZus{}test.png
 \end{sphinxVerbatim}
 
 The output will be a file called result\_t\_test.png that shows the t-values on the y-axis and samples in the x-axis.
@@ -2181,7 +2198,9 @@ Version 2.0, January 2004
 
 TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 \begin{enumerate}
-\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\def\theenumi{\arabic{enumi}}
+\def\labelenumi{\theenumi .}
+\makeatletter\def\p@enumii{\p@enumi \theenumi .}\makeatother
 \item {} 
 Definitions.
 
@@ -2273,7 +2292,9 @@ Work or Derivative Works thereof in any medium, with or without
 modifications, and in Source or Object form, provided that You
 meet the following conditions:
 \begin{enumerate}
-\sphinxsetlistlabels{\alph}{enumii}{enumiii}{(}{)}%
+\def\theenumii{\alph{enumii}}
+\def\labelenumii{(\theenumii )}
+\makeatletter\def\p@enumiii{\p@enumii (\theenumii )}\makeatother
 \item {} 
 You must give any other recipients of the Work or
 Derivative Works a copy of this License; and

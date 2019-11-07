@@ -22,7 +22,7 @@ Fixed-vs-random t-test uses interleaved fixed and random test vectors. We can se
 For example the following test vector can be used to perform a t-test on an algorithm implemented on FOBOS DUT.
 
 
-.. code-block::
+.. code-block:: none
     :emphasize-lines: 1,4,6,7
 
     00C001607000000020000000D600000CB0B1B2B3B4B ...
@@ -39,7 +39,7 @@ For example the following test vector can be used to perform a t-test on an algo
 The corresponding fvrchoicefile specifies which traces are random '1' and which are fixed '0'.
 For example the fvrchoicefile that corresponds to the test-vectors above is
 
-.. code-block::
+.. code-block:: none
 
     0110100 ...
 
@@ -74,7 +74,7 @@ These files need to be at the same directory as the scripts copied in step 1.
 For exmple, the following command takes the powerTraces.npy file and coverts it to cleanTraces.npy and it uses only the
 first 2000 traces. 
 
-.. code-block::
+.. code-block:: bash
     
     python read_traces.py powerTraces.npy cleanTraces.npy 2000
 
@@ -87,7 +87,7 @@ first 2000 traces.
 To do this, splitter.py needs the fvrchoicefile.txt file. It also needs to know how many traces to consider.
 These are configurable parameters in the script. Here is all the parameters you can edit in splitter.py:
 
-.. code-block::
+.. code-block:: python
 
     ######Parameters
     MAX_TRACE=2000
@@ -99,7 +99,7 @@ These are configurable parameters in the script. Here is all the parameters you 
 
 Once you configure the parameters, you can run splitter using:
 
-.. code-block::
+.. code-block:: bash
     
     python splitter.py 
 
@@ -107,7 +107,7 @@ The reuslt will be 2 files called traces0.npy and traces1.npy.
 
 5- The two files are now ready to be fed into the *t-test2.py* script to perform the t-test. Here are the parameters that this script needs:
 
-.. code-block::
+.. code-block:: bash
 
     $ python t-test2.py -h
     usage: t-test2.py [-h] trace_file0 trace_file1 plot_file
@@ -122,7 +122,7 @@ The reuslt will be 2 files called traces0.npy and traces1.npy.
 
 Before running the script, also edit the plotting parameters in the script. These parameters specify the limits on the x and y axis.
 
-.. code-block::
+.. code-block:: python
 
 
     # Parameters ########
@@ -136,7 +136,7 @@ This limits the t-values to -40-40 and displays samples from 0 to 1000 on the x-
 
 Once you configure all the parameters, you can run the t-test using the following command.
 
-.. code-block::
+.. code-block:: bash
 
     python t-test2.py traces0.npy traces1.npy result_t_test.png
 

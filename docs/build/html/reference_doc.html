@@ -174,192 +174,214 @@
 <h2>Basys3Ctrl Class (controller)<a class="headerlink" href="#basys3ctrl-class-controller" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="fobos.Basys3Ctrl">
-<em class="property">class </em><code class="sig-prename descclassname">fobos.</code><code class="sig-name descname">Basys3Ctrl</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">port</em>, <em class="sig-param">baudRate=115200</em>, <em class="sig-param">dummy=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">fobos.</code><code class="descname">Basys3Ctrl</code><span class="sig-paren">(</span><em>self</em>, <em>port</em>, <em>baudRate=115200</em>, <em>dummy=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to interface with Basys3 controller.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>port</strong> (<em>str</em>) – The serial port where the Basys3 board is connected(e.g /dev/ttyUSB1).</p></li>
-<li><p><strong>baudRate</strong> (<em>int</em>) – Baud rate. Default is 115200.</p></li>
-<li><p><strong>dummy</strong> (<em>bool</em>) – When set to true, no communication with Basys3 is done.
-This is to test the software only. Default is False.</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>port</strong> (<em>str</em>) – The serial port where the Basys3 board is connected(e.g /dev/ttyUSB1).</li>
+<li><strong>baudRate</strong> (<em>int</em>) – Baud rate. Default is 115200.</li>
+<li><strong>dummy</strong> (<em>bool</em>) – When set to true, no communication with Basys3 is done.
+This is to test the software only. Default is False.</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="fobos.Basys3Ctrl.processData">
-<code class="sig-name descname">processData</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">data</em>, <em class="sig-param">outLen</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.processData" title="Permalink to this definition">¶</a></dt>
+<code class="descname">processData</code><span class="sig-paren">(</span><em>self</em>, <em>data</em>, <em>outLen</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.processData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends data to FOBOS hardware for processing, e.g. encryption</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>str</em>) – The data to be processed. This is a hexadecimal string.</p>
-</dd>
-<dt class="field-even">Rtype (str, str)</dt>
-<dd class="field-even"><p></p></dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>(Status (“00000000” OK | “20000000” TIMOUT) , Result from DUT (i.e. ciphertext))</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>str</em>) – The data to be processed. This is a hexadecimal string.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Rtype (str, str):</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(Status (“00000000” OK | “20000000” TIMOUT) , Result from DUT (i.e. ciphertext))</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="fobos.Basys3Ctrl.setOutLen">
-<code class="sig-name descname">setOutLen</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">outLen</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.setOutLen" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setOutLen</code><span class="sig-paren">(</span><em>self</em>, <em>outLen</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.setOutLen" title="Permalink to this definition">¶</a></dt>
 <dd><p>set DUT Expected Output Length (result length) in bytes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>outLen</strong> (<em>int</em>) – The number of output bytes to be returned by the DUT (e.g 16 for AES-128).</p>
-</dd>
-<dt class="field-even">Rtype int</dt>
-<dd class="field-even"><p></p></dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Status.</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>outLen</strong> (<em>int</em>) – The number of output bytes to be returned by the DUT (e.g 16 for AES-128).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Rtype int:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Status.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="fobos.Basys3Ctrl.setTriggerWait">
-<code class="sig-name descname">setTriggerWait</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">trigWait</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.setTriggerWait" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setTriggerWait</code><span class="sig-paren">(</span><em>self</em>, <em>trigWait</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.setTriggerWait" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set number of trigger wait cycles</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>int</strong> (<em>trigWait</em>) – The number of DUT cycles after di_ready goes to 0 to issue the trigger.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Status</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>int</strong> (<em>trigWait</em>) – The number of DUT cycles after di_ready goes to 0 to issue the trigger.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Status</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="fobos.Basys3Ctrl.setTriggerMode">
-<code class="sig-name descname">setTriggerMode</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">trigType</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.setTriggerMode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setTriggerMode</code><span class="sig-paren">(</span><em>self</em>, <em>trigType</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.setTriggerMode" title="Permalink to this definition">¶</a></dt>
 <dt>
-<code class="sig-name descname">Set trigger mode.</code></dt>
+<code class="descname">Set trigger mode.</code></dt>
 <dd><blockquote>
-<div><dl class="field-list simple">
-<dt class="field-odd">param int</dt>
-<dd class="field-odd"><p>trigType. Possible values (TRG_NORM = 0 | TRG_FULL = 1 | TRG_NORM_CLK = 2 | TRG_FULL_CLK = 3)</p>
-</dd>
-<dt class="field-even">rtype</dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">return</dt>
-<dd class="field-odd"><p>Status</p>
-</dd>
-</dl>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">param int:</th><td class="field-body">trigType. Possible values (TRG_NORM = 0 | TRG_FULL = 1 | TRG_NORM_CLK = 2 | TRG_FULL_CLK = 3)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">rtype:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">return:</th><td class="field-body">Status</td>
+</tr>
+</tbody>
+</table>
 </div></blockquote>
 <dl class="method">
 <dt id="fobos.Basys3Ctrl.setTimeToReset">
-<code class="sig-name descname">setTimeToReset</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">dutCycles</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.setTimeToReset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setTimeToReset</code><span class="sig-paren">(</span><em>self</em>, <em>dutCycles</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.setTimeToReset" title="Permalink to this definition">¶</a></dt>
 <dd><p>set number of clock cycles after di_ready goes to 0 to reset the DUT.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dutCycles</strong> (<em>int</em>) – The number of DUT cycles to reset the DUT.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Status.</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dutCycles</strong> (<em>int</em>) – The number of DUT cycles to reset the DUT.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Status.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="method">
 <dt id="fobos.Basys3Ctrl.setTimeout">
-<code class="sig-name descname">setTimeout</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">seconds</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.setTimeout" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setTimeout</code><span class="sig-paren">(</span><em>self</em>, <em>seconds</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.setTimeout" title="Permalink to this definition">¶</a></dt>
 <dd><p>set number of seconds to stop waiting for DUT result.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>seconds</strong> (<em>in</em>) – Time in seconds. Range 1-40 seconds.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Status</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seconds</strong> (<em>in</em>) – Time in seconds. Range 1-40 seconds.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Status</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="fobos.Basys3Ctrl.enableTestMode">
-<code class="sig-name descname">enableTestMode</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.enableTestMode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">enableTestMode</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.enableTestMode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enable test mode. When this mode is enabled, the controller sends test-vectors to its internal dummy DUT.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Status</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Status</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="fobos.Basys3Ctrl.disableTestMode">
-<code class="sig-name descname">disableTestMode</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.disableTestMode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">disableTestMode</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.disableTestMode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disable test mode. In this mode the ctrl board uses the real DUT. This is the default mode.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Status</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Status</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="fobos.Basys3Ctrl.forceReset">
-<code class="sig-name descname">forceReset</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.forceReset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forceReset</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.forceReset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset DUT and clear current communication with DUT.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Status</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Status</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="fobos.Basys3Ctrl.releaseReset">
-<code class="sig-name descname">releaseReset</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.releaseReset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">releaseReset</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.releaseReset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Release  DUT reset signal</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Status</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Status</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="fobos.Basys3Ctrl.setDUTClk">
-<code class="sig-name descname">setDUTClk</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">clkFreqMhz</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.setDUTClk" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setDUTClk</code><span class="sig-paren">(</span><em>self</em>, <em>clkFreqMhz</em><span class="sig-paren">)</span><a class="headerlink" href="#fobos.Basys3Ctrl.setDUTClk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set DUT clock frequency generated by the control board. Range is between 0.4 MHz - 100 MHz.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>clkFreqMhz</strong> (<em>float</em>) – The DUT clock frequency in Mhz.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Status</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>clkFreqMhz</strong> (<em>float</em>) – The DUT clock frequency in Mhz.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Status</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -369,68 +391,83 @@ This is to test the software only. Default is False.</p></li>
 <h2>Scope (Picoscope Class)<a class="headerlink" href="#scope-picoscope-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="Picoscope">
-<em class="property">class </em><code class="sig-name descname">Picoscope</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">sampleResolution=8</em>, <em class="sig-param">preTriggerSamples=0</em>, <em class="sig-param">postTriggerSamples=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#Picoscope" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">Picoscope</code><span class="sig-paren">(</span><em>self</em>, <em>sampleResolution=8</em>, <em>preTriggerSamples=0</em>, <em>postTriggerSamples=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#Picoscope" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class to interface with the Picoscope oscilloscope.</p>
 <dl class="method">
 <dt id="Picoscope.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">sampleResolution=8</em>, <em class="sig-param">preTriggerSamples=0</em>, <em class="sig-param">postTriggerSamples=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#Picoscope.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>sampleResolution=8</em>, <em>preTriggerSamples=0</em>, <em>postTriggerSamples=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#Picoscope.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open oscilloscope</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sampleResolution</strong> (<em>int</em>) – The number of bits used to represent each sample. Possible values 8, 12, 14, 15 and 16.</p></li>
-<li><p><strong>preTriggerSamples</strong> (<em>int</em>) – The number of samples before the trigger to return to the user.</p></li>
-<li><p><strong>postTriggerSamples</strong> (<em>int</em>) – The number of samples after the trigger to return to the user.</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sampleResolution</strong> (<em>int</em>) – The number of bits used to represent each sample. Possible values 8, 12, 14, 15 and 16.</li>
+<li><strong>preTriggerSamples</strong> (<em>int</em>) – The number of samples before the trigger to return to the user.</li>
+<li><strong>postTriggerSamples</strong> (<em>int</em>) – The number of samples after the trigger to return to the user.</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="Picoscope.setChannel">
-<code class="sig-name descname">setChannel</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">channelName='CHANNEL_A'</em>, <em class="sig-param">coupling='DC'</em>, <em class="sig-param">rangemv='1V'</em><span class="sig-paren">)</span><a class="headerlink" href="#Picoscope.setChannel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setChannel</code><span class="sig-paren">(</span><em>self</em>, <em>channelName='CHANNEL_A'</em>, <em>coupling='DC'</em>, <em>rangemv='1V'</em><span class="sig-paren">)</span><a class="headerlink" href="#Picoscope.setChannel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configure voltage range and coupling for a channel.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>channelName</strong> (<em>str</em>) – The name of the oscilloscope channel (CHANNEL_A | CHANNELB).</p></li>
-<li><p><strong>coupling</strong> (<em>str</em>) – Select DC/AC coupling (DC | AC)</p></li>
-<li><p><strong>rangemv</strong> (<em>str</em>) – The voltage range for the selected channel (10mV|20mV|50mV|100mV|200mV|500mV|1V|2V|5V|10V|20V)</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>channelName</strong> (<em>str</em>) – The name of the oscilloscope channel (CHANNEL_A | CHANNELB).</li>
+<li><strong>coupling</strong> (<em>str</em>) – Select DC/AC coupling (DC | AC)</li>
+<li><strong>rangemv</strong> (<em>str</em>) – The voltage range for the selected channel (10mV|20mV|50mV|100mV|200mV|500mV|1V|2V|5V|10V|20V)</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="Picoscope.setSamplingInterval">
-<code class="sig-name descname">setSamplingInterval</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">samplingIntervalns</em><span class="sig-paren">)</span><a class="headerlink" href="#Picoscope.setSamplingInterval" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setSamplingInterval</code><span class="sig-paren">(</span><em>self</em>, <em>samplingIntervalns</em><span class="sig-paren">)</span><a class="headerlink" href="#Picoscope.setSamplingInterval" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the sampling interval (time between samples T) in nano seconds. Sampling rate = 1/T.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>samplingInterval</strong> (<em>int</em>) – Sampling interval (time between samples T) in nano seconds. Sampling rate = 1/T.</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>samplingInterval</strong> (<em>int</em>) – Sampling interval (time between samples T) in nano seconds. Sampling rate = 1/T.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="Picoscope.setTrigger">
-<code class="sig-name descname">setTrigger</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">channelName= 'CHANNEL_A'</em>, <em class="sig-param">thresholdmv = 500</em>, <em class="sig-param">direction = 'RISING_EDGE'</em>, <em class="sig-param">autoTriggerDelay = 2000</em><span class="sig-paren">)</span><a class="headerlink" href="#Picoscope.setTrigger" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setTrigger</code><span class="sig-paren">(</span><em>self</em>, <em>channelName= 'CHANNEL_A'</em>, <em>thresholdmv = 500</em>, <em>direction = 'RISING_EDGE'</em>, <em>autoTriggerDelay = 2000</em><span class="sig-paren">)</span><a class="headerlink" href="#Picoscope.setTrigger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configure trigger channel.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>channelName</strong> (<em>str</em>) – The channel to use as a trigger channel (CHANNEL_A | CHANNELB | EXTERNAL).</p></li>
-<li><p><strong>thresholdmv</strong> (<em>int</em>) – The minimum level of voltage to assert a trigger.</p></li>
-<li><p><strong>direction</strong> (<em>str</em>) – The trigger signal direction (RISING_EDGE| FALLING_EDGE).</p></li>
-<li><p><strong>autoTriggerDelay</strong> (<em>int</em>) – Time in milliseconds after which auto trigger occurs (i.e start storing data even if no valid trigger received).</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>channelName</strong> (<em>str</em>) – The channel to use as a trigger channel (CHANNEL_A | CHANNELB | EXTERNAL).</li>
+<li><strong>thresholdmv</strong> (<em>int</em>) – The minimum level of voltage to assert a trigger.</li>
+<li><strong>direction</strong> (<em>str</em>) – The trigger signal direction (RISING_EDGE| FALLING_EDGE).</li>
+<li><strong>autoTriggerDelay</strong> (<em>int</em>) – Time in milliseconds after which auto trigger occurs (i.e start storing data even if no valid trigger received).</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="Picoscope.setDataBuffers">
-<code class="sig-name descname">setDataBuffers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Picoscope.setDataBuffers" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setDataBuffers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Picoscope.setDataBuffers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allocates memory buffers to store oscilloscope data.</p>
 </dd></dl>
 
@@ -441,44 +478,53 @@ This is to test the software only. Default is False.</p></li>
 <h2>ProjectManager Class<a class="headerlink" href="#projectmanager-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ProjectManager">
-<em class="property">class </em><code class="sig-name descname">ProjectManager</code><a class="headerlink" href="#ProjectManager" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">ProjectManager</code><a class="headerlink" href="#ProjectManager" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class to facilitate organizing and saving results files/data files in automatically created directories. For example, when new capture is performed a directory named attempt-[number] will be created in the capture directory.</p>
 <dl class="method">
 <dt id="ProjectManager.setWorkSpaceDir">
-<code class="sig-name descname">setWorkSpaceDir</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">workSpaceDir</em><span class="sig-paren">)</span><a class="headerlink" href="#ProjectManager.setWorkSpaceDir" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setWorkSpaceDir</code><span class="sig-paren">(</span><em>self</em>, <em>workSpaceDir</em><span class="sig-paren">)</span><a class="headerlink" href="#ProjectManager.setWorkSpaceDir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the directory where all data will be saved.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>workSpaceDir</strong> (<em>str</em>) – Workspace directory path.</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>workSpaceDir</strong> (<em>str</em>) – Workspace directory path.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ProjectManager.setProjName">
-<code class="sig-name descname">setProjName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ProjectManager.setProjName" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setProjName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ProjectManager.setProjName" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the project name.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>projectName</strong> (<em>str</em>) – Project name. A directory will be created in the workspace with the project name.</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>projectName</strong> (<em>str</em>) – Project name. A directory will be created in the workspace with the project name.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ProjectManager.getProjDir">
-<code class="sig-name descname">getProjDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ProjectManager.getProjDir" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getProjDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ProjectManager.getProjDir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the project directory path.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Full project directory path.</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Full project directory path.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="ProjectManager.getCaptureDir">
-<code class="sig-name descname">getCaptureDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ProjectManager.getCaptureDir" title="Permalink to this definition">¶</a></dt>
+<code class="descname">getCaptureDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ProjectManager.getCaptureDir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates and returns the path of a new directory created in <em>worksapce/projectName/capture/</em> the folder will be named <em>attempt-(number)</em> for uniqueness.</p>
 </dd></dl>
 
@@ -489,22 +535,25 @@ This is to test the software only. Default is False.</p></li>
 <h2>Nexy3DUT Class<a class="headerlink" href="#nexy3dut-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="Nexys3DUT">
-<em class="property">class </em><code class="sig-name descname">Nexys3DUT</code><a class="headerlink" href="#Nexys3DUT" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">Nexys3DUT</code><a class="headerlink" href="#Nexys3DUT" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class to program Digilent Nexy3 DUT. This class requires that Digilent Adept command line tools (djtgcfg command) is installed.</p>
 <dl class="method">
 <dt id="Nexys3DUT.setBitFile">
-<code class="sig-name descname">setBitFile</code><span class="sig-paren">(</span><em class="sig-param">bitFile</em><span class="sig-paren">)</span><a class="headerlink" href="#Nexys3DUT.setBitFile" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setBitFile</code><span class="sig-paren">(</span><em>bitFile</em><span class="sig-paren">)</span><a class="headerlink" href="#Nexys3DUT.setBitFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the bit file name used to program the DUT FPGA.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>bitFile</strong> (<em>str</em>) – Full path of the .bit file to program the FPGA.</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bitFile</strong> (<em>str</em>) – Full path of the .bit file to program the FPGA.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="Nexys3DUT.program">
-<code class="sig-name descname">program</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Nexys3DUT.program" title="Permalink to this definition">¶</a></dt>
+<code class="descname">program</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Nexys3DUT.program" title="Permalink to this definition">¶</a></dt>
 <dd><p>Programs the FPGA using the bit file specified using he setBitFile method.</p>
 </dd></dl>
 
@@ -515,23 +564,27 @@ This is to test the software only. Default is False.</p></li>
 <h2>CPA Class<a class="headerlink" href="#cpa-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="CPA">
-<em class="property">class </em><code class="sig-name descname">CPA</code><a class="headerlink" href="#CPA" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">CPA</code><a class="headerlink" href="#CPA" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class to perform Correlation Power Analysis.</p>
 <dl class="method">
 <dt id="CPA.doCPA">
-<code class="sig-name descname">doCPA</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">measuredPower</em>, <em class="sig-param">hypotheticalPower</em>, <em class="sig-param">numTraces</em>, <em class="sig-param">analysisDir</em>, <em class="sig-param">MTDStride</em><span class="sig-paren">)</span><a class="headerlink" href="#CPA.doCPA" title="Permalink to this definition">¶</a></dt>
+<code class="descname">doCPA</code><span class="sig-paren">(</span><em>self</em>, <em>measuredPower</em>, <em>hypotheticalPower</em>, <em>numTraces</em>, <em>analysisDir</em>, <em>MTDStride</em><span class="sig-paren">)</span><a class="headerlink" href="#CPA.doCPA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform CPA.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>measuredPower</strong> (<em>numpy_array</em>) – The power measure using the oscilloscope.</p></li>
-<li><p><strong>hypotheticalPower</strong> (<em>numpy_array</em>) – The hypotheticalPower estimated using the power model.</p></li>
-<li><p><strong>numTraces</strong> (<em>int</em>) – Number of traces in to be analyzed.</p></li>
-<li><p><strong>analysisDir</strong> (<em>str</em>) – Full path of the directory to store analysis results.</p></li>
-<li><p><strong>MTDStride</strong> (<em>int</em>) – The number of traces to add in each step when plotting the MTD graph.</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>measuredPower</strong> (<em>numpy_array</em>) – The power measure using the oscilloscope.</li>
+<li><strong>hypotheticalPower</strong> (<em>numpy_array</em>) – The hypotheticalPower estimated using the power model.</li>
+<li><strong>numTraces</strong> (<em>int</em>) – Number of traces in to be analyzed.</li>
+<li><strong>analysisDir</strong> (<em>str</em>) – Full path of the directory to store analysis results.</li>
+<li><strong>MTDStride</strong> (<em>int</em>) – The number of traces to add in each step when plotting the MTD graph.</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -541,40 +594,48 @@ This is to test the software only. Default is False.</p></li>
 <h2>DataGenerator Class<a class="headerlink" href="#datagenerator-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="DataGenerator">
-<em class="property">class </em><code class="sig-name descname">DataGenerator</code><a class="headerlink" href="#DataGenerator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">DataGenerator</code><a class="headerlink" href="#DataGenerator" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class to generate FOBOS-ready test vectors.</p>
 <blockquote>
 <div><dl class="method">
 <dt id="DataGenerator.randTVFile">
-<code class="sig-name descname">randTVFile</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">pdiLen</em>, <em class="sig-param">sdiLen</em>, <em class="sig-param">rdiLen</em>, <em class="sig-param">outLen</em>, <em class="sig-param">fileName</em>, <em class="sig-param">numTVs</em><span class="sig-paren">)</span><a class="headerlink" href="#DataGenerator.randTVFile" title="Permalink to this definition">¶</a></dt>
+<code class="descname">randTVFile</code><span class="sig-paren">(</span><em>self</em>, <em>pdiLen</em>, <em>sdiLen</em>, <em>rdiLen</em>, <em>outLen</em>, <em>fileName</em>, <em>numTVs</em><span class="sig-paren">)</span><a class="headerlink" href="#DataGenerator.randTVFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a FOBOS-ready test-vector file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pdiLen</strong> (<em>int</em>) – The lenght of PDI data (e.g plaintext) in bytes.</p></li>
-<li><p><strong>sdiLen</strong> (<em>int</em>) – The lenght of SDI data (e.g secret key) in bytes.</p></li>
-<li><p><strong>rdiLen</strong> (<em>int</em>) – The lenght of RDI data (random data) in bytes.</p></li>
-<li><p><strong>outLen</strong> (<em>int</em>) – The lenght of expected output (e.g ciphertext) in bytes.</p></li>
-<li><p><strong>fileName</strong> (<em>str</em>) – The name of the file to store the testvectors.</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pdiLen</strong> (<em>int</em>) – The lenght of PDI data (e.g plaintext) in bytes.</li>
+<li><strong>sdiLen</strong> (<em>int</em>) – The lenght of SDI data (e.g secret key) in bytes.</li>
+<li><strong>rdiLen</strong> (<em>int</em>) – The lenght of RDI data (random data) in bytes.</li>
+<li><strong>outLen</strong> (<em>int</em>) – The lenght of expected output (e.g ciphertext) in bytes.</li>
+<li><strong>fileName</strong> (<em>str</em>) – The name of the file to store the testvectors.</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="DataGenerator.randTestVector">
-<code class="sig-name descname">randTestVector</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">pdiLen</em>, <em class="sig-param">sdiLen</em>, <em class="sig-param">rdiLen</em>, <em class="sig-param">outLen</em><span class="sig-paren">)</span><a class="headerlink" href="#DataGenerator.randTestVector" title="Permalink to this definition">¶</a></dt>
+<code class="descname">randTestVector</code><span class="sig-paren">(</span><em>self</em>, <em>pdiLen</em>, <em>sdiLen</em>, <em>rdiLen</em>, <em>outLen</em><span class="sig-paren">)</span><a class="headerlink" href="#DataGenerator.randTestVector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a single FOBOS-ready test-vector.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pdiLen</strong> (<em>int</em>) – The lenght of PDI data (e.g plaintext) in bytes.</p></li>
-<li><p><strong>sdiLen</strong> (<em>int</em>) – The lenght of SDI data (e.g secret key) in bytes.</p></li>
-<li><p><strong>rdiLen</strong> (<em>int</em>) – The lenght of RDI data (random data) in bytes.</p></li>
-<li><p><strong>outLen</strong> (<em>int</em>) – The lenght of expected output (e.g ciphertext) in bytes.</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pdiLen</strong> (<em>int</em>) – The lenght of PDI data (e.g plaintext) in bytes.</li>
+<li><strong>sdiLen</strong> (<em>int</em>) – The lenght of SDI data (e.g secret key) in bytes.</li>
+<li><strong>rdiLen</strong> (<em>int</em>) – The lenght of RDI data (random data) in bytes.</li>
+<li><strong>outLen</strong> (<em>int</em>) – The lenght of expected output (e.g ciphertext) in bytes.</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div></blockquote>

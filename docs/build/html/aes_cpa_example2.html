@@ -173,20 +173,19 @@ the SubBytes function is realized through look-up-tables. The block diagram for 
 shown in the figure below:</p>
 <div class="figure align-center" id="id1">
 <img alt="_images/aes128.png" src="_images/aes128.png" />
-<p class="caption"><span class="caption-text">AES-128 implementation</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">AES-128 implementation</span></p>
 </div>
 <p>We attack our AES design during the first round at the output of the register FF1 (see the figure above). The equation for calculating the Hamming Distance (HD) is shown in the eqation below. We use
 Pearson’s Correlation to correlate the instantaneous power consumption with the HD model.</p>
 <blockquote>
-<div><p>H(i,j) = HD(SBOX(CT(i) ), SBOX(kguess(j) xor PT(i+1) ))</p>
-</div></blockquote>
+<div>H(i,j) = HD(SBOX(CT(i) ), SBOX(kguess(j) xor PT(i+1) ))</div></blockquote>
 <p>For trace collection, we used the Basys3 control board and connected a NewAE CW305 DUT (Artix7 FPGA).
 The DUT clock was set to 1 MHz and the oscilloscope sampling rate was set to 62 M Sample/sec.
 We then collected 500K traces.
 The formula above was used to generate the hypothetical power matrix.</p>
 <p>Below is the script used for the CPA analysis. This script is at fobos/software/cpaExample.py and the example files are
 stored in fobos/workspace/aes_artix7_picoscope :</p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -235,12 +234,12 @@ stored in fobos/workspace/aes_artix7_picoscope :</p>
 47
 48
 49</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">fobos.traceset</span> <span class="k">as</span> <span class="nn">traceset</span>
-<span class="kn">import</span> <span class="nn">fobos.cpa</span> <span class="k">as</span> <span class="nn">cpa</span>
-<span class="kn">import</span> <span class="nn">fobos.postprocess</span> <span class="k">as</span> <span class="nn">postprocess</span>
-<span class="kn">import</span> <span class="nn">fobos.projmgr</span> <span class="k">as</span> <span class="nn">projmgr</span>
-<span class="kn">import</span> <span class="nn">fobos.powermodels.AESFirstLast</span> <span class="k">as</span> <span class="nn">powermodel</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">fobos.traceset</span> <span class="kn">as</span> <span class="nn">traceset</span>
+<span class="kn">import</span> <span class="nn">fobos.cpa</span> <span class="kn">as</span> <span class="nn">cpa</span>
+<span class="kn">import</span> <span class="nn">fobos.postprocess</span> <span class="kn">as</span> <span class="nn">postprocess</span>
+<span class="kn">import</span> <span class="nn">fobos.projmgr</span> <span class="kn">as</span> <span class="nn">projmgr</span>
+<span class="kn">import</span> <span class="nn">fobos.powermodels.AESFirstLast</span> <span class="kn">as</span> <span class="nn">powermodel</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="c1"># Configure project directories################################</span>
@@ -296,11 +295,11 @@ the hypotheticalPower matrix, the number of traces, the directory used to store 
 <p>Below, we show the correlation graph and the MTD graph for the first byte of the key.</p>
 <div class="figure align-center" id="id2">
 <a class="reference internal image-reference" href="_images/cpa_correlation.png"><img alt="_images/cpa_correlation.png" src="_images/cpa_correlation.png" style="height: 350px;" /></a>
-<p class="caption"><span class="caption-text">CPA Correlation for key byte-0</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">CPA Correlation for key byte-0</span></p>
 </div>
 <div class="figure align-center" id="id3">
 <a class="reference internal image-reference" href="_images/cpa_MTD.png"><img alt="_images/cpa_MTD.png" src="_images/cpa_MTD.png" style="height: 350px;" /></a>
-<p class="caption"><span class="caption-text">CPA MTD graph for key byte-0</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">CPA MTD graph for key byte-0</span></p>
 </div>
 </div>
 
