@@ -78,32 +78,32 @@ class ClockWizard(DefaultIP):
         else:
             self.mmio.write(0x200, 0x00000102) #set mul to 1  and div to 2
         conf = self.readConfigReg0()
-        #print('clkout %x' %conf)
+        print('clkout %x' %conf)
         intDiv = conf & 0xff
         intMult = (conf & 0xff00) >> 8
         fracMult = (conf & 0x3ff0000) >> 16
-        #print('%d %d %d' % (intDiv, intMult, fracMult))
+        print('%d %d %d' % (intDiv, intMult, fracMult))
         while fracMult > 1:
             fracMult = fracMult / 10
         clkOut = (self.busClk * (intMult + fracMult)) / intDiv
-        #print('clkout %d' %clkOut)
+        print('clkout %d' %clkOut)
         divisor = clkOut / clockValue
         divInt = math.floor(divisor)
         divFrac = divisor - divInt
-        #print('divInt')
-        #print(divInt)
-        #print('divFrac')
-        #print(divFrac)
+        print('divInt')
+        print(divInt)
+        print('divFrac')
+        print(divFrac)
         divFracStored = divFrac
         if divFrac != 0:
             while (divFrac < 1024):
                 divFrac = divFrac * 10
             divFrac = math.floor(divFrac / 10)
         finalClk = clkOut / (divInt + divFracStored)
-        #print('divInt')
-        #print(divInt)
-        #print('divFrac')
-        #print(int(divFrac))
+        print('divInt')
+        print(divInt)
+        print('divFrac')
+        print(int(divFrac))
         self.writeClk0Div(divInt, int(divFrac))
         ##apply config
         self.mmio.write(0x25c, 0x00000003)

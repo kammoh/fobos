@@ -116,7 +116,7 @@ class DataGenerator():
          tvFile = open(tvFileName, "w")
          choiceFile = open(choiceFileName, "w")
       except Exception as e:
-         print("FATAL ERROR: Could not open file %s for writing" % (fileName))
+         print("FATAL ERROR: Could not open file %s for writing" % (tvFileName))
          exit()
       else:      
          for i in range(0, numTVs):
