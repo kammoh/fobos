@@ -27,7 +27,7 @@ across the resistor.
 Trace Collection Example
 ------------------------
 
-.. code-block::
+.. code-block:: python
     :linenos:
 
     import numpy as np

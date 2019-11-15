@@ -180,26 +180,26 @@ This wrapper is directly compatible with CAESAR Hardware API interface and is ex
 We developed a simple, yet versatile protocol to enable the wrapper to split the data types.
 The wrapper receives data from the control board and distributes it into three FIFOs:</p>
 <ol class="arabic simple">
-<li><p>The Public Data Input (PDI) FIFO (i.e. plaintext)</p></li>
-<li><p>The Secret Data Input (SDI) FIFO (i.e. key)</p></li>
-<li><p>The Random Data Input (RDI) FIFO which stores random data which can be used for protected implementations that use masking schemes.</p></li>
+<li>The Public Data Input (PDI) FIFO (i.e. plaintext)</li>
+<li>The Secret Data Input (SDI) FIFO (i.e. key)</li>
+<li>The Random Data Input (RDI) FIFO which stores random data which can be used for protected implementations that use masking schemes.</li>
 </ol>
 <p>Once the wrapper prepares the data for the function core, it starts the core which consumes the data in the input FIFOs and produces output.
 The wrapper accumulates the output into a fourth FIFO called the Data Out (DO) FIFO until the expected number of bytes are stored.
 Then, the wrapper returns the data to the control board which forwards it back to the PC.</p>
 <div class="figure align-center" id="id1">
 <a class="reference internal image-reference" href="_images/fobos2-block.png"><img alt="_images/fobos2-block.png" src="_images/fobos2-block.png" style="height: 300px;" /></a>
-<p class="caption"><span class="caption-text">FOBOS2 block diagram</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">FOBOS2 block diagram</span></p>
 </div>
 <p>The following is a brief description for the test vector format</p>
 <div class="section" id="supported-commands">
 <h2>Supported commands<a class="headerlink" href="#supported-commands" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>00C0 # pdi fifo (length in bytes to follow)</p></li>
-<li><p>00C1 # sdi fifo (length in bytes to follow)</p></li>
-<li><p>00C2 # rdi fifo (length in bytes to follow)</p></li>
-<li><p>0081 # store expected output size (expected output size in bytes to follow)</p></li>
-<li><p>0080 # select command register (command to follow)</p></li>
+<li>00C0 # pdi fifo (length in bytes to follow)</li>
+<li>00C1 # sdi fifo (length in bytes to follow)</li>
+<li>00C2 # rdi fifo (length in bytes to follow)</li>
+<li>0081 # store expected output size (expected output size in bytes to follow)</li>
+<li>0080 # select command register (command to follow)</li>
 </ul>
 <div class="section" id="fobos-protocol-example">
 <h3>FOBOS Protocol Example<a class="headerlink" href="#fobos-protocol-example" title="Permalink to this headline">¶</a></h3>
@@ -230,8 +230,8 @@ Then, the wrapper returns the data to the control board which forwards it back t
 <p>The blockCipherTVGen.py can be used to generate test vectors to be used by block ciphers. The script is located at fobos/software/tvgen/
 There are two steps to use it:</p>
 <ol class="arabic simple">
-<li><p>Set user defined parameters.</p></li>
-<li><p>Run the script. It will generate the test vector file and plaintext file (not required for acquisition).</p></li>
+<li>Set user defined parameters.</li>
+<li>Run the script. It will generate the test vector file and plaintext file (not required for acquisition).</li>
 </ol>
 <div class="section" id="example-generating-aes-128-test-vectors">
 <h3>Example: Generating AES-128 test vectors<a class="headerlink" href="#example-generating-aes-128-test-vectors" title="Permalink to this headline">¶</a></h3>
@@ -255,11 +255,11 @@ Here is an example to generate 4 test vectors with 16 byte blocks, key and ciphe
 </div>
 <p>Here is how the generated dinFile.txt looks like.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat dinFile.txt
-00C000103AD5305EBD0C99C7482263E2D7ECEAED00C10010123456789009876ABCDFE12456789ABF0081001000800001
-00C000105C09504D713BF9B5925601E671EA257800C10010123456789009876ABCDFE12456789ABF0081001000800001
-00C00010A6D6DE2548E4CCF446ECA8E620E4E55500C10010123456789009876ABCDFE12456789ABF0081001000800001
-00C00010E0792CDE9AFDA7EAC33A8D0EADE524CB00C10010123456789009876ABCDFE12456789ABF0081001000800001
-00C000104A09A00A4C4268F0B6F4FCE4F514A6BB00C10010123456789009876ABCDFE12456789ABF0081001000800001
+00C000103AD5305EBD0C99C7482263E2D7ECEAED00C1001012345...0081001000800001
+00C000105C09504D713BF9B5925601E671EA257800C1001012345...0081001000800001
+00C00010A6D6DE2548E4CCF446ECA8E620E4E55500C1001012345...0081001000800001
+00C00010E0792CDE9AFDA7EAC33A8D0EADE524CB00C1001012345...0081001000800001
+00C000104A09A00A4C4268F0B6F4FCE4F514A6BB00C1001012345...0081001000800001
 </pre></div>
 </div>
 <p>This file can now be used in FOBOS as a test vector file.</p>

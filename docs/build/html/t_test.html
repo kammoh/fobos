@@ -173,7 +173,7 @@
 FOBOS data acquisition is run to get the traces, then the traces are splitted into two sets and the statistical Welch’s t-test is performed.</p>
 <div class="figure align-center" id="id1">
 <img alt="_images/t_test_flow.png" src="_images/t_test_flow.png" />
-<p class="caption"><span class="caption-text">T test flow</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">T test flow</span></p>
 </div>
 </div>
 <div class="section" id="test-vector-generation">
@@ -181,20 +181,20 @@ FOBOS data acquisition is run to get the traces, then the traces are splitted in
 <p>The user generates the test-vector file and a meta file that specifies which test vectors are random and which are fixed.
 Fixed-vs-random t-test uses interleaved fixed and random test vectors. We can select a fixed test vector D and create a set of test vectors that  interleaves D and a randomly selected test vector. The interleaving is random.
 For example the following test vector can be used to perform a t-test on an algorithm implemented on FOBOS DUT.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="mi">00</span><span class="n">C001607000000020000000D600000CB0B1B2B3B4B</span> <span class="o">...</span>
-</span><span class="mi">00</span><span class="n">C001607000000020000000D600000C0EEB8882501</span> <span class="o">...</span>
-<span class="mi">00</span><span class="n">C001607000000020000000D600000CF402296C454</span> <span class="o">...</span>
-<span class="hll"><span class="mi">00</span><span class="n">C001607000000020000000D600000CB0B1B2B3B4B</span> <span class="o">...</span>
-</span><span class="mi">00</span><span class="n">C001607000000020000000D600000CE919E2FC539</span> <span class="o">...</span>
-<span class="hll"><span class="mi">00</span><span class="n">C001607000000020000000D600000CB0B1B2B3B4B</span> <span class="o">...</span>
-</span><span class="hll"><span class="mi">00</span><span class="n">C001607000000020000000D600000CB0B1B2B3B4B</span> <span class="o">...</span>
-</span><span class="o">.</span>
-<span class="o">.</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span class="hll">00C001607000000020000000D600000CB0B1B2B3B4B ...
+</span>00C001607000000020000000D600000C0EEB8882501 ...
+00C001607000000020000000D600000CF402296C454 ...
+<span class="hll">00C001607000000020000000D600000CB0B1B2B3B4B ...
+</span>00C001607000000020000000D600000CE919E2FC539 ...
+<span class="hll">00C001607000000020000000D600000CB0B1B2B3B4B ...
+</span><span class="hll">00C001607000000020000000D600000CB0B1B2B3B4B ...
+</span>.
+.
 </pre></div>
 </div>
 <p>The corresponding fvrchoicefile specifies which traces are random ‘1’ and which are fixed ‘0’.
 For example the fvrchoicefile that corresponds to the test-vectors above is</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0110100</span> <span class="o">...</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0110100 ...
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="tvgen.html#tvgen-label"><span class="std std-ref">Test Vector Generation</span></a> for more information.</p>
@@ -222,17 +222,17 @@ optional arguments:
 </div>
 <p>For exmple, the following command takes the powerTraces.npy file and coverts it to cleanTraces.npy and it uses only the
 first 2000 traces.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">read_traces</span><span class="o">.</span><span class="n">py</span> <span class="n">powerTraces</span><span class="o">.</span><span class="n">npy</span> <span class="n">cleanTraces</span><span class="o">.</span><span class="n">npy</span> <span class="mi">2000</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python read_traces.py powerTraces.npy cleanTraces.npy <span class="m">2000</span>
 </pre></div>
 </div>
 <p>4-  Next, we split the cleanTraces.npy file into two trace files</p>
 <ul class="simple">
-<li><p><em>traces0.npy</em> for the traces that came from the fixed test vector</p></li>
-<li><p><em>traces1.npy</em> for traces that came from using the random test vectors.</p></li>
+<li><em>traces0.npy</em> for the traces that came from the fixed test vector</li>
+<li><em>traces1.npy</em> for traces that came from using the random test vectors.</li>
 </ul>
 <p>To do this, splitter.py needs the fvrchoicefile.txt file. It also needs to know how many traces to consider.
 These are configurable parameters in the script. Here is all the parameters you can edit in splitter.py:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">######Parameters</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">######Parameters</span>
 <span class="n">MAX_TRACE</span><span class="o">=</span><span class="mi">2000</span>
 <span class="n">traces0File</span> <span class="o">=</span> <span class="s1">&#39;traces0.npy&#39;</span>
 <span class="n">traces1File</span> <span class="o">=</span> <span class="s1">&#39;traces1.npy&#39;</span>
@@ -242,13 +242,13 @@ These are configurable parameters in the script. Here is all the parameters you 
 </pre></div>
 </div>
 <p>Once you configure the parameters, you can run splitter using:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">splitter</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python splitter.py
 </pre></div>
 </div>
 <p>The reuslt will be 2 files called traces0.npy and traces1.npy.</p>
 <p>5- The two files are now ready to be fed into the <em>t-test2.py</em> script to perform the t-test. Here are the parameters that this script needs:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python t-test2.py -h
-usage: t-test2.py [-h] trace_file0 trace_file1 plot_file
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python t-test2.py -h
+usage: t-test2.py <span class="o">[</span>-h<span class="o">]</span> trace_file0 trace_file1 plot_file
 
 positional arguments:
 trace_file0  .npy file that store traces as MxN Nupmy array
@@ -256,11 +256,11 @@ trace_file1  .npy file that store traces as MxN Nupmy array
 plot_file    File name to store the output figure
 
 optional arguments:
--h, --help   show this help message and exit
+-h, --help   show this <span class="nb">help</span> message and <span class="nb">exit</span>
 </pre></div>
 </div>
 <p>Before running the script, also edit the plotting parameters in the script. These parameters specify the limits on the x and y axis.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameters ########</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameters ########</span>
 <span class="n">start_ylim</span> <span class="o">=</span> <span class="o">-</span><span class="mi">40</span>
 <span class="n">end_ylim</span> <span class="o">=</span> <span class="mi">40</span>
 <span class="n">start_xlim</span> <span class="o">=</span> <span class="mi">0</span>
@@ -270,18 +270,18 @@ optional arguments:
 </div>
 <p>This limits the t-values to -40-40 and displays samples from 0 to 1000 on the x-axis.</p>
 <p>Once you configure all the parameters, you can run the t-test using the following command.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">t</span><span class="o">-</span><span class="n">test2</span><span class="o">.</span><span class="n">py</span> <span class="n">traces0</span><span class="o">.</span><span class="n">npy</span> <span class="n">traces1</span><span class="o">.</span><span class="n">npy</span> <span class="n">result_t_test</span><span class="o">.</span><span class="n">png</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python t-test2.py traces0.npy traces1.npy result_t_test.png
 </pre></div>
 </div>
 <p>The output will be a file called result_t_test.png that shows the t-values on the y-axis and samples in the x-axis.
 Here is sample file that shows a failing test and a successful one:</p>
 <div class="figure align-center" id="id2">
 <a class="reference internal image-reference" href="_images/aes_gcm_unprotected.png"><img alt="_images/aes_gcm_unprotected.png" src="_images/aes_gcm_unprotected.png" style="width: 400.0px; height: 300.0px;" /></a>
-<p class="caption"><span class="caption-text">T test on an unprotected AES-GCM implementation.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">T test on an unprotected AES-GCM implementation.</span></p>
 </div>
 <div class="figure align-center" id="id3">
 <a class="reference internal image-reference" href="_images/aes_gcm_protected.png"><img alt="_images/aes_gcm_protected.png" src="_images/aes_gcm_protected.png" style="width: 400.0px; height: 300.0px;" /></a>
-<p class="caption"><span class="caption-text">T test on a protected AES-GCM implementation.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">T test on a protected AES-GCM implementation.</span></p>
 </div>
 </div>
 </div>

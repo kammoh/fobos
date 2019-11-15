@@ -172,22 +172,24 @@
 <h2>Trigger Settings<a class="headerlink" href="#trigger-settings" title="Permalink to this headline">¶</a></h2>
 <p>The controller can send a trigger to the Oscilloscope once the DUT starts processing the data (ie. di_ready = 0). Or it can be configured to trigger any number of clock cycles after this event occurs.</p>
 <ul class="simple">
-<li><p>TRIGGER_WAIT_CYCLES : The number of clock cycles after which the trigger is asserted (after di_ready goes to zero).</p></li>
-<li><p>TRIGGER_LENGTH_CYCLES : The time the trigger signal is asserted.</p></li>
-<li><dl class="simple">
-<dt>TRIGGER_TYPE<span class="classifier">possible values: TRG_NORM | TRG_FULL | TRG_NORM_CLK | TRG_FULL_CLK</span></dt><dd><ul>
-<li><p>TRG_NORM : normal trigger mode. in this mode the TRIGGER_WAIT_CYCLES and TRIGGER_LENGTH_CYCLES are applied.</p></li>
-<li><p>TRG_FULL : Full trigger mode. While DUT is running (between di_ready = 0 and do_valid = 1) the trigger is asserted.</p></li>
-<li><p>TRG_NORM_CLK : same as TRG_NORM but the trigger signal is anded with the clock.</p></li>
-<li><p>TRG_FULL_CLK : same as TRG_FULL but the trigger signal is anded with the clock.</p></li>
+<li>TRIGGER_WAIT_CYCLES : The number of clock cycles after which the trigger is asserted (after di_ready goes to zero).</li>
+<li>TRIGGER_LENGTH_CYCLES : The time the trigger signal is asserted.</li>
+<li><dl class="first docutils">
+<dt>TRIGGER_TYPE <span class="classifier-delimiter">:</span> <span class="classifier">possible values: TRG_NORM | TRG_FULL | TRG_NORM_CLK | TRG_FULL_CLK</span></dt>
+<dd><ul class="first last">
+<li>TRG_NORM : normal trigger mode. in this mode the TRIGGER_WAIT_CYCLES and TRIGGER_LENGTH_CYCLES are applied.</li>
+<li>TRG_FULL : Full trigger mode. While DUT is running (between di_ready = 0 and do_valid = 1) the trigger is asserted.</li>
+<li>TRG_NORM_CLK : same as TRG_NORM but the trigger signal is anded with the clock.</li>
+<li>TRG_FULL_CLK : same as TRG_FULL but the trigger signal is anded with the clock.</li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="simple">
-<dt>CUT_MODE<span class="classifier">Controls how the trace retrieved from the scope will be processed. Possible values: FULL | TRIG_HIGH</span></dt><dd><ul>
-<li><p>FULL : The trace is cut starting at the rising edge of the trigger to the end of the screen.</p></li>
-<li><p>TRIG_HIGH : the trace is cut from the rising edge to the falling edge of the trigger ie. the trace where the trigger is high will be saved.</p></li>
+<li><dl class="first docutils">
+<dt>CUT_MODE <span class="classifier-delimiter">:</span> <span class="classifier">Controls how the trace retrieved from the scope will be processed. Possible values: FULL | TRIG_HIGH</span></dt>
+<dd><ul class="first last">
+<li>FULL : The trace is cut starting at the rising edge of the trigger to the end of the screen.</li>
+<li>TRIG_HIGH : the trace is cut from the rising edge to the falling edge of the trigger ie. the trace where the trigger is high will be saved.</li>
 </ul>
 </dd>
 </dl>
@@ -199,8 +201,7 @@
 <p>The control board can provide a clock for the DUT ranging from 400 KHz to 100 MHz. The default value is 5 MHz.
 To set it, use the following method:</p>
 <blockquote>
-<div><p>ctrl.setDUTClk(clkValue).</p>
-</div></blockquote>
+<div>ctrl.setDUTClk(clkValue).</div></blockquote>
 </div>
 <div class="section" id="dut-reset-feature">
 <h2>DUT Reset Feature<a class="headerlink" href="#dut-reset-feature" title="Permalink to this headline">¶</a></h2>
@@ -209,8 +210,7 @@ The number of cycles is counted after di_ready goes to 0.
 Note: When you use this feature, no output is returned from the DUT.
 To set it use the following command and set TIME_TO_RESET to any number other than zero. This number is set to zero by default which disables this feature.</p>
 <blockquote>
-<div><p>ctrl.setTimeToReset(TIME_TO_RST)</p>
-</div></blockquote>
+<div>ctrl.setTimeToReset(TIME_TO_RST)</div></blockquote>
 </div>
 <div class="section" id="timeout-setting">
 <h2>Timeout Setting<a class="headerlink" href="#timeout-setting" title="Permalink to this headline">¶</a></h2>
@@ -219,8 +219,7 @@ timeout error message to the control PC when a configurable time has elapsed. Th
 seconds which is enough for almost all cases. Once timeout is reached, the control board resets the DUT, clears any pending DUT data transfers and return the a timeout status to the capture software.
 To set the timeout value, use the method:</p>
 <blockquote>
-<div><p>ctrl.setTimeout(TIMEOUT)</p>
-</div></blockquote>
+<div>ctrl.setTimeout(TIMEOUT)</div></blockquote>
 </div>
 <div class="section" id="port-mapping">
 <h2>Port mapping<a class="headerlink" href="#port-mapping" title="Permalink to this headline">¶</a></h2>

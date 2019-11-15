@@ -27,7 +27,7 @@ Note: The following installation procedure is tested on Linux Ubuntu 16.04.
 
 3. Use the following commands to install pip and few necessary Python packages:
 
-.. code-block::
+.. code-block:: bash
 
     $ sudo apt-get install python-pip
     $ tar xvfz fobos-v2.0.tgz
@@ -143,7 +143,7 @@ Testing the control board
 To make sure the control board is working, you can run the *dymmyCaptureBasic.py* script in the fobos/software directory.
 This script send data to the board wich echos data back.
 
-.. code-block::
+.. code-block:: bash
     
     $ cd path-to-fobos/software
     $ python dummyCaptureBasic.py 

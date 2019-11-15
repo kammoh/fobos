@@ -30,7 +30,7 @@ The formula above was used to generate the hypothetical power matrix.
 Below is the script used for the CPA analysis. This script is at fobos/software/cpaExample.py and the example files are 
 stored in fobos/workspace/aes_artix7_picoscope :
 
-.. code-block::
+.. code-block:: python
     :linenos:
     
     import os

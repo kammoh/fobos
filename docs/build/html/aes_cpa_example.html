@@ -174,19 +174,19 @@ the plain text. That is</p>
 <p>We measured power consumption the power consumption of the implementation while it encrypted 100000 blocks of data using the same key.
 The cipher was implemented on Digilent Nexys3 board which features a Xilinx Spartan6 FPGA. For more detail about collecting the traces, please refer to [capture_example]</p>
 <p>Here are few first blocks of the plain text</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">51720187</span><span class="n">c36e0c8523acb8535a870703</span>
-<span class="n">b334ba70d60f5af510abd747708bde7b</span>
-<span class="mf">45863440e2</span><span class="n">bff9563604375dad57c226</span>
-<span class="n">f389191bf9bab64d0ad3fe1e0d696105</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>51720187c36e0c8523acb8535a870703
+b334ba70d60f5af510abd747708bde7b
+45863440e2bff9563604375dad57c226
+f389191bf9bab64d0ad3fe1e0d696105
 </pre></div>
 </div>
 <p>The traces are stored in a 100000 x 1000 matrix <strong>T</strong> (100000 traces and 1000 samples per trace).
 For each trace, the value <em>d</em> that goes into the calculation is the first (LSB) byte of the plaintext above. So the vector <strong>d</strong> will be a vector of bytes with dimensions 100000 x 1.</p>
 <p>Here are the first few elements in the vector <strong>d</strong>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">03</span>
-<span class="mi">7</span><span class="n">b</span>
-<span class="mi">26</span>
-<span class="mi">05</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>03
+7b
+26
+05
 </pre></div>
 </div>
 </div>
@@ -198,15 +198,15 @@ Now for each of the key guesses and the values in <strong>d</strong>, we evaluat
 <p>f(d, k) = sbox(pt<sub>i</sub> xor key)</p>
 <p>The result will be stored in a martix <strong>V</strong> which is 100000 x 265 where the first column is the value of the intermediate when k=0 for all data values <em>d</em>.
 Here are few elements of the matrix <strong>V</strong> calculated form the data above.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="hll"> <span class="n">k</span><span class="o">=</span><span class="mi">0</span>     <span class="n">k</span><span class="o">=</span><span class="mi">1</span>     <span class="n">k</span><span class="o">=</span><span class="mi">2</span>     <span class="n">k</span><span class="o">=</span><span class="mi">3</span>     <span class="n">k</span><span class="o">=</span><span class="mi">4</span>   <span class="o">...</span>
-</span> <span class="mh">0x7b</span>    <span class="mh">0x77</span>    <span class="mh">0x7c</span>    <span class="mh">0x63</span>    <span class="mh">0xc5</span>  <span class="o">...</span>
- <span class="mh">0x21</span>    <span class="mh">0xda</span>    <span class="mh">0xb6</span>    <span class="mh">0xbc</span>    <span class="mh">0xd2</span>  <span class="o">...</span>
- <span class="mh">0xf7</span>    <span class="mh">0xcc</span>    <span class="mh">0x36</span>    <span class="mh">0x3f</span>    <span class="mh">0x93</span>  <span class="o">...</span>
- <span class="mh">0x6b</span>    <span class="mh">0xf2</span>    <span class="mh">0xc5</span>    <span class="mh">0x6f</span>    <span class="mh">0x7c</span>  <span class="o">...</span>
- <span class="mh">0xd2</span>    <span class="mh">0xf3</span>    <span class="mh">0xff</span>    <span class="mh">0x10</span>    <span class="mh">0x21</span>  <span class="o">...</span>
- <span class="o">.</span>       <span class="o">.</span>       <span class="o">.</span>       <span class="o">.</span>       <span class="o">.</span>     <span class="o">...</span>
- <span class="o">.</span>       <span class="o">.</span>       <span class="o">.</span>       <span class="o">.</span>       <span class="o">.</span>     <span class="o">...</span>
- <span class="o">.</span>       <span class="o">.</span>       <span class="o">.</span>       <span class="o">.</span>       <span class="o">.</span>     <span class="o">...</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span class="hll"> k=0     k=1     k=2     k=3     k=4   ...
+</span> 0x7b    0x77    0x7c    0x63    0xc5  ...
+ 0x21    0xda    0xb6    0xbc    0xd2  ...
+ 0xf7    0xcc    0x36    0x3f    0x93  ...
+ 0x6b    0xf2    0xc5    0x6f    0x7c  ...
+ 0xd2    0xf3    0xff    0x10    0x21  ...
+ .       .       .       .       .     ...
+ .       .       .       .       .     ...
+ .       .       .       .       .     ...
 </pre></div>
 </div>
 </div>
@@ -216,14 +216,14 @@ Here are few elements of the matrix <strong>V</strong> calculated form the data 
 We use the hamming distance model to model the power consumption of FPGA CMOS since it consumes more power when gates change state.</p>
 <p>For example, when the output of the sbox changes from 0x7b to 0x21, the hamming distance = HD(0x7b, 0x21) = HW(0x7b ^ 0x21) = HW(0x5a) = HW(0b01011010) = 4.</p>
 <p>The result is a <em>100000 x 256</em> matrix called <strong>H</strong>. These are the same dimensions as the matrix <strong>V</strong>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="hll"> <span class="n">k</span><span class="o">=</span><span class="mi">0</span>  <span class="n">k</span><span class="o">=</span><span class="mi">1</span>  <span class="n">k</span><span class="o">=</span><span class="mi">2</span>  <span class="n">k</span><span class="o">=</span><span class="mi">3</span>  <span class="n">k</span><span class="o">=</span><span class="mf">4.</span><span class="o">..</span>
-</span> <span class="mi">6</span>    <span class="mi">6</span>    <span class="mi">5</span>    <span class="mi">4</span>    <span class="mi">4</span>  <span class="o">...</span>
- <span class="mi">4</span>    <span class="mi">5</span>    <span class="mi">4</span>    <span class="mi">7</span>    <span class="mi">4</span>  <span class="o">...</span>
- <span class="mi">5</span>    <span class="mi">3</span>    <span class="mi">1</span>    <span class="mi">3</span>    <span class="mi">2</span>  <span class="o">...</span>
- <span class="mi">4</span>    <span class="mi">5</span>    <span class="mi">6</span>    <span class="mi">2</span>    <span class="mi">7</span>  <span class="o">...</span>
- <span class="mi">5</span>    <span class="mi">1</span>    <span class="mi">4</span>    <span class="mi">7</span>    <span class="mi">5</span>  <span class="o">...</span>
- <span class="o">.</span>       <span class="o">.</span>       <span class="o">.</span>      <span class="o">...</span>
- <span class="o">.</span>       <span class="o">.</span>       <span class="o">.</span>      <span class="o">...</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><span class="hll"> k=0  k=1  k=2  k=3  k=4...
+</span> 6    6    5    4    4  ...
+ 4    5    4    7    4  ...
+ 5    3    1    3    2  ...
+ 4    5    6    2    7  ...
+ 5    1    4    7    5  ...
+ .       .       .      ...
+ .       .       .      ...
 </pre></div>
 </div>
 </div>

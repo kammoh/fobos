@@ -336,7 +336,7 @@ However, this procedure aims to show how to instantiate a function core in FOBOS
 <p>1. Create a project in Vivado (or ISE) and add all vhdl files from fobos/capture/dut/fpga_dut (except half_duplex_du.vhd)
 and fobos/capture/dut/example_cores/dummy1.</p>
 <ol class="arabic simple" start="2">
-<li><p>Note that in FOBOS_DUT.vhd, the dummy dut is instantaited as follows:</p></li>
+<li>Note that in FOBOS_DUT.vhd, the dummy dut is instantaited as follows:</li>
 </ol>
 <div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="n">victim</span><span class="o">:</span> <span class="k">entity</span> <span class="nc">work</span><span class="p">.</span><span class="n">dummy</span><span class="p">(</span><span class="n">behav</span><span class="p">)</span>
 
@@ -377,17 +377,18 @@ and fobos/capture/dut/example_cores/dummy1.</p>
 </pre></div>
 </div>
 <ol class="arabic simple" start="3">
-<li><p>Note that the W and SW (PDI and SDI width) generics in FOBOS_DUT.vhd are set to 8.</p></li>
-<li><p>Add the constain file CW305.xdc for NewAE CW305 (or Nexys3.ucf for Nexys3 DUT) from fobos/capture/dut/fpga_dut.</p></li>
-<li><p>Generate the bitstream.</p></li>
-<li><p>Find your bitstream file FOBOS_DUT.bit in the Vivado/ISE project folders.</p></li>
+<li>Note that the W and SW (PDI and SDI width) generics in FOBOS_DUT.vhd are set to 8.</li>
+<li>Add the constain file CW305.xdc for NewAE CW305 (or Nexys3.ucf for Nexys3 DUT) from fobos/capture/dut/fpga_dut.</li>
+<li>Generate the bitstream.</li>
+<li>Find your bitstream file FOBOS_DUT.bit in the Vivado/ISE project folders.</li>
 </ol>
 </div>
 <div class="section" id="running-the-dummu-dut-example-on-nexys3-dut">
 <h2>Running the dummu DUT example (on Nexys3 DUT)<a class="headerlink" href="#running-the-dummu-dut-example-on-nexys3-dut" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
-<li><p>Make sure your hardware is setup properly and the DUT is connected to the control board.</p></li>
-<li><p>Run the dummyDUTCapture.py script as follows:</p>
+<li><p class="first">Make sure your hardware is setup properly and the DUT is connected to the control board.</p>
+</li>
+<li><p class="first">Run the dummyDUTCapture.py script as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd path-to-fobos/software
 $ python dummyDUTCapture.py
 </pre></div>

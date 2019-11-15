@@ -183,7 +183,7 @@ A statistical method is then used to find out which key was most likely used by 
 below we discuss this process in detail.</p>
 <div class="figure align-center" id="id1">
 <img alt="_images/cpa_flow.png" src="_images/cpa_flow.png" />
-<p class="caption"><span class="caption-text">CPA Flow</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">CPA Flow</span></p>
 </div>
 <div class="section" id="step-1-choose-the-intermediate-value">
 <h3>Step 1: Choose the intermediate value<a class="headerlink" href="#step-1-choose-the-intermediate-value" title="Permalink to this headline">¶</a></h3>
@@ -213,8 +213,8 @@ Where</p>
 <p>Now we have calculated the intermediate values matrix <strong>V</strong>, we estimate the power consumption when each value in <strong>V</strong> is processed in the device.
 Two power models are widely used:</p>
 <ol class="arabic simple">
-<li><p>The Hamming Weight model (HW). this model counts the ones in the value e.g HW(1100 0000) = 2</p></li>
-<li><p>The Hamming distance model (HD). This model counts the the number of bits that flips when a the value of a variable (e.g. register) changes. That is</p></li>
+<li>The Hamming Weight model (HW). this model counts the ones in the value e.g HW(1100 0000) = 2</li>
+<li>The Hamming distance model (HD). This model counts the the number of bits that flips when a the value of a variable (e.g. register) changes. That is</li>
 </ol>
 <p>HD(x, y) = HW(x <em>xor</em> y)</p>
 <p>e.g HD(0000 0011, 0000 0101) = HW(0000 0011 <em>xor</em> 0000 0101) = HW(0000 0110) = 2</p>
