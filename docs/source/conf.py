@@ -17,12 +17,13 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'FOBOS 2.0'
-copyright = '2019, CERG'
+project = 'FOBOS User Guide'
+copyright = '2019, Cryptographic Engineering Research Group (CERG)'
 author = 'Abubakr Abdulgadir, William Diehl and Jens-Peter Kaps'
 
 # The full version, including alpha/beta/rc tags
 release = '2.0'
+version = '2.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -55,3 +56,21 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 master_doc = 'index'
 html_static_path = ['_static']
+
+latex_elements = {
+    'preamble': r'\usepackage{cergdoc}',
+    'maketitle': r'''\topicpic{fobos-slide}
+        \subtitle{FOBOS v2.0, User Guide}
+        \cergmaketitle{}''',
+}
+latex_additional_files = ["cergdoc.sty",
+    "./cergimg/cerg.png",
+    "./cergimg/Mason.pdf",
+    "./cergimg/fobos-slide.jpg"]
+
+latex_documents = [
+    (master_doc, 'fobos2_user-guide.tex',
+        'Flexible, Opensource workBench fOr Side-channel analysis (FOBOS)',
+        'Abubakr Abdulgadir \\and William Diehl \\and Jens-Peter Kaps',
+        'manual'),
+]

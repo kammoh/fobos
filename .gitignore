@@ -42,4 +42,4 @@ capture/ctrl/basys3ctrl/vivado/basys3ctrl
 .project
 .settings/
 .library_mapping.xml
-
+docs/build/*
