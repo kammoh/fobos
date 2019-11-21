@@ -33,7 +33,6 @@ Also, scripts to perform leakage assesment are included.
 .. toctree::
    :maxdepth: 2
    :hidden:
-
    
    introduction
    setup
@@ -49,6 +48,7 @@ Also, scripts to perform leakage assesment are included.
    x_test
    reference_doc
    license
+
 
 Indices and tables
 ==================
