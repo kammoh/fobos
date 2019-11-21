@@ -32,16 +32,21 @@ version = '2.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.todo',
+    'sphinx.ext.githubpages',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
+source_suffix = '.rst'
+
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+pygments_style = 'sphinx'
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -49,14 +54,32 @@ exclude_patterns = []
 # a list of builtin themes.
 #
 # html_theme = 'alabaster'
-html_theme = 'sphinx_rtd_theme'
+#html_theme = 'sphinx_rtd_theme'
 
+import cakephp_theme
+html_theme_path = [cakephp_theme.get_html_theme_path()]
+html_theme = 'cakephp_theme'
+extensions = ['cakephp_theme']
+
+html_context = {
+    'maintainer': 'Your Name',
+    'project_pretty_name': 'Your Project Name',
+    'projects': {
+        'CakePHP Book': 'https://book.cakephp.org/',
+        'Some other project': 'https://example.com/',
+    }
+}
+
+html_sidebars = {
+    '**': ['globaltoc.html', 'localtoc.html']
+}
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 master_doc = 'index'
 html_static_path = ['_static']
 
+# -- Options for LaTeX output -------------------------------------------------
 latex_elements = {
     'preamble': r'\usepackage{cergdoc}',
     'maketitle': r'''\topicpic{fobos-slide}
