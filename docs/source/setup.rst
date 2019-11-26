@@ -16,7 +16,7 @@ Requirements
 Software Setup
 ==============
 
-Note: The following installation procedure is tested on Linux Ubuntu 16.04.
+Note: The following installation procedure is tested on Linux Ubuntu 16.04 and 18.04.
 
 1. Download FOBOS from the `FOBOS home page <https://cryptography.gmu.edu/fobos/getfobos.php>`_.
 2. Extract the archive into the directory of your choice
@@ -30,20 +30,27 @@ Note: The following installation procedure is tested on Linux Ubuntu 16.04.
 .. code-block:: bash
 
     $ sudo apt-get install python-pip
-    $ tar xvfz fobos-v2.0.tgz
-    $ pip isnatll -r requirements.txt
+    $ tar xvfz fobos-v2.0.tgz  again?
+    $ cd fobos
+    $ sudo pip install -r requirements.txt
+
+
+.. warning:: File not found
+
+   where is requirements.txt? It should be in the root of the project.
+   Can this file work without version numbers? Or are those the minimum version numbers?
 
 Control board Setup
 ===================
 
 Follow these steps to compile the control software, generate the bitstream and program 
-the the control board.
+the control board.
 
 1. Build the control board Vivado project.
 
 .. code-block:: bash
 
-    $ cd fobos/capture/ctrl/basys3ctrl/vivado
+    $ cd capture/ctrl/basys3ctrl/vivado
     $ make project
 
 2. A Vivado project will be created at fobos/capture/ctrl/basys3ctrl/vivado/basys3ctrl. Open it using Vivado.
@@ -54,6 +61,12 @@ the the control board.
    Open Vivado project
 
 3. In Vivado's Flow Navigator window, click 'Generate Bitstream'.
+
+.. warning:: Critical Warning
+   [BD 41-759] The input pins (listed below) are either not connected or do not have a source port, and they don't have a tie-off specified. These pins are tied-off to all 0's to avoid error in Implementation flow.
+   Please check your design and connect them as needed: 
+   /dutcomm_0/handshake_d2c
+   
 4. After bitstream is generated, export the hardware. Click File > Export > Export Hardware ... make sure to select 'Include bitstream'.
 
 .. figure::  figures/export_hardware.png
@@ -69,12 +82,18 @@ the the control board.
    Launch SDK
 
 6. In the SDK, create a new empty project(File> New application project). Set the project name to *ctrl* and select
-the hardware platform, click Next and make sure you select 'Empty project'.
+   the hardware platform, click Next and make sure you select 'Empty Application'.
 
 .. figure::  figures/create_sdk_app.png
    :align:   center
 
    Create Project
+
+If this fails, make sure that zlib1g-dev and zlib1g:i386 are installed on your machine.
+
+.. code-block:: bash
+
+    $sudo apt-get install zlib1g-dev zlib1g:i386 
 
 7. Link all the .c and .h files in the fobos/capture/ctrl/basys3ctrl/sdk/src/ to the project 
    (right-click on ctrl/src folder -> Import -> General-> file system -> browse to folder). 
@@ -85,7 +104,8 @@ the hardware platform, click Next and make sure you select 'Empty project'.
 
    Launch SDK
 
-8. Program the control borad FPGA. Connect the Basys3 board to your PC via USB. In the Xilinx Tools menu, select Program FPGA -> program.
+8. Program the control borad FPGA. Connect the Basys3 board to your PC via USB. In the Xilinx Tools menu, select Program FPGA.
+   Make sure the correct device is selected and then click on *Program.*
 
 9. Run the control software. Make sure to select the *ctrl* project created in step 6 then go to the Run menu and select 'Run'.
 10. You should see the word CERG in the seven-segment display of the Basys3 board.
