@@ -66,6 +66,7 @@
 #define STATUS_LEN               4         //Acknowledgment length in bytes
 #define HEADER_SIZE              4         //command field size in bytes
 #define PARAM_LEN                4         //config parameter length in bytes
+#define MAGIC_NUM                0x22334455
 /******************************************************************************/
 #define ENABLED                  1
 #define DISABLED                 0
@@ -92,6 +93,7 @@
 #define TIMEOUT                  7
 #define SET_DUT_CLK              8
 #define SET_TEST_MODE            9
+#define MAGIC_NUM_INDEX          10
 /*DUT COMM Status codes********************************************************/
 #define DONE                     0x1a
 /******************************************************************************/
@@ -149,11 +151,11 @@ static volatile int TotalSentCount;
 int main(void)
 {
    int Status;
-   //setClock0Freq(2);
    // clear config array
    for(int i=0; i < CONFIG_ARR_SIZE; i++){
       config[i] = 0;
    }
+   config[MAGIC_NUM_INDEX] = MAGIC_NUM; //set magic number used to detect fobos2 ctrl
    //default timeout 5 sec
    testMode = 0;
    setTimeOut(5);
@@ -233,7 +235,7 @@ int run()
 {
    int Status;
    u16 confNum;
-   u16 value = 0;
+   u32 value = 0;
    u16 bytesToRec = 0;
    u16 cmd = 0;
    u32 testVectorSize;
@@ -292,7 +294,7 @@ int run()
             SendBuffer[0] = (value & 0xff000000) >> 24;
             SendBuffer[1] = (value & 0x00ff0000) >> 16;
             SendBuffer[2] = (value & 0x0000ff00) >> 8;
-            SendBuffer[3] = (value & 0xff0000ff);
+            SendBuffer[3] = (value & 0x000000ff);
             //SendBuffer[1] = value % 256;
             //SendBuffer[0] = value / 256;
             //send it back

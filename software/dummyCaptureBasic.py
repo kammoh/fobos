@@ -17,12 +17,11 @@
 #############################################################################
 import fobos
 # Constants###########################################################
-SERIAL_PORT = '/dev/ttyUSB1'
 TRACE_NUM = 5
 OUT_LEN = 7
 # Instantiate FOBOS objects###########################################
 print("Sending configuration...")
-ctrl = fobos.Basys3Ctrl(SERIAL_PORT)
+ctrl = fobos.Basys3Ctrl()
 ctrl.enableTestMode()
 ctrl.setOutLen(OUT_LEN)
 # Run DUT operations
