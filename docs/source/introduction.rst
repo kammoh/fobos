@@ -5,8 +5,10 @@ can be used for side channel analysis.
 You can perform trace collection (Data Acquisition) and attacks (Data Analysis).
 The system is suitable for educational and research purposes.
 
-.. figure::  figures/fobos2-block.png
+.. figure::  figures/FOBOS2_label.jpg
    :align:   center
+   :height: 350 px
+
 
    FOBOS Block Diagram
 
