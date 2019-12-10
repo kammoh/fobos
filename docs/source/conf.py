@@ -54,21 +54,24 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 #
 # html_theme = 'alabaster'
-#html_theme = 'sphinx_rtd_theme'
+html_theme = 'sphinx_rtd_theme'
+#html_short_title = 'FOBOS User Guide'
+#html_title = 'FOBOS User Guide'
+html_show_sourcelink = False
 
-import cakephp_theme
-html_theme_path = [cakephp_theme.get_html_theme_path()]
-html_theme = 'cakephp_theme'
-extensions = ['cakephp_theme']
-
-html_context = {
-    'maintainer': 'Your Name',
-    'project_pretty_name': 'Your Project Name',
-    'projects': {
-        'CakePHP Book': 'https://book.cakephp.org/',
-        'Some other project': 'https://example.com/',
-    }
-}
+#import cakephp_theme
+#html_theme_path = [cakephp_theme.get_html_theme_path()]
+#html_theme = 'cakephp_theme'
+#extensions = ['cakephp_theme']
+#
+#html_context = {
+#    'maintainer': 'Your Name',
+#    'project_pretty_name': 'Your Project Name',
+#    'projects': {
+#        'CakePHP Book': 'https://book.cakephp.org/',
+#        'Some other project': 'https://example.com/',
+#    }
+#}
 
 html_sidebars = {
     '**': ['globaltoc.html', 'localtoc.html']
