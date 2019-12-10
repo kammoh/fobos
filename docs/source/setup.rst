@@ -35,11 +35,6 @@ Note: The following installation procedure is tested on Linux Ubuntu 16.04 and 1
     $ sudo pip install -r requirements.txt
 
 
-.. warning:: File not found
-
-   where is requirements.txt? It should be in the root of the project.
-   Can this file work without version numbers? Or are those the minimum version numbers?
-
 Control board Setup
 ===================
 
@@ -62,10 +57,6 @@ the control board.
 
 3. In Vivado's Flow Navigator window, click 'Generate Bitstream'.
 
-.. warning:: Critical Warning
-   [BD 41-759] The input pins (listed below) are either not connected or do not have a source port, and they don't have a tie-off specified. These pins are tied-off to all 0's to avoid error in Implementation flow.
-   Please check your design and connect them as needed: 
-   /dutcomm_0/handshake_d2c
    
 4. After bitstream is generated, export the hardware. Click File > Export > Export Hardware ... make sure to select 'Include bitstream'.
 
