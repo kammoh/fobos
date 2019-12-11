@@ -16,17 +16,18 @@
 #                                                                           #
 #############################################################################
 import os
+import numpy
 import shutil
 import fobos
+import fobos.picoscope
 # Constants###########################################################
-WORKSPACE = "../workspace"
+WORKSPACE = "../sworkspace"
 PROJECT_NAME = "aes"
 DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
-DUT_BIT_FILE = "FOBOS_DUT_aes.bit"
-TRACE_NUM = 4
-DUT_CLk = 10
+TRACE_NUM = 1000
+DUT_CLk = 1
 OUT_LEN = 16
 TIMEOUT = 40
 TRIG_WAIT = 1
@@ -61,18 +62,34 @@ tvFile = open(tvFileName, "r")
 captureDir = pm.getCaptureDir()
 cipherFileName = os.path.join(captureDir, CIPHER_FILE)
 cipherFile = open(cipherFileName, "w")
+traceFileName = os.path.join(captureDir, TRACE_FILE)
+traceFile = open(traceFileName, "w")
 shutil.copy(tvFileName, captureDir)
+
+################Configure Picoscope
+scope = fobos.picoscope.Picoscope(sampleResolution = 16, 
+                     postTriggerSamples = 1250 #samples
+                     )
+scope.setChannel(channelName = 'CHANNEL_A', rangemv = '100mV')
+scope.setSamplingInterval(samplingIntervalns = 16) #T=2 ns, Fs= 500MHz
+scope.setTrigger(channelName ='EXTERNAL', direction = 'RISING_EDGE', 
+               thresholdmv = 200)
+scope.setDataBuffers()
 # Get traces############################################################
 print 'Sending data..'
 traceNum = 0
 while traceNum < TRACE_NUM:
+    scope.arm()
     data = tvFile.readline()
     status, result = ctrl.processData(data, OUT_LEN)
     if status != fobos.OK:
         print "TIMEOUT"
     print(result)
     cipherFile.write(result + "\n")
+    trace = scope.readTrace()
+    numpy.save(traceFile, trace)
     traceNum += 1
 
 tvFile.close()
 cipherFile.close()
+traceFile.close()
