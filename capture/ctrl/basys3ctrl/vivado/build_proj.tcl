@@ -27,26 +27,26 @@
 #
 # 3. The following remote source files that were added to the original project:-
 #
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/fobos_dut_pkg.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/fobos_dut_pkg.vhd"
 #    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/dummy.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/dut_regn.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/dut_reg1.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/dut_regn.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/dut_reg1.vhd"
 #    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/fifo2.vhd"
 #    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/fifo.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/fobos_controller.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/FOBOS_DUT.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/fobos_controller.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/FOBOS_DUT.vhd"
 #    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/basys3ctrl/vivado/basys3ctrl/basys3ctrl.srcs/sources_1/bd/top/top.bd"
 #    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/basys3ctrl/vivado/basys3ctrl/basys3ctrl.srcs/sources_1/bd/top/hdl/top_wrapper.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/test_controller.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/fobos_dut_tb.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/aes_non_pipe.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/aes_axi.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/controller.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/datapath.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/registern.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/sbox.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/upcount.vhd"
-#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_aes/packages.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/test_controller.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/fobos_dut_tb.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/aes_non_pipe.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/aes_axi.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/controller.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/datapath.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/registern.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/sbox.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/upcount.vhd"
+#    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dummyDUT/packages.vhd"
 #    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/basys3ctrl/vivado/src/constr/debug.xdc"
 #    "/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/basys3ctrl/vivado/src/constr/basys3ctrl.xdc"
 #
@@ -141,29 +141,21 @@ update_ip_catalog -rebuild
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 set files [list \
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/fobos_dut_pkg.vhd"]"\
+ "[file normalize "$origin_dir/../../ip_repo/dummyDUT/fobos_dut_pkg.vhd"]"\
  "[file normalize "$origin_dir/../../ip_repo/dummyDUT/dummy.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/dut_regn.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/dut_reg1.vhd"]"\
+ "[file normalize "$origin_dir/../../ip_repo/dummyDUT/dut_regn.vhd"]"\
+ "[file normalize "$origin_dir/../../ip_repo/dummyDUT/dut_reg1.vhd"]"\
  "[file normalize "$origin_dir/../../ip_repo/dummyDUT/fifo2.vhd"]"\
  "[file normalize "$origin_dir/../../ip_repo/dummyDUT/fifo.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/fobos_controller.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/FOBOS_DUT.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/test_controller.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/fobos_dut_tb.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/aes_non_pipe.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/aes_axi.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/controller.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/datapath.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/registern.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/sbox.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/upcount.vhd"]"\
- "[file normalize "$origin_dir/../../ip_repo/dut_aes/packages.vhd"]"\
+ "[file normalize "$origin_dir/../../ip_repo/dummyDUT/fobos_controller.vhd"]"\
+ "[file normalize "$origin_dir/../../ip_repo/dummyDUT/FOBOS_DUT.vhd"]"\
+ "[file normalize "$origin_dir/../../ip_repo/dummyDUT/test_controller.vhd"]"\
+ "[file normalize "$origin_dir/../../ip_repo/dummyDUT/fobos_dut_tb.vhd"]"\
 ]
 add_files -norecurse -fileset $obj $files
 
 # Set 'sources_1' fileset file properties for remote files
-set file "$origin_dir/../../ip_repo/dut_aes/fobos_dut_pkg.vhd"
+set file "$origin_dir/../../ip_repo/dummyDUT/fobos_dut_pkg.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
@@ -173,12 +165,12 @@ set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/../../ip_repo/dut_aes/dut_regn.vhd"
+set file "$origin_dir/../../ip_repo/dummyDUT/dut_regn.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/../../ip_repo/dut_aes/dut_reg1.vhd"
+set file "$origin_dir/../../ip_repo/dummyDUT/dut_reg1.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
@@ -193,12 +185,12 @@ set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/../../ip_repo/dut_aes/fobos_controller.vhd"
+set file "$origin_dir/../../ip_repo/dummyDUT/fobos_controller.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/../../ip_repo/dut_aes/FOBOS_DUT.vhd"
+set file "$origin_dir/../../ip_repo/dummyDUT/FOBOS_DUT.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
@@ -207,50 +199,12 @@ set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/../../ip_repo/dut_aes/fobos_dut_tb.vhd"
+set file "$origin_dir/../../ip_repo/dummyDUT/fobos_dut_tb.vhd"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/../../ip_repo/dut_aes/aes_non_pipe.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
 
-set file "$origin_dir/../../ip_repo/dut_aes/aes_axi.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
-
-set file "$origin_dir/../../ip_repo/dut_aes/controller.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
-
-set file "$origin_dir/../../ip_repo/dut_aes/datapath.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
-
-set file "$origin_dir/../../ip_repo/dut_aes/registern.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
-
-set file "$origin_dir/../../ip_repo/dut_aes/sbox.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
-
-set file "$origin_dir/../../ip_repo/dut_aes/upcount.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
-
-set file "$origin_dir/../../ip_repo/dut_aes/packages.vhd"
-set file [file normalize $file]
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
 
 
 # Set 'sources_1' fileset file properties for local files
