@@ -101,6 +101,25 @@ If this fails, make sure that zlib1g-dev and zlib1g:i386 are installed on your m
 9. Run the control software. Make sure to select the *ctrl* project created in step 6 then go to the Run menu and select 'Run'.
 10. You should see the word CERG in the seven-segment display of the Basys3 board.
 
+..    Storing the bitstream in flash drive
+    =====================================
+    To avoid opening the SDK to program your control board, you can save the bitstream to a
+    flash drive and the board will use it to program the FPGA when power is turned on.
+    To do that, follow these few steps.
+
+    1. In Vivado, open the block design of the control board (IP Integrator -> Open Block Design).
+
+    2. Right-click on the Microblaze processor and select 'Associate ELF Files ...'.
+
+    3. In the window that appear, click the '...' button associated with Design Source and locate the ELF file created using the SDK (it should be located at *fobos/capture/ctrl/basys3ctrl/vivado/basys3ctrl/basys3ctrl.sdk/ctrl/Debug/*) and the name of the file is *ctrl.elf*.
+
+    4. Click the generate bitstream.
+
+    5. After the bitstream is generated (the file is located at fobos/capture/ctrl/basys3ctrl/vivado/basys3ctrl/basys3ctrl.runs/impl_1/top_wrapper.bit), copy it to a flash drive fromatted with FAT32 file system (it must be the only .bit file in the root directory of the flash drive).
+
+    6. Connect your flash drive to the Basys3 board. Make sure that the *mode* jumper in the Basys3 board is set to the USB setting.
+
+    7. Power cycle your Basys3 board and it will load the bitstream. The word 'CERG' is displayed in the 7-segment display indicating the board is ready.
 ..  Information for flash programming TODO
 
     8. Right-click on the project you just created and select Build Configurations > Set Active > Release. Then right-click again and select Build Project.

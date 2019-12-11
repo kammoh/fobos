@@ -10,7 +10,7 @@ The system is suitable for educational and research purposes.
    :height: 350 px
 
 
-   FOBOS Block Diagram
+   FOBOS Typical Setup
 
 Feature Overview
 ================
