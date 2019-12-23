@@ -36,11 +36,6 @@
 #define UARTLITE_INT_IRQ_ID      XPAR_INTC_0_UARTLITE_0_VEC_ID
 #define DUT_CLKWIZ_BASE          XPAR_CLK_WIZ_1_BASEADDR
 #define TMRCTR_DEVICE_ID         XPAR_TMRCTR_0_DEVICE_ID
-//test hardware
-#define TEST_DUTCOMM_BASE        XPAR_DUTCOMM_0_S_AXI_BASEADDR
-#define TEST_DUT_CTRL_BASE       XPAR_DUT_CONTROLLER_0_S_AXI_BASEADDR
-#define TEST_FIFO_BASE           XPAR_AXI_FIFO_MM_S_TEST_BASEADDR
-#define TEST_FIFO_DEV_ID         XPAR_AXI_FIFO_MM_S_TEST_DEVICE_ID
 /*DUT_controller Register offsets*************************************************************/
 //Trigger module
 #define TRG_LEN_REG_OFFSET       0x00
@@ -106,7 +101,7 @@
 u32 okStatus = S_OK;
 u32 errorStatus = S_ERROR;
 u32 timeoutStatus = S_TIMEOUT;
-int testMode = ENABLED;
+int testMode = DISABLED;
 //configuration parameters
 u32 config[CONFIG_ARR_SIZE];
 
@@ -138,7 +133,6 @@ int resultReady();
 /*Variable definitions ********************************************************/
 XUartLite UartLite;
 XLlFifo FifoInstance;
-XLlFifo TestFifoInstance;
 XIntc InterruptController;
 XTmrCtr TimerCounter;
 u8 SendBuffer[OUTPUT_BUFF_SIZE];
@@ -157,7 +151,7 @@ int main(void)
    }
    config[MAGIC_NUM_INDEX] = MAGIC_NUM; //set magic number used to detect fobos2 ctrl
    //default timeout 5 sec
-   testMode = 0;
+   testMode = DISABLED;
    setTimeOut(5);
    u16 DeviceId = UARTLITE_DEVICE_ID;
    Status = XUartLite_Initialize(&UartLite, DeviceId);
@@ -173,11 +167,6 @@ int main(void)
    if (Status != XST_SUCCESS) {
       xil_printf("Ctrl software failed\n\r");
       return XST_FAILURE;
-   }
-   Status = initFifos(&TestFifoInstance, TEST_FIFO_DEV_ID);
-      if (Status != XST_SUCCESS) {
-         xil_printf("Ctrl software failed\n\r");
-         return XST_FAILURE;
    }
    //init timer
    XTmrCtr *TmrCtrInstancePtr = &TimerCounter;
@@ -346,16 +335,15 @@ int processData(u32 testVectorSize){
    }
    t0 = XTmrCtr_GetValue(&TimerCounter, 0);
    if(testMode == ENABLED){
-   Status = TxSend(&TestFifoInstance, ReceiveBuffer,testVectorSize);
+       //Status = TxSend(&TestFifoInstance, ReceiveBuffer,testVectorSize);
    }else{
-   Status = TxSend(&FifoInstance, ReceiveBuffer,testVectorSize);
+       Status = TxSend(&FifoInstance, ReceiveBuffer,testVectorSize);
    }
    //xil_printf("Data sent!!\n");
    if (Status != S_OK){
       forceReset();
       //reset fifo
       XLlFifo_Reset(&FifoInstance);
-      XLlFifo_Reset(&TestFifoInstance);
       releaseReset();
       return S_TIMEOUT;
    }
@@ -369,14 +357,17 @@ int processData(u32 testVectorSize){
          forceReset();
          //reset fifo
          XLlFifo_Reset(&FifoInstance);
-         XLlFifo_Reset(&TestFifoInstance);
          releaseReset();
          return S_TIMEOUT;
       }
    }
    if(config[TIME_TO_RST] == 0){//if we will reset dut, expect no result
       if(testMode == ENABLED){
-         Status = RxReceive(&TestFifoInstance, SendBuffer);
+         //Status = RxReceive(&TestFifoInstance, SendBuffer);
+    	  //echo back data
+    	  for(i=0; i <= 7; i++){
+    		  SendBuffer[i] = ReceiveBuffer[i];
+    	  }
       }else{
          Status = RxReceive(&FifoInstance, SendBuffer);
       }
@@ -387,7 +378,8 @@ int processData(u32 testVectorSize){
 
 int resultReady(){
    if(testMode == ENABLED)
-      return ((DUTCOMM_mReadReg(TEST_DUTCOMM_BASE,4) & 0x000000FF) == DONE);
+      //return ((DUTCOMM_mReadReg(TEST_DUTCOMM_BASE,4) & 0x000000FF) == DONE);
+	   return 1;
    else
       return ((DUTCOMM_mReadReg(DUTCOMM_BASE,4) & 0x000000FF) == DONE);
 }
@@ -509,19 +501,11 @@ int RxReceive (XLlFifo *InstancePtr, u32* DestinationAddr)
 }
 /******************************************************************************/
 void DUTCOMM_write(u32 offset, u32 value){
-   if(testMode == ENABLED){
-      DUTCOMM_mWriteReg(TEST_DUTCOMM_BASE, offset, value);
-   }else{
-      DUTCOMM_mWriteReg(DUTCOMM_BASE, offset, value);
-   }
+    DUTCOMM_mWriteReg(DUTCOMM_BASE, offset, value);
 }
 /******************************************************************************/
 void DUTCTRL_write(u32 offset, u32 value){
-   if(testMode == ENABLED){
-      DUT_CONTROLLER_mWriteReg(TEST_DUT_CTRL_BASE, offset, value);
-   }else{
-      DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, offset, value);
-   }
+    DUT_CONTROLLER_mWriteReg(DUT_CTRL_BASE, offset, value);
 }
 /******************************************************************************/
 void setOutLen(int value){
@@ -563,8 +547,6 @@ void setTriggerMode(u32 mode){
 
 void setInterfaceType(){
    //This version uses legacy interface only only.
-   //for both test and real DUT
-   DUTCOMM_mWriteReg(TEST_DUTCOMM_BASE, INT_TYPE_REG_OFFSET, 1);
    DUTCOMM_mWriteReg(DUTCOMM_BASE, INT_TYPE_REG_OFFSET, 1);
 }
 
