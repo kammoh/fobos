@@ -10,7 +10,7 @@ Requirements
 1. Digilent Basys3 board (control board).
 2. A PC with Linux installed.
 3. Python2.7 installed.
-4. Xilinx Vivado 2017.2.
+4. Xilinx Vivado 2019.1.
 5. Picoscope 5000 series.
 
 Software Setup
@@ -35,11 +35,6 @@ Note: The following installation procedure is tested on Linux Ubuntu 16.04 and 1
     $ sudo pip install -r requirements.txt
 
 
-.. warning:: File not found
-
-   where is requirements.txt? It should be in the root of the project.
-   Can this file work without version numbers? Or are those the minimum version numbers?
-
 Control board Setup
 ===================
 
@@ -62,10 +57,6 @@ the control board.
 
 3. In Vivado's Flow Navigator window, click 'Generate Bitstream'.
 
-.. warning:: Critical Warning
-   [BD 41-759] The input pins (listed below) are either not connected or do not have a source port, and they don't have a tie-off specified. These pins are tied-off to all 0's to avoid error in Implementation flow.
-   Please check your design and connect them as needed: 
-   /dutcomm_0/handshake_d2c
    
 4. After bitstream is generated, export the hardware. Click File > Export > Export Hardware ... make sure to select 'Include bitstream'.
 
@@ -109,6 +100,26 @@ If this fails, make sure that zlib1g-dev and zlib1g:i386 are installed on your m
 
 9. Run the control software. Make sure to select the *ctrl* project created in step 6 then go to the Run menu and select 'Run'.
 10. You should see the word CERG in the seven-segment display of the Basys3 board.
+
+Storing the bitstream in flash drive
+=====================================
+To avoid opening the SDK to program your control board, you can save the bitstream to a
+flash drive and the board will use it to program the FPGA when power is turned on.
+To do this, follow these few steps.
+
+1. In Vivado, open the block design of the control board (IP Integrator -> Open Block Design).
+
+2. Right-click on the Microblaze processor and select 'Associate ELF Files ...'.
+
+3. In the window that appear, click the '...' button associated with Design Sources and locate the ELF file created using the SDK (it should be located at *fobos/capture/ctrl/basys3ctrl/vivado/basys3ctrl/basys3ctrl.sdk/ctrl/Debug/*) and the name of the file is *ctrl.elf*.
+
+4. Generate the bitstream.
+
+5. Copy the bitstream from *fobos/capture/ctrl/basys3ctrl/vivado/basys3ctrl/basys3ctrl.runs/impl_1/top_wrapper.bit* to a flash drive fromatted with FAT32 file system (it must be the only .bit file in the root directory of the flash drive).
+
+6. Connect your flash drive to the Basys3 board. Make sure that the *mode* jumper in the Basys3 board is set to the USB setting.
+
+7. Power cycle your Basys3 board and it will load the bitstream. The word 'CERG' is displayed in the 7-segment display indicating the board is ready.
 
 ..  Information for flash programming TODO
 
@@ -168,6 +179,13 @@ This script send data to the board wich echos data back.
     $ cd path-to-fobos/software
     $ python dummyCaptureBasic.py 
     Sending configuration...
+    f0020002000a
+    OK.    Status= 00000000
+    22334455
+    Detected fobos2 control board! Device file = /dev/ttyUSB1
+    f0020002000a
+    OK.    Status= 00000000
+    22334455
     f0030006000900000001
     Status= 00000000
     f0030006000000000007
@@ -175,18 +193,18 @@ This script send data to the board wich echos data back.
     Sending data..
     f001001e00c0000761996dc996d4ac00c100070f7821507a22a00081000700800001
     OK.    Status= 00000000
-    61 99 6d c9 96 d4 ac
+    00 c0 00 07 61 99 6d
     f001001e00c00007fd8771fe717de400c100073e1fe5b4aa357c0081000700800001
     OK.    Status= 00000000
-    fd 87 71 fe 71 7d e4
+    00 c0 00 07 fd 87 71
     f001001e00c0000782051f5484702200c10007980d05d4ea25bc0081000700800001
     OK.    Status= 00000000
-    82 05 1f 54 84 70 22
+    00 c0 00 07 82 05 1f
     f001001e00c0000767881b702afe5200c10007b08a5e036de72b0081000700800001
     OK.    Status= 00000000
-    67 88 1b 70 2a fe 52
+    00 c0 00 07 67 88 1b
     f001001e00c0000726a1d601ccdf7a00c1000773539e52672d5d0081000700800001
     OK.    Status= 00000000
-    26 a1 d6 01 cc df 7a
+    00 c0 00 07 26 a1 d6
 
 If you see this output, your control board is now ready!

@@ -1,6 +1,5 @@
 EESchema Schematic File Version 4
-LIBS:fobosshield-cache
-EELAYER 26 0
+EELAYER 30 0
 EELAYER END
 $Descr USLetter 11000 8500
 encoding utf-8
@@ -619,29 +618,14 @@ Connection ~ 1800 3000
 $Comp
 L Diode:BAV99 D7
 U 1 1 5B6AAA98
-P 3350 4050
-F 0 "D7" H 3700 3900 50  0000 C CNN
-F 1 "BAV99" H 3750 4200 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-23" H 3350 3900 50  0001 C CNN
-F 3 "www.nxp.com/documents/data_sheet/BAV99_SER.pdf" H 3350 4150 50  0001 C CNN
-	1    3350 4050
-	-1   0    0    1   
-$EndComp
-$Comp
-L Diode:BAV99 D7
-U 2 1 5B6AB16A
-P 3350 4200
-F 0 "D7" H 3000 4400 50  0000 C CNN
-F 1 "BAV99" H 2950 4300 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-23" H 3350 4050 50  0001 C CNN
-F 3 "www.nxp.com/documents/data_sheet/BAV99_SER.pdf" H 3350 4300 50  0001 C CNN
-	2    3350 4200
+P 3300 4300
+F 0 "D7" H 3150 4200 50  0000 C CNN
+F 1 "BAV99" H 3050 4100 50  0000 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 3300 4150 50  0001 C CNN
+F 3 "www.nxp.com/documents/data_sheet/BAV99_SER.pdf" H 3300 4400 50  0001 C CNN
+	1    3300 4300
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3500 4050 3500 4200
-Wire Wire Line
-	3150 4050 3200 4050
 $Comp
 L power:GNDA #PWR0108
 U 1 1 5B6B4795
@@ -653,10 +637,6 @@ F 3 "" H 3700 4350 50  0001 C CNN
 	1    3700 4350
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3200 4200 3150 4200
-Wire Wire Line
-	3150 4200 3150 4300
 $Comp
 L Device:C_Small C26
 U 1 1 5B6B7046
@@ -1448,8 +1428,6 @@ Wire Wire Line
 	3700 4300 3700 4350
 Connection ~ 3700 4300
 Wire Wire Line
-	3700 4300 3150 4300
-Wire Wire Line
 	3700 4100 3700 4050
 Wire Wire Line
 	3700 3950 3800 3950
@@ -1459,9 +1437,6 @@ Wire Wire Line
 Wire Wire Line
 	3700 3950 3150 3950
 Connection ~ 3700 3950
-Connection ~ 3150 3950
-Wire Wire Line
-	3150 3950 3150 4050
 $Comp
 L Device:C_Small C42
 U 1 1 5BA84AFD
@@ -2449,6 +2424,13 @@ F 3 "" H 8050 1750 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	8050 1750 8050 1800
+Wire Wire Line
+	3700 4300 3600 4300
+Wire Wire Line
+	3000 4300 3000 3950
+Wire Wire Line
+	3000 3950 3150 3950
 Wire Bus Line
 	8750 2450 8750 3500
+Connection ~ 3150 3950
 $EndSCHEMATC

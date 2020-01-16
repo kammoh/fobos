@@ -12,7 +12,7 @@ Using FOBOS, power traces can be collected and attacks like Correlation Power An
 Also, scripts to perform leakage assesment are included.
 
 
-.. figure::  figures/fobos2.jpg
+.. figure::  figures/FOBOS2_label.jpg
    :align:   center
    :height: 350 px
 
@@ -50,8 +50,13 @@ Also, scripts to perform leakage assesment are included.
    license
 
 
-Indices and tables
-==================
+Download Document
+=================
+
+* `FOBOS 2 User Guide <https://cryptography.gmu.edu/download.php?docid=2616>`_ in PDF format, please cite as [`Bibtex <https://cryptography.gmu.edu/bibtex.php?id=2616>`_]
+  
+Index
+=====
 
 * :ref:`genindex`
-* :ref:`search`
+.. * :ref:`search`

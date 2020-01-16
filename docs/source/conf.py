@@ -54,21 +54,25 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 #
 # html_theme = 'alabaster'
-#html_theme = 'sphinx_rtd_theme'
+html_theme = 'sphinx_rtd_theme'
+#html_short_title = 'FOBOS User Guide'
+#html_title = 'FOBOS User Guide'
+html_show_sourcelink = False
 
-import cakephp_theme
-html_theme_path = [cakephp_theme.get_html_theme_path()]
-html_theme = 'cakephp_theme'
-extensions = ['cakephp_theme']
-
-html_context = {
-    'maintainer': 'Your Name',
-    'project_pretty_name': 'Your Project Name',
-    'projects': {
-        'CakePHP Book': 'https://book.cakephp.org/',
-        'Some other project': 'https://example.com/',
-    }
-}
+#
+#import cakephp_theme
+#html_theme_path = [cakephp_theme.get_html_theme_path()]
+#html_theme = 'cakephp_theme'
+#extensions = ['cakephp_theme']
+#
+#html_context = {
+#    'maintainer': 'Your Name',
+#    'project_pretty_name': 'Your Project Name',
+#    'projects': {
+#        'CakePHP Book': 'https://book.cakephp.org/',
+#        'Some other project': 'https://example.com/',
+#    }
+#}
 
 html_sidebars = {
     '**': ['globaltoc.html', 'localtoc.html']
@@ -78,6 +82,10 @@ html_sidebars = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 master_doc = 'index'
 html_static_path = ['_static']
+html_css_files = [
+    'css/cergdoc.css',
+]
+#html_logo = 'cergimg/CERG-logo-only80.png'
 
 # -- Options for LaTeX output -------------------------------------------------
 latex_elements = {
@@ -95,5 +103,5 @@ latex_documents = [
     (master_doc, 'fobos2_user-guide.tex',
         'Flexible, Opensource workBench fOr Side-channel analysis (FOBOS)',
         'Abubakr Abdulgadir \\and William Diehl \\and Jens-Peter Kaps',
-        'manual'),
+        'manual',True),
 ]

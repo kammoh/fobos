@@ -17,7 +17,7 @@
 #############################################################################
 
 import os
-
+import shutil
 
 class ProjectManager():
     """
@@ -117,6 +117,7 @@ class ProjectManager():
         else:
             print ("Successfully created new capture directory at %s" %
                    (captureDir))
+        self.copyTools(captureDir)
         return self.captureDir
 
     def getCaptureDir(self):
@@ -169,6 +170,12 @@ class ProjectManager():
         else:
             print "FATAL ERROR: Test vector file not set. File %s does not exist." % (fileName)
             exit()
+    
+
+    def copyTools(self, captureDir):
+        currDir = self.getCurrentDir()
+        viewPlotsFile = os.path.join(currDir ,'tools/viewPlots.py')
+        shutil.copy(viewPlotsFile, captureDir)
 
 
 def main():
@@ -192,6 +199,8 @@ def main():
     print "Getting capture directory"
     print pm.getCaptureDir()
     print pm.getCaptureDir()
+
+
 
 
 if __name__ == '__main__':

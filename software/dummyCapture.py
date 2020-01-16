@@ -25,7 +25,6 @@ DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
 DUT_BIT_FILE = "FOBOS_DUT.bit"
-SERIAL_PORT = '/dev/ttyUSB1'
 TRACE_NUM = 100
 DUT_CLk = 1
 OUT_LEN = 7
@@ -36,7 +35,7 @@ TRIG_MODE_NORM = 0
 TRIG_MODE_FULL = 1
 TIME_TO_RST = 0
 # Instantiate FOBOS objects###########################################
-ctrl = fobos.Basys3Ctrl(SERIAL_PORT)
+ctrl = fobos.Basys3Ctrl()
 ctrl.setDUTClk(DUT_CLk)
 ctrl.enableTestMode()
 ctrl.setTimeToReset(TIME_TO_RST)

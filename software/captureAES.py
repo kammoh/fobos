@@ -25,8 +25,7 @@ DIN_FILE_NAME = "dinFile.txt"
 CIPHER_FILE = "ciphertext.txt"
 TRACE_FILE = "powerTraces.npy"
 DUT_BIT_FILE = "FOBOS_DUT_aes.bit"
-SERIAL_PORT = '/dev/ttyUSB1'
-TRACE_NUM = 100
+TRACE_NUM = 4
 DUT_CLk = 10
 OUT_LEN = 16
 TIMEOUT = 40
@@ -36,7 +35,7 @@ TRIG_MODE_NORM = 0
 TRIG_MODE_FULL = 1
 TIME_TO_RST = 0
 # Instantiate FOBOS objects###########################################
-ctrl = fobos.Basys3Ctrl(SERIAL_PORT)
+ctrl = fobos.Basys3Ctrl()
 ctrl.setDUTClk(DUT_CLk)
 ctrl.disableTestMode()
 ctrl.setTimeToReset(TIME_TO_RST)
@@ -55,7 +54,7 @@ projDir = pm.getProjDir()
 dut = fobos.Nexys3DUT()
 bitFile = os.path.join(projDir, DUT_BIT_FILE)
 dut.setBitFile(bitFile)
-dut.program()
+# dut.program()
 # prepare i/o files ####################################################
 tvFileName = os.path.join(projDir, DIN_FILE_NAME)
 tvFile = open(tvFileName, "r")
