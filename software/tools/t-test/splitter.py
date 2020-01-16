@@ -4,16 +4,16 @@
 #author : Bakry Abdulgadir
 ################################
 import numpy
-######Parameters
-MAX_TRACE=2000
+######CONSTANTS
+MAX_TRACE=100000
+traceCount0 = 0
+traceCount1 = 0
+fullTraceIndex = 0
 traces0File = 'traces0.npy'
 traces1File = 'traces1.npy'
 fvrFile = 'fvrchoicefile.txt'
 cleanTraceFile = 'cleanTraces.npy'
 ##########################
-traceCount0 = 0
-traceCount1 = 0
-fullTraceIndex = 0
 
 def countZerosOnes(fileName):
    #calculate the number of ones in the fvrchoicefile.txt
@@ -22,10 +22,10 @@ def countZerosOnes(fileName):
    f.close()
    #print content
    numOnes = 0
-   for i in range(0, len(content)):
+   for i in range(0, MAX_TRACE):
       if content[i] == '1':
          numOnes+=1
-   numZeros = len(content) - numOnes
+   numZeros = MAX_TRACE - numOnes
    return numZeros,numOnes
 
 numZeros, numOnes =  countZerosOnes(fvrFile)
