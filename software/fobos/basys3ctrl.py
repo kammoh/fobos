@@ -359,3 +359,75 @@ class Basys3Ctrl(FOBOSCtrl):
             print("Limit is because of PMOD connector and CLK wizard.")
             raise
         return self.writeConfig(FOBOSCtrl.SET_DUT_CLK, clkFreqMhz * 1000)
+
+    def loadKey(self, key):
+        """
+        set the key value in the control board.
+        parameters:
+        -----
+        key : string
+            Key to send to ctrl board in hex format
+        Returns:
+        -----
+        int
+            status
+        """
+        return self.writeConfig(FOBOSCtrl.SET_KEY, Key)
+
+
+    def loadData(self, data)
+        pass
+
+    def run()
+        pass
+
+    def getResult(self)
+        pass
+
+    def setPowerGlitchEnable(self, val):
+        """
+        set power glithcer enable bit.
+        parameters:
+        -----
+        val : Integer
+            1 = enable, 0 = disable
+        Returns:
+        -----
+        int
+            status
+        """
+        return self.writeConfig(FOBOSCtrl.POWER_GLITCH_ENABLE, val)
+
+    
+    def setPowerGlitchWait(self, waitCycles):
+        """
+        set the power glitcher wait cycles.
+        parameters:
+        -----
+        waitCycles : int
+            The cycles to wait before relasing the glicth pattern
+        Returns:
+        -----
+        int
+            status
+        """
+        return self.writeConfig(FOBOSCtrl.POWER_GLITCH_WAIT, waitCycles)
+
+
+    def setPowerGlitchPattern(self, pattern):
+        """
+        set the power glitch pattern reg
+        parameters:
+        -----
+        pattern : string
+            The pattern to set for glitch. The pattern is 64 bits written into 2 registers
+        Returns:
+        -----
+        int
+            status
+        """
+        pattern0 = int(pattern[7:0], 16) #lsb
+        pattern1 = int(pattern[15:8], 16) #msb
+        self.writeConfig(FOBOSCtrl.POWER_GLITCH_PATTERN0, pattern0)
+        return self.writeConfig(FOBOSCtrl.POWER_GLITCH_PATTERN1, pattern1)
+

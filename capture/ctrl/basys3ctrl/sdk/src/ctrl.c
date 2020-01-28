@@ -47,6 +47,11 @@
 //Timeout module
 #define TIMOUT_REG_OFFSET        0x0C
 #define CTRL_STATUS_REG_OFFSET   0x14
+//power glitch module
+#define PG_WAIT_REG_OFFSET       0x20   //reg 8
+#define PG_ENABLE_REG_OFFSET     0x24   //reg 9
+#define PG_PATTERN0_REG_OFFSET   0x30   //reg 12
+#define PG_PATTERN1_REG_OFFSET   0x34   //reg 13
 /*DUT_CTRL status codes******************************************************************/
 #define CTRL_TIMEOUT             4
 /*DUTCOMM Register offsets*************************************************************/
@@ -62,6 +67,8 @@
 #define HEADER_SIZE              4         //command field size in bytes
 #define PARAM_LEN                4         //config parameter length in bytes
 #define MAGIC_NUM                0x22334455
+#define MAX_KEY_SIZE             512
+#define MAX_DATA_SIZE            1024
 /******************************************************************************/
 #define ENABLED                  1
 #define DISABLED                 0
@@ -72,6 +79,9 @@
 #define PROC_DATA                0xF001   //process data command
 #define RD_CONFIG                0xF002   //read configuration command
 #define WR_CONFIG                0xF003   //write configuration  command
+#define LOAD_KEY				 0xF004   //load key
+#define LOAD_DATA                0xF005   //load data (plaintext/ciphertext)
+#define RUN_CRYPTO               0xF006   //send data to dut
 /*Configuration commands*******************************************************/
 //config command numbers. Each number encodes an action to be done by the controller
 //command parameter may be stored in a register or array index.
@@ -89,6 +99,14 @@
 #define SET_DUT_CLK              8
 #define SET_TEST_MODE            9
 #define MAGIC_NUM_INDEX          10
+//power glithing module
+#define POWER_GLITCH_WAIT        11
+#define POWER_GLITCH_ENABLE      12
+#define POWER_GLITCH_PATTERN0    13
+#define POWER_GLITCH_PATTERN1    14
+#define POWER_GLITCH_PATTERN2    15 //reserved
+#define POWER_GLITCH_PATTERN3    16 //reserved
+
 /*DUT COMM Status codes********************************************************/
 #define DONE                     0x1a
 /******************************************************************************/
@@ -115,7 +133,8 @@ int TxSend(XLlFifo *InstancePtr, u32 *SourceAddr, u32 dataSize);
 int RxReceive(XLlFifo *InstancePtr, u32 *DestinationAddr);
 void delay(long loops);
 u32 writeClk0Div(int divInt, int divFrac);
-
+void setKey();
+void setData();
 /*Command service***************************************************************/
 void setOutLen(int value);
 void forceReset();
@@ -130,6 +149,10 @@ int applyConfig(int confNum, u32 value);
 void setInterfaceType();
 int  setClock0Freq(float clockValue);
 int resultReady();
+void setPowerGlitchPattern0(u32 pattern);
+void setPowerGlitchPattern1(u32 pattern);
+void setPowerGlitchWait(u32 waitCylces);
+void setPowerGlitchEnable(u32 enable);
 /*Variable definitions ********************************************************/
 XUartLite UartLite;
 XLlFifo FifoInstance;
@@ -138,6 +161,12 @@ XTmrCtr TimerCounter;
 u8 SendBuffer[OUTPUT_BUFF_SIZE];
 u8 ReceiveBuffer[INPUT_BUFF_SIZE];
 u8 headerBuffer[HEADER_SIZE];
+u8 KeyBuffer[MAX_KEY_SIZE];
+u8 DataBuffer[MAX_DATA_SIZE];
+int keyReady = 0;
+int dataReady = 0;
+u32 keySize = 0;
+u32 dataSize = 0;
 static volatile int TotalReceivedCount;
 static volatile int TotalSentCount;
 
@@ -315,6 +344,22 @@ int run()
             }
             break;
 
+         case LOAD_KEY:
+        	 keySize = bytesToRec;
+        	 setKey(keySize);
+        	 break;
+
+         case LOAD_DATA:
+        	 dataSize = bytesToRec;
+        	 setData(dataSize);
+        	 break;
+
+         case RUN_CRYPTO:
+        	 prepareTestVector();
+        	 testVectorSize = 4 + dataSize + 4 + keySize + 8; //header sizes added
+        	 processData(testVectorSize);
+        	 break;
+
          default:
             break;
       }//case
@@ -383,7 +428,53 @@ int resultReady(){
    else
       return ((DUTCOMM_mReadReg(DUTCOMM_BASE,4) & 0x000000FF) == DONE);
 }
-
+/*****************************************************************************/
+void setKey(){
+	 for(int i= 0; i < keySize; i++){
+	     KeyBuffer[i] = ReceiveBuffer[i];
+	 }
+	 keyReady = 1;
+}
+/*****************************************************************************/
+void setData(){
+    for(int i= 0; i < dataSize; i++){
+        DataBuffer[i] = ReceiveBuffer[i];
+    }
+    dataReady = 1;
+}
+/****************************************************************************/
+int prepareTestVector(){
+	int i = 0;
+    //put data into receive buffer with headers
+    ReceiveBuffer[i++] = 0x00;
+    ReceiveBuffer[i++] = 0xc0;
+	ReceiveBuffer[i++] = dataSize / 256;
+    ReceiveBuffer[i++] = dataSize % 256;
+    //insert pdi
+    for(int j=0; i< dataSize; j++){
+    	ReceiveBuffer[i] = DataBuffer[i];
+    	i++;
+    }
+    ReceiveBuffer[i++] = 0x00;
+    ReceiveBuffer[i++] = 0xc1;
+   	ReceiveBuffer[i++] = keySize / 256;
+    ReceiveBuffer[i++] = keySize % 256;
+    //insert sdi
+    for(int j=0; j< keySize; j++){
+        	ReceiveBuffer[i] = KeyBuffer[i];
+        	i++;
+    }
+    //ecpected output cmd
+    ReceiveBuffer[i++] = 0x00;
+    ReceiveBuffer[i++] = 0x81;
+	ReceiveBuffer[i++] = config[OUT_LEN] / 256;
+    ReceiveBuffer[i++] = config[OUT_LEN] % 256;
+    //start command
+    ReceiveBuffer[i++] = 0x00;
+    ReceiveBuffer[i++] = 0x80;
+    ReceiveBuffer[i++] = 0x00;
+    ReceiveBuffer[i++] = 0x01;
+}
 /****************************************************************************/
 void SendHandler(void *CallBackRef, unsigned int EventData)
 {
@@ -549,7 +640,23 @@ void setInterfaceType(){
    //This version uses legacy interface only only.
    DUTCOMM_mWriteReg(DUTCOMM_BASE, INT_TYPE_REG_OFFSET, 1);
 }
+//power glitch module functions
+void setPowerGlitchPattern0(u32 pattern){
+	DUTCTRL_write(PG_PATTERN0_REG_OFFSET, pattern);
+}
 
+void setPowerGlitchPattern1(u32 pattern){
+	DUTCTRL_write(PG_PATTERN1_REG_OFFSET, pattern);
+}
+
+void setPowerGlitchWait(u32 waitCycles){
+	DUTCTRL_write(PG_WAIT_REG_OFFSET, waitCycles);
+}
+
+void setPowerGlitchEnable(u32 enable){
+    //set the value of the config_done bit 1 = enabled , 0 = disabled.
+	DUTCTRL_write(PG_ENABLE_REG_OFFSET, enable);
+}
 /*****************************************************************************/
 int applyConfig(int confNum, u32 value){
    int status = S_OK;
@@ -591,6 +698,22 @@ int applyConfig(int confNum, u32 value){
       case SET_TEST_MODE:
         testMode = value;
         break;
+
+      case POWER_GLITCH_ENABLE:
+          setPowerGlitchEnable(value);
+          break;
+
+      case POWER_GLITCH_WAIT:
+    	  setPowerGlitchWait(value);
+    	  break;
+
+      case POWER_GLITCH_PATTERN0:
+          setPowerGlitchPattern0(value);
+          break;
+
+      case POWER_GLITCH_PATTERN1:
+          setPowerGlitchPattern1(value);
+          break;
 
       default:
             status = S_ERROR;
