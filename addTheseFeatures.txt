@@ -1,0 +1,25 @@
+load key and plaintext sperately as long as the process data call
+simplfy user interface for ctrl, dut programming and scope.
+verify timeout feature is robust
+verify reset feature is robust
+verify trigger timing
+eliminate meaniungless message on console
+create debug logs
+give an option to specify ttyUSB file if ctrl cannot be detected
+imporove dut wrapper (more fifos , structured code)
+python3 conversion
+nexys4, nexysa7 duts
+documentation test
+read the computaional issues of DPA paper
+trace file format improvement
+cpa code imporvement
+t-test code improvement
+test-vector generation documentation and code (CAECAR, LWC, block ciphers, PQC)
+cpa for public aes (add aes to distrib.)
+add t-tets examples
+
+===
+gui-capture only
+   run crypto
+   config scope
+   dispaly waveform

@@ -298,7 +298,7 @@ openadc_v1_0_M_AXIS_inst : openadc_v1_0_M_AXIS
 	
 	process(adc_clk_in)
 	begin
-        if (falling_edge (adc_clk_in)) then
+        if (rising_edge (adc_clk_in)) then
          if (reset_tx = '1') then
            delay_count <= 0;
          end if;
@@ -311,7 +311,7 @@ openadc_v1_0_M_AXIS_inst : openadc_v1_0_M_AXIS
      -- State machine for sending to Master AXI-Stream Module   
      process(adc_clk_in)                                                          
          begin                                                                         
-           if (falling_edge (adc_clk_in)) then
+           if (rising_edge (adc_clk_in)) then
              if (reset_tx = '1') then
                samples_captured <= 0;
                tx_state <= PRE_CAPTURE;

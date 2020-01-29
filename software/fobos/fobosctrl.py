@@ -39,6 +39,14 @@ class FOBOSCtrl:
     TIMEOUT = 7
     SET_DUT_CLK = 8
     SET_TEST_MODE = 9
+    #power glitch
+    POWER_GLITCH_WAIT = 11
+    POWER_GLITCH_ENABLE = 12
+    POWER_GLITCH_PATTERN0 = 13
+    POWER_GLITCH_PATTERN1 = 14
+    POWER_GLITCH_PATTERN2 = 15 #reserved
+    POWER_GLITCH_PATTERN3 = 16 #reserved
+
     # Trigger parameters
     TRG_NORM = 0
     TRG_FULL = 1
@@ -47,3 +55,4 @@ class FOBOSCtrl:
     # test mode parameters
     ENABLED = 1
     DISABLED = 0
+    

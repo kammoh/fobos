@@ -11,7 +11,7 @@ entity dut_controller_v1_0 is
 
 		-- Parameters of Axi Slave Bus Interface S_AXI
 		C_S_AXI_DATA_WIDTH : integer := 32;
-		C_S_AXI_ADDR_WIDTH : integer := 5
+		C_S_AXI_ADDR_WIDTH : integer := 7
 	);
 	port(
 		--debug only
@@ -32,6 +32,8 @@ entity dut_controller_v1_0 is
 		ctrl_rst         : out std_logic;
 		wait_for_rst     : out std_logic;
 		rst_cmd          : out std_logic;
+		--glitch module
+		glitch_out       : out std_logic;
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 
@@ -66,7 +68,7 @@ architecture arch_imp of dut_controller_v1_0 is
 	component dut_controller_v1_0_S_AXI is
 		generic(
 			C_S_AXI_DATA_WIDTH : integer := 32;
-			C_S_AXI_ADDR_WIDTH : integer := 5
+			C_S_AXI_ADDR_WIDTH : integer := 7
 		);
 		port(
 			S_AXI_ACLK     : in  std_logic;
@@ -101,7 +103,11 @@ architecture arch_imp of dut_controller_v1_0 is
 			timeout_status : in  STD_LOGIC_VECTOR(7 downto 0);
 			--reset module
 			time_to_rst    : out std_logic_vector(31 downto 0);
-			force_rst      : out std_logic
+			force_rst      : out std_logic;
+			-- power glitch module
+			glitch_pattern : out std_logic_vector(63 downto 0);
+		    glitch_wait    : out std_logic_vector(31 downto 0);
+		    config_done   : out std_logic
 		);
 	end component dut_controller_v1_0_S_AXI;
 	---user defined 
@@ -139,6 +145,17 @@ architecture arch_imp of dut_controller_v1_0 is
 		     wait_for_rst : out std_logic
 		    );
 	end component;
+	
+	component power_glitcher is
+    port ( clk : in std_logic;
+           rst : in std_logic;
+           config_done : in std_logic;
+           dut_working : in std_logic;
+           glitch_pattern : in std_logic_vector(63 downto 0);
+           glitch_wait : in std_logic_vector(31 downto 0); --wait befor sending glitch by this num of cycles
+           glitch_out : out std_logic
+         );
+    end component;
 
 	--signals for trigger module
 	signal rst            : std_logic;
@@ -153,6 +170,11 @@ architecture arch_imp of dut_controller_v1_0 is
 	signal time_to_rst    : std_logic_vector(31 downto 0);
 	signal force_rst      : std_logic;
 	signal dut_rst_cmd    : std_logic;
+	
+	--power glitch module
+	signal glitch_pattern : std_logic_vector(63 downto 0);
+    signal glitch_wait    : std_logic_vector(31 downto 0);
+	signal config_done   : std_logic;
 
 	---end user defined 
 
@@ -237,6 +259,17 @@ begin
 	rst_cmd  <= dut_rst_cmd;
 	dut_rst  <= dut_rst_cmd or force_rst;
 	ctrl_rst <= force_rst;
+
+    power_glitch: power_glitcher
+        port map ( 
+            clk => s_axi_aclk,
+            rst => rst,
+            config_done => config_done,
+            dut_working => dut_working,
+            glitch_pattern => glitch_pattern,
+            glitch_wait => glitch_wait,
+            glitch_out => glitch_out
+         );
 
 	--debug only
 	d_timeout        <= timeout;
