@@ -384,7 +384,7 @@
   )
 
   (module cerg:573100D00010G (layer F.Cu) (tedit 5DFCFAC2) (tstamp 5DFD6C2E)
-    (at 66.04 39.37)
+    (at 44.45 19.05)
     (descr 573100D00010G-1)
     (tags Hardware)
     (path /5B6DA40D/5E0BF3D5)
