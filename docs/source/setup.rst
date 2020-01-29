@@ -30,7 +30,7 @@ Note: The following installation procedure is tested on Linux Ubuntu 16.04 and 1
 .. code-block:: bash
 
     $ sudo apt-get install python-pip
-    $ tar xvfz fobos-v2.0.tgz  again?
+    $ sudo apt install make 
     $ cd fobos
     $ sudo pip install -r requirements.txt
 
@@ -65,6 +65,12 @@ the control board.
 
    Export Hardware
 
+If the SDK will not launch, make sure that the current user has permissions on the .Xilinx/ directory. You may need to change the ownership of this directory to the current user as follows:
+
+.. code-block:: bash
+   
+   $ sudo chown –R username:username ~/.Xilinx 
+
 5. Launch the Xilinx SDK (File > Launch SDK).
 
 .. figure::  figures/launch_sdk.png
@@ -84,7 +90,9 @@ If this fails, make sure that zlib1g-dev and zlib1g:i386 are installed on your m
 
 .. code-block:: bash
 
-    $sudo apt-get install zlib1g-dev zlib1g:i386 
+    $sudo apt-get install zlib1g-dev zlib1g:i386
+    $sudo apt-get install libstdc++6:i386
+    
 
 7. Link all the .c and .h files in the fobos/capture/ctrl/basys3ctrl/sdk/src/ to the project 
    (right-click on ctrl/src folder -> Import -> General-> file system -> browse to folder). 
