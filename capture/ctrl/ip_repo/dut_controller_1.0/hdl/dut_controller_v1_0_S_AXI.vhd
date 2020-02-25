@@ -787,7 +787,7 @@ begin
 	--power glitch module
 	config_done <= slv_reg8(0);
 	glitch_wait <= slv_reg9;
-	--reserve slv_reg8,9,10,11 for feature purposes
+	--reserve slv_reg10,11 for feature purposes
 	glitch_pattern(31 downto 0) <= slv_reg12;
 	glitch_pattern(63 downto 32) <= slv_reg13;
 	

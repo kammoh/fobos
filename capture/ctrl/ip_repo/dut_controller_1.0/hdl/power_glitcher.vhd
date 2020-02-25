@@ -51,7 +51,8 @@ begin
     end process;
     
     cnt_reg_next <= (others=>'0') when clr_cnt = '1' else
-                    cnt_reg + 1   when en_cnt  = '1'    ;
+                    cnt_reg + 1   when en_cnt  = '1' else
+                    cnt_reg;
 
     cnt_done <= '1' when std_logic_vector(cnt_reg) = glitch_wait else '0';
 --------------------------------------------------------------------------------------
@@ -64,7 +65,8 @@ begin
     
     pattern_reg_next <= (others=>'0')                  when rst           = '1' else
                         '0' & pattern_reg(63 downto 1) when shift_pattern = '1' else
-                        glitch_pattern                        when load_pattern  = '1'    ;
+                        glitch_pattern                 when load_pattern  = '1' else   
+                        pattern_reg;
     --do not allow glitch signal utill correct states
     glitch_out <= pattern_reg(0) when glitch_gate = '1' else '0';
 --------------------------------------------------------------------------------------

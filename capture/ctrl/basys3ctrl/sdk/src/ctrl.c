@@ -48,8 +48,8 @@
 #define TIMOUT_REG_OFFSET        0x0C
 #define CTRL_STATUS_REG_OFFSET   0x14
 //power glitch module
-#define PG_WAIT_REG_OFFSET       0x20   //reg 8
-#define PG_ENABLE_REG_OFFSET     0x24   //reg 9
+#define PG_ENABLE_REG_OFFSET     0x20   //reg 8
+#define PG_WAIT_REG_OFFSET       0x24   //reg 9
 #define PG_PATTERN0_REG_OFFSET   0x30   //reg 12
 #define PG_PATTERN1_REG_OFFSET   0x34   //reg 13
 /*DUT_CTRL status codes******************************************************************/
