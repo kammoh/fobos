@@ -1541,8 +1541,6 @@ Wire Wire Line
 Connection ~ 7450 2000
 Wire Wire Line
 	7450 2000 7850 2000
-Text GLabel 6400 4050 0    50   Input ~ 0
-CW_3V3
 Text GLabel 6800 4300 2    50   Input ~ 0
 CSM3V3
 Text GLabel 8850 3850 2    50   Input ~ 0
@@ -1721,41 +1719,6 @@ F 3 "~" H 5250 4250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:LED_ALT D?
-U 1 1 5B7CF603
-P 5700 4300
-AR Path="/5B7CF603" Ref="D?"  Part="1" 
-AR Path="/5B6DA40D/5B7CF603" Ref="D10"  Part="1" 
-F 0 "D10" V 5738 4182 50  0000 R CNN
-F 1 "green" V 5647 4182 50  0000 R CNN
-F 2 "LED_SMD:LED_0603_1608Metric" H 5700 4300 50  0001 C CNN
-F 3 "~" H 5700 4300 50  0001 C CNN
-	1    5700 4300
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:R R33
-U 1 1 5B7CF68D
-P 5700 3950
-F 0 "R33" H 5770 3996 50  0000 L CNN
-F 1 "330R" H 5770 3905 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 5630 3950 50  0001 C CNN
-F 3 "~" H 5700 3950 50  0001 C CNN
-	1    5700 3950
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR0156
-U 1 1 5B7CF9F4
-P 5700 4550
-F 0 "#PWR0156" H 5700 4300 50  0001 C CNN
-F 1 "GND" H 5705 4377 50  0000 C CNN
-F 2 "" H 5700 4550 50  0001 C CNN
-F 3 "" H 5700 4550 50  0001 C CNN
-	1    5700 4550
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR0166
 U 1 1 5B7CFA67
 P 4450 4550
@@ -1835,13 +1798,6 @@ Connection ~ 4900 4050
 Wire Wire Line
 	5250 4050 5400 4050
 Connection ~ 5250 4050
-Wire Wire Line
-	5700 3750 5700 3800
-Wire Wire Line
-	5700 4100 5700 4150
-Wire Wire Line
-	5700 4550 5700 4450
-Connection ~ 5700 3750
 $Comp
 L power:+5V #PWR?
 U 1 1 5B7ED6D6
@@ -1900,10 +1856,6 @@ Text GLabel 1500 3750 0    50   Input ~ 0
 VCC5V0
 Wire Wire Line
 	5400 3750 5400 4050
-Wire Wire Line
-	5400 3750 5700 3750
-Wire Wire Line
-	5700 3750 6800 3750
 Connection ~ 6800 3750
 Wire Wire Line
 	1350 4700 1450 4700
@@ -2320,6 +2272,69 @@ Connection ~ 1950 1400
 Wire Wire Line
 	1950 1500 1950 1600
 Connection ~ 1950 1500
+Wire Wire Line
+	5700 4950 5700 4850
+Wire Wire Line
+	5700 4500 5700 4550
+$Comp
+L power:GND #PWR0156
+U 1 1 5B7CF9F4
+P 5700 4950
+F 0 "#PWR0156" H 5700 4700 50  0001 C CNN
+F 1 "GND" H 5705 4777 50  0000 C CNN
+F 2 "" H 5700 4950 50  0001 C CNN
+F 3 "" H 5700 4950 50  0001 C CNN
+	1    5700 4950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R33
+U 1 1 5B7CF68D
+P 5700 4350
+F 0 "R33" H 5770 4396 50  0000 L CNN
+F 1 "100R" H 5770 4305 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 5630 4350 50  0001 C CNN
+F 3 "~" H 5700 4350 50  0001 C CNN
+	1    5700 4350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED_ALT D?
+U 1 1 5B7CF603
+P 5700 4700
+AR Path="/5B7CF603" Ref="D?"  Part="1" 
+AR Path="/5B6DA40D/5B7CF603" Ref="D10"  Part="1" 
+F 0 "D10" V 5738 4582 50  0000 R CNN
+F 1 "green" V 5647 4582 50  0000 R CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 5700 4700 50  0001 C CNN
+F 3 "~" H 5700 4700 50  0001 C CNN
+	1    5700 4700
+	0    -1   -1   0   
+$EndComp
+Text GLabel 6400 4050 0    50   Input ~ 0
+CW_3V3
+$Comp
+L Diode:1N4148 D?
+U 1 1 5E54AF19
+P 5700 4000
+AR Path="/5E54AF19" Ref="D?"  Part="1" 
+AR Path="/5B6DA40D/5E54AF19" Ref="D?"  Part="1" 
+F 0 "D?" V 5746 3921 50  0000 R CNN
+F 1 "1N4148" V 5655 3921 50  0000 R CNN
+F 2 "Diode_SMD:D_SOD-323F" H 5700 3825 50  0001 C CNN
+F 3 "http://www.nxp.com/documents/data_sheet/1N4148_1N4448.pdf" H 5700 4000 50  0001 C CNN
+	1    5700 4000
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5700 4150 5700 4200
+Wire Wire Line
+	5400 3750 5700 3750
+Wire Wire Line
+	5700 3850 5700 3750
+Connection ~ 5700 3750
+Wire Wire Line
+	5700 3750 6800 3750
 Wire Bus Line
 	2700 2850 3500 2850
 $EndSCHEMATC
