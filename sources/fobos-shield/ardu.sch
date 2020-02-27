@@ -90,32 +90,18 @@ F 3 "~" H 3150 5450 50  0001 C CNN
 	1    3150 5450
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	7200 1050 6900 1050
-Text GLabel 6900 1050 0    50   Input ~ 0
+Text GLabel 8200 2300 2    50   Input ~ 0
 CW_RST
-Text GLabel 6900 1150 0    50   Input ~ 0
+Text GLabel 8200 2200 2    50   Input ~ 0
 CW_TARG1
-Text GLabel 6900 1250 0    50   Input ~ 0
+Text GLabel 8200 2100 2    50   Input ~ 0
 CW_TARG2
-Text GLabel 6900 1350 0    50   Input ~ 0
+Text GLabel 8200 1750 2    50   Input ~ 0
 CW_TARG3
-Text GLabel 6900 1450 0    50   Input ~ 0
+Text GLabel 6800 1750 0    50   Input ~ 0
 CW_PDIC
-Text GLabel 6900 1550 0    50   Input ~ 0
+Text GLabel 6800 1650 0    50   Input ~ 0
 CW_PDID
-Wire Wire Line
-	7200 1650 6150 1650
-Wire Wire Line
-	6900 1550 7200 1550
-Wire Wire Line
-	7200 1450 6900 1450
-Wire Wire Line
-	6900 1350 7200 1350
-Wire Wire Line
-	7200 1250 6900 1250
-Wire Wire Line
-	6900 1150 7200 1150
 Text GLabel 1650 1450 0    50   Input ~ 0
 CSM5V
 Text GLabel 1650 1350 0    50   Input ~ 0
@@ -146,19 +132,17 @@ Text GLabel 2400 4850 0    50   Input ~ 0
 Glitch
 Wire Wire Line
 	2400 4850 2900 4850
-Text GLabel 8200 1050 2    50   Input ~ 0
+Text GLabel 6800 2300 0    50   Input ~ 0
 CW_MISO
-Text GLabel 8200 1150 2    50   Input ~ 0
+Text GLabel 6800 2200 0    50   Input ~ 0
 CW_MOSI
-Text GLabel 8200 1250 2    50   Input ~ 0
-CW_SCK
-Text GLabel 8200 1350 2    50   Input ~ 0
+Text GLabel 8200 2800 2    50   Input ~ 0
 CW_HS1
-Text GLabel 8200 1450 2    50   Input ~ 0
+Text GLabel 8200 1650 2    50   Input ~ 0
 CW_TARG4
 Text GLabel 8200 2400 2    50   Input ~ 0
 CW_HS2
-Text GLabel 8200 2800 2    50   Input ~ 0
+Text GLabel 8200 1350 2    50   Input ~ 0
 ADC_CLK
 Text GLabel 2600 5450 0    50   Input ~ 0
 PWR_EN
@@ -227,19 +211,9 @@ Wire Wire Line
 Wire Wire Line
 	7700 2800 8200 2800
 Wire Wire Line
-	7700 1050 8200 1050
-Wire Wire Line
-	7700 1150 8200 1150
-Wire Wire Line
-	7700 1250 8200 1250
-Wire Wire Line
 	7700 1350 8200 1350
 Wire Wire Line
-	7700 1450 8200 1450
-Wire Wire Line
 	7700 1550 9050 1550
-Wire Wire Line
-	7700 1750 9050 1750
 Text GLabel 3650 4850 2    50   Input ~ 0
 VGA_GAIN
 Text GLabel 2550 4950 0    50   Input ~ 0
@@ -261,12 +235,8 @@ Wire Wire Line
 	6950 3050 6950 2700
 Wire Wire Line
 	6950 2700 7200 2700
-Text GLabel 8200 2300 2    50   Input ~ 0
+Text GLabel 6800 1550 0    50   Input ~ 0
 ADC_OR
-Wire Wire Line
-	6150 1750 7200 1750
-Wire Wire Line
-	7700 1650 9050 1650
 Text Notes 3450 5550 0    50   ~ 0
 These pins have 2k2 pull-up resistors\non the PYNQ board
 Wire Wire Line
@@ -362,52 +332,12 @@ Text Label 7150 2800 2    50   ~ 0
 IOa
 Wire Wire Line
 	7700 2300 8200 2300
-Wire Wire Line
-	7700 2200 9050 2200
-Wire Wire Line
-	7700 2100 9050 2100
-Wire Wire Line
-	6150 2300 7200 2300
-Wire Wire Line
-	6150 2200 7200 2200
-Wire Wire Line
-	6150 2100 7200 2100
 Text Label 9000 1550 2    50   ~ 0
-ADC_D0
-Text Label 6500 1650 2    50   ~ 0
-ADC_D1
-Text Label 9000 1650 2    50   ~ 0
-ADC_D2
-Text Label 6500 1750 2    50   ~ 0
-ADC_D3
-Text Label 9000 1750 2    50   ~ 0
-ADC_D4
-Text Label 6450 2100 2    50   ~ 0
-ADC_D5
-Text Label 9000 2100 2    50   ~ 0
-ADC_D6
-Text Label 6450 2200 2    50   ~ 0
-ADC_D7
-Text Label 9000 2200 2    50   ~ 0
-ADC_D8
-Text Label 6450 2300 2    50   ~ 0
 ADC_D9
 Entry Wire Line
 	9050 1550 9150 1650
-Entry Wire Line
-	9050 1650 9150 1750
-Entry Wire Line
-	9050 1750 9150 1850
 Wire Bus Line
 	9150 1450 9350 1450
-Entry Wire Line
-	6050 1750 6150 1650
-Entry Wire Line
-	6050 1850 6150 1750
-Entry Wire Line
-	9050 2100 9150 2200
-Entry Wire Line
-	9050 2200 9150 2300
 Wire Bus Line
 	6050 1900 9150 1900
 Connection ~ 9150 1900
@@ -1212,12 +1142,6 @@ Text Notes 5800 2600 0    50   ~ 0
 N17
 Text Notes 5800 2800 0    50   ~ 0
 Y13
-Entry Wire Line
-	6050 2200 6150 2300
-Entry Wire Line
-	6050 2100 6150 2200
-Entry Wire Line
-	6050 2000 6150 2100
 Connection ~ 6050 1900
 Text Notes 5800 1650 0    50   ~ 0
 R16
@@ -1257,16 +1181,95 @@ Text Notes 4150 4750 0    50   ~ 0
 FPGA\nPin
 Wire Wire Line
 	2250 3750 2950 3750
-Wire Bus Line
-	6050 1750 6050 1900
+Entry Wire Line
+	6050 1150 6150 1050
+Wire Wire Line
+	6150 1050 7200 1050
+Text Label 6200 1050 0    50   ~ 0
+ADC_D1
+Connection ~ 9150 1450
+Entry Wire Line
+	9050 1050 9150 1150
+Wire Wire Line
+	7700 1050 9050 1050
+Text Label 8700 1050 0    50   ~ 0
+ADC_D0
+Text GLabel 6800 2100 0    50   Input ~ 0
+CW_SCK
+Entry Wire Line
+	9050 1150 9150 1250
+Entry Wire Line
+	9050 1250 9150 1350
+Entry Wire Line
+	9050 1450 9150 1550
+Entry Wire Line
+	6050 1250 6150 1150
+Entry Wire Line
+	6050 1350 6150 1250
+Entry Wire Line
+	6050 1450 6150 1350
+Entry Wire Line
+	6050 1550 6150 1450
+Wire Wire Line
+	7700 1150 9050 1150
+Wire Wire Line
+	7700 1250 9050 1250
+Wire Wire Line
+	7700 1450 9050 1450
+Wire Wire Line
+	6150 1150 7200 1150
+Wire Wire Line
+	6150 1250 7200 1250
+Wire Wire Line
+	6150 1350 7200 1350
+Wire Wire Line
+	6150 1450 7200 1450
 Wire Bus Line
 	9150 1900 9150 2300
+Wire Bus Line
+	6050 1900 6050 2200
+Text Label 6200 1150 0    50   ~ 0
+ADC_D3
+Text Label 8700 1150 0    50   ~ 0
+ADC_D2
+Text Label 8700 1250 0    50   ~ 0
+ADC_D4
+Text Label 6200 1250 0    50   ~ 0
+ADC_D5
+Text Label 6200 1350 0    50   ~ 0
+ADC_D6
+Text Label 8700 1450 0    50   ~ 0
+ADC_D7
+Text Label 6200 1450 0    50   ~ 0
+ADC_D8
+Wire Wire Line
+	6800 1550 7200 1550
+Wire Wire Line
+	7700 1650 8200 1650
+Wire Wire Line
+	8200 1750 7700 1750
+Wire Wire Line
+	7200 1750 6800 1750
+Wire Wire Line
+	7200 1650 6800 1650
+Wire Wire Line
+	6800 2100 7200 2100
+Wire Wire Line
+	6800 2200 7200 2200
+Wire Wire Line
+	7700 2100 8200 2100
+Wire Wire Line
+	7700 2200 8200 2200
+Wire Wire Line
+	6800 2300 7200 2300
+Wire Bus Line
+	9150 1450 9150 1900
 Wire Bus Line
 	6150 2500 6150 3300
 Wire Bus Line
 	9050 2600 9050 3300
 Wire Bus Line
-	6050 1900 6050 2200
+	9150 1000 9150 1450
 Wire Bus Line
-	9150 1450 9150 1900
+	6050 1000 6050 1900
 $EndSCHEMATC
