@@ -1186,14 +1186,14 @@ Entry Wire Line
 Wire Wire Line
 	6150 1050 7200 1050
 Text Label 6200 1050 0    50   ~ 0
-ADC_D1
+ADC_D0
 Connection ~ 9150 1450
 Entry Wire Line
 	9050 1050 9150 1150
 Wire Wire Line
 	7700 1050 9050 1050
 Text Label 8700 1050 0    50   ~ 0
-ADC_D0
+ADC_D1
 Text GLabel 6800 2100 0    50   Input ~ 0
 CW_SCK
 Entry Wire Line
@@ -1229,13 +1229,13 @@ Wire Bus Line
 Wire Bus Line
 	6050 1900 6050 2200
 Text Label 6200 1150 0    50   ~ 0
-ADC_D3
-Text Label 8700 1150 0    50   ~ 0
 ADC_D2
+Text Label 8700 1150 0    50   ~ 0
+ADC_D3
 Text Label 8700 1250 0    50   ~ 0
-ADC_D4
-Text Label 6200 1250 0    50   ~ 0
 ADC_D5
+Text Label 6200 1250 0    50   ~ 0
+ADC_D4
 Text Label 6200 1350 0    50   ~ 0
 ADC_D6
 Text Label 8700 1450 0    50   ~ 0
