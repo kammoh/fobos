@@ -227,7 +227,7 @@ class Basys3Ctrl(FOBOSCtrl):
         Returns: int
             Status
         """
-        return self.writeConfig(FOBOSCtrl.TRIG_WAIT, trigWait)
+        return self.writeConfig(FOBOSCtrl.TRG_WAIT, trigWait)
 
     def setTriggerLen(self, trigLen):
         """

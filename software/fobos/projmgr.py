@@ -60,7 +60,7 @@ class ProjectManager():
     def getWorkSpaceDir(self):
         if self.workSpaceDir == "":
             # creat a default one
-            print "FATAL ERROR: Workspace directory not set. Please use ProjectManager.setWorkSpace()."
+            print ("FATAL ERROR: Workspace directory not set. Please use ProjectManager.setWorkSpace().")
             exit()
         else:
             return self.workSpaceDir
@@ -78,10 +78,10 @@ class ProjectManager():
         """
         if self.workSpaceDir == "":
             # creat a default one
-            print "FATAL ERROR: Workspace directory not set. Please use ProjectManager.setWorkSpace()."
+            print("FATAL ERROR: Workspace directory not set. Please use ProjectManager.setWorkSpace().")
             exit()
         elif self.projName == "":
-            print "FATAL ERROR: Projetc name not set. Please use ProjectManager.setProjName()."
+            print("FATAL ERROR: Projetc name not set. Please use ProjectManager.setProjName().")
             exit()
 
         projDir = os.path.join(self.getWorkSpaceDir(), self.getProjName())
@@ -158,7 +158,7 @@ class ProjectManager():
         """
         if self.TVFile == "":
             # creat a default one
-            print "FATAL ERROR: Test vector file not set. Please use ProjectManager.setTVFile()."
+            print("FATAL ERROR: Test vector file not set. Please use ProjectManager.setTVFile().")
             exit()
         else:
             return self.TVFile
@@ -166,9 +166,9 @@ class ProjectManager():
     def setTVFile(self, fileName):
         if os.exits(fileName):
             self.TVFile = fileName
-            print "Successfully set test vector file name to %s" % (fileName)
+            print("Successfully set test vector file name to %s" % (fileName))
         else:
-            print "FATAL ERROR: Test vector file not set. File %s does not exist." % (fileName)
+            print("FATAL ERROR: Test vector file not set. File %s does not exist." % (fileName))
             exit()
     
 
@@ -182,23 +182,23 @@ def main():
     # Testing
     pm = ProjectManager()
     # setting workspace
-    print "getCurrentDir %s" % pm.getCurrentDir()
+    print("getCurrentDir %s" % pm.getCurrentDir())
     # print "setting workspace"
     pm.setWorkSpaceDir("/home/bakry/fobosworkspace")
     # print "get workspace %s" % (pm.getWorkSpaceDir())
 
     # using default workspace
-    print "Default workspace"
+    print("Default workspace")
     # pm.setWorkSpaceDir("default")
-    print "get workspace %s" % (pm.getWorkSpaceDir())
+    print("get workspace %s" % (pm.getWorkSpaceDir()))
     # creating project directory
-    print "Getting project directory"
+    print("Getting project directory")
     pm.setProjName("aes")
-    print pm.getProjDir()
+    print(pm.getProjDir())
     # getting capture directory
-    print "Getting capture directory"
-    print pm.getCaptureDir()
-    print pm.getCaptureDir()
+    print("Getting capture directory")
+    print(pm.getCaptureDir())
+    print(pm.getCaptureDir())
 
 
 
