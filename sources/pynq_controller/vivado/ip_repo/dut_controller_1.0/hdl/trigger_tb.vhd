@@ -93,14 +93,21 @@ BEGIN
       rst <= '0';
       wait for clk_period*10;
       -- insert stimulus here 
-      trigger_length <= x"00000004";
-	  trigger_wait <=   x"00000002";
+      trigger_length <= x"00000001";
+	  trigger_wait <=   x"00000000";
 	  trigger_mode <= TRG_NORM;
+	  ---encryption 1
       wait for 5 * clk_period;
 	  dut_working <= '1';
 	  wait for clk_period*15;
 	  dut_working <= '0';
+	  --ecryption 2
+	  wait for 5 * clk_period;
+      dut_working <= '1';
+      wait for clk_period*15;
+      dut_working <= '0';
       wait;
+      
    end process;
 
 END;

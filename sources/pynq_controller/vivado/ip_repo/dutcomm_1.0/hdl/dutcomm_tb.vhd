@@ -42,6 +42,7 @@ architecture Behav of dutcomm_tb is
 constant clk_period : time := 10 ns;
 ---CTRL
 signal clk         : STD_LOGIC;
+signal inv_clk     : STD_LOGIC;
 signal rst         : STD_LOGIC; --also resets the dut
 signal tx_data     : STD_LOGIC_VECTOR (31 downto 0);
 signal tx_valid    : STD_LOGIC;
@@ -93,7 +94,7 @@ begin
             status => status,
             snd_start => snd_start,
             op_done => op_done,
-            dut_working => dut_working,
+            dut_working => dut_working, 
             started     => started,
             expected_out_len => expected_out_len
         );
@@ -104,7 +105,7 @@ dut: entity work.FOBOS_DUT(structural)
             SW => 128                                    
         )
         port map(
-            clk => clk,
+            clk => inv_clk,
             rst => rst,
             di_valid => di_valid,
             do_ready => do_ready,
@@ -135,6 +136,7 @@ tx_valid <= fifo_dout_valid;
 tx_data <= fifo_dout;
 fifo_dout_ready <= tx_ready;
 rx_ready <= '1';
+inv_clk <= not clk;
 --------------------------------------------------------------------
 clock_process :process
  begin
