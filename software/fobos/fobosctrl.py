@@ -21,6 +21,7 @@
 # Aug 7 2018
 # This class provide constants used by fobos contoller protocol
 
+import os
 
 class FOBOSCtrl:
 
@@ -71,5 +72,3 @@ class FOBOSCtrl:
     INTERFACE_4BIT      = 0x00
     INTERFACE_8BIT      = 0x01
     ##########################
-
-    

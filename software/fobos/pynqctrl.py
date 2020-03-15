@@ -30,6 +30,8 @@ import socket
 import pickle
 import numpy as np
 from .fobosctrl import FOBOSCtrl
+from .hardware_mgr import HardwareManager
+
 RCV_BYTES = 512
 
 class PYNQCtrl(FOBOSCtrl):
@@ -46,6 +48,14 @@ class PYNQCtrl(FOBOSCtrl):
         port : int
             port where PYNQ server is listening.
         """
+        # get hardware
+        self.hm = HardwareManager()
+        if self.hm.lock():
+            print('Acquired hardware lock')
+        else:
+            print('Hardware is in use by another user, please try agian later. Exitting')
+            exit()
+
         self.magic = '20200225'
         self.outLen = 0
         self.MSG_LEN_SIZE = 10
@@ -388,6 +398,8 @@ class PYNQCtrl(FOBOSCtrl):
         status, response = self.recvMsg()
         print(response)
         self.socket.close()
+        #release lock
+        self.hm.unlock()
         return status, response
 
     def setDUTInterface(self, interface):
