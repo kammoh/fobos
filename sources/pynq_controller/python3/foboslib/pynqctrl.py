@@ -39,7 +39,7 @@ class PYNQCtrl(FOBOSCtrl):
     ##########################
     #constants
     
-    def __init__(self, overlay, inputSize, outputSize):
+    def __init__(self, overlay):
         self.model = "FOBOS-CTRL-PYNQ-Z1"
         self.STATUS_LEN = 4
         self.outLen = 0
@@ -48,11 +48,13 @@ class PYNQCtrl(FOBOSCtrl):
         self.dutctrl = overlay.dut_controller_0
         self.dutClkWizard =overlay.clk_wiz
         #io buffers
-        xlnk = Xlnk()
-        self.input_buffer = xlnk.cma_array(shape=(int(inputSize / 4),), dtype=np.uint32)
-        self.output_buffer = xlnk.cma_array(shape=(int(outputSize / 4),), dtype=np.uint32)
-        #self.setOutLen(int(outputSize/4))
-
+        self.xlnk = Xlnk()
+        # self.input_buffer = xlnk.cma_array(shape=(int(inputSize / 4),), dtype=np.uint32)
+        # self.output_buffer = xlnk.cma_array(shape=(int(outputSize / 4),), dtype=np.uint32)
+        # self.setOutLen(int(outputSize/4))
+        self.input_buffer = None
+        self.output_buffer = None
+        self.inputSize = 0
 
     def setDUTClk(self, clkFreq):
         self.dutClkWizard.setClock0Freq(clkFreq)       
@@ -71,6 +73,13 @@ class PYNQCtrl(FOBOSCtrl):
         data: The data to be processed. This is a hexadecimal string.
         returns: the result of processing, e.g. ciphertext
         """
+        inputSize = len(data)/2
+        # print(f'inputSize={inputSize}')
+        if self.inputSize != inputSize:
+            if self.input_buffer is not None:
+                self.input_buffer.freebuffer()
+            self.input_buffer = self.xlnk.cma_array(shape=(int(inputSize / 4),), dtype=np.uint32)
+
         #put data in the buffer as 32bit integers
         data = data.strip()
         testVector = [int(data[i:i+8],16) for i in range(0, len(data), 8)]
@@ -81,7 +90,7 @@ class PYNQCtrl(FOBOSCtrl):
         self.dma.sendchannel.transfer(self.input_buffer)  #configure dma to send 
         self.dma.sendchannel.wait()
         self.dma.recvchannel.wait()
-        result = ''.join(['{:08x}'.format(self.output_buffer[i]) for i in range(0, int(self.outLen))])
+        result = ''.join(['{:08x}'.format(self.output_buffer[i]) for i in range(0, int(self.outLen / 4))])
         ##get result in correct format
         result2 = ''
         for i in range(len(result)):
@@ -98,7 +107,14 @@ class PYNQCtrl(FOBOSCtrl):
         set Expected Output Length (outLen)
         """
         self.outLen = outLen
-        self.dutcomm.write(PYNQCtrl.dutcomm_EXP_OUT_LEN, outLen)
+        print('outlen')
+        print(outLen)
+        print(type(outLen))
+        self.dutcomm.write(PYNQCtrl.dutcomm_EXP_OUT_LEN, int(outLen / 4))
+        if self.output_buffer is not None:
+            self.output_buffer.freebuffer()
+        self.output_buffer = self.xlnk.cma_array(shape=(int(outLen / 4),), dtype=np.uint32)
+
 
     def getOutLen(self):
         """
