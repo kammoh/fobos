@@ -53,8 +53,8 @@ set_property IOSTANDARD LVCMOS33 [get_ports reset]
 ###################################################################
 ##Pmod Header JA
 ##Sch name = JA1
-set_property PACKAGE_PIN J1 [get_ports {dut_rst}]
-set_property IOSTANDARD LVCMOS33 [get_ports {dut_rst}]
+set_property PACKAGE_PIN J1 [get_ports dut_rst]
+set_property IOSTANDARD LVCMOS33 [get_ports dut_rst]
 #Sch name = JA2
 set_property PACKAGE_PIN L2 [get_ports do_ready]
 set_property IOSTANDARD LVCMOS33 [get_ports do_ready]
@@ -173,3 +173,4 @@ set_property CONFIG_MODE SPIx4 [current_design]
 #set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
 #set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
 #connect_debug_port dbg_hub/clk [get_nets u_ila_0_clk_out2]
+

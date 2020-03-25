@@ -38,7 +38,7 @@ class Basys3Ctrl(FOBOSCtrl):
     Class to wrap protocol to interface with Basys3 controller.
     """
 
-    def __init__(self, baudRate=115200, dummy=False):
+    def __init__(self, port= None, baudRate=115200, dummy=False):
         """Init method
         Parameters:
         -----
@@ -61,16 +61,17 @@ class Basys3Ctrl(FOBOSCtrl):
         self.OK = bytearray([0x00, 0x00, 0x00, 0x00])
         self.ERROR = bytearray([0x01, 0x00, 0x00, 0x00])
         self.TIMEOUT = bytearray([0x02, 0x00, 0x00, 0x00])
-
-        devFile = self.detectHardware()
+        if port is None:
+            devFile = self.detectHardware()
+        else:
+            devFile = port
         # self.getMagicNumber()
         self.model = "Basys3"
         if dummy is True:
             self.ser = DummySerial()
         else:
             self.ser = serial.Serial(devFile, baudRate)
-        
-        self.getMagicNumber()
+
 
     def detectHardware(self):
         hd = HardwareDetector()
@@ -226,7 +227,7 @@ class Basys3Ctrl(FOBOSCtrl):
         Returns: int
             Status
         """
-        return self.writeConfig(FOBOSCtrl.TRIG_WAIT, trigWait)
+        return self.writeConfig(FOBOSCtrl.TRG_WAIT, trigWait)
 
     def setTriggerLen(self, trigLen):
         """
@@ -375,13 +376,13 @@ class Basys3Ctrl(FOBOSCtrl):
         return self.writeConfig(FOBOSCtrl.SET_KEY, Key)
 
 
-    def loadData(self, data)
+    def loadData(self, data):
         pass
 
-    def run()
+    def run():
         pass
 
-    def getResult(self)
+    def getResult(self):
         pass
 
     def setPowerGlitchEnable(self, val):
@@ -396,6 +397,7 @@ class Basys3Ctrl(FOBOSCtrl):
         int
             status
         """
+        print("enable glitch")
         return self.writeConfig(FOBOSCtrl.POWER_GLITCH_ENABLE, val)
 
     
@@ -411,6 +413,7 @@ class Basys3Ctrl(FOBOSCtrl):
         int
             status
         """
+        print("set glitch wait")
         return self.writeConfig(FOBOSCtrl.POWER_GLITCH_WAIT, waitCycles)
 
 
@@ -426,8 +429,14 @@ class Basys3Ctrl(FOBOSCtrl):
         int
             status
         """
-        pattern0 = int(pattern[7:0], 16) #lsb
-        pattern1 = int(pattern[15:8], 16) #msb
+        print("pattern")
+        pattern0 = int(pattern[8:16], 16) #lsb
+        pattern1 = int(pattern[0:8], 16) #msb
+        print('pattern=' + pattern)
+        print('pattern0=' + str(pattern0))
+        print(pattern[0:7])
+        print('pattern1=' + str(pattern1))
+        print(pattern[8:15])
         self.writeConfig(FOBOSCtrl.POWER_GLITCH_PATTERN0, pattern0)
         return self.writeConfig(FOBOSCtrl.POWER_GLITCH_PATTERN1, pattern1)
 

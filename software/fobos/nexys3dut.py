@@ -39,20 +39,20 @@ class Nexys3DUT:
         This requires Digilent Adept runtime and utilities to be installed
         """
         if self.bitFile == "":
-            print "FATAL Error: DUT programming bit file not set. Please set it to a valid .bit file. Exiting..."
+            print("FATAL Error: DUT programming bit file not set. Please set it to a valid .bit file. Exiting...")
             exit()
 
         cmd_init = ['djtgcfg', 'init', '-d', self.deviceID]
         cmd_prog = ['djtgcfg', 'prog', '-d', self.deviceID, '-i',
                     str(self.jtagID), '-f', self.bitFile]
-        print "Programming device using the following commands:"
-        print " ".join(cmd_init)
-        print " ".join(cmd_prog)
+        print("Programming device using the following commands:")
+        print(" ".join(cmd_init))
+        print(" ".join(cmd_prog))
         subprocess.check_output(cmd_init)
         output = subprocess.check_output(cmd_prog)
-        print output
-        if not (output.strip().endswith("Programming succeeded.")):
-            print "FATAL Error: DUT programming failed!. Exiting..."
+        print(output)
+        if not (output.strip().endswith(b"Programming succeeded.")):
+            print("FATAL Error: DUT programming failed!. Exiting...")
             exit()
 
 

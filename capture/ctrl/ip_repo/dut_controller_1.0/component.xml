@@ -358,7 +358,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>63d14826</spirit:value>
+            <spirit:value>a6e1f487</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -374,7 +374,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>63d14826</spirit:value>
+            <spirit:value>a6e1f487</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -484,6 +484,53 @@
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>d_glitch_wait</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>d_glitch_pattern</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">63</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>d_config_done</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
               <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
               <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
@@ -982,7 +1029,7 @@
       <spirit:file>
         <spirit:name>hdl/dut_controller_v1_0.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_f8417c29</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_d18f46ba</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -1129,8 +1176,8 @@
         <xilinx:taxonomy>AXI_Peripheral</xilinx:taxonomy>
       </xilinx:taxonomies>
       <xilinx:displayName>dut_controller_v1.0</xilinx:displayName>
-      <xilinx:coreRevision>36</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2020-01-16T20:26:25Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>39</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2020-01-29T23:30:16Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="user.org:user:dut_controller:1.0_ARCHIVE_LOCATION">/home/bakry/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@34d49730_ARCHIVE_LOCATION">/home/bakry/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
@@ -1195,14 +1242,48 @@
         <xilinx:tag xilinx:name="ui.data.coregen.dd@6f150551_ARCHIVE_LOCATION">/home/bakry/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@5f19bcdc_ARCHIVE_LOCATION">/home/bakry/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@1eb596d1_ARCHIVE_LOCATION">/home/bakry/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4728a4c1_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@37273eed_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d138730_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4f054414_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@761cfdc8_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@546f454b_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@523976e3_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@63b3322b_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@39a80de4_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4a4bb80a_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1884b842_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4efedecf_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f379ece_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@79031402_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64b3188c_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1e601a0_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1961b167_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6cd2243a_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7d84900a_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e765d57_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@53545c39_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5367af25_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@21dc20a9_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a67cd7e_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@48981b78_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@44450623_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@32b4bc5d_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3bac4445_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4c7cbc30_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7582a25b_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a84661_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@42f148dd_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@9de69f_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@891a915_ARCHIVE_LOCATION">/home/aabdulga/repos/fobos_gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="4a1c78ab"/>
       <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="c30980da"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="c46f2d3b"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="2273ed29"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="bab4cd28"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="c9302b68"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="30979e6d"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="2a202dec"/>
     </xilinx:packagingInfo>

@@ -20,6 +20,9 @@ entity dut_controller_v1_0 is
 		d_timeout_status : out std_logic_vector(7 downto 0);
 		d_en_module      : out std_logic;
 		d_timeout_cnt    : out std_logic_vector(31 downto 0);
+		d_glitch_wait    : out std_logic_vector(31 downto 0);
+		d_glitch_pattern : out std_logic_vector(63 downto 0);
+		d_config_done    : out std_logic;
 		-- Users to add ports here
 		--trigger module     
 		trigger_out      : out std_logic;
@@ -219,7 +222,12 @@ begin
 			timeout_status => timeout_status,
 			--reset module
 			time_to_rst    => time_to_rst,
-			force_rst      => force_rst
+			force_rst      => force_rst,
+			--glitch module
+			glitch_pattern => glitch_pattern,
+			glitch_wait => glitch_wait,
+			config_done => config_done
+			
 		);
 
 	-- Add user logic here
@@ -275,6 +283,9 @@ begin
 	d_timeout        <= timeout;
 	d_timeout_status <= timeout_status;
 	d_timeout_ack    <= ack;
+	d_glitch_wait <= glitch_wait;
+	d_glitch_pattern <= glitch_pattern;
+	d_config_done <= config_done;
 	-- User logic ends
 
 end arch_imp;
