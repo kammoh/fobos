@@ -1,12 +1,13 @@
 import socket
 import time
 import pickle
+from pathlib import Path
 import numpy as np
 from pynq import Overlay
 from pynq import Xlnk
-from fobos.fobosctrl import FOBOSCtrl
-from fobos.pynqctrl import PYNQCtrl
-from fobos import openadc
+from foboslib.fobosctrl import FOBOSCtrl
+from foboslib.pynqctrl import PYNQCtrl
+from foboslib import openadc
 #import numpy as np
 MSG_LEN_SIZE = 10
 MSG_LEN_SIZE = 10
@@ -16,11 +17,12 @@ DONE_CMD = 9999
 RCV_BYTES = 512
 IP = '192.168.10.99'
 PORT = 9995
+SOCKET_TIMEOUT = 300
 ##change these settings. they must be dynamic
 TV_SIZE = 48
 OUTPUT_SIZE = 16
 
-OUT_LEN         = 4 #11# in 32-bit words
+OUT_LEN         = 16 # default aes-128 output in byes
 TRACE_NUM       = 10
 SAMPLING_FREQ   = 10
 DUT_CLK         = 1
@@ -28,15 +30,18 @@ SAMPLE_NUM      = 1000
 ADC_GAIN        = 20
 TV_SIZE         = 48 #108
 OUTPUT_SIZE     = 16 #44
+STATUS_FILE = "/tmp/fobos_status.txt"
 ##end 
 class server():
     def __init__(self, ip, port):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind((ip, port))
         self.socket.listen(5)
+
+    def init(self):
         # instantiate hardware driver
         overlay = Overlay("ctrl_top_wrapper_rising.bit")
-        self.ctrl = PYNQCtrl(overlay, inputSize = TV_SIZE, outputSize = OUTPUT_SIZE)
+        self.ctrl = PYNQCtrl(overlay)
         self.fobosAcq = openadc.OpenADCScope(overlay)
         # self.fobosAcq.setAdcClockFreq(SAMPLING_FREQ)
         # self.fobosAcq.setGain(ADC_GAIN)
@@ -47,7 +52,7 @@ class server():
         self.ctrl.setDUTClk(DUT_CLK)
         self.ctrl.setOutLen(OUT_LEN)
         self.ctrl.setTriggerMode(FOBOSCtrl.TRG_FULL)
-        self.ctrl.setDUTInterface(FOBOSCtrl.INTERFACE_8BIT)
+        self.ctrl.setDUTInterface(FOBOSCtrl.INTERFACE_4BIT)
         self.ctrl.forceReset()
         self.ctrl.releaseReset()
     
@@ -98,10 +103,29 @@ class server():
 
         return opcode, param
     
+    def acceptConnection(self):
+        self.socket.settimeout(SOCKET_TIMEOUT)
+        while True:
+            try:
+                print("PYNQ server ready. Waiting for connection ...")
+                self.clt, addr = self.socket.accept()
+                print(f'addr = {addr}=============')
+                break
+            except:
+                print('socket accept timeout')
+                self.touchStatusFile()
+                print('touching status file.')
+
+
     def run(self):
         while True:
-            self.clt, addr = self.socket.accept()
-            print(f'addr = {addr}=============')
+            # print("PYNQ server ready. Waiting for connection ...")
+            # self.clt, addr = self.socket.accept()
+            # print(f'addr = {addr}=============')
+            # self.touchStatusFile()
+            self.acceptConnection()
+            print('connection accepted')
+            self.init()
             while True:
                 opcode, param = self.recvMsg()
                 # print(f'msg received : opcode={opcode}, param = {param}')
@@ -130,9 +154,13 @@ class server():
                     if status == -1:
                         break
 
-    def doOperation(self, opcode, param):
-        if True:
+    def touchStatusFile(self):
+        Path(STATUS_FILE).touch()
 
+
+    def doOperation(self, opcode, param):
+        try:
+        # if True:
             if opcode == FOBOSCtrl.PROCESS:
                 result = self.ctrl.processData(param)
                 response = result
@@ -143,11 +171,13 @@ class server():
                 self.fobosAcq.waitForTrace()
                 trace = self.outputBuffer.view('uint16').tolist()
                 response = (result, trace,)
-                print(response)
+                #print(response)
 
             elif opcode == FOBOSCtrl.OUT_LEN:
                 print("FOBOSCtrl.OUT_LEN")
                 self.ctrl.setOutLen(param)
+                print(param)
+                print(type(param))
                 response = f"Set output len = {param}"
             
             elif opcode == FOBOSCtrl.TRG_MODE:
@@ -195,7 +225,7 @@ class server():
                 # DEFAULTS
                 self.ctrl.setOutLen(OUT_LEN)
                 self.ctrl.setTriggerMode(FOBOSCtrl.TRG_FULL)
-                self.ctrl.setDUTInterface(FOBOSCtrl.INTERFACE_8BIT)
+                self.ctrl.setDUTInterface(FOBOSCtrl.INTERFACE_4BIT)
                 self.ctrl.forceReset()
                 self.ctrl.releaseReset()
 
@@ -246,11 +276,15 @@ class server():
                 self.outputBuffer = self.xlnk.cma_array(shape=(int(self.samplesPerTrace / 4 + 2),), dtype=np.uint64)
 
             else:
-                response = 'Not implemented'        
+                response = 'Not implemented'
+                status = -1
+                return status, response
+
             status = 0
             return status, response
-        #except:
-
+        except Exception as e:
+        # else:
+            print(e)
             print("error performing requested operation")
             status = -1
             response = ""
