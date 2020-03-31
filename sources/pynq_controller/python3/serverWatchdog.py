@@ -11,7 +11,7 @@ class FobosWatchdog:
     def __init__(self):
         self.statusFile = "/tmp/fobos_status.txt"
         self.serverBin = "/home/xilinx/jupyter_notebooks/pynq_fobos/python3/pynqserver.py"
-        self.timeout = 600 # seconds
+        self.timeout = 4 * 60 # seconds
     
     def checkTimeout(self):
         try:

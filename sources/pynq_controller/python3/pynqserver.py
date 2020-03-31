@@ -17,7 +17,7 @@ DONE_CMD = 9999
 RCV_BYTES = 512
 IP = '192.168.10.99'
 PORT = 9995
-SOCKET_TIMEOUT = 300
+SOCKET_TIMEOUT = 2 * 60
 ##change these settings. they must be dynamic
 TV_SIZE = 48
 OUTPUT_SIZE = 16
