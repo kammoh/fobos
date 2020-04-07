@@ -75,6 +75,7 @@ class PYNQCtrl(FOBOSCtrl):
             print(e)
             # release hw
             self.hm.unlock()
+        self.config = "# Acquisition parameters:\n"
 
     def detectHardware(self):
         pass
@@ -155,7 +156,8 @@ class PYNQCtrl(FOBOSCtrl):
             Status
         """
         self.outLen = outLen
-        print(f'outlen={outLen}')
+        # print(f'outlen={outLen}')
+        self.config += f'OUT_LEN = {outLen}\n'
         self.sendMsg(opcode=FOBOSCtrl.OUT_LEN, param=outLen)
         status, _ = self.recvMsg()
         return status
@@ -316,12 +318,10 @@ class PYNQCtrl(FOBOSCtrl):
         if clkFreqMhz > 100 or clkFreqMhz < 0.4:
             # print("Error: DUT clock must be between 100MHz and 0.4MHz")
             raise ValueError("Error: DUT clock must be between 0.4 MHz and 100 MHz")
+        self.config += f'DUT_CLK = {clkFreqMhz}\n'
         self.sendMsg(FOBOSCtrl.SET_DUT_CLK, clkFreqMhz * 1000)
         status, _ = self.recvMsg()
         return status
-        
-
-
 
     def loadKey(self, key):
         """
@@ -427,6 +427,7 @@ class PYNQCtrl(FOBOSCtrl):
         freq = int(freq)
         if freq > 100 or freq < 1:
             raise ValueError("Error: Sampling frequency must be an integer between 1 MHz and 100 MHz")
+        self.config += f'SAMPLING_FREQ = {freq}\n'
         self.sendMsg(FOBOSCtrl.SET_SAMPLING_FREQ, freq)
         status, _ = self.recvMsg()
         return status
@@ -435,6 +436,7 @@ class PYNQCtrl(FOBOSCtrl):
         gain = int(gain)
         if gain > 78 or gain < 0:
             raise ValueError("Error: ADC gain must be an integer between 0 and 78")
+        self.config += f'ADC_GAIN = {gain}\n'
         self.sendMsg(FOBOSCtrl.SET_ADC_GAIN, gain)
         status, _ = self.recvMsg()
         return status
@@ -442,6 +444,7 @@ class PYNQCtrl(FOBOSCtrl):
     def setSamplesPerTrace(self, samplesPerTrace):
         if samplesPerTrace > 2**17  or samplesPerTrace < 0:
             raise ValueError("Error: SamplesPerTrace must be between 0 and 2**17")
+        self.config += f'SAMPLES_PER_TRACE = {samplesPerTrace}\n'
         self.sendMsg(FOBOSCtrl.SET_SAMPLES_PER_TRACE, samplesPerTrace)
         status, _ = self.recvMsg()
         return status
