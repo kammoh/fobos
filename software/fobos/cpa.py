@@ -47,6 +47,7 @@ class CPA():
     def plotCorr(self, C, correctIndex, fileName=None, show='no'):
         print("    plotting correlation graph.")
         import matplotlib.pyplot as plt
+        plt.figure(figsize=(10,8))
         plt.clf()
         plt.margins(0)
         for i in range(C.shape[0]):
@@ -123,6 +124,7 @@ class CPA():
         # print(corrData.shape)
         # print(corrData)
         import matplotlib.pyplot as plt
+        plt.figure(figsize=(10,8))
         plt.clf()
         plt.margins(0)
         # plot this first
