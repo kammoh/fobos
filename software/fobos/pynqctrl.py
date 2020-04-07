@@ -312,10 +312,10 @@ class PYNQCtrl(FOBOSCtrl):
         int
             status
         """
-
+        # clkFreqMhz = int(clkFreqMhz)
         if clkFreqMhz > 100 or clkFreqMhz < 0.4:
-            print("Error: DUT clock must be between 100MHz and 0.4MHz")
-            raise
+            # print("Error: DUT clock must be between 100MHz and 0.4MHz")
+            raise ValueError("Error: DUT clock must be between 0.4 MHz and 100 MHz")
         self.sendMsg(FOBOSCtrl.SET_DUT_CLK, clkFreqMhz * 1000)
         status, _ = self.recvMsg()
         return status
@@ -424,16 +424,24 @@ class PYNQCtrl(FOBOSCtrl):
         return status
 
     def setSamplingFrequency(self, freq):
+        freq = int(freq)
+        if freq > 100 or freq < 1:
+            raise ValueError("Error: Sampling frequency must be an integer between 1 MHz and 100 MHz")
         self.sendMsg(FOBOSCtrl.SET_SAMPLING_FREQ, freq)
         status, _ = self.recvMsg()
         return status
 
     def setADCGain(self, gain):
+        gain = int(gain)
+        if gain > 78 or gain < 0:
+            raise ValueError("Error: ADC gain must be an integer between 0 and 78")
         self.sendMsg(FOBOSCtrl.SET_ADC_GAIN, gain)
         status, _ = self.recvMsg()
         return status
 
     def setSamplesPerTrace(self, samplesPerTrace):
+        if samplesPerTrace > 2**17  or samplesPerTrace < 0:
+            raise ValueError("Error: SamplesPerTrace must be between 0 and 2**17")
         self.sendMsg(FOBOSCtrl.SET_SAMPLES_PER_TRACE, samplesPerTrace)
         status, _ = self.recvMsg()
         return status
