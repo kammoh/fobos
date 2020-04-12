@@ -50,10 +50,12 @@ class Nexys3DUT:
         print(" ".join(cmd_prog))
         subprocess.check_output(cmd_init)
         output = subprocess.check_output(cmd_prog)
-        print(output)
+        # print(output.decode('utf-8'))
         if not (output.strip().endswith(b"Programming succeeded.")):
             print("FATAL Error: DUT programming failed!. Exiting...")
             exit()
+        else:
+            print('DUT board programmed successfuly.')
 
 
 def main():

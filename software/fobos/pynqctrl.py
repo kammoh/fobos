@@ -29,6 +29,7 @@
 import socket
 import pickle
 import numpy as np
+from sys import exit
 from .fobosctrl import FOBOSCtrl
 from .hardware_mgr import HardwareManager
 
@@ -67,38 +68,53 @@ class PYNQCtrl(FOBOSCtrl):
         # self.ERROR = bytearray([0x01, 0x00, 0x00, 0x00])
         # self.TIMEOUT = bytearray([0x02, 0x00, 0x00, 0x00])
         self.model = "PYNQ-Z1"
+        try:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket.connect((ip, port))
+        except Exception as  e:
+            print(e)
+            # release hw
+            self.hm.unlock()
+        self.config = "# Acquisition parameters:\n"
 
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.connect((ip, port))
-        
     def detectHardware(self):
         pass
 
     def sendMsg(self, opcode, param):
-        ##send cmd
-        param = pickle.dumps(param)
-        msg = bytes(f'{len(param) + self.OPCODE_SIZE :<{self.MSG_LEN_SIZE}}' + f'{opcode:<{self.OPCODE_SIZE}}', 'utf-8') + param
-        # print(msg)
-        self.socket.send(msg)
+        try:
+            ##send cmd
+            param = pickle.dumps(param)
+            msg = bytes(f'{len(param) + self.OPCODE_SIZE :<{self.MSG_LEN_SIZE}}' + f'{opcode:<{self.OPCODE_SIZE}}', 'utf-8') + param
+            # print(msg)
+            self.socket.send(msg)
+        except Exception as e:
+            print(e)
+            print('Erorr encountered while sending message. Exitting.')
+            exit()
 
     def recvMsg(self):
         # print('receiving..')
         full_msg = b''
         new_msg = True
         while True:
-            msg = self.socket.recv(RCV_BYTES)
-            if new_msg:
-                # print(f'new msg size is {msg[:self.MSG_LEN_SIZE]}')
-                msg_len = int(msg[:self.MSG_LEN_SIZE])
-                new_msg = False
-            full_msg += msg
-            if len(full_msg) - self.MSG_LEN_SIZE ==msg_len:
-                # print(full_msg[self.MSG_LEN_SIZE:])
-                response = pickle.loads(full_msg[self.MSG_LEN_SIZE + self.STATUS_SIZE:])
-                # response = full_msg[MSG_LEN_SIZE + STATUS_SIZE:]
-                # print(f'response = {response}')
-                status = 0
-                break
+            try:
+                msg = self.socket.recv(RCV_BYTES)
+                if new_msg:
+                    # print(f'new msg size is {msg[:self.MSG_LEN_SIZE]}')
+                    msg_len = int(msg[:self.MSG_LEN_SIZE])
+                    new_msg = False
+                full_msg += msg
+                if len(full_msg) - self.MSG_LEN_SIZE ==msg_len:
+                    # print(full_msg[self.MSG_LEN_SIZE:])
+                    response = pickle.loads(full_msg[self.MSG_LEN_SIZE + self.STATUS_SIZE:])
+                    # response = full_msg[MSG_LEN_SIZE + STATUS_SIZE:]
+                    # print(f'response = {response}')
+                    status = 0
+                    break
+            except Exception as e:
+                print(e)
+                print('Error encountered while receiving message. Exiting.')
+                exit()
         return status, response
 
     def processData(self, data, outLen):
@@ -140,6 +156,8 @@ class PYNQCtrl(FOBOSCtrl):
             Status
         """
         self.outLen = outLen
+        # print(f'outlen={outLen}')
+        self.config += f'OUT_LEN = {outLen}\n'
         self.sendMsg(opcode=FOBOSCtrl.OUT_LEN, param=outLen)
         status, _ = self.recvMsg()
         return status
@@ -296,16 +314,14 @@ class PYNQCtrl(FOBOSCtrl):
         int
             status
         """
-
+        # clkFreqMhz = int(clkFreqMhz)
         if clkFreqMhz > 100 or clkFreqMhz < 0.4:
-            print("Error: DUT clock must be between 100MHz and 0.4MHz")
-            raise
+            # print("Error: DUT clock must be between 100MHz and 0.4MHz")
+            raise ValueError("Error: DUT clock must be between 0.4 MHz and 100 MHz")
+        self.config += f'DUT_CLK = {clkFreqMhz}\n'
         self.sendMsg(FOBOSCtrl.SET_DUT_CLK, clkFreqMhz * 1000)
         status, _ = self.recvMsg()
         return status
-        
-
-
 
     def loadKey(self, key):
         """
@@ -396,7 +412,7 @@ class PYNQCtrl(FOBOSCtrl):
     def disconnect(self):
         self.sendMsg(FOBOSCtrl.DISCONNECT, "")
         status, response = self.recvMsg()
-        print(response)
+        # print(response)
         self.socket.close()
         #release lock
         self.hm.unlock()
@@ -408,16 +424,27 @@ class PYNQCtrl(FOBOSCtrl):
         return status
 
     def setSamplingFrequency(self, freq):
+        freq = int(freq)
+        if freq > 100 or freq < 1:
+            raise ValueError("Error: Sampling frequency must be an integer between 1 MHz and 100 MHz")
+        self.config += f'SAMPLING_FREQ = {freq}\n'
         self.sendMsg(FOBOSCtrl.SET_SAMPLING_FREQ, freq)
         status, _ = self.recvMsg()
         return status
 
     def setADCGain(self, gain):
+        gain = int(gain)
+        if gain > 60 or gain < 0:
+            raise ValueError("Error: ADC gain must be an integer between 0 and 78")
+        self.config += f'ADC_GAIN = {gain}\n'
         self.sendMsg(FOBOSCtrl.SET_ADC_GAIN, gain)
         status, _ = self.recvMsg()
         return status
 
     def setSamplesPerTrace(self, samplesPerTrace):
+        if samplesPerTrace > 2**17  or samplesPerTrace < 0:
+            raise ValueError("Error: SamplesPerTrace must be between 0 and 2**17")
+        self.config += f'SAMPLES_PER_TRACE = {samplesPerTrace}\n'
         self.sendMsg(FOBOSCtrl.SET_SAMPLES_PER_TRACE, samplesPerTrace)
         status, _ = self.recvMsg()
         return status

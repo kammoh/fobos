@@ -103,12 +103,12 @@ class ProjectManager():
         creats a new directory to store capture attempt. It uses numbers to
         """
         cnt = 1
-        while os.path.isdir(os.path.join(self.getProjDir(), "capture", "attempt-" + str(cnt))):
+        while os.path.isdir(os.path.join(self.getProjDir(), "capture", "attempt-" + f'{cnt:02d}')):
             cnt += 1
 
         try:
             captureDir = os.path.join(
-                self.getProjDir(), "capture", "attempt-" + str(cnt))
+                self.getProjDir(), "capture", "attempt-" + f'{cnt:02d}')
             os.makedirs(captureDir)
             self.captureDir = captureDir
         except OSError as e:
@@ -131,12 +131,12 @@ class ProjectManager():
         creats a new directory to store analysis attempt. It uses numbers to
         """
         cnt = 1
-        while os.path.isdir(os.path.join(self.getProjDir(), "analysis", "attempt-" + str(cnt))):
+        while os.path.isdir(os.path.join(self.getProjDir(), "analysis", "attempt-" + f'{cnt:02d}')):
             cnt += 1
 
         try:
             analysisDir = os.path.join(
-                self.getProjDir(), "analysis", "attempt-" + str(cnt))
+                self.getProjDir(), "analysis", "attempt-" + f'{cnt:02d}')
             os.makedirs(analysisDir)
             self.analysisDir = analysisDir
         except OSError as e:
