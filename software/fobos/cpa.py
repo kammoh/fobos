@@ -17,6 +17,7 @@
 #############################################################################
 
 import os
+import json
 import numpy as np
 import scipy.stats.stats as statModule
 # import postprocess
@@ -48,6 +49,7 @@ class CPA():
         print("    plotting correlation graph.")
         import matplotlib.pyplot as plt
         plt.figure(figsize=(10,8))
+        plt.rcParams.update({'font.size':18})
         plt.clf()
         plt.margins(0)
         for i in range(C.shape[0]):
@@ -60,6 +62,7 @@ class CPA():
             plt.savefig(fileName)
         if show == 'yes':
             plt.show()
+        plt.close()
 
     def findCorrectKey(self, C):
         C = np.abs(C)
@@ -125,10 +128,11 @@ class CPA():
         # print(corrData)
         import matplotlib.pyplot as plt
         plt.figure(figsize=(10,8))
+        plt.rcParams.update({'font.size':18})
         plt.clf()
         plt.margins(0)
         # plot this first
-        plt.plot(corrData[correctKeyIndex, :], 'r', linewidth=0.5)
+        plt.plot(corrData[correctKeyIndex, :-1], 'r', linewidth=0.5) # remove last element(to fix a bug)
         # remove the correct key
         corrData[correctKeyIndex, :] = 0  # zero all elements in row so they are
         # min nor max
@@ -139,8 +143,8 @@ class CPA():
         lowVals = np.nanmin(corrData, axis=0)
         # print(highVals.shape)
         # print(highVals)
-        plt.plot(highVals, 'b', linewidth=0.5)
-        plt.plot(lowVals, 'b', linewidth=0.5)
+        plt.plot(highVals[:-1], 'b', linewidth=0.5)
+        plt.plot(lowVals[:-1], 'b', linewidth=0.5)
 
         if stride != 1:
             plt.xlabel("Trace No. x {})".format(stride))
@@ -151,19 +155,20 @@ class CPA():
             plt.savefig(fileName)
         if show == 'yes':
             plt.show()
+        plt.close()
 
     def doCPA(self, measuredPower, hypotheticalPower, numTraces,
-              analysisDir, MTDStride):
+              analysisDir, MTDStride, numKeys=16):
         print(measuredPower.shape)
         correctKey = []
-        for byteNum in range(16):
+        for byteNum in range(numKeys):
             C =  self.correlation_pearson(measuredPower[0:numTraces,:], hypotheticalPower[byteNum][0:numTraces,:])
             # print("C=")
             # print(C.shape)
             # self.printHexMatrix(C, dtype='float')
             maxKeyIndex, maxCorr, maxCorrTime = self.findCorrectKey(C)
-            corrFile = os.path.join(analysisDir, 'correlation' + str(byteNum))
-            mtdFile = os.path.join(analysisDir, 'MTD' + str(byteNum))
+            corrFile = os.path.join(analysisDir, 'correlation' +f'{byteNum:02d}')
+            mtdFile = os.path.join(analysisDir, 'MTD' + f'{byteNum:02d}')
           
             print("subkey number = {}, subkey value = {}, correlation = {}, at sample = {}".format(byteNum, hex(maxKeyIndex), maxCorr, maxCorrTime))
             self.plotCorr(C, maxKeyIndex, fileName=corrFile)
@@ -171,6 +176,8 @@ class CPA():
                               hypotheticalPower[byteNum],
                               stride=MTDStride, fileName=mtdFile, show='no')
             correctKey.append(format(maxKeyIndex, '02x'))
+            topKeysFile = os.path.join(analysisDir, 'topKeys-' + f'{byteNum:02d}' + '.json')
+            self.getTopNKeys(C, fileName=topKeysFile)
         print('Highest correlation at key = {}'.format(' '.join(correctKey)))
         return C
 
@@ -196,6 +203,35 @@ class CPA():
                 fileName, dtype='uint8', delimiter=' ',
                 converters={_: lambda s: int(s, 16) for _ in range(numCols)})
 
+    def getTopNKeys(self, C, n=5, fileName=None):
+        # print(C.shape)
+        absC = np.abs(C)
+        # print(f'a = {a}')
+        corrVal = np.flip(np.sort(np.max(absC, axis=1))[-n:]).reshape(n)#max corr
+        # print(corrVal)
+        # print(f'corr= {corrVal}')
+        keyIndex = np.flip(np.argsort(np.max(absC, axis=1))[-n:]).reshape(n) # keys
+        # print(f'ki= {keyIndex}')
+        #sort times
+        # print(keyIndex)
+        timesOfMax = np.argsort(absC, axis=1)[:,-1].transpose()
+        # print(timesOfMax.shape)
+        # print(f'ti = {timesOfMax}')
+        maxKeyTimes = timesOfMax[keyIndex].reshape(n)
+        # print('maxKeyTimes')
+        # print(maxKeyTimes)
+        l = []
+        for i in range(n):
+            t = maxKeyTimes[i]
+            c = corrVal[i]
+            k = keyIndex[i]
+            l.append({'key' : int(k) , 'correlation_absolute' : c, 'time' : int(t)})
+        if fileName is not None:
+            f = open(fileName, 'w')
+            # print(l)
+            f.write(json.dumps(l, indent=4))
+            f.close()
+        return l
 
 def main():
     BASE_DIR = "/home/aabdulga/fobosworkspace/zybo_aes/capture/zybo_aes_basys3_1mhz_dut_625_cpu_clk"

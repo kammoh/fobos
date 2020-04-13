@@ -435,7 +435,7 @@ class PYNQCtrl(FOBOSCtrl):
     def setADCGain(self, gain):
         gain = int(gain)
         if gain > 60 or gain < 0:
-            raise ValueError("Error: ADC gain must be an integer between 0 and 78")
+            raise ValueError("Error: ADC gain must be an integer between 0 and 60")
         self.config += f'ADC_GAIN = {gain}\n'
         self.sendMsg(FOBOSCtrl.SET_ADC_GAIN, gain)
         status, _ = self.recvMsg()
