@@ -131,6 +131,7 @@ class server():
                 # print(f'msg received : opcode={opcode}, param = {param}')
                 # time.sleep(1)
                 if int(opcode) == FOBOSCtrl.DISCONNECT:
+                    self.fobosAcq.setGain(0) #clear ADC gain
                     self.sendResponse(0, pickle.dumps("Disconnect requested. Bye!"))
                     print('Done. Closing connection ...')
                     self.clt.close()
@@ -166,11 +167,11 @@ class server():
                 response = result
             elif opcode == FOBOSCtrl.PROCESS_GET_TRACE:
                 self.fobosAcq.arm(self.outputBuffer,int(self.samplesPerTrace/4))
-                print(param)
+                # print(param)
                 result = self.ctrl.processData(param)
                 self.fobosAcq.waitForTrace()
                 trace = self.outputBuffer.view('uint16').tolist()
-                response = (result, trace,)
+                response = (result, trace[:self.samplesPerTrace],)
                 #print(response)
 
             elif opcode == FOBOSCtrl.OUT_LEN:
