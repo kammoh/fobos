@@ -171,7 +171,7 @@ class server():
                 result = self.ctrl.processData(param)
                 self.fobosAcq.waitForTrace()
                 trace = self.outputBuffer.view('uint16').tolist()
-                response = (result, trace,)
+                response = (result, trace[:self.samplesPerTrace],)
                 #print(response)
 
             elif opcode == FOBOSCtrl.OUT_LEN:
