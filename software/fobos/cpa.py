@@ -17,6 +17,7 @@
 #############################################################################
 
 import os
+import json
 import numpy as np
 import scipy.stats.stats as statModule
 # import postprocess
@@ -60,6 +61,7 @@ class CPA():
             plt.savefig(fileName)
         if show == 'yes':
             plt.show()
+        plt.close()
 
     def findCorrectKey(self, C):
         C = np.abs(C)
@@ -151,6 +153,7 @@ class CPA():
             plt.savefig(fileName)
         if show == 'yes':
             plt.show()
+        plt.close()
 
     def doCPA(self, measuredPower, hypotheticalPower, numTraces,
               analysisDir, MTDStride):
@@ -171,6 +174,8 @@ class CPA():
                               hypotheticalPower[byteNum],
                               stride=MTDStride, fileName=mtdFile, show='no')
             correctKey.append(format(maxKeyIndex, '02x'))
+            topKeysFile = os.path.join(analysisDir, 'topKeys.json' + str(byteNum))
+            self.getTopNKeys(C, fileName=topKeysFile)
         print('Highest correlation at key = {}'.format(' '.join(correctKey)))
         return C
 
@@ -195,6 +200,38 @@ class CPA():
             return np.loadtxt(
                 fileName, dtype='uint8', delimiter=' ',
                 converters={_: lambda s: int(s, 16) for _ in range(numCols)})
+
+
+
+    def getTopNKeys(self, C, n=5, fileName=None):
+        print(C.shape)
+        # print(f'a = {a}')
+        corrVal = np.flip(np.sort(np.max(C, axis=1))[-n:]).reshape(n)#max corr
+        # print(corrVal)
+        # print(f'corr= {corrVal}')
+        keyIndex = np.flip(np.argsort(np.max(C, axis=1))[-n:]).reshape(n) # keys
+        # print(f'ki= {keyIndex}')
+        #sort times
+        # print(keyIndex)
+        timesOfMax = np.argsort(C, axis=1)[:,-1].transpose()
+        # print(timesOfMax.shape)
+        # print(f'ti = {timesOfMax}')
+        maxKeyTimes = timesOfMax[keyIndex].reshape(n)
+        # print('maxKeyTimes')
+        # print(maxKeyTimes)
+        l = []
+        for i in range(n):
+            t = maxKeyTimes[i]
+            c = corrVal[i]
+            k = keyIndex[i]
+            l.append({'key' : int(k) , 'correlation' : c, 'time' : int(t)})
+        if fileName is not None:
+            f = open(fileName, 'w')
+            # print(l)
+            f.write(json.dumps(l, indent=4))
+            f.close()
+        return l
+
 
 
 def main():
