@@ -50,33 +50,37 @@ def getHypotheticalPower(plaintextFile, ciphertextFile, numTraces):
         The number of encryption operations performed.
 
     """
+    print('---- Loading powermodel input data:')
     plaintext = loadTextMatrix(plaintextFile)
     # plaintext = loadTextMatrix('./plaintext1.txt', 3)
-    print("plaintext=")
-    printHexMatrix(plaintext[:, 0:5])
+    print("Plaintext :")
+    printMatrix(plaintext, format='hex')
     ciphertext = loadTextMatrix(ciphertextFile)
     # numTraces = ciphertext.shape[0]
     plaintext = plaintext[0:numTraces, :]
     ciphertext = ciphertext[0:numTraces, :]
     # plaintext = loadTextMatrix('./plaintext1.txt', 3)
-    print("ciphertext=")
-    printHexMatrix(ciphertext)
+    print("Ciphertext :")
+    printMatrix(ciphertext, format='hex')
+    print('---- Loading powermodel input data complete.')
+    print('---- Calculating hypothetical power for all subkeys:')
     hypotheticalPower = []
     for byteNum in range(16):
         sbox_pt_key = vectAESSboxOutFirstRound(plaintext[:, byteNum].reshape(numTraces, 1))
         # res =  firstRound(plaintext[:,0], 0)
-        print("sbox_pt_key=")
-        printHexMatrix(sbox_pt_key[:, 0:1])
+        # print("sbox_pt_key=")
+        # printHexMatrix(sbox_pt_key[:, 0:1])
         #####
         sbox_ct = vectAESSboxOut(ciphertext[:, byteNum].reshape(numTraces, 1))
         # res =  firstRound(plaintext[:,0], 0)
-        print("sbox_ct=")
-        printHexMatrix(sbox_ct[:, 0:1])
+        # print("sbox_ct=")
+        # printHexMatrix(sbox_ct[:, 0:1])
         #####
         oneBytePower = vectGetHD(sbox_ct, sbox_pt_key)
         hypotheticalPower.append(oneBytePower)
-        print("hypothetical power =")
-        printHexMatrix(oneBytePower[:, 0:1])
+        print(f"Hypothetical power matrix for subkey {byteNum}:")
+        printMatrix(oneBytePower, format='int')
+    print('---- Hypothetical power calculation done.')
 
     return hypotheticalPower
 
@@ -191,19 +195,16 @@ def vectAESSboxOutFirstRound(P):
     return result
 
 
-def printHexMatrix(A, printAll=False, dtype='int'):
-    import sys
-    lim = 10
-    if (printAll is True or A.shape[0] < 10):
-        lim = A.shape[0]
-    for i in range(lim):
-        for j in range(A.shape[1]):
-            if dtype == 'float':
-                sys.stdout.write(str(A[i, j]) + "\t")
-            else:
-                sys.stdout.write("0x" + format(int(A[i, j]), '02x') + "\t")
-        sys.stdout.write("\n")
-
+def printMatrix(A, format='int'):
+    if format == 'int':
+        s = np.array2string(A)
+    elif format == 'hex':
+        s = np.array2string(A, formatter={'int':lambda A: hex(A)[2:]})
+    else:
+        s = np.array2string(A, formatter={'int':lambda A: hex(A)})
+    print(f'Matrix shape is {A.shape}')
+    print(s)
+    print()
 
 def loadTextMatrix(fileName, numCols=16):
     """
