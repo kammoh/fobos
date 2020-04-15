@@ -143,7 +143,7 @@ class ProjectManager():
             print ("FATAL ERROR: Cannot create directory:%s" % (analysisDir))
             exit()
         else:
-             print ("Successfully created new capture directory at %s" %(analysisDir))
+             print ("Successfully created new analysis directory at %s" %(analysisDir))
         return self.analysisDir
 
     def getAnalysisDir(self):

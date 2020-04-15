@@ -45,20 +45,20 @@ class TraceSet():
        This function calcualates the number of sample per trace. This is needed to do any paddig/truncation to make all 
        traces the same size. We iterate through the first 10 traces and get the max number of traces
        """
-       print("DEBUG: Module: analysis, Function: detectSampleSize():")
-       print("----Detecting samples per trace")
+    #    print("DEBUG: Module: analysis, Function: detectSampleSize():")
+    #    print("----Detecting samples per trace")
        traceFile = open(file_name, 'r+b')
        maxNumOfSamples = 0
        for traceCount in range (0,10):
            try:
                trace = np.load(traceFile)
            except:
-               print("----You have less than 10 samples. It looks that the max number of samples is : " + str(maxNumOfSamples))
+            #    print("----You have less than 10 samples. Max number of samples is : " + str(maxNumOfSamples))
                return maxNumOfSamples
            numOfSamples = len(trace)
            if maxNumOfSamples < numOfSamples:
                maxNumOfSamples = numOfSamples
-       print("----It looks that the max number of samples in the first 10 traces is: " + str(maxNumOfSamples))
+       print("Max number of samples in the first 10 traces is: " + str(maxNumOfSamples))
        traceFile.close()
        return maxNumOfSamples
     
@@ -70,9 +70,9 @@ class TraceSet():
        #Get sample size to adjust all traces to the same number of samples. 
        #A better solution is to get the data cleaned up upon acquistion.
        ##create the array
-       samples_to_read = crop_end - crop_start
        if crop_end == 0:
          crop_end = samples_per_trace ##0 will mean all samples until the end
+       samples_to_read = crop_end - crop_start
        raw_traces = np.empty((self.traceNum, samples_to_read))
        # need to reset file handle since we used it 
        # measurementFile.seek(0)
@@ -81,10 +81,10 @@ class TraceSet():
            tempArrayMeasurement = np.load(measurementFile)
            tempArrayMeasurement = self._adjustSampleSize(samples_per_trace, tempArrayMeasurement)
            raw_traces[traceCount,:] = tempArrayMeasurement[crop_start: crop_end]
-        #    print(traceCount)
+       #    print(traceCount)
        print("Loading done.")
        self.traces = raw_traces
-       print(self.traces)
+       #    print(self.traces)
        measurementFile.close()
 
    def getTraceCount(self):
