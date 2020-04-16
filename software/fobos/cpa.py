@@ -45,11 +45,12 @@ class CPA():
                 corrMatrix[i, j] = c
         return corrMatrix
 
-    def plotCorr(self, C, correctIndex, fileName=None, show='no'):
+    def plotCorr(self, C, correctIndex, fileName=None, show='no', plotSize=(10,8),
+                 plotFontSize=18):
         print("    plotting correlation graph.")
         import matplotlib.pyplot as plt
-        plt.figure(figsize=(10,8))
-        plt.rcParams.update({'font.size':18})
+        plt.figure(figsize=plotSize)
+        plt.rcParams.update({'font.size':plotFontSize})
         plt.clf()
         plt.margins(0)
         for i in range(C.shape[0]):
@@ -108,7 +109,7 @@ class CPA():
 
     def plotMTDGraph2(self, correctTime, correctKeyIndex, measuredPower,
                       hypotheticalPower, numTraces=None, stride=1,
-                      fileName=None, show='no'):
+                      fileName=None, show='no', plotSize=(10,8), plotFontSize=18):
         print('    Plotting MTD graph.')
         if numTraces is None:
             numTraces = measuredPower.shape[0]
@@ -127,8 +128,8 @@ class CPA():
         # print(corrData.shape)
         # print(corrData)
         import matplotlib.pyplot as plt
-        plt.figure(figsize=(10,8))
-        plt.rcParams.update({'font.size':18})
+        plt.figure(figsize=plotSize)
+        plt.rcParams.update({'font.size':plotFontSize})
         plt.clf()
         plt.margins(0)
         # plot this first
@@ -158,8 +159,10 @@ class CPA():
         plt.close()
 
     def doCPA(self, measuredPower, hypotheticalPower, numTraces,
-              analysisDir, MTDStride, numKeys=16):
-        print(measuredPower.shape)
+              analysisDir, MTDStride, numKeys=16, plot=True, plotSize=(10,8),
+              plotFontSize=18):
+        # print(measuredPower.shape)
+        print("Running CPA attack. Please wait ...")
         correctKey = []
         for byteNum in range(numKeys):
             C =  self.correlation_pearson(measuredPower[0:numTraces,:], hypotheticalPower[byteNum][0:numTraces,:])
@@ -171,10 +174,13 @@ class CPA():
             mtdFile = os.path.join(analysisDir, 'MTD' + f'{byteNum:02d}')
           
             print("subkey number = {}, subkey value = {}, correlation = {}, at sample = {}".format(byteNum, hex(maxKeyIndex), maxCorr, maxCorrTime))
-            self.plotCorr(C, maxKeyIndex, fileName=corrFile)
-            self.plotMTDGraph2(maxCorrTime, maxKeyIndex, measuredPower,
-                              hypotheticalPower[byteNum],
-                              stride=MTDStride, fileName=mtdFile, show='no')
+            if plot:
+                self.plotCorr(C, maxKeyIndex, fileName=corrFile, plotSize=plotSize,
+                              plotFontSize=plotFontSize)
+                self.plotMTDGraph2(maxCorrTime, maxKeyIndex, measuredPower,
+                                hypotheticalPower[byteNum],
+                                stride=MTDStride, fileName=mtdFile, show='no',
+                                plotSize=plotSize, plotFontSize=plotFontSize)
             correctKey.append(format(maxKeyIndex, '02x'))
             topKeysFile = os.path.join(analysisDir, 'topKeys-' + f'{byteNum:02d}' + '.json')
             self.getTopNKeys(C, fileName=topKeysFile)
