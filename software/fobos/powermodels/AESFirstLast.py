@@ -52,14 +52,11 @@ def getHypotheticalPower(plaintextFile, ciphertextFile, numTraces):
     """
     print('---- Loading powermodel input data:')
     plaintext = loadTextMatrix(plaintextFile)
-    # plaintext = loadTextMatrix('./plaintext1.txt', 3)
     print("Plaintext :")
     printMatrix(plaintext, format='hex')
     ciphertext = loadTextMatrix(ciphertextFile)
-    # numTraces = ciphertext.shape[0]
     plaintext = plaintext[0:numTraces, :]
     ciphertext = ciphertext[0:numTraces, :]
-    # plaintext = loadTextMatrix('./plaintext1.txt', 3)
     print("Ciphertext :")
     printMatrix(ciphertext, format='hex')
     print('---- Loading powermodel input data complete.')
@@ -78,8 +75,8 @@ def getHypotheticalPower(plaintextFile, ciphertextFile, numTraces):
         #####
         oneBytePower = vectGetHD(sbox_ct, sbox_pt_key)
         hypotheticalPower.append(oneBytePower)
-        print(f"Hypothetical power matrix for subkey {byteNum}:")
-        printMatrix(oneBytePower, format='int')
+        # print(f"Hypothetical power matrix for subkey {byteNum}:")
+        # printMatrix(oneBytePower, format='int')
     print('---- Hypothetical power calculation done.')
 
     return hypotheticalPower

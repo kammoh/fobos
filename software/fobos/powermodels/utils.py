@@ -27,4 +27,23 @@ def saveHypoPower(hypotheticalPower, fileName):
         np.save(f, h)
     f.close()
     print('saving done.')
+
+def showHypoPower(hypotheticalPower, plainFile=None,cipherFile=None):
+    print('Power model :')
+    byteNum = 0
+    for h in hypotheticalPower:
+        print(f"Hypothetical power matrix for subkey {byteNum}:")
+        printMatrix(h, format='int')
+        byteNum += 1
+
+def printMatrix(A, format='int'):
+    if format == 'int':
+        s = np.array2string(A)
+    elif format == 'hex':
+        s = np.array2string(A, formatter={'int':lambda A: hex(A)[2:]})
+    else:
+        s = np.array2string(A, formatter={'int':lambda A: hex(A)})
+    print(f'Matrix shape is {A.shape}')
+    print(s)
+    print()
         
