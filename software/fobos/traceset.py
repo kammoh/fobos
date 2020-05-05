@@ -58,7 +58,7 @@ class TraceSet():
            numOfSamples = len(trace)
            if maxNumOfSamples < numOfSamples:
                maxNumOfSamples = numOfSamples
-       print("Max number of samples in the first 10 traces is: " + str(maxNumOfSamples))
+    #    print("Max number of samples in the first 10 traces is: " + str(maxNumOfSamples))
        traceFile.close()
        return maxNumOfSamples
     

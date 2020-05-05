@@ -73,7 +73,7 @@ class Ttest():
         return t
 
     def plotTValues(self, t, startXlim, endXlim, startYlim, endYlim, analysisDir,
-                    plotSize=(10,8), plotFontSize=18):
+                    traceNum=None, plotSize=(10,8), plotFontSize=18):
         #%matplotlib inline
         plt.figure(figsize=plotSize)
         plt.rcParams.update({'font.size':plotFontSize})
@@ -89,11 +89,18 @@ class Ttest():
         plt.xlim(int(startXlim), int(endXlim))
         plt.xlabel("Sample No.")
         plt.ylabel("t-value")
+        if traceNum is not None:
+            plt.title(f't-values - {traceNum} traces')
+        else:
+            plt.title(f't-values')
         plt.plot(t, color='r')
         
-        plt.plot(t)
+        # plt.plot(t)
         #plt.show()
-        plt.savefig(os.path.join(analysisDir, 't-test-result.png'))
+        if traceNum is not None:
+            plt.savefig(os.path.join(analysisDir, f't-test-result-{traceNum}-traces.png'))
+        else:
+            plt.savefig(os.path.join(analysisDir, f't-test-result.png'))
 
     def calculateStep(self, numTraces, samplesPerTrace):
         step = int(samplesPerTrace / 50)
@@ -162,6 +169,9 @@ class Ttest():
         traces1File = os.path.join(analysisDir, 'trace_set1.npy')
         np.save(traces0File, traces0)
         np.save(traces1File, traces1)
+        print(f'Saved split trace files at :')
+        print(f'    {traces0File}')
+        print(f'    {traces1File}')
         print("Done")
 
 
