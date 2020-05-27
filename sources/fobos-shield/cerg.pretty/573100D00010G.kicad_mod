@@ -1,4 +1,4 @@
-(module 573100D00010G (layer F.Cu) (tedit 5DFCF6E7)
+(module 573100D00010G (layer F.Cu) (tedit 5EA0CDE2)
   (descr 573100D00010G-1)
   (tags Hardware)
   (attr smd)
@@ -25,4 +25,14 @@
   (pad 1 smd rect (at -6.05 0) (size 1.4 9) (layers F.Cu F.Paste F.Mask))
   (pad 2 smd rect (at 0 0) (size 8.9 9) (layers F.Cu F.Paste F.Mask))
   (pad 3 smd rect (at 6.05 0) (size 1.4 9) (layers F.Cu F.Paste F.Mask))
+  (model ${KISYS3DMOD}/Heatsink.3dshapes/Heatsink_AAVID_573300D00010G_TO-263.step
+    (at (xyz 0 0 0))
+    (scale (xyz 1 1 1))
+    (rotate (xyz 0 0 0))
+  )
+  (model ${KISYS3DMOD}/Heatsink.3dshapes/Heatsink_AAVID_573300D00010G_TO-263.wrl
+    (at (xyz 0 0 0))
+    (scale (xyz 1 1 1))
+    (rotate (xyz 0 0 0))
+  )
 )
