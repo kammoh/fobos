@@ -37,10 +37,11 @@ class server():
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind((ip, port))
         self.socket.listen(5)
+        self.interface = FOBOSCtrl.INTERFACE_4BIT
 
     def init(self):
         # instantiate hardware driver
-        overlay = Overlay("ctrl_top_wrapper_rising.bit")
+        overlay = Overlay("ctrl_top_wrapper.bit")
         self.ctrl = PYNQCtrl(overlay)
         self.fobosAcq = openadc.OpenADCScope(overlay)
         # self.fobosAcq.setAdcClockFreq(SAMPLING_FREQ)
@@ -52,7 +53,7 @@ class server():
         self.ctrl.setDUTClk(DUT_CLK)
         self.ctrl.setOutLen(OUT_LEN)
         self.ctrl.setTriggerMode(FOBOSCtrl.TRG_FULL)
-        self.ctrl.setDUTInterface(FOBOSCtrl.INTERFACE_4BIT)
+        self.ctrl.setDUTInterface(self.interface)
         self.ctrl.forceReset()
         self.ctrl.releaseReset()
     
@@ -163,16 +164,19 @@ class server():
         try:
         # if True:
             if opcode == FOBOSCtrl.PROCESS:
+                print("process")
                 result = self.ctrl.processData(param)
                 response = result
             elif opcode == FOBOSCtrl.PROCESS_GET_TRACE:
+                # print("get trace")
                 self.fobosAcq.arm(self.outputBuffer,int(self.samplesPerTrace/4))
                 # print(param)
                 result = self.ctrl.processData(param)
+                # print(result)
                 self.fobosAcq.waitForTrace()
                 trace = self.outputBuffer.view('uint16').tolist()
                 response = (result, trace[:self.samplesPerTrace],)
-                #print(response)
+                # print(response)
 
             elif opcode == FOBOSCtrl.OUT_LEN:
                 print("FOBOSCtrl.OUT_LEN")
@@ -226,7 +230,7 @@ class server():
                 # DEFAULTS
                 self.ctrl.setOutLen(OUT_LEN)
                 self.ctrl.setTriggerMode(FOBOSCtrl.TRG_FULL)
-                self.ctrl.setDUTInterface(FOBOSCtrl.INTERFACE_4BIT)
+                self.ctrl.setDUTInterface(self.interface)
                 self.ctrl.forceReset()
                 self.ctrl.releaseReset()
 
@@ -257,7 +261,9 @@ class server():
             
             elif opcode == FOBOSCtrl.SET_DUT_INTERFACE:
                 self.ctrl.setDUTInterface(param)
+                self.interface = param
                 response = f"Set dut interface = {param}"
+                print(f"Set dut interface = {param}")
 
             elif opcode == FOBOSCtrl.SET_SAMPLING_FREQ:
                 response = f"Set sampling frequency = {param}"

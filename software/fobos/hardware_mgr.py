@@ -25,6 +25,7 @@ class HardwareManager():
             time.sleep(1)
 
     def isLocked(self):
+        return False # WORKAROUND for single user mode
         return os.path.isfile(self.LOCK_FILE_PATH)
     
     def unlock(self):

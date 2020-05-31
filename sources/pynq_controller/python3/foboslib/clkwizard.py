@@ -110,4 +110,4 @@ class ClockWizard(DefaultIP):
         print("Set clk frequency to {}".format(finalClk))
         return finalClk
     
-    bindto = ['xilinx.com:ip:clk_wiz:5.4']
+    bindto = ['xilinx.com:ip:clk_wiz:6.0']
