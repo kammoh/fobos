@@ -20,20 +20,22 @@ FOBOS DUT
 ---------
 * `dut`
   VHDL sources for FOBOS wrapper and pin assignments to prepare a DUT for instantiating a target algorithm.
-  * `src_rtl`
+  * `fpga_wrapper`
     Source code of the FOBOS wrapper common to all FPGA targets.
-  * `soc`
+  * `soc_wrapper`
     Source code for system on chip boards such as Zybo.
-  * `CW305`
-    NewAE CW305 Artix FPGA Target Board Xilinx Artix 7 FPGA
-  * `Nexys4DDR`
-    Digilent Inc Nexys 4 DDR board with Xilinx Artix 7 FPGA. Requires Xilinx ISE or Xilinx Vivado.
-  * `Nexys4`
-    Digilent Inc Nexys 4 board with Xilinx Artix 7 FPGA. Requires Xilinx ISE or Xilinx Vivado.
-  * `Nexys3`
-    Digilent Inc Nexys 3 board with Xilinx Spartan 6 FPGA. Requires Xilinx ISE.
   * `examples`
     Contains implementations of example algorithms required for the tutorials.
+  * `fpga_boards`
+     Config files for supported FPGA DUT boards
+     * `CW305`
+       NewAE CW305 Artix FPGA Target Board Xilinx Artix 7 FPGA
+     * `Nexys4DDR`
+       Digilent Inc Nexys 4 DDR board with Xilinx Artix 7 FPGA. Requires Xilinx ISE or Xilinx Vivado.
+     * `Nexys4`
+       Digilent Inc Nexys 4 board with Xilinx Artix 7 FPGA. Requires Xilinx ISE or Xilinx Vivado.
+     * `Nexys3`
+       Digilent Inc Nexys 3 board with Xilinx Spartan 6 FPGA. Requires Xilinx ISE.
 
 FOBOS Hardware
 --------------
