@@ -24,7 +24,7 @@ FOBOS DUT
     Source code of the FOBOS wrapper common to all FPGA targets.
   * `soc_wrapper`
     Source code for system on chip boards such as Zybo.
-  * `examples`
+  * `example_cores`
     Contains implementations of example algorithms required for the tutorials.
   * `fpga_boards`
      Config files for supported FPGA DUT boards
