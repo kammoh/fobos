@@ -389,7 +389,7 @@ with fifo_sel_reg select
 with fifo_sel_reg select
     fifo_ld_cnt_full <=   pdi_ld_cnt_full when "00",
                           sdi_ld_cnt_full when "01",
-                          sdi_ld_cnt_full when "10",
+                          rdi_ld_cnt_full when "10",
                           pdi_ld_cnt_full when others;
 								  
 -- pdi_fifo
