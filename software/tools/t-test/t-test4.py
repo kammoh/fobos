@@ -19,7 +19,7 @@ def doTtest(traceFile0, traceFile1, numTraces, step):
 
     samplesPerTrace = traces0.shape[1]
     if numTraces == 'All':
-        numTraces = min(traces0.shape[0], traces1.shape[1])
+        numTraces = min(traces0.shape[0], traces1.shape[0])
     else:
         numTraces = int(numTraces)
     if step == 'auto':
