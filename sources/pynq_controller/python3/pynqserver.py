@@ -129,6 +129,7 @@ class server():
             self.init()
             while True:
                 opcode, param = self.recvMsg()
+                self.touchStatusFile()
                 # print(f'msg received : opcode={opcode}, param = {param}')
                 # time.sleep(1)
                 if int(opcode) == FOBOSCtrl.DISCONNECT:
