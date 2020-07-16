@@ -27,7 +27,7 @@ FOBOS DUT
   * `example_cores`
     Contains implementations of example algorithms required for the tutorials.
   * `fpga_boards`
-     Config files for supported FPGA DUT boards
+     Config files for supported FPGA DUT boards (should these be in fpga_wrapper?)
      * `CW305`
        NewAE CW305 Artix FPGA Target Board Xilinx Artix 7 FPGA
      * `Nexys4DDR`
@@ -43,8 +43,16 @@ FOBOS Hardware
   Printed Circuit Board design files for FOBOS boards. Requires KiCad.
   * `fobos-shield`
     FOBOS Shield is a data aqcuisition boad that can be attached to the PYNQ-Z1 controller.
-  * 'fobos-mtc'
+  * `fobos-mtc`
     FOBOS Multi Target Connector allows simple connection of several DUT boards to the FOBOS Shield.
+  * `dut-spartan7-s15`
+    FOBOS DUT with a Xilinx Spartan-7 xc7s15cpga196-2 device and power measurement circuitry.
+  * `dut-artix7-a12`
+    FOBOS DUT with a Xilinx Artix-7 xc7a12tcdg325-3 device and power measurement circuitry.
+  * `dut-cyclone10LP-016`
+    FOBOS DUT with an Interl Cyclone 10 LP 10CL016-YU256C6 device and power measurement circuitry.
+  * `dut-ecp5-25`
+    FOBOS DUT with a Lattice ECP5 LFE5U-25F-6BG381C device and power measurement circuitry.
 
 FOBOS Software
 --------------
