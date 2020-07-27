@@ -1889,7 +1889,7 @@ AR Path="/5B5AB131/5B7ED6EB" Ref="J?"  Part="1"
 AR Path="/5B6DA40D/5B7ED6EB" Ref="J17"  Part="1" 
 F 0 "J17" H 1105 4917 50  0000 C CNN
 F 1 "Barrel_Jack_Switch" H 1105 4826 50  0000 C CNN
-F 2 "Connector_BarrelJack:BarrelJack_CUI_PJ-102AH_Horizontal" H 1100 4560 50  0001 C CNN
+F 2 "cerg:BarrelJack_CUI_PJ-102AH_Horizontal" H 1100 4560 50  0001 C CNN
 F 3 "~" H 1100 4560 50  0001 C CNN
 	1    1050 4600
 	1    0    0    -1  
