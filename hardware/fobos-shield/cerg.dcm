@@ -36,7 +36,7 @@ $ENDCMP
 $CMP SP3003-04ATG
 D ESD Protection Diodes with Low Clamping Voltage, SOT-23-6
 K ESD protection diodes
-F http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF
+F https://m.littelfuse.com/~/media/electronics/datasheets/tvs_diode_arrays/littelfuse_tvs_diode_array_sp3003_datasheet.pdf.pdf
 $ENDCMP
 #
 $CMP TPS7A7100_VQFN16_0
