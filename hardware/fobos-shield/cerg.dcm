@@ -51,4 +51,30 @@ K LDO, Voltage Regulator
 F http://www.ti.com/lit/ds/symlink/tps7a7100.pdf
 $ENDCMP
 #
+$CMP VCCAUX
+D Power symbol creates a global label with name "VCCAUX"
+K power-flag
+$ENDCMP
+#
+$CMP VCCINT
+D Power symbol creates a global label with name "VCCINT"
+K power-flag
+$ENDCMP
+#
+$CMP VCCIO
+D Power symbol creates a global label with name "VCCIO"
+K power-flag
+$ENDCMP
+#
+$CMP XC7A12T-CSG325
+D Xilinx Artix-7 FPGA, XC7A12T, CSG325
+K Xilinx FPGA Artix-7
+F https://www.xilinx.com/support/documentation/data_sheets/ds180_7Series_Overview.pdf
+$ENDCMP
+#
+$CMP XC7A15T-CSG325
+D Artix 7 T 15 XC7A15T-CSG325
+K FPGA
+$ENDCMP
+#
 #End Doc Library
