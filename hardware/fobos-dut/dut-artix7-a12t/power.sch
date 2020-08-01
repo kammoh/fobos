@@ -49,7 +49,7 @@ $EndComp
 Wire Wire Line
 	6200 2500 6200 2650
 Text GLabel 9000 2900 2    50   Input ~ 0
-CW_3V3
+FS_3V3
 Wire Wire Line
 	1800 2150 2000 2150
 $Comp
@@ -250,7 +250,7 @@ $EndComp
 Wire Wire Line
 	2250 1900 2150 1900
 Text GLabel 1800 2150 0    50   Input ~ 0
-CW_5V
+FS_5V
 Connection ~ 5800 1900
 $Comp
 L Jumper:Jumper_2_Open JP?
@@ -2645,4 +2645,144 @@ E4 9D AF CF 78 A8 9D 35 3D B7 50 61 31 2C 8B AF E8 ED F8 6F 77 9E 5A C0 CF D7 CB
 2B 4E 7F 8D C4 21 BA 47 00 00 00 00 49 45 4E 44 AE 42 60 82 
 EndData
 $EndBitmap
+$Comp
+L cerg:INA225 U?
+U 1 1 5F2A6698
+P 5350 2850
+F 0 "U?" H 5350 3431 50  0000 C CNN
+F 1 "INA225" H 5350 3340 50  0000 C CNN
+F 2 "Package_SO:MSOP-8_3x3mm_P0.65mm" H 5400 2850 50  0001 C CNN
+F 3 "" H 5700 2650 50  0001 C CNN
+	1    5350 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5F2BA835
+P 2600 3700
+AR Path="/5F227C5D/5F2BA835" Ref="C?"  Part="1" 
+AR Path="/5F449901/5F2BA835" Ref="C?"  Part="1" 
+F 0 "C?" H 2715 3746 50  0000 L CNN
+F 1 "100nF" H 2715 3655 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2638 3550 50  0001 C CNN
+F 3 "~" H 2600 3700 50  0001 C CNN
+	1    2600 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5F2BAC27
+P 3900 3700
+AR Path="/5F227C5D/5F2BAC27" Ref="C?"  Part="1" 
+AR Path="/5F449901/5F2BAC27" Ref="C?"  Part="1" 
+F 0 "C?" H 4015 3746 50  0000 L CNN
+F 1 "10nF" H 4015 3655 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 3938 3550 50  0001 C CNN
+F 3 "~" H 3900 3700 50  0001 C CNN
+	1    3900 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 5F2BD9D2
+P 3400 3900
+F 0 "R?" V 3193 3900 50  0000 C CNN
+F 1 "100R" V 3284 3900 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3330 3900 50  0001 C CNN
+F 3 "~" H 3400 3900 50  0001 C CNN
+	1    3400 3900
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 5F2BE6B1
+P 2600 4150
+F 0 "R?" V 2393 4150 50  0000 C CNN
+F 1 "1M" V 2484 4150 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2530 4150 50  0001 C CNN
+F 3 "~" H 2600 4150 50  0001 C CNN
+	1    2600 4150
+	-1   0    0    1   
+$EndComp
+$Comp
+L Transistor_FET:FDS9435A Q?
+U 1 1 5F2C0777
+P 3100 3600
+F 0 "Q?" V 3442 3600 50  0000 C CNN
+F 1 "FDS9435A" V 3351 3600 50  0000 C CNN
+F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 3300 3525 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/FDS9435A-D.PDF" V 3100 3600 50  0001 L CNN
+	1    3100 3600
+	0    1    -1   0   
+$EndComp
+Wire Wire Line
+	2600 3500 2900 3500
+Wire Wire Line
+	2600 3550 2600 3500
+Wire Wire Line
+	3300 3500 3900 3500
+Wire Wire Line
+	3900 3500 3900 3550
+Wire Wire Line
+	2600 3850 2600 3900
+Wire Wire Line
+	2600 3900 3100 3900
+Wire Wire Line
+	3100 3800 3100 3900
+Connection ~ 3100 3900
+Wire Wire Line
+	3100 3900 3250 3900
+Wire Wire Line
+	3550 3900 3900 3900
+Wire Wire Line
+	3900 3900 3900 3850
+Wire Wire Line
+	2600 3900 2600 4000
+Connection ~ 2600 3900
+$Comp
+L power:GND #PWR?
+U 1 1 5F2DE57D
+P 2600 4400
+F 0 "#PWR?" H 2600 4150 50  0001 C CNN
+F 1 "GND" H 2605 4227 50  0000 C CNN
+F 2 "" H 2600 4400 50  0001 C CNN
+F 3 "" H 2600 4400 50  0001 C CNN
+	1    2600 4400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2600 4300 2600 4400
+$Comp
+L Device:C C?
+U 1 1 5F2E0852
+P 4350 3700
+AR Path="/5F227C5D/5F2E0852" Ref="C?"  Part="1" 
+AR Path="/5F449901/5F2E0852" Ref="C?"  Part="1" 
+F 0 "C?" H 4465 3746 50  0000 L CNN
+F 1 "10uF" H 4465 3655 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 4388 3550 50  0001 C CNN
+F 3 "~" H 4350 3700 50  0001 C CNN
+	1    4350 3700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 3500 4350 3500
+Wire Wire Line
+	4350 3500 4350 3550
+Connection ~ 3900 3500
+$Comp
+L power:GND #PWR?
+U 1 1 5F2E2E50
+P 4350 4400
+F 0 "#PWR?" H 4350 4150 50  0001 C CNN
+F 1 "GND" H 4355 4227 50  0000 C CNN
+F 2 "" H 4350 4400 50  0001 C CNN
+F 3 "" H 4350 4400 50  0001 C CNN
+	1    4350 4400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4350 3850 4350 4400
+Text Notes 3150 3150 0    79   ~ 0
+Soft-Start
 $EndSCHEMATC

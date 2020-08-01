@@ -27,12 +27,12 @@ $EndComp
 $Comp
 L cerg:XC7A12T-CSG325 U1
 U 3 1 5F268106
-P 8800 2550
-F 0 "U1" H 8800 1175 50  0000 C CNN
-F 1 "XC7A12T-CSG325" H 8800 1084 50  0000 C CNN
-F 2 "Package_BGA:Xilinx_CSG325" H 8800 2550 50  0001 C CNN
-F 3 "https://www.xilinx.com/support/documentation/data_sheets/ds180_7Series_Overview.pdf" H 8800 2550 50  0001 C CNN
-	3    8800 2550
+P 8650 3000
+F 0 "U1" H 8650 1625 50  0000 C CNN
+F 1 "XC7A12T-CSG325" H 8650 1534 50  0000 C CNN
+F 2 "Package_BGA:Xilinx_CSG325" H 8650 3000 50  0001 C CNN
+F 3 "https://www.xilinx.com/support/documentation/data_sheets/ds180_7Series_Overview.pdf" H 8650 3000 50  0001 C CNN
+	3    8650 3000
 	1    0    0    -1  
 $EndComp
 $Comp
