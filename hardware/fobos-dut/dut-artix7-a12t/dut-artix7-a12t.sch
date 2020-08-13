@@ -2105,10 +2105,10 @@ E4 9D AF CF 78 A8 9D 35 3D B7 50 61 31 2C 8B AF E8 ED F8 6F 77 9E 5A C0 CF D7 CB
 EndData
 $EndBitmap
 $Comp
-L Mechanical:MountingHole H?
+L Mechanical:MountingHole H1
 U 1 1 5F20C988
 P 1250 7450
-F 0 "H?" H 1350 7496 50  0000 L CNN
+F 0 "H1" H 1350 7496 50  0000 L CNN
 F 1 "MountingHole" H 1350 7405 50  0000 L CNN
 F 2 "" H 1250 7450 50  0001 C CNN
 F 3 "~" H 1250 7450 50  0001 C CNN
@@ -2116,10 +2116,10 @@ F 3 "~" H 1250 7450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mechanical:MountingHole H?
+L Mechanical:MountingHole H2
 U 1 1 5F20CFDF
 P 1750 7450
-F 0 "H?" H 1850 7496 50  0000 L CNN
+F 0 "H2" H 1850 7496 50  0000 L CNN
 F 1 "MountingHole" H 1850 7405 50  0000 L CNN
 F 2 "" H 1750 7450 50  0001 C CNN
 F 3 "~" H 1750 7450 50  0001 C CNN
@@ -2127,10 +2127,10 @@ F 3 "~" H 1750 7450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mechanical:MountingHole H?
+L Mechanical:MountingHole H3
 U 1 1 5F20D16B
 P 2250 7450
-F 0 "H?" H 2350 7496 50  0000 L CNN
+F 0 "H3" H 2350 7496 50  0000 L CNN
 F 1 "MountingHole" H 2350 7405 50  0000 L CNN
 F 2 "" H 2250 7450 50  0001 C CNN
 F 3 "~" H 2250 7450 50  0001 C CNN
@@ -2138,10 +2138,10 @@ F 3 "~" H 2250 7450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mechanical:MountingHole H?
+L Mechanical:MountingHole H4
 U 1 1 5F20D2F6
 P 2750 7450
-F 0 "H?" H 2850 7496 50  0000 L CNN
+F 0 "H4" H 2850 7496 50  0000 L CNN
 F 1 "MountingHole" H 2850 7405 50  0000 L CNN
 F 2 "" H 2750 7450 50  0001 C CNN
 F 3 "~" H 2750 7450 50  0001 C CNN
@@ -2149,10 +2149,10 @@ F 3 "~" H 2750 7450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L cerg:CERG-logo #LOGO?
+L cerg:CERG-logo #LOGO1
 U 1 1 5F20D55F
 P 5550 7350
-F 0 "#LOGO?" H 5550 7625 50  0001 C CNN
+F 0 "#LOGO1" H 5550 7625 50  0001 C CNN
 F 1 "CERG-logo" H 5550 7125 50  0001 C CNN
 F 2 "cerg:cerg" H 5550 7507 50  0000 C CNN
 F 3 "" H 5550 7625 50  0001 C CNN
