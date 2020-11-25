@@ -1055,8 +1055,8 @@ U 1 1 5B84A46F
 P 2350 3250
 F 0 "J16" H 2430 3292 50  0000 L CNN
 F 1 "Conn_01x01" H 2430 3201 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 2350 3250 50  0001 C CNN
-F 3 "~" H 2350 3250 50  0001 C CNN
+F 2 "TestPoint:TestPoint_Loop_D2.60mm_Drill1.6mm_Beaded" H 2350 3250 50  0001 C CNN
+F 3 "https://www.mouser.com/datasheet/2/215/005-5009-743680.pdf" H 2350 3250 50  0001 C CNN
 	1    2350 3250
 	1    0    0    -1  
 $EndComp
@@ -1073,8 +1073,8 @@ U 1 1 5B899B87
 P 2450 3900
 F 0 "J22" H 2530 3942 50  0000 L CNN
 F 1 "GND" H 2530 3851 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 2450 3900 50  0001 C CNN
-F 3 "~" H 2450 3900 50  0001 C CNN
+F 2 "TestPoint:TestPoint_Loop_D2.60mm_Drill1.6mm_Beaded" H 2450 3900 50  0001 C CNN
+F 3 "https://www.mouser.com/datasheet/2/215/005-5009-743680.pdf" H 2450 3900 50  0001 C CNN
 	1    2450 3900
 	1    0    0    -1  
 $EndComp

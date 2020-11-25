@@ -1494,7 +1494,7 @@ Wire Wire Line
 Connection ~ 7850 2000
 Connection ~ 5550 1700
 Wire Wire Line
-	4550 1950 5200 1950
+	4550 1950 5050 1950
 Wire Wire Line
 	7450 2250 7250 2250
 Wire Wire Line
@@ -2335,6 +2335,39 @@ Wire Wire Line
 Connection ~ 5700 3750
 Wire Wire Line
 	5700 3750 6800 3750
+$Comp
+L Connector_Generic:Conn_01x02 J23
+U 1 1 5FC05175
+P 5400 2450
+F 0 "J23" H 5480 2442 50  0000 L CNN
+F 1 "Conn_01x02" H 5480 2351 50  0000 L CNN
+F 2 "Connector_Molex:Molex_KK-254_AE-6410-02A_1x02_P2.54mm_Vertical" H 5400 2450 50  0001 C CNN
+F 3 "~" H 5400 2450 50  0001 C CNN
+	1    5400 2450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0169
+U 1 1 5FC073C6
+P 5100 2650
+F 0 "#PWR0169" H 5100 2400 50  0001 C CNN
+F 1 "GND" H 5105 2477 50  0000 C CNN
+F 2 "" H 5100 2650 50  0001 C CNN
+F 3 "" H 5100 2650 50  0001 C CNN
+	1    5100 2650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5200 2450 5050 2450
+Wire Wire Line
+	5050 2450 5050 1950
+Connection ~ 5050 1950
+Wire Wire Line
+	5050 1950 5200 1950
+Wire Wire Line
+	5200 2550 5100 2550
+Wire Wire Line
+	5100 2550 5100 2650
 Wire Bus Line
 	2700 2850 3500 2850
 $EndSCHEMATC
