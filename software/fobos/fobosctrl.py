@@ -21,6 +21,7 @@
 # Aug 7 2018
 # This class provide constants used by fobos contoller protocol
 
+import os
 
 class FOBOSCtrl:
 
@@ -46,6 +47,17 @@ class FOBOSCtrl:
     POWER_GLITCH_PATTERN1 = 14
     POWER_GLITCH_PATTERN2 = 15 #reserved
     POWER_GLITCH_PATTERN3 = 16 #reserved
+    SET_DUT_INTERFACE = 17
+    DISCONNECT = 18
+      ####ADC
+    SET_SAMPLING_FREQ = 19
+    SET_ADC_GAIN = 20
+    SET_SAMPLES_PER_TRACE = 21
+
+    PROCESS = 100
+    PROCESS_GET_TRACE = 101
+
+ 
 
     # Trigger parameters
     TRG_NORM = 0
@@ -55,4 +67,8 @@ class FOBOSCtrl:
     # test mode parameters
     ENABLED = 1
     DISABLED = 0
-    
+
+    ###interface types - 4bit interface is default
+    INTERFACE_4BIT      = 0x00
+    INTERFACE_8BIT      = 0x01
+    ##########################

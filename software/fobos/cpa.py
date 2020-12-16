@@ -17,10 +17,11 @@
 #############################################################################
 
 import os
+import json
 import numpy as np
 import scipy.stats.stats as statModule
-import postprocess
-import traceset
+# import postprocess
+# import traceset
 
 
 class CPA():
@@ -44,8 +45,12 @@ class CPA():
                 corrMatrix[i, j] = c
         return corrMatrix
 
-    def plotCorr(self, C, correctIndex, fileName=None, show='no'):
+    def plotCorr(self, C, correctIndex, fileName=None, show='no', plotSize=(10,8),
+                 plotFontSize=18):
+        print("    plotting correlation graph.")
         import matplotlib.pyplot as plt
+        plt.figure(figsize=plotSize)
+        plt.rcParams.update({'font.size':plotFontSize})
         plt.clf()
         plt.margins(0)
         for i in range(C.shape[0]):
@@ -58,6 +63,7 @@ class CPA():
             plt.savefig(fileName)
         if show == 'yes':
             plt.show()
+        plt.close()
 
     def findCorrectKey(self, C):
         C = np.abs(C)
@@ -103,16 +109,17 @@ class CPA():
 
     def plotMTDGraph2(self, correctTime, correctKeyIndex, measuredPower,
                       hypotheticalPower, numTraces=None, stride=1,
-                      fileName=None, show='no'):
+                      fileName=None, show='no', plotSize=(10,8), plotFontSize=18):
+        print('    Plotting MTD graph.')
         if numTraces is None:
             numTraces = measuredPower.shape[0]
         numKeys = hypotheticalPower.shape[1]
-        corrData = np.zeros((numKeys, numTraces / stride))
+        corrData = np.zeros((numKeys, int(numTraces / stride)))
         interestingPower = measuredPower[:, correctTime].reshape(measuredPower.shape[0], 1)
         index = 0
-        for i in range(0, numTraces, stride):
-            if i % 100 == 0:
-                print("MDT step={}".format(i))
+        for i in range(stride, numTraces, stride):
+            # if i % 100 == 0:
+            # print("    Plotting MDT. step={}".format(i))
             C = self.correlation_pearson(interestingPower[0:i, :], hypotheticalPower[0:i, :])
             # print(C.shape)
             corrData[:, index] = C.reshape(numKeys)
@@ -121,10 +128,12 @@ class CPA():
         # print(corrData.shape)
         # print(corrData)
         import matplotlib.pyplot as plt
+        plt.figure(figsize=plotSize)
+        plt.rcParams.update({'font.size':plotFontSize})
         plt.clf()
         plt.margins(0)
         # plot this first
-        plt.plot(corrData[correctKeyIndex, :], 'k', linewidth=0.5)
+        plt.plot(corrData[correctKeyIndex, :-1], 'r', linewidth=0.5) # remove last element(to fix a bug)
         # remove the correct key
         corrData[correctKeyIndex, :] = 0  # zero all elements in row so they are
         # min nor max
@@ -135,11 +144,11 @@ class CPA():
         lowVals = np.nanmin(corrData, axis=0)
         # print(highVals.shape)
         # print(highVals)
-        plt.plot(highVals, 'b', linewidth=0.5)
-        plt.plot(lowVals, 'b', linewidth=0.5)
+        plt.plot(highVals[:-1], 'b', linewidth=0.5)
+        plt.plot(lowVals[:-1], 'b', linewidth=0.5)
 
         if stride != 1:
-            plt.xlabel("Trace No. ({} traces)".format(stride))
+            plt.xlabel("Trace No. x {})".format(stride))
         else:
             plt.xlabel("Trace No.")
         plt.ylabel("Correlation (Pearson's r)")
@@ -147,26 +156,35 @@ class CPA():
             plt.savefig(fileName)
         if show == 'yes':
             plt.show()
+        plt.close()
 
     def doCPA(self, measuredPower, hypotheticalPower, numTraces,
-              analysisDir, MTDStride):
-        print(measuredPower.shape)
+              analysisDir, MTDStride, numKeys=16, plot=True, plotSize=(10,8),
+              plotFontSize=18):
+        # print(measuredPower.shape)
+        print("Running CPA attack. Please wait ...")
         correctKey = []
-        for byteNum in range(16):
+        for byteNum in range(numKeys):
             C =  self.correlation_pearson(measuredPower[0:numTraces,:], hypotheticalPower[byteNum][0:numTraces,:])
             # print("C=")
             # print(C.shape)
             # self.printHexMatrix(C, dtype='float')
             maxKeyIndex, maxCorr, maxCorrTime = self.findCorrectKey(C)
-            corrFile = os.path.join(analysisDir, 'correlation' + str(byteNum))
-            mtdFile = os.path.join(analysisDir, 'MTD' + str(byteNum))
-            print("keyIndex= {}, max corr = {}, time= {}".format(hex(maxKeyIndex), maxCorr, maxCorrTime))
-            self.plotCorr(C, maxKeyIndex, fileName=corrFile)
-            self.plotMTDGraph2(maxCorrTime, maxKeyIndex, measuredPower,
-                              hypotheticalPower[byteNum],
-                              stride=MTDStride, fileName=mtdFile, show='no')
+            corrFile = os.path.join(analysisDir, 'correlation' +f'{byteNum:02d}')
+            mtdFile = os.path.join(analysisDir, 'MTD' + f'{byteNum:02d}')
+          
+            print("subkey number = {}, subkey value = {}, correlation = {}, at sample = {}".format(byteNum, hex(maxKeyIndex), maxCorr, maxCorrTime))
+            if plot:
+                self.plotCorr(C, maxKeyIndex, fileName=corrFile, plotSize=plotSize,
+                              plotFontSize=plotFontSize)
+                self.plotMTDGraph2(maxCorrTime, maxKeyIndex, measuredPower,
+                                hypotheticalPower[byteNum],
+                                stride=MTDStride, fileName=mtdFile, show='no',
+                                plotSize=plotSize, plotFontSize=plotFontSize)
             correctKey.append(format(maxKeyIndex, '02x'))
-        print('Highest correlation at key = {}'.format(correctKey))
+            topKeysFile = os.path.join(analysisDir, 'topKeys-' + f'{byteNum:02d}' + '.json')
+            self.getTopNKeys(C, fileName=topKeysFile)
+        print('Highest correlation at key = {}'.format(' '.join(correctKey)))
         return C
 
     def printHexMatrix(self, A, printAll=False, dtype='int'):
@@ -191,6 +209,35 @@ class CPA():
                 fileName, dtype='uint8', delimiter=' ',
                 converters={_: lambda s: int(s, 16) for _ in range(numCols)})
 
+    def getTopNKeys(self, C, n=5, fileName=None):
+        # print(C.shape)
+        absC = np.abs(C)
+        # print(f'a = {a}')
+        corrVal = np.flip(np.sort(np.max(absC, axis=1))[-n:]).reshape(n)#max corr
+        # print(corrVal)
+        # print(f'corr= {corrVal}')
+        keyIndex = np.flip(np.argsort(np.max(absC, axis=1))[-n:]).reshape(n) # keys
+        # print(f'ki= {keyIndex}')
+        #sort times
+        # print(keyIndex)
+        timesOfMax = np.argsort(absC, axis=1)[:,-1].transpose()
+        # print(timesOfMax.shape)
+        # print(f'ti = {timesOfMax}')
+        maxKeyTimes = timesOfMax[keyIndex].reshape(n)
+        # print('maxKeyTimes')
+        # print(maxKeyTimes)
+        l = []
+        for i in range(n):
+            t = maxKeyTimes[i]
+            c = corrVal[i]
+            k = keyIndex[i]
+            l.append({'key' : int(k) , 'correlation_absolute' : c, 'time' : int(t)})
+        if fileName is not None:
+            f = open(fileName, 'w')
+            # print(l)
+            f.write(json.dumps(l, indent=4))
+            f.close()
+        return l
 
 def main():
     BASE_DIR = "/home/aabdulga/fobosworkspace/zybo_aes/capture/zybo_aes_basys3_1mhz_dut_625_cpu_clk"
@@ -212,8 +259,8 @@ def main():
     measuredPower = traceSet.traces
     compressedPower = postprocess.compressData(measuredPower, 'MEAN', 10)
     np.save(os.path.join(ANALYSIS_DIR, "compressedPower.npy"), compressedPower)
-    print "Compression Done!"
-    print compressedPower.shape
+    print("Compression Done!")
+    print(compressedPower.shape)
     hypotheticalPower = np.load(HYPO_FILE)
     cpa = CPA()
     C = cpa.doCPA(measuredPower=compressedPower,

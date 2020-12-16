@@ -1,0 +1,96 @@
+#############################################################################
+#                                                                           #
+#   Copyright 2019 CERG                                                     #
+#                                                                           #
+#   Licensed under the Apache License, Version 2.0 (the "License");         #
+#   you may not use this file except in compliance with the License.        #
+#   You may obtain a copy of the License at                                 #
+#                                                                           #
+#       http://www.apache.org/licenses/LICENSE-2.0                          #
+#                                                                           #
+#   Unless required by applicable law or agreed to in writing, software     #
+#   distributed under the License is distributed on an "AS IS" BASIS,       #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
+#   See the License for the specific language governing permissions and     #
+#   limitations under the License.                                          #
+#                                                                           #
+#############################################################################
+import os
+import shutil
+import fobos.pynqctrl
+from fobos.fobosctrl import FOBOSCtrl
+import fobos.projmgr
+import fobos.nexys3dut
+# import fobos.picoscope
+import numpy
+# Constants###########################################################
+WORKSPACE = "/home/aabdulga/fobosworkspace"
+PROJECT_NAME = "aes"
+DIN_FILE_NAME = "dinFile.txt"
+CIPHER_FILE = "doutFile.txt"
+TRACE_FILE = "powerTraces.npy"
+DUT_BIT_FILE = "FOBOS_DUT_2.bit"
+SERIAL_PORT = '/dev/ttyUSB3'
+TRACE_NUM = 10
+DUT_CLk = 1
+OUT_LEN = 4
+TRIG_WAIT = 1
+TRIG_LENGTH = 1
+TRIG_MODE_NORM = 0
+TRIG_MODE_FULL = 1
+SAMPLING_FREQ = 50
+ADC_GAIN = 20
+SAMPLES_PER_TRACE = 2000
+# Instantiate FOBOS objects###########################################
+ctrl = fobos.pynqctrl.PYNQCtrl('192.168.10.99', 9995)
+ctrl.setDUTClk(DUT_CLk)
+ctrl.setDUTInterface(FOBOSCtrl.INTERFACE_8BIT)
+ctrl.setOutLen(OUT_LEN)
+ctrl.setTriggerWait(TRIG_WAIT)
+ctrl.setTriggerLen(TRIG_LENGTH)
+ctrl.setTriggerMode(TRIG_MODE_FULL)
+###configure trace sampling
+ctrl.setSamplingFrequency(SAMPLING_FREQ)
+ctrl.setADCGain(ADC_GAIN)
+ctrl.setSamplesPerTrace(SAMPLES_PER_TRACE)
+# Configure project directories#########################################
+pm = fobos.projmgr.ProjectManager()
+pm.setWorkSpaceDir(WORKSPACE)
+pm.setProjName(PROJECT_NAME)
+projDir = pm.getProjDir()
+# program DUT ##########################################################
+dut = fobos.nexys3dut.Nexys3DUT()
+bitFile = os.path.join(projDir, DUT_BIT_FILE)
+dut.setBitFile(bitFile)
+dut.program()
+# prepare i/o files ####################################################
+tvFileName = os.path.join(projDir, DIN_FILE_NAME)
+tvFile = open(tvFileName, "r")
+captureDir = pm.getCaptureDir()
+cipherFileName = os.path.join(captureDir, CIPHER_FILE)
+cipherFile = open(cipherFileName, "w")
+traceFileName = os.path.join(captureDir, TRACE_FILE)
+traceFile = open(traceFileName, "a+b")
+shutil.copy(tvFileName, captureDir)
+# Get traces############################################################
+print('Sending data..')
+traceNum = 0
+while traceNum < TRACE_NUM:
+    # scope.arm()
+    data = tvFile.readline()
+    status, result, trace = ctrl.processData2(data, OUT_LEN)
+    # if status != fobos.OK:
+    #     print("TIMEOUT")
+    # print(result)
+    cipherFile.write(result + "\n")
+    # trace = scope.readTrace()
+    # print(type(trace))
+    # print(trace)
+    # print(traceFile)
+    numpy.save(traceFile, trace)
+    traceNum += 1
+
+ctrl.disconnect()
+tvFile.close()
+cipherFile.close()
+traceFile.close() 
