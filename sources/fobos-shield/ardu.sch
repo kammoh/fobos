@@ -82,77 +82,67 @@ $EndComp
 $Comp
 L Connector_Generic:Conn_01x02 J9
 U 1 1 5B5BAA30
-P 3150 5450
-F 0 "J9" H 3230 5442 50  0000 L CNN
-F 1 "SPI2" H 3230 5351 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 3150 5450 50  0001 C CNN
-F 3 "~" H 3150 5450 50  0001 C CNN
-	1    3150 5450
+P 7400 3700
+F 0 "J9" H 7480 3692 50  0000 L CNN
+F 1 "SPI2" H 7480 3601 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 7400 3700 50  0001 C CNN
+F 3 "~" H 7400 3700 50  0001 C CNN
+	1    7400 3700
 	1    0    0    -1  
 $EndComp
-Text GLabel 8200 2300 2    50   Input ~ 0
+Text GLabel 6800 2300 0    50   Input ~ 0
 CW_RST
-Text GLabel 8200 2200 2    50   Input ~ 0
+Text GLabel 6800 2200 0    50   Input ~ 0
 CW_TARG1
-Text GLabel 8200 2100 2    50   Input ~ 0
+Text GLabel 6800 2100 0    50   Input ~ 0
 CW_TARG2
-Text GLabel 8200 1750 2    50   Input ~ 0
-CW_TARG3
 Text GLabel 6800 1750 0    50   Input ~ 0
+CW_TARG3
+Text GLabel 8200 1750 2    50   Input ~ 0
 CW_PDIC
-Text GLabel 6800 1650 0    50   Input ~ 0
+Text GLabel 8200 1650 2    50   Input ~ 0
 CW_PDID
-Text GLabel 1650 1450 0    50   Input ~ 0
+Text GLabel 1650 1650 0    50   Input ~ 0
 CSM5V
-Text GLabel 1650 1350 0    50   Input ~ 0
+Text GLabel 1650 1550 0    50   Input ~ 0
 CSM5VCur
 Text GLabel 1650 1150 0    50   Input ~ 0
 CSM3V3
 Text GLabel 1650 1250 0    50   Input ~ 0
 CSM3V3Cur
-Text GLabel 2550 1550 0    50   Input ~ 0
-A4
-Text GLabel 2550 1650 0    50   Input ~ 0
-A5
-Wire Wire Line
-	2900 1550 2550 1550
-Wire Wire Line
-	2900 1650 2550 1650
-Text GLabel 3750 1450 2    50   Input ~ 0
+Text GLabel 3750 1650 2    50   Input ~ 0
 CSM5VGain0
-Text GLabel 3750 1350 2    50   Input ~ 0
+Text GLabel 3750 1550 2    50   Input ~ 0
 CSM5VGain1
 Wire Wire Line
-	2600 5450 2950 5450
+	6850 3700 7200 3700
 Wire Wire Line
-	2600 5550 2950 5550
-Text GLabel 2500 4750 0    50   Input ~ 0
+	6850 3800 7200 3800
+Text GLabel 2500 4950 0    50   Input ~ 0
 GlitchLP
-Text GLabel 2400 4850 0    50   Input ~ 0
+Text GLabel 3650 4850 2    50   Input ~ 0
 Glitch
 Wire Wire Line
-	2400 4850 2900 4850
-Text GLabel 6800 2300 0    50   Input ~ 0
+	2500 4850 2900 4850
+Text GLabel 8200 2300 2    50   Input ~ 0
 CW_MISO
-Text GLabel 6800 2200 0    50   Input ~ 0
+Text GLabel 8200 2200 2    50   Input ~ 0
 CW_MOSI
 Text GLabel 8200 2800 2    50   Input ~ 0
 CW_HS1
-Text GLabel 8200 1650 2    50   Input ~ 0
+Text GLabel 6800 1650 0    50   Input ~ 0
 CW_TARG4
 Text GLabel 8200 2400 2    50   Input ~ 0
 CW_HS2
 Text GLabel 8200 1350 2    50   Input ~ 0
 ADC_CLK
-Text GLabel 2600 5450 0    50   Input ~ 0
+Text GLabel 6850 3700 0    50   Input ~ 0
 PWR_EN
-Text GLabel 3750 1250 2    50   Input ~ 0
-CSM3V3Gain0
 Text GLabel 3750 1150 2    50   Input ~ 0
+CSM3V3Gain0
+Text GLabel 3750 1250 2    50   Input ~ 0
 CSM3V3Gain1
-Text GLabel 3750 1550 2    50   Input ~ 0
-A10
-Text GLabel 3750 1650 2    50   Input ~ 0
+Text GLabel 6850 3800 0    50   Input ~ 0
 Trigger
 Text GLabel 2850 2000 0    50   Input ~ 0
 XADC_V_P
@@ -214,9 +204,9 @@ Wire Wire Line
 	7700 1350 8200 1350
 Wire Wire Line
 	7700 1550 9050 1550
-Text GLabel 3650 4850 2    50   Input ~ 0
+Text GLabel 2500 4750 0    50   Input ~ 0
 VGA_GAIN
-Text GLabel 2550 4950 0    50   Input ~ 0
+Text GLabel 2500 4850 0    50   Input ~ 0
 VGA_HILO
 Text GLabel 9350 1450 2    50   Input ~ 0
 ADC_D[9..0]
@@ -237,7 +227,7 @@ Wire Wire Line
 	6950 2700 7200 2700
 Text GLabel 6800 1550 0    50   Input ~ 0
 ADC_OR
-Text Notes 3450 5550 0    50   ~ 0
+Text Notes 7700 3800 0    50   ~ 0
 These pins have 2k2 pull-up resistors\non the PYNQ board
 Wire Wire Line
 	2500 4750 2900 4750
@@ -250,7 +240,7 @@ SCK
 Text Label 2850 4750 2    50   ~ 0
 MISO
 Wire Wire Line
-	2550 4950 2900 4950
+	2500 4950 2900 4950
 Wire Wire Line
 	3400 4850 3650 4850
 $Comp
@@ -386,9 +376,9 @@ PWR[5..0]
 Wire Bus Line
 	9050 3300 6150 3300
 Connection ~ 9050 3300
-Text Label 2800 5450 0    50   ~ 0
+Text Label 7050 3700 0    50   ~ 0
 SDA
-Text Label 2800 5550 0    50   ~ 0
+Text Label 7050 3800 0    50   ~ 0
 SCL
 Text Label 2650 3250 0    50   ~ 0
 RST
@@ -1082,8 +1072,6 @@ Wire Wire Line
 	1900 3350 2500 3350
 Wire Wire Line
 	1900 3450 2950 3450
-Text GLabel 2600 5550 0    50   Input ~ 0
-SCL
 Text Notes 4400 1050 0    50   ~ 0
 FPGA\nPin
 Text Notes 4400 1200 0    50   ~ 0
@@ -1120,9 +1108,9 @@ Text Notes 950  1500 0    50   ~ 0
 K16
 Text Notes 700  1500 0    50   ~ 0
 J16
-Text Notes 2000 5500 0    50   ~ 0
+Text Notes 6250 3750 0    50   ~ 0
 P15
-Text Notes 2000 5350 0    50   ~ 0
+Text Notes 6250 3600 0    50   ~ 0
 FPGA\nPin
 Text Notes 9250 1350 0    50   ~ 0
 FPGA\nPin
@@ -1167,7 +1155,7 @@ Text Notes 9250 2300 0    50   ~ 0
 Y6
 Text Notes 9250 2800 0    50   ~ 0
 Y9
-Text Notes 4150 4900 0    50   ~ 0
+Text Notes 4500 4850 0    50   ~ 0
 T12
 Text Notes 1900 4750 0    50   ~ 0
 W15
@@ -1177,7 +1165,7 @@ Text Notes 1900 4950 0    50   ~ 0
 F16
 Text Notes 1900 4600 0    50   ~ 0
 FPGA\nPin
-Text Notes 4150 4750 0    50   ~ 0
+Text Notes 4500 4750 0    50   ~ 0
 FPGA\nPin
 Wire Wire Line
 	2250 3750 2950 3750
@@ -1194,7 +1182,7 @@ Wire Wire Line
 	7700 1050 9050 1050
 Text Label 8700 1050 0    50   ~ 0
 ADC_D1
-Text GLabel 6800 2100 0    50   Input ~ 0
+Text GLabel 8200 2100 2    50   Input ~ 0
 CW_SCK
 Entry Wire Line
 	9050 1150 9150 1250
@@ -1262,6 +1250,46 @@ Wire Wire Line
 	7700 2200 8200 2200
 Wire Wire Line
 	6800 2300 7200 2300
+$Comp
+L Device:R R34
+U 1 1 604EBE45
+P 2100 1550
+F 0 "R34" V 2100 1550 50  0000 C CNN
+F 1 "1k69 1%" V 2050 1850 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1550 50  0001 C CNN
+F 3 "~" H 2100 1550 50  0001 C CNN
+	1    2100 1550
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R36
+U 1 1 604EC27B
+P 2100 1650
+F 0 "R36" V 2100 1650 50  0000 C CNN
+F 1 "1k69 1%" V 2050 1950 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1650 50  0001 C CNN
+F 3 "~" H 2100 1650 50  0001 C CNN
+	1    2100 1650
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2250 1550 2900 1550
+Wire Wire Line
+	2250 1650 2900 1650
+Text GLabel 1650 1450 0    50   Input ~ 0
+CSMVar
+Text GLabel 1650 1350 0    50   Input ~ 0
+CSMVarCur
+Text GLabel 3750 1450 2    50   Input ~ 0
+CSMVarGain1
+Text GLabel 3750 1350 2    50   Input ~ 0
+CSMVarGain0
+Wire Wire Line
+	1650 1550 1950 1550
+Wire Wire Line
+	1650 1650 1950 1650
+Text Notes 3400 4750 0    50   ~ 0
+not connected on PYNQ
 Wire Bus Line
 	9150 1450 9150 1900
 Wire Bus Line
