@@ -486,8 +486,6 @@ Wire Wire Line
 Wire Wire Line
 	5000 1550 5000 1900
 Connection ~ 5000 1900
-Wire Wire Line
-	5000 1900 5200 1900
 $Comp
 L Device:L_Core_Ferrite L2
 U 1 1 5F54227E
@@ -2629,13 +2627,13 @@ $EndBitmap
 $Comp
 L cerg:INA225 U5
 U 1 1 5F2A6698
-P 8950 1550
-F 0 "U5" H 8950 2131 50  0000 C CNN
-F 1 "INA225" H 8950 2040 50  0000 C CNN
-F 2 "Package_SO:MSOP-8_3x3mm_P0.65mm" H 9000 1550 50  0001 C CNN
-F 3 "" H 9300 1350 50  0001 C CNN
-	1    8950 1550
-	1    0    0    -1  
+P 5250 3250
+F 0 "U5" V 5400 3850 50  0000 R CNN
+F 1 "INA225" V 5500 3850 50  0000 R CNN
+F 2 "Package_SO:MSOP-8_3x3mm_P0.65mm" H 5300 3250 50  0001 C CNN
+F 3 "" H 5600 3050 50  0001 C CNN
+	1    5250 3250
+	0    -1   1    0   
 $EndComp
 $Comp
 L Device:C C?
@@ -2852,45 +2850,45 @@ $EndComp
 $Comp
 L power:GND #PWR011
 U 1 1 5FD0CDF5
-P 4800 4000
-F 0 "#PWR011" H 4800 3750 50  0001 C CNN
-F 1 "GND" H 4805 3827 50  0000 C CNN
-F 2 "" H 4800 4000 50  0001 C CNN
-F 3 "" H 4800 4000 50  0001 C CNN
-	1    4800 4000
+P 8950 6250
+F 0 "#PWR011" H 8950 6000 50  0001 C CNN
+F 1 "GND" H 8955 6077 50  0000 C CNN
+F 2 "" H 8950 6250 50  0001 C CNN
+F 3 "" H 8950 6250 50  0001 C CNN
+	1    8950 6250
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:R R41
 U 1 1 5FCCE755
-P 4800 2850
-F 0 "R41" V 4593 2850 50  0000 C CNN
-F 1 "4.7KR" V 4684 2850 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 4730 2850 50  0001 C CNN
-F 3 "~" H 4800 2850 50  0001 C CNN
-	1    4800 2850
+P 8950 5100
+F 0 "R41" V 8743 5100 50  0000 C CNN
+F 1 "4.7KR" V 8834 5100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 8880 5100 50  0001 C CNN
+F 3 "~" H 8950 5100 50  0001 C CNN
+	1    8950 5100
 	-1   0    0    1   
 $EndComp
 $Comp
 L Device:R R42
 U 1 1 5FCCD5F1
-P 4800 3850
-F 0 "R42" V 4593 3850 50  0000 C CNN
-F 1 "10KR" V 4684 3850 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 4730 3850 50  0001 C CNN
-F 3 "~" H 4800 3850 50  0001 C CNN
-	1    4800 3850
+P 8950 6100
+F 0 "R42" V 8743 6100 50  0000 C CNN
+F 1 "10KR" V 8834 6100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 8880 6100 50  0001 C CNN
+F 3 "~" H 8950 6100 50  0001 C CNN
+	1    8950 6100
 	-1   0    0    1   
 $EndComp
 $Comp
 L power:+5V #PWR010
 U 1 1 5FD2F7AD
-P 4800 2700
-F 0 "#PWR010" H 4800 2550 50  0001 C CNN
-F 1 "+5V" H 4815 2873 50  0000 C CNN
-F 2 "" H 4800 2700 50  0001 C CNN
-F 3 "" H 4800 2700 50  0001 C CNN
-	1    4800 2700
+P 8950 4950
+F 0 "#PWR010" H 8950 4800 50  0001 C CNN
+F 1 "+5V" H 8965 5123 50  0000 C CNN
+F 2 "" H 8950 4950 50  0001 C CNN
+F 3 "" H 8950 4950 50  0001 C CNN
+	1    8950 4950
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -3548,37 +3546,37 @@ Connection ~ 3750 6900
 $Comp
 L dk_Slide-Switches:JS202011SCQN S1
 U 1 1 5FDC4D39
-P 5350 3600
-F 0 "S1" H 5350 3075 50  0000 C CNN
-F 1 "JS202011SCQN" H 5350 3166 50  0000 C CNN
-F 2 "digikey-footprints:Switch_Slide_JS202011SCQN" H 5550 3800 50  0001 L CNN
-F 3 "https://www.ckswitches.com/media/1422/js.pdf" H 5550 3900 60  0001 L CNN
-F 4 "401-2002-1-ND" H 5550 4000 60  0001 L CNN "Digi-Key_PN"
-F 5 "JS202011SCQN" H 5550 4100 60  0001 L CNN "MPN"
-F 6 "Switches" H 5550 4200 60  0001 L CNN "Category"
-F 7 "Slide Switches" H 5550 4300 60  0001 L CNN "Family"
-F 8 "https://www.ckswitches.com/media/1422/js.pdf" H 5550 4400 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/c-k/JS202011SCQN/401-2002-1-ND/1640098" H 5550 4500 60  0001 L CNN "DK_Detail_Page"
-F 10 "SWITCH SLIDE DPDT 300MA 6V" H 5550 4600 60  0001 L CNN "Description"
-F 11 "C&K" H 5550 4700 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 5550 4800 60  0001 L CNN "Status"
-	1    5350 3600
+P 9500 5850
+F 0 "S1" H 9500 5325 50  0000 C CNN
+F 1 "JS202011SCQN" H 9500 5416 50  0000 C CNN
+F 2 "digikey-footprints:Switch_Slide_JS202011SCQN" H 9700 6050 50  0001 L CNN
+F 3 "https://www.ckswitches.com/media/1422/js.pdf" H 9700 6150 60  0001 L CNN
+F 4 "401-2002-1-ND" H 9700 6250 60  0001 L CNN "Digi-Key_PN"
+F 5 "JS202011SCQN" H 9700 6350 60  0001 L CNN "MPN"
+F 6 "Switches" H 9700 6450 60  0001 L CNN "Category"
+F 7 "Slide Switches" H 9700 6550 60  0001 L CNN "Family"
+F 8 "https://www.ckswitches.com/media/1422/js.pdf" H 9700 6650 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/c-k/JS202011SCQN/401-2002-1-ND/1640098" H 9700 6750 60  0001 L CNN "DK_Detail_Page"
+F 10 "SWITCH SLIDE DPDT 300MA 6V" H 9700 6850 60  0001 L CNN "Description"
+F 11 "C&K" H 9700 6950 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 9700 7050 60  0001 L CNN "Status"
+	1    9500 5850
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	5150 3500 4800 3500
+	9300 5750 8950 5750
 Wire Wire Line
-	4800 3500 4800 3700
+	8950 5750 8950 5950
 Wire Wire Line
-	5150 3300 4800 3300
+	9300 5550 8950 5550
 Wire Wire Line
-	4800 3000 4800 3300
+	8950 5250 8950 5550
 Wire Wire Line
 	2950 4550 2950 5250
-Text GLabel 5700 3400 2    50   Input ~ 0
+Text GLabel 9850 5650 2    50   Input ~ 0
 ON_OFF
 Wire Wire Line
-	5700 3400 5550 3400
+	9850 5650 9700 5650
 Text GLabel 2500 5650 0    50   Input ~ 0
 ON_OFF
 Wire Wire Line
@@ -3586,104 +3584,205 @@ Wire Wire Line
 $Comp
 L dk_Transistors-FETs-MOSFETs-Single:FDV301N Q3
 U 1 1 5FE2EDE2
-P 8900 5650
-F 0 "Q3" H 9008 5703 60  0000 L CNN
-F 1 "FDV301N" H 9008 5597 60  0000 L CNN
-F 2 "digikey-footprints:SOT-23-3" H 9100 5850 60  0001 L CNN
-F 3 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 9100 5950 60  0001 L CNN
-F 4 "FDV301NCT-ND" H 9100 6050 60  0001 L CNN "Digi-Key_PN"
-F 5 "FDV301N" H 9100 6150 60  0001 L CNN "MPN"
-F 6 "Discrete Semiconductor Products" H 9100 6250 60  0001 L CNN "Category"
-F 7 "Transistors - FETs, MOSFETs - Single" H 9100 6350 60  0001 L CNN "Family"
-F 8 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 9100 6450 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/on-semiconductor/FDV301N/FDV301NCT-ND/458954" H 9100 6550 60  0001 L CNN "DK_Detail_Page"
-F 10 "MOSFET N-CH 25V 220MA SOT-23" H 9100 6650 60  0001 L CNN "Description"
-F 11 "ON Semiconductor" H 9100 6750 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 9100 6850 60  0001 L CNN "Status"
-	1    8900 5650
+P 8250 5900
+F 0 "Q3" H 8358 5953 60  0000 L CNN
+F 1 "FDV301N" H 8358 5847 60  0000 L CNN
+F 2 "digikey-footprints:SOT-23-3" H 8450 6100 60  0001 L CNN
+F 3 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 8450 6200 60  0001 L CNN
+F 4 "FDV301NCT-ND" H 8450 6300 60  0001 L CNN "Digi-Key_PN"
+F 5 "FDV301N" H 8450 6400 60  0001 L CNN "MPN"
+F 6 "Discrete Semiconductor Products" H 8450 6500 60  0001 L CNN "Category"
+F 7 "Transistors - FETs, MOSFETs - Single" H 8450 6600 60  0001 L CNN "Family"
+F 8 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 8450 6700 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/on-semiconductor/FDV301N/FDV301NCT-ND/458954" H 8450 6800 60  0001 L CNN "DK_Detail_Page"
+F 10 "MOSFET N-CH 25V 220MA SOT-23" H 8450 6900 60  0001 L CNN "Description"
+F 11 "ON Semiconductor" H 8450 7000 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 8450 7100 60  0001 L CNN "Status"
+	1    8250 5900
 	1    0    0    -1  
 $EndComp
-Text GLabel 8150 5750 0    50   Input ~ 0
+Text GLabel 7500 6000 0    50   Input ~ 0
 PGOOD
 $Comp
 L power:GND #PWR017
 U 1 1 5FE2F685
-P 8900 6000
-F 0 "#PWR017" H 8900 5750 50  0001 C CNN
-F 1 "GND" H 8905 5827 50  0000 C CNN
-F 2 "" H 8900 6000 50  0001 C CNN
-F 3 "" H 8900 6000 50  0001 C CNN
-	1    8900 6000
+P 8250 6250
+F 0 "#PWR017" H 8250 6000 50  0001 C CNN
+F 1 "GND" H 8255 6077 50  0000 C CNN
+F 2 "" H 8250 6250 50  0001 C CNN
+F 3 "" H 8250 6250 50  0001 C CNN
+	1    8250 6250
 	1    0    0    -1  
 $EndComp
 $Comp
 L dk_LED-Indication-Discrete:LG_L29K-G2J1-24-Z D1
 U 1 1 5FE31482
-P 8900 4850
-F 0 "D1" V 8797 5028 60  0000 L CNN
-F 1 "LG_L29K-G2J1-24-Z" V 8903 5028 60  0000 L CNN
-F 2 "digikey-footprints:0603" H 9100 5050 60  0001 L CNN
-F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 9100 5150 60  0001 L CNN
-F 4 "475-2709-1-ND" H 9100 5250 60  0001 L CNN "Digi-Key_PN"
-F 5 "LG L29K-G2J1-24-Z" H 9100 5350 60  0001 L CNN "MPN"
-F 6 "Optoelectronics" H 9100 5450 60  0001 L CNN "Category"
-F 7 "LED Indication - Discrete" H 9100 5550 60  0001 L CNN "Family"
-F 8 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 9100 5650 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/osram-opto-semiconductors-inc/LG-L29K-G2J1-24-Z/475-2709-1-ND/1938876" H 9100 5750 60  0001 L CNN "DK_Detail_Page"
-F 10 "LED GREEN DIFFUSED 0603 SMD" H 9100 5850 60  0001 L CNN "Description"
-F 11 "OSRAM Opto Semiconductors Inc." H 9100 5950 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 9100 6050 60  0001 L CNN "Status"
-	1    8900 4850
+P 8250 5100
+F 0 "D1" V 8147 5278 60  0000 L CNN
+F 1 "LG_L29K-G2J1-24-Z" V 8253 5278 60  0001 L CNN
+F 2 "digikey-footprints:0603" H 8450 5300 60  0001 L CNN
+F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 8450 5400 60  0001 L CNN
+F 4 "475-2709-1-ND" H 8450 5500 60  0001 L CNN "Digi-Key_PN"
+F 5 "LG L29K-G2J1-24-Z" H 8450 5600 60  0001 L CNN "MPN"
+F 6 "Optoelectronics" H 8450 5700 60  0001 L CNN "Category"
+F 7 "LED Indication - Discrete" H 8450 5800 60  0001 L CNN "Family"
+F 8 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 8450 5900 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/osram-opto-semiconductors-inc/LG-L29K-G2J1-24-Z/475-2709-1-ND/1938876" H 8450 6000 60  0001 L CNN "DK_Detail_Page"
+F 10 "LED GREEN DIFFUSED 0603 SMD" H 8450 6100 60  0001 L CNN "Description"
+F 11 "OSRAM Opto Semiconductors Inc." H 8450 6200 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 8450 6300 60  0001 L CNN "Status"
+	1    8250 5100
 	0    1    1    0   
 $EndComp
 $Comp
 L Device:R R49
 U 1 1 5FE3CF67
-P 8400 5200
-F 0 "R49" V 8600 5200 50  0000 C CNN
-F 1 "100KR" V 8500 5200 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 8330 5200 50  0001 C CNN
-F 3 "~" H 8400 5200 50  0001 C CNN
-	1    8400 5200
+P 7750 5450
+F 0 "R49" V 7950 5450 50  0000 C CNN
+F 1 "100KR" V 7850 5450 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 7680 5450 50  0001 C CNN
+F 3 "~" H 7750 5450 50  0001 C CNN
+	1    7750 5450
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:R R50
 U 1 1 5FE3D476
-P 8900 5200
-F 0 "R50" V 9100 5200 50  0000 C CNN
-F 1 "800R" V 9000 5200 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 8830 5200 50  0001 C CNN
-F 3 "~" H 8900 5200 50  0001 C CNN
-	1    8900 5200
+P 8250 5450
+F 0 "R50" V 8450 5450 50  0000 C CNN
+F 1 "800R" V 8350 5450 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 8180 5450 50  0001 C CNN
+F 3 "~" H 8250 5450 50  0001 C CNN
+	1    8250 5450
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8900 5450 8900 5350
+	8250 5700 8250 5600
 Wire Wire Line
-	8900 5050 8900 4950
+	8250 5300 8250 5200
 Wire Wire Line
-	8600 5750 8400 5750
+	7950 6000 7750 6000
 Wire Wire Line
-	8400 5750 8400 5350
+	7750 6000 7750 5600
 Wire Wire Line
-	8900 5850 8900 6000
+	8250 6100 8250 6250
 Wire Wire Line
-	8400 5750 8150 5750
-Connection ~ 8400 5750
+	7750 6000 7500 6000
+Connection ~ 7750 6000
 Wire Wire Line
-	8400 5050 8400 4550
+	7750 5300 7750 4800
 Wire Wire Line
-	8400 4550 8600 4550
+	7750 4800 7950 4800
 Wire Wire Line
-	8900 4550 8900 4650
-Text GLabel 8650 4400 2    50   Input ~ 0
+	8250 4800 8250 4900
+Text GLabel 8000 4650 2    50   Input ~ 0
 FS_3V3
 Wire Wire Line
-	8650 4400 8600 4400
+	8000 4650 7950 4650
 Wire Wire Line
-	8600 4400 8600 4550
-Connection ~ 8600 4550
+	7950 4650 7950 4800
+Connection ~ 7950 4800
 Wire Wire Line
-	8600 4550 8900 4550
+	7950 4800 8250 4800
+Wire Wire Line
+	5150 2850 5150 2250
+Wire Wire Line
+	5150 2250 5800 2250
+Wire Wire Line
+	5800 2250 5800 1900
+Wire Wire Line
+	5000 1900 5200 1900
+Wire Wire Line
+	5050 2850 5050 2250
+Wire Wire Line
+	5050 2250 5000 2250
+Wire Wire Line
+	5000 2250 5000 1900
+Text GLabel 4700 3200 1    50   Input ~ 0
+FS_3V3
+Wire Wire Line
+	4850 3250 4700 3250
+Wire Wire Line
+	4700 3250 4700 3200
+$Comp
+L power:GND #PWR?
+U 1 1 5FFA81B7
+P 5800 3300
+AR Path="/5B6DA40D/5FFA81B7" Ref="#PWR?"  Part="1" 
+AR Path="/5B6C87CC/5FFA81B7" Ref="#PWR?"  Part="1" 
+AR Path="/5BE3725D/5FFA81B7" Ref="#PWR?"  Part="1" 
+AR Path="/5F227C5D/5FFA81B7" Ref="#PWR?"  Part="1" 
+AR Path="/5F449901/5FFA81B7" Ref="#PWR019"  Part="1" 
+F 0 "#PWR019" H 5800 3050 50  0001 C CNN
+F 1 "GND" H 5805 3127 50  0000 C CNN
+F 2 "" H 5800 3300 50  0001 C CNN
+F 3 "" H 5800 3300 50  0001 C CNN
+	1    5800 3300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5800 3300 5800 3250
+Wire Wire Line
+	5800 3250 5650 3250
+Wire Wire Line
+	5450 3650 5450 3700
+Wire Wire Line
+	5450 3700 5750 3700
+Text GLabel 5750 3700 2    50   Input ~ 0
+VCORE_CURRENT_GAIN_0
+Text GLabel 5750 3850 2    50   Input ~ 0
+VCORE_CURRENT_GAIN_1
+Text GLabel 5750 4000 2    50   Input ~ 0
+VCORE_CURRENT
+Wire Wire Line
+	5750 3850 5350 3850
+Wire Wire Line
+	5350 3650 5350 3850
+Wire Wire Line
+	5050 3650 5050 4000
+Wire Wire Line
+	5450 2850 5450 2800
+Wire Wire Line
+	5450 2800 5800 2800
+Wire Wire Line
+	5800 2800 5800 3250
+Connection ~ 5800 3250
+$Comp
+L Device:C C?
+U 1 1 600016B8
+P 4250 3500
+AR Path="/5F227C5D/600016B8" Ref="C?"  Part="1" 
+AR Path="/5F449901/600016B8" Ref="C24"  Part="1" 
+F 0 "C24" H 4365 3546 50  0000 L CNN
+F 1 "100nF" H 4365 3455 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 4288 3350 50  0001 C CNN
+F 3 "~" H 4250 3500 50  0001 C CNN
+	1    4250 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 60001E6D
+P 4250 3700
+AR Path="/5B6DA40D/60001E6D" Ref="#PWR?"  Part="1" 
+AR Path="/5B6C87CC/60001E6D" Ref="#PWR?"  Part="1" 
+AR Path="/5BE3725D/60001E6D" Ref="#PWR?"  Part="1" 
+AR Path="/5F227C5D/60001E6D" Ref="#PWR?"  Part="1" 
+AR Path="/5F449901/60001E6D" Ref="#PWR018"  Part="1" 
+F 0 "#PWR018" H 4250 3450 50  0001 C CNN
+F 1 "GND" H 4255 3527 50  0000 C CNN
+F 2 "" H 4250 3700 50  0001 C CNN
+F 3 "" H 4250 3700 50  0001 C CNN
+	1    4250 3700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4700 3250 4250 3250
+Wire Wire Line
+	4250 3250 4250 3350
+Connection ~ 4700 3250
+Wire Wire Line
+	4250 3650 4250 3700
+Wire Wire Line
+	5050 4000 5750 4000
 $EndSCHEMATC
