@@ -204,9 +204,9 @@ Wire Wire Line
 	7700 1350 8200 1350
 Wire Wire Line
 	7700 1550 9050 1550
-Text GLabel 2500 4750 0    50   Input ~ 0
-VGA_GAIN
 Text GLabel 2500 4850 0    50   Input ~ 0
+VGA_GAIN
+Text GLabel 2500 4750 0    50   Input ~ 0
 VGA_HILO
 Text GLabel 9350 1450 2    50   Input ~ 0
 ADC_D[9..0]
@@ -1300,4 +1300,8 @@ Wire Bus Line
 	9150 1000 9150 1450
 Wire Bus Line
 	6050 1000 6050 1900
+Text Notes 8650 2400 0    50   ~ 0
+CLK C2D
+Text Notes 8600 2850 0    50   ~ 0
+CLK D2C
 $EndSCHEMATC
