@@ -1,3 +1,4 @@
 (sym_lib_table
   (lib (name cerg)(type Legacy)(uri ${KIPRJMOD}/cerg.lib)(options "")(descr ""))
+  (lib (name fobosshield-rescue)(type Legacy)(uri ${KIPRJMOD}/fobosshield-rescue.lib)(options "")(descr ""))
 )

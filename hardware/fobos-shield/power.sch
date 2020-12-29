@@ -190,7 +190,7 @@ $EndComp
 Wire Wire Line
 	6650 6700 6650 6750
 Text GLabel 7150 5850 0    50   Input ~ 0
-CW_5V
+FS_5V
 Text GLabel 7550 6100 2    50   Input ~ 0
 CSM5V
 Text GLabel 9600 5650 2    50   Input ~ 0
@@ -218,7 +218,7 @@ PWR[5..0]
 Wire Wire Line
 	1400 1850 1800 1850
 $Comp
-L Regulator_Linear:LM317L_SO8 U?
+L fobosshield-rescue:LM317L_SO8-Regulator_Linear U?
 U 1 1 5B6C882B
 P 3200 5650
 AR Path="/5B6C882B" Ref="U?"  Part="1" 
@@ -392,7 +392,7 @@ Wire Wire Line
 	2600 6700 2400 6700
 Connection ~ 2600 6700
 $Comp
-L Regulator_Linear:LM337L_SO8 U?
+L fobosshield-rescue:LM337L_SO8-Regulator_Linear U?
 U 1 1 5B6C888A
 P 3200 6700
 AR Path="/5B6C888A" Ref="U?"  Part="1" 
@@ -2281,7 +2281,7 @@ F 3 "~" H 5700 4700 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 Text GLabel 6400 4050 0    50   Input ~ 0
-CW_3V3
+FS_3V3
 $Comp
 L Diode:1N4148 D?
 U 1 1 5E54AF19

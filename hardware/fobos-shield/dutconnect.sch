@@ -306,36 +306,18 @@ F 3 "~" H 2400 1700 50  0001 C CNN
 	1    2400 1700
 	1    0    0    -1  
 $EndComp
-Text GLabel 1600 1300 0    50   Input ~ 0
-CW_5V
 Text GLabel 1600 1500 0    50   Input ~ 0
-CW_RST
+FS_RST
 Text GLabel 1600 1600 0    50   Input ~ 0
-CW_MISO
+FS_IO
 Text GLabel 1600 1700 0    50   Input ~ 0
-CW_MOSI
+FS_TF
 Text GLabel 1600 1800 0    50   Input ~ 0
-CW_SCK
+HS_C2D
 Text GLabel 1600 1900 0    50   Input ~ 0
-CW_PDIC
+HS_D2C
 Text GLabel 1600 2000 0    50   Input ~ 0
-CW_PDID
-Text GLabel 3300 1400 2    50   Input ~ 0
-CW_HS1
-Text GLabel 3300 1500 2    50   Input ~ 0
-CW_HS2
-Text GLabel 3300 1600 2    50   Input ~ 0
-CW_VREF
-Text GLabel 3300 1700 2    50   Input ~ 0
-CW_TARG1
-Text GLabel 3300 1800 2    50   Input ~ 0
-CW_TARG2
-Text GLabel 3300 1900 2    50   Input ~ 0
-CW_TARG3
-Text GLabel 3300 2000 2    50   Input ~ 0
-CW_TARG4
-Text GLabel 3300 2200 2    50   Input ~ 0
-CW_5V
+FS_PROG
 $Comp
 L power:GND #PWR0150
 U 1 1 5B6D7DAD
@@ -400,7 +382,7 @@ Wire Wire Line
 Wire Wire Line
 	2700 2200 3300 2200
 Text Label 2050 1500 2    50   ~ 0
-CV_RST
+CW_RST
 Wire Wire Line
 	1600 1500 2200 1500
 Text Label 2050 1600 2    50   ~ 0
@@ -1038,9 +1020,9 @@ $EndComp
 Wire Wire Line
 	2350 5950 2350 5800
 Text GLabel 1950 5650 0    50   Input ~ 0
-CW_HS1
+CLK_D2C
 Text GLabel 2750 5650 2    50   Input ~ 0
-CW_HS2
+CLK_C2D
 Wire Wire Line
 	1950 5650 2100 5650
 Wire Wire Line
@@ -1063,10 +1045,6 @@ $EndComp
 Wire Wire Line
 	2150 3250 2150 3350
 Connection ~ 2150 3350
-Text GLabel 1600 1400 0    50   Input ~ 0
-CW_3V3
-Text GLabel 3300 2100 2    50   Input ~ 0
-CW_3V3
 $Comp
 L Connector_Generic:Conn_01x01 J22
 U 1 1 5B899B87
@@ -1127,4 +1105,26 @@ Text Notes 3800 1950 0    50   ~ 0
 V13
 Text Notes 3800 2050 0    50   ~ 0
 V7
+Text GLabel 1600 1400 0    50   Input ~ 0
+FS_3V3
+Text GLabel 1600 1300 0    50   Input ~ 0
+FS_5V
+Text GLabel 3300 2200 2    50   Input ~ 0
+FS_5V
+Text GLabel 3300 2100 2    50   Input ~ 0
+FS_3V3
+Text GLabel 3300 1600 2    50   Input ~ 0
+FS_VREF
+Text GLabel 3300 2000 2    50   Input ~ 0
+FS_DIO3
+Text GLabel 3300 1900 2    50   Input ~ 0
+FS_DIO2
+Text GLabel 3300 1800 2    50   Input ~ 0
+FS_DIO1
+Text GLabel 3300 1700 2    50   Input ~ 0
+FS_DIO0
+Text GLabel 3300 1500 2    50   Input ~ 0
+CLK_C2D
+Text GLabel 3300 1400 2    50   Input ~ 0
+CLK_D2C
 $EndSCHEMATC
