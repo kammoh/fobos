@@ -69,23 +69,23 @@ F 3 "~" H 7400 3700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 6800 2300 0    50   Input ~ 0
-FS_RST
+FC_RST
 Text GLabel 6800 2200 0    50   Input ~ 0
-FS_DIO0
+FC_DIO0
 Text GLabel 6800 2100 0    50   Input ~ 0
-FS_DIO1
+FC_DIO1
 Text GLabel 6800 1750 0    50   Input ~ 0
-FS_DIO2
+FC_DIO2
 Text GLabel 8200 1750 2    50   Input ~ 0
-HS_D2C
+FD2C_HS
 Text GLabel 8200 1650 2    50   Input ~ 0
-FS_PROG
+FC_PROG
 Text GLabel 1650 1650 0    50   Input ~ 0
-CSM5V
+FC_5V
 Text GLabel 1650 1550 0    50   Input ~ 0
 CSM5VCur
 Text GLabel 1650 1150 0    50   Input ~ 0
-CSM3V3
+FC_3V3
 Text GLabel 1650 1250 0    50   Input ~ 0
 CSM3V3Cur
 Text GLabel 3750 1650 2    50   Input ~ 0
@@ -103,15 +103,15 @@ Glitch
 Wire Wire Line
 	4300 5300 4700 5300
 Text GLabel 8200 2300 2    50   Input ~ 0
-FS_IO
+FC_IO
 Text GLabel 8200 2200 2    50   Input ~ 0
-FS_TF
+FD_TF
 Text GLabel 8200 2800 2    50   Input ~ 0
-CLK_D2C
+FD2C_CLK
 Text GLabel 6800 1650 0    50   Input ~ 0
-FS_DIO3
+FC_DIO3
 Text GLabel 8200 2400 2    50   Input ~ 0
-CLK_C2D
+FC2D_CLK
 Text GLabel 8200 1350 2    50   Input ~ 0
 ADC_CLK
 Text GLabel 6850 3700 0    50   Input ~ 0
@@ -1145,7 +1145,7 @@ Wire Wire Line
 Text Label 8700 1050 0    50   ~ 0
 ADC_D1
 Text GLabel 8200 2100 2    50   Input ~ 0
-HS_C2D
+FC2D_HS
 Entry Wire Line
 	9050 1150 9150 1250
 Entry Wire Line
@@ -1239,7 +1239,7 @@ Wire Wire Line
 Wire Wire Line
 	2250 1650 2900 1650
 Text GLabel 1650 1450 0    50   Input ~ 0
-CSMVar
+FC_Var
 Text GLabel 1650 1350 0    50   Input ~ 0
 CSMVarCur
 Text GLabel 3750 1450 2    50   Input ~ 0
@@ -1252,10 +1252,6 @@ Wire Wire Line
 	1650 1650 1950 1650
 Text Notes 5200 5200 0    50   ~ 0
 not connected on PYNQ
-Text Notes 8650 2400 0    50   ~ 0
-CLK C2D
-Text Notes 8600 2850 0    50   ~ 0
-CLK D2C
 $Comp
 L Connector_Generic:Conn_02x08_Odd_Even J4
 U 1 1 5B5BA5A7
@@ -1267,16 +1263,6 @@ F 3 "~" H 7400 2400 50  0001 C CNN
 	1    7400 2400
 	1    0    0    -1  
 $EndComp
-Wire Bus Line
-	9150 1450 9150 1900
-Wire Bus Line
-	6150 2500 6150 3300
-Wire Bus Line
-	9050 2600 9050 3300
-Wire Bus Line
-	9150 1000 9150 1450
-Wire Bus Line
-	6050 1000 6050 1900
 Wire Wire Line
 	2950 2000 2850 2000
 Wire Wire Line
@@ -1304,4 +1290,14 @@ F 3 "~" H 3150 2100 50  0001 C CNN
 	1    3150 2100
 	1    0    0    -1  
 $EndComp
+Wire Bus Line
+	9150 1450 9150 1900
+Wire Bus Line
+	6150 2500 6150 3300
+Wire Bus Line
+	9050 2600 9050 3300
+Wire Bus Line
+	9150 1000 9150 1450
+Wire Bus Line
+	6050 1000 6050 1900
 $EndSCHEMATC

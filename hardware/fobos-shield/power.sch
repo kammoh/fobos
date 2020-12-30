@@ -190,9 +190,7 @@ $EndComp
 Wire Wire Line
 	6650 6700 6650 6750
 Text GLabel 7150 5850 0    50   Input ~ 0
-FS_5V
-Text GLabel 7550 6100 2    50   Input ~ 0
-CSM5V
+FC_5V
 Text GLabel 9600 5650 2    50   Input ~ 0
 CSM5VCur
 Wire Wire Line
@@ -1474,14 +1472,7 @@ Wire Wire Line
 Wire Wire Line
 	8300 5750 8500 5750
 Connection ~ 7950 5550
-Wire Wire Line
-	7150 5850 7350 5850
 Connection ~ 7950 5850
-Wire Wire Line
-	7550 6100 7350 6100
-Wire Wire Line
-	7350 6100 7350 5850
-Connection ~ 7350 5850
 $Comp
 L Connector_Generic:Conn_01x01 J15
 U 1 1 5B830A55
@@ -1498,8 +1489,6 @@ Wire Wire Line
 Connection ~ 9400 5650
 Wire Wire Line
 	9400 5650 9600 5650
-Wire Wire Line
-	7350 5850 7550 5850
 $Comp
 L Connector_Generic:Conn_01x02 J18
 U 1 1 5B86CE2F
@@ -1521,8 +1510,6 @@ Wire Wire Line
 Connection ~ 7550 5850
 Wire Wire Line
 	7550 5850 7950 5850
-Text GLabel 6800 4300 2    50   Input ~ 0
-CSM3V3
 Text GLabel 8850 3850 2    50   Input ~ 0
 CSM3V3Cur
 Wire Wire Line
@@ -1606,14 +1593,7 @@ Wire Wire Line
 Wire Wire Line
 	7550 3950 7750 3950
 Connection ~ 7200 3750
-Wire Wire Line
-	6400 4050 6600 4050
 Connection ~ 7200 4050
-Wire Wire Line
-	6800 4300 6600 4300
-Wire Wire Line
-	6600 4300 6600 4050
-Connection ~ 6600 4050
 $Comp
 L Connector_Generic:Conn_01x01 J20
 U 1 1 5B7767A8
@@ -1630,8 +1610,6 @@ Wire Wire Line
 Connection ~ 8650 3850
 Wire Wire Line
 	8650 3850 8850 3850
-Wire Wire Line
-	6600 4050 6800 4050
 $Comp
 L Connector_Generic:Conn_01x02 J19
 U 1 1 5B7767B4
@@ -2281,7 +2259,7 @@ F 3 "~" H 5700 4700 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 Text GLabel 6400 4050 0    50   Input ~ 0
-FS_3V3
+FC_3V3
 $Comp
 L Diode:1N4148 D?
 U 1 1 5E54AF19
@@ -2432,7 +2410,7 @@ Connection ~ 8900 1750
 Wire Wire Line
 	8900 1750 8750 1750
 Text GLabel 9700 1750 2    50   Input ~ 0
-CSMVar
+FC_Var
 $Comp
 L Connector_Generic:Conn_01x02 J25
 U 1 1 6012B270
@@ -2535,4 +2513,8 @@ Wire Wire Line
 	5350 1150 5350 1250
 Wire Bus Line
 	2700 2850 3500 2850
+Wire Wire Line
+	6400 4050 6800 4050
+Wire Wire Line
+	7150 5850 7550 5850
 $EndSCHEMATC

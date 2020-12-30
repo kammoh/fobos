@@ -307,17 +307,17 @@ F 3 "~" H 2400 1700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 1600 1500 0    50   Input ~ 0
-FS_RST
+FC_RST
 Text GLabel 1600 1600 0    50   Input ~ 0
-FS_IO
+FC_IO
 Text GLabel 1600 1700 0    50   Input ~ 0
-FS_TF
+FD_TF
 Text GLabel 1600 1800 0    50   Input ~ 0
-HS_C2D
+FC2D_HS
 Text GLabel 1600 1900 0    50   Input ~ 0
-HS_D2C
+FD2C_HS
 Text GLabel 1600 2000 0    50   Input ~ 0
-FS_PROG
+FC_PROG
 $Comp
 L power:GND #PWR0150
 U 1 1 5B6D7DAD
@@ -1020,9 +1020,9 @@ $EndComp
 Wire Wire Line
 	2350 5950 2350 5800
 Text GLabel 1950 5650 0    50   Input ~ 0
-CLK_D2C
+FD2C_CLK
 Text GLabel 2750 5650 2    50   Input ~ 0
-CLK_C2D
+FC2D_CLK
 Wire Wire Line
 	1950 5650 2100 5650
 Wire Wire Line
@@ -1106,25 +1106,25 @@ V13
 Text Notes 3800 2050 0    50   ~ 0
 V7
 Text GLabel 1600 1400 0    50   Input ~ 0
-FS_3V3
+FC_3V3
 Text GLabel 1600 1300 0    50   Input ~ 0
-FS_5V
+FC_5V
 Text GLabel 3300 2200 2    50   Input ~ 0
-FS_5V
+FC_5V
 Text GLabel 3300 2100 2    50   Input ~ 0
-FS_3V3
+FC_3V3
 Text GLabel 3300 1600 2    50   Input ~ 0
-FS_VREF
+FD_VREF
 Text GLabel 3300 2000 2    50   Input ~ 0
-FS_DIO3
+FC_DIO3
 Text GLabel 3300 1900 2    50   Input ~ 0
-FS_DIO2
+FC_DIO2
 Text GLabel 3300 1800 2    50   Input ~ 0
-FS_DIO1
+FC_DIO1
 Text GLabel 3300 1700 2    50   Input ~ 0
-FS_DIO0
+FC_DIO0
 Text GLabel 3300 1500 2    50   Input ~ 0
-CLK_C2D
+FC2D_CLK
 Text GLabel 3300 1400 2    50   Input ~ 0
-CLK_D2C
+FD2C_CLK
 $EndSCHEMATC
