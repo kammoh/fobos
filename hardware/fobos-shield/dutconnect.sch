@@ -1061,20 +1061,6 @@ Wire Wire Line
 	2150 3900 2150 4050
 Wire Wire Line
 	2150 3900 2250 3900
-$Comp
-L Connector_Generic:Conn_01x01 J21
-U 1 1 5B89C960
-P 4350 1150
-F 0 "J21" H 4430 1192 50  0000 L CNN
-F 1 "GND" H 4430 1101 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4350 1150 50  0001 C CNN
-F 3 "~" H 4350 1150 50  0001 C CNN
-	1    4350 1150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4150 1150 4150 1300
-Connection ~ 4150 1300
 Text Notes 1000 1550 0    50   ~ 0
 T14
 Text Notes 1000 1650 0    50   ~ 0

@@ -68,7 +68,7 @@ F 3 "~" H 7400 3700 50  0001 C CNN
 	1    7400 3700
 	1    0    0    -1  
 $EndComp
-Text GLabel 6800 2300 0    50   Input ~ 0
+Text GLabel 6850 3700 0    50   Input ~ 0
 FC_RST
 Text GLabel 6800 2200 0    50   Input ~ 0
 FC_DIO0
@@ -84,9 +84,9 @@ Text GLabel 1650 1650 0    50   Input ~ 0
 FC_5V
 Text GLabel 1650 1550 0    50   Input ~ 0
 CSM5VCur
-Text GLabel 1650 1150 0    50   Input ~ 0
-FC_3V3
 Text GLabel 1650 1250 0    50   Input ~ 0
+FC_3V3
+Text GLabel 1650 1150 0    50   Input ~ 0
 CSM3V3Cur
 Text GLabel 3750 1650 2    50   Input ~ 0
 CSM5VGain0
@@ -114,7 +114,7 @@ Text GLabel 8200 2400 2    50   Input ~ 0
 FC2D_CLK
 Text GLabel 8200 1350 2    50   Input ~ 0
 ADC_CLK
-Text GLabel 6850 3700 0    50   Input ~ 0
+Text GLabel 6800 2800 0    50   Input ~ 0
 PWR_EN
 Text GLabel 3750 1150 2    50   Input ~ 0
 CSM3V3Gain0
@@ -942,7 +942,7 @@ C9 44 60 4D 92 BC B6 A0 F2 80 D2 E1 20 5A AF 6C D6 15 BD 5E 60 21 F0 EB FF 00 E0
 A4 DB 00 00 00 00 49 45 4E 44 AE 42 60 82 
 EndData
 $EndBitmap
-Text GLabel 6800 2800 0    50   Input ~ 0
+Text GLabel 6800 2300 0    50   Input ~ 0
 PWR_PG
 Text Label 2700 1150 0    50   ~ 0
 A0
