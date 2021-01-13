@@ -1,5 +1,19 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP 1050752001
+D CONN TIP JACK SOLDER RED
+F https://www.digikey.com/en/products/detail/105-0752-001/J109-ND/5887?itemSeq=349572028
+$ENDCMP
+#
+$CMP 1050753001
+D CONN TIP JACK SOLDER BLACK
+F https://www.digikey.com/en/products/detail/105-0753-001/J110-ND/5888?itemSeq=349572030
+$ENDCMP
+#
+$CMP 5281
+F https://www.keyelco.com/product.cfm/product_id/14628/stepAccess/2813779
+$ENDCMP
+#
 $CMP 573100D00010G
 D AAVID THERMALLOY - 573100D00010G - HEAT SINK TO-252
 F https://componentsearchengine.com/Datasheets/1/573100D00010G.pdf
@@ -27,16 +41,32 @@ K Power MOSFET
 F https://www.infineon.com/dgdl/irf7807z.pdf?fileId=5546d462533600a4015356085b231ce6
 $ENDCMP
 #
+$CMP IS25LP256D-JMLE
+D IC FLASH 256M SPI 133MHZ 16SOIC
+F https://www.digikey.com/en/products/detail/issi-integrated-silicon-solution-inc/IS25LP256D-JMLE/7567432
+$ENDCMP
+#
 $CMP REE-0505S
 D 200mA Isolated 1W Dual output DC/DC Converter Module, 5V Input Voltage, 5V Output Voltage, SIP7
 K Recom isolated isolation dc-dc converter
 F https://www.mouser.com/datasheet/2/468/REE-958304.pdf
 $ENDCMP
 #
+$CMP SN74LVC1G3157DCK3
+D SPDT Analog IC Switch 2:1 15Ohm
+F https://www.digikey.com/en/products/detail/texas-instruments/SN74LVC1G3157DCK3/10434524
+$ENDCMP
+#
 $CMP SP3003-04ATG
 D ESD Protection Diodes with Low Clamping Voltage, SOT-23-6
 K ESD protection diodes
 F https://m.littelfuse.com/~/media/electronics/datasheets/tvs_diode_arrays/littelfuse_tvs_diode_array_sp3003_datasheet.pdf.pdf
+$ENDCMP
+#
+$CMP SW_DIP_x03
+D 3x DIP Switch, Single Pole Single Throw (SPST) switch, small symbol
+K dip switch
+F https://www.cuidevices.com/product/resource/ds04-254-smt.pdf
 $ENDCMP
 #
 $CMP TPS7A7100_VQFN16_0
@@ -49,6 +79,15 @@ $CMP TPS7A7100_VQFN20
 D 1-A, Fast-Transient, Low-Dropout Voltage Regulator
 K LDO, Voltage Regulator
 F http://www.ti.com/lit/ds/symlink/tps7a7100.pdf
+$ENDCMP
+#
+$CMP TS3A27518EIPWRQ1
+D IC MUX/DEMUX 1X2 24TSSOP
+F https://www.digikey.com/en/products/detail/texas-instruments/TS3A27518EIPWRQ1/2520836
+$ENDCMP
+#
+$CMP TS3A5018DBQR
+F https://www.digikey.com/en/products/detail/texas-instruments/TS3A5018DBQR/705733
 $ENDCMP
 #
 $CMP VCCAUX
