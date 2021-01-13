@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr USLetter 11000 8500
 encoding utf-8
-Sheet 3 5
+Sheet 3 6
 Title "FOBOS Artix-7 a12t DUT - Power Circuitry"
 Date "2020-07-28"
 Rev "1.0"
@@ -49,7 +49,7 @@ $EndComp
 Wire Wire Line
 	6200 2500 6200 2650
 Text GLabel 9000 2200 2    50   Input ~ 0
-FS_3V3
+FC_3V3
 $Comp
 L Device:Polyfuse F1
 U 1 1 5F45A1D8
@@ -254,7 +254,7 @@ AR Path="/5F227C5D/5F45A258" Ref="JP?"  Part="1"
 AR Path="/5F449901/5F45A258" Ref="JP3"  Part="1" 
 F 0 "JP3" H 5350 1785 50  0000 C CNN
 F 1 "Shunt1R" H 5350 1694 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 5350 1550 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 5350 1550 50  0001 C CNN
 F 3 "~" H 5350 1550 50  0001 C CNN
 	1    5350 1550
 	1    0    0    -1  
@@ -265,7 +265,7 @@ U 1 1 5F45A267
 P 4650 1900
 F 0 "JP2" H 4650 2135 50  0000 C CNN
 F 1 "CurProbe" H 4650 2044 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 4650 1900 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 4650 1900 50  0001 C CNN
 F 3 "~" H 4650 1900 50  0001 C CNN
 	1    4650 1900
 	1    0    0    -1  
@@ -283,7 +283,7 @@ U 1 1 5F45A276
 P 6600 1700
 F 0 "J5" H 6519 1375 50  0000 C CNN
 F 1 "Conn_01x02" H 6519 1466 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 6600 1700 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 6600 1700 50  0001 C CNN
 F 3 "~" H 6600 1700 50  0001 C CNN
 	1    6600 1700
 	1    0    0    1   
@@ -503,19 +503,6 @@ Wire Wire Line
 	8450 2200 8550 2200
 Wire Wire Line
 	8850 2200 9000 2200
-$Comp
-L Connector:Conn_01x02_Female J3
-U 1 1 5F55B4A9
-P 1550 1350
-F 0 "J3" H 1442 1025 50  0000 C CNN
-F 1 "Vcore" H 1442 1116 50  0000 C CNN
-F 2 "Connector:Banana_Jack_2Pin" H 1550 1350 50  0001 C CNN
-F 3 "~" H 1550 1350 50  0001 C CNN
-	1    1550 1350
-	-1   0    0    1   
-$EndComp
-Wire Wire Line
-	1750 1250 2000 1250
 Wire Wire Line
 	2000 1250 2000 1650
 $Comp
@@ -529,8 +516,6 @@ F 3 "" H 1850 1450 50  0001 C CNN
 	1    1850 1450
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	1750 1350 1850 1350
 Wire Wire Line
 	1850 1350 1850 1450
 $Bitmap
@@ -2765,7 +2750,7 @@ Wire Wire Line
 Text Notes 1600 2500 0    79   ~ 0
 Soft-Start
 Text GLabel 900  2850 0    50   Input ~ 0
-FS_5V
+FC_5V
 Wire Wire Line
 	900  2850 1050 2850
 Connection ~ 1050 2850
@@ -2796,17 +2781,6 @@ F 3 "" H 6850 1900 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	6300 1900 6850 1900
-$Comp
-L Connector:TestPoint TP1
-U 1 1 5F558A18
-P 3000 2800
-F 0 "TP1" H 2800 2900 50  0000 L CNN
-F 1 "5V" H 2950 3000 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Pad_D2.0mm" H 3200 2800 50  0001 C CNN
-F 3 "~" H 3200 2800 50  0001 C CNN
-	1    3000 2800
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	3000 2800 3000 2850
 Wire Wire Line
@@ -2919,7 +2893,7 @@ U 1 1 5FDCACB9
 P 3050 5150
 F 0 "U8" H 3950 5400 50  0000 C CNN
 F 1 "LTC3569EFE#PBF" H 4200 5300 50  0000 C CNN
-F 2 "" H 3050 5150 50  0001 C CNN
+F 2 "digikey-footprints:TSSOP-20-1EP_W4.4mm" H 3050 5150 50  0001 C CNN
 F 3 "" H 3050 5150 50  0001 C CNN
 	1    3050 5150
 	1    0    0    -1  
@@ -3676,7 +3650,7 @@ Wire Wire Line
 Wire Wire Line
 	8250 4800 8250 4900
 Text GLabel 8000 4650 2    50   Input ~ 0
-FS_3V3
+FC_3V3
 Wire Wire Line
 	8000 4650 7950 4650
 Wire Wire Line
@@ -3699,7 +3673,7 @@ Wire Wire Line
 Wire Wire Line
 	5000 2250 5000 1900
 Text GLabel 4700 3200 1    50   Input ~ 0
-FS_3V3
+FC_3V3
 Wire Wire Line
 	4850 3250 4700 3250
 Wire Wire Line
@@ -3785,4 +3759,87 @@ Wire Wire Line
 	4250 3650 4250 3700
 Wire Wire Line
 	5050 4000 5750 4000
+Wire Wire Line
+	1050 1250 1050 1150
+Wire Wire Line
+	1050 1250 2000 1250
+Wire Wire Line
+	850  1350 1850 1350
+$Comp
+L cerg:1050752001 J8
+U 1 1 5FF5F858
+P 1050 1000
+F 0 "J8" H 1000 1100 50  0000 L CNN
+F 1 "1050752001" H 1128 897 50  0001 L CNN
+F 2 "cerg:105075X001" H 1050 1000 50  0001 C CNN
+F 3 "https://www.digikey.com/en/products/detail/105-0752-001/J109-ND/5887?itemSeq=349572028" H 1050 1000 50  0001 C CNN
+	1    1050 1000
+	1    0    0    -1  
+$EndComp
+$Comp
+L cerg:1050753001 J3
+U 1 1 5FF5FD9D
+P 850 1000
+F 0 "J3" H 800 1100 50  0000 L CNN
+F 1 "1050753001" H 928 897 50  0001 L CNN
+F 2 "cerg:105075X001" H 850 1000 50  0001 C CNN
+F 3 "https://www.digikey.com/en/products/detail/105-0753-001/J110-ND/5888?itemSeq=349572030" H 850 1000 50  0001 C CNN
+	1    850  1000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	850  1150 850  1350
+$Comp
+L cerg:5281 TP5
+U 1 1 5FFD44AC
+P 7150 5050
+F 0 "TP5" H 7228 5042 50  0000 L CNN
+F 1 "5281" H 7228 4997 50  0001 L CNN
+F 2 "cerg:5281" H 7150 5050 50  0001 C CNN
+F 3 "https://www.keyelco.com/product.cfm/product_id/14628/stepAccess/2813779" H 7150 5050 50  0001 C CNN
+	1    7150 5050
+	1    0    0    -1  
+$EndComp
+$Comp
+L cerg:5281 TP6
+U 1 1 5FFD5035
+P 7150 5550
+F 0 "TP6" H 7228 5542 50  0000 L CNN
+F 1 "5281" H 7228 5497 50  0001 L CNN
+F 2 "cerg:5281" H 7150 5550 50  0001 C CNN
+F 3 "https://www.keyelco.com/product.cfm/product_id/14628/stepAccess/2813779" H 7150 5550 50  0001 C CNN
+	1    7150 5550
+	1    0    0    -1  
+$EndComp
+$Comp
+L cerg:5281 TP7
+U 1 1 5FFD53A8
+P 7250 6150
+F 0 "TP7" V 7245 6278 50  0000 L CNN
+F 1 "5281" V 7290 6278 50  0001 L CNN
+F 2 "cerg:5281" H 7250 6150 50  0001 C CNN
+F 3 "https://www.keyelco.com/product.cfm/product_id/14628/stepAccess/2813779" H 7250 6150 50  0001 C CNN
+	1    7250 6150
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	7150 6150 6900 6150
+Connection ~ 6900 6150
+Wire Wire Line
+	7150 5650 6900 5650
+Connection ~ 6900 5650
+Wire Wire Line
+	7150 5150 6900 5150
+Connection ~ 6900 5150
+$Comp
+L cerg:5281 TP1
+U 1 1 6000136A
+P 3000 2700
+F 0 "TP1" H 2950 2850 50  0000 L CNN
+F 1 "5281" H 3078 2647 50  0001 L CNN
+F 2 "cerg:5281" H 3000 2700 50  0001 C CNN
+F 3 "https://www.keyelco.com/product.cfm/product_id/14628/stepAccess/2813779" H 3000 2700 50  0001 C CNN
+	1    3000 2700
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

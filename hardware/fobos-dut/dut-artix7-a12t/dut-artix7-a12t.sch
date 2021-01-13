@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr USLetter 11000 8500
 encoding utf-8
-Sheet 1 5
+Sheet 1 6
 Title "FOBOS Artix-7 a12t DUT"
 Date "2020-07-28"
 Rev "1.0"
@@ -2174,8 +2174,8 @@ $EndSheet
 $Sheet
 S 4100 2650 1850 1000
 U 5F22D594
-F0 "FPGA" 50
-F1 "fpga.sch" 50
+F0 "FPGA 1" 50
+F1 "fpga 1.sch" 50
 F2 "FPGA_CCLK" I L 4100 2850 50 
 $EndSheet
 $Sheet
@@ -2187,4 +2187,10 @@ F2 "FPGA_CCLK" O R 3400 2850 50
 $EndSheet
 Wire Wire Line
 	3400 2850 4100 2850
+$Sheet
+S 4100 4050 1850 1000
+U 6004C151
+F0 "FPGA 2" 50
+F1 "FPGA 2.sch" 50
+$EndSheet
 $EndSCHEMATC
