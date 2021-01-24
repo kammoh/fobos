@@ -2146,11 +2146,8 @@ Text Notes 5450 3300 0    79   ~ 0
 3.3 V, 800mA Supply for Target
 Text Notes 1500 850  0    79   ~ 0
 0.9 - 3.5 V, 1A Supply for Target
-Text GLabel 2600 4550 2    50   Input ~ 0
+Text GLabel 2800 4550 2    50   Input ~ 0
 XADCGND
-Wire Wire Line
-	2600 4550 2450 4550
-Connection ~ 2450 4550
 $Comp
 L cerg:573100D00010G H1
 U 1 1 5E0BF3D5
