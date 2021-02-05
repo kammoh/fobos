@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr USLetter 11000 8500
 encoding utf-8
-Sheet 2 6
+Sheet 2 7
 Title "FOBOS Artix-7 a12t DUT - Connectors, IO"
 Date "2020-07-28"
 Rev "1.0"
@@ -2661,7 +2661,7 @@ U 1 1 5F280E02
 P 8200 5650
 F 0 "J2" H 8250 6067 50  0000 C CNN
 F 1 "Pmod 2x6" H 8250 5976 50  0000 C CNN
-F 2 "" H 8200 5650 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x06_P2.54mm_Horizontal" H 8200 5650 50  0001 C CNN
 F 3 "~" H 8200 5650 50  0001 C CNN
 	1    8200 5650
 	1    0    0    -1  
@@ -2774,8 +2774,6 @@ Wire Wire Line
 	8000 5850 7850 5850
 Wire Wire Line
 	7850 5850 7850 6050
-Wire Wire Line
-	8250 6350 8250 6250
 Wire Wire Line
 	8250 6350 8550 6350
 Wire Wire Line
@@ -2905,17 +2903,6 @@ Text GLabel 4000 2500 0    50   Input ~ 0
 FC_3V3
 Wire Wire Line
 	4000 2500 4250 2500
-$Comp
-L cerg:VCCIO #PWR0111
-U 1 1 5F26D720
-P 8250 6250
-F 0 "#PWR0111" H 8250 6100 50  0001 C CNN
-F 1 "VCCIO" V 8150 6350 50  0000 C CNN
-F 2 "" H 8250 6250 50  0001 C CNN
-F 3 "" H 8250 6250 50  0001 C CNN
-	1    8250 6250
-	1    0    0    -1  
-$EndComp
 Text GLabel 9900 3700 2    50   Input ~ 0
 (Aux)FC_PROG
 Text GLabel 9900 3900 2    50   Input ~ 0
@@ -3277,4 +3264,21 @@ F 3 "" H 3450 6500 50  0001 C CNN
 	1    3450 6500
 	1    0    0    -1  
 $EndComp
+Text Notes 7100 6500 0    50   ~ 0
+Make footprint compatible with Digilent inc PMOD standard
+$Comp
+L power:+3V3 #PWR?
+U 1 1 60336087
+P 8250 6300
+AR Path="/5F3A1954/60336087" Ref="#PWR?"  Part="1" 
+AR Path="/5F20DA36/60336087" Ref="#PWR0111"  Part="1" 
+F 0 "#PWR0111" H 8250 6150 50  0001 C CNN
+F 1 "+3V3" H 8265 6473 50  0000 C CNN
+F 2 "" H 8250 6300 50  0001 C CNN
+F 3 "" H 8250 6300 50  0001 C CNN
+	1    8250 6300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8250 6300 8250 6350
 $EndSCHEMATC

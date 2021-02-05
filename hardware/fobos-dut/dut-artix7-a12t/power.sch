@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr USLetter 11000 8500
 encoding utf-8
-Sheet 3 6
+Sheet 3 7
 Title "FOBOS Artix-7 a12t DUT - Power Circuitry"
 Date "2020-07-28"
 Rev "1.0"
@@ -245,7 +245,6 @@ F 3 "~" H 2000 1900 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	2250 1900 2150 1900
-Connection ~ 5800 1900
 $Comp
 L Jumper:Jumper_2_Open JP?
 U 1 1 5F45A258
@@ -3176,24 +3175,14 @@ Connection ~ 2350 7000
 Wire Wire Line
 	2350 7000 2350 7050
 $Comp
-L Device:L L3
-U 1 1 5FEB8D5C
-P 5150 5150
-F 0 "L3" V 5200 5400 50  0000 C CNN
-F 1 "1.5uH" V 5100 5150 50  0000 C CNN
-F 2 "" H 5150 5150 50  0001 C CNN
-F 3 "~" H 5150 5150 50  0001 C CNN
-	1    5150 5150
-	0    -1   -1   0   
-$EndComp
-$Comp
 L Device:L L4
 U 1 1 5FEB9D2F
 P 5150 5650
 F 0 "L4" V 5200 5850 50  0000 C CNN
 F 1 "3.3uH" V 5100 5650 50  0000 C CNN
-F 2 "" H 5150 5650 50  0001 C CNN
-F 3 "~" H 5150 5650 50  0001 C CNN
+F 2 "cerg:L_BRC2012" H 5150 5650 50  0001 C CNN
+F 3 "https://www.digikey.com/en/products/detail/taiyo-yuden/BRC2012T3R3MD/2648984?s=N4IgTCBcDaIEICUDCYAMBGMAVAzAnAsgCIgC6AvkA" H 5150 5650 50  0001 C CNN
+F 4 "BRC2012T3R3MD" V 5150 5650 50  0001 C CNN "MPN"
 	1    5150 5650
 	0    -1   -1   0   
 $EndComp
@@ -3203,8 +3192,9 @@ U 1 1 5FEBA305
 P 5150 6150
 F 0 "L5" V 5200 6350 50  0000 C CNN
 F 1 "2.2uH" V 5100 6150 50  0000 C CNN
-F 2 "" H 5150 6150 50  0001 C CNN
-F 3 "~" H 5150 6150 50  0001 C CNN
+F 2 "cerg:L_SRN2012" H 5150 6150 50  0001 C CNN
+F 3 "https://www.digikey.com/en/products/detail/bourns-inc/SRN2010-2R2M/4867667?s=N4IgTCBcDaIMoCUByYAMBGVBaMCwFkQBdAXyA" H 5150 6150 50  0001 C CNN
+F 4 "SRN2010-2R2M" V 5150 6150 50  0001 C CNN "MPN"
 	1    5150 6150
 	0    -1   -1   0   
 $EndComp
@@ -3263,8 +3253,6 @@ Wire Wire Line
 	5400 5650 5300 5650
 Wire Wire Line
 	5400 5200 5400 5150
-Wire Wire Line
-	5400 5150 5300 5150
 Wire Wire Line
 	4550 5550 5400 5550
 Wire Wire Line
@@ -3355,7 +3343,6 @@ Wire Wire Line
 	5800 5200 5800 5150
 Wire Wire Line
 	5800 5150 5400 5150
-Connection ~ 5400 5150
 Wire Wire Line
 	5800 5700 5800 5650
 Wire Wire Line
@@ -3765,28 +3752,6 @@ Wire Wire Line
 	1050 1250 2000 1250
 Wire Wire Line
 	850  1350 1850 1350
-$Comp
-L cerg:1050752001 J8
-U 1 1 5FF5F858
-P 1050 1000
-F 0 "J8" H 1000 1100 50  0000 L CNN
-F 1 "1050752001" H 1128 897 50  0001 L CNN
-F 2 "cerg:105075X001" H 1050 1000 50  0001 C CNN
-F 3 "https://www.digikey.com/en/products/detail/105-0752-001/J109-ND/5887?itemSeq=349572028" H 1050 1000 50  0001 C CNN
-	1    1050 1000
-	1    0    0    -1  
-$EndComp
-$Comp
-L cerg:1050753001 J3
-U 1 1 5FF5FD9D
-P 850 1000
-F 0 "J3" H 800 1100 50  0000 L CNN
-F 1 "1050753001" H 928 897 50  0001 L CNN
-F 2 "cerg:105075X001" H 850 1000 50  0001 C CNN
-F 3 "https://www.digikey.com/en/products/detail/105-0753-001/J110-ND/5888?itemSeq=349572030" H 850 1000 50  0001 C CNN
-	1    850  1000
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	850  1150 850  1350
 $Comp
@@ -3841,5 +3806,42 @@ F 2 "cerg:5281" H 3000 2700 50  0001 C CNN
 F 3 "https://www.keyelco.com/product.cfm/product_id/14628/stepAccess/2813779" H 3000 2700 50  0001 C CNN
 	1    3000 2700
 	1    0    0    -1  
+$EndComp
+$Comp
+L cerg:575-8 J3
+U 1 1 600F8577
+P 850 1000
+F 0 "J3" H 650 1000 50  0000 L CNN
+F 1 "575-8" H 500 900 50  0000 L CNN
+F 2 "cerg:575-8" H 850 1000 50  0001 C CNN
+F 3 "https://www.digikey.com/en/products/detail/keystone-electronics/575-8/318495" H 850 1000 50  0001 C CNN
+	1    850  1000
+	1    0    0    -1  
+$EndComp
+$Comp
+L cerg:575-8 J8
+U 1 1 600F8CD5
+P 1050 1000
+F 0 "J8" H 1128 988 50  0000 L CNN
+F 1 "575-8" H 1128 897 50  0000 L CNN
+F 2 "cerg:575-8" H 1050 1000 50  0001 C CNN
+F 3 "https://www.digikey.com/en/products/detail/keystone-electronics/575-8/318495" H 1050 1000 50  0001 C CNN
+	1    1050 1000
+	1    0    0    -1  
+$EndComp
+Connection ~ 5400 5150
+Wire Wire Line
+	5400 5150 5300 5150
+$Comp
+L Device:L L3
+U 1 1 5FEB8D5C
+P 5150 5150
+F 0 "L3" V 5200 5400 50  0000 C CNN
+F 1 "1.5uH" V 5100 5150 50  0000 C CNN
+F 2 "cerg:L_SRN2012" H 5150 5150 50  0001 C CNN
+F 3 "https://www.mouser.com/ProductDetail/Bourns/SRN2012-1R5M/?qs=U0ECReq1GB%2FS6CSJ%2FWDZfQ%3D%3D" H 5150 5150 50  0001 C CNN
+F 4 "SRN2012-1R5M" V 5150 5150 50  0001 C CNN "MPN"
+	1    5150 5150
+	0    -1   -1   0   
 $EndComp
 $EndSCHEMATC
