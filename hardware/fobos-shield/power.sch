@@ -2284,59 +2284,39 @@ Text GLabel 7700 1800 0    50   Input ~ 0
 CSMVarGain1
 Text GLabel 7700 1900 0    50   Input ~ 0
 CSMVarGain0
-Text GLabel 7700 1500 0    50   Input ~ 0
+Text GLabel 7000 1500 0    50   Input ~ 0
 CSMVarCur
-$Comp
-L Connector_Generic:Conn_01x01 J23
-U 1 1 5FF37AD7
-P 7500 1350
-F 0 "J23" H 7450 1250 50  0000 L CNN
-F 1 "CSM5VCur" H 7600 1350 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 7500 1350 50  0001 C CNN
-F 3 "~" H 7500 1350 50  0001 C CNN
-	1    7500 1350
-	-1   0    0    1   
-$EndComp
 Wire Wire Line
 	7850 1800 7700 1800
 Wire Wire Line
 	7850 1900 7700 1900
-Wire Wire Line
-	7850 1500 7800 1500
-Wire Wire Line
-	7700 1350 7800 1350
-Wire Wire Line
-	7800 1350 7800 1500
-Connection ~ 7800 1500
-Wire Wire Line
-	7800 1500 7700 1500
-Text GLabel 6900 2150 0    50   Input ~ 0
+Text GLabel 6300 2150 0    50   Input ~ 0
 XADCGND
 $Comp
 L Device:C C63
 U 1 1 5FFCCD7D
-P 7000 1650
-F 0 "C63" H 6750 1700 50  0000 L CNN
-F 1 "100n" H 6650 1600 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 7038 1500 50  0001 C CNN
-F 3 "~" H 7000 1650 50  0001 C CNN
-	1    7000 1650
+P 6500 1750
+F 0 "C63" H 6250 1800 50  0000 L CNN
+F 1 "100n" H 6150 1700 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6538 1600 50  0001 C CNN
+F 3 "~" H 6500 1750 50  0001 C CNN
+	1    6500 1750
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	8250 2100 8250 2150
 Connection ~ 8250 2150
 Wire Wire Line
-	7000 1800 7000 2150
+	6500 1900 6500 2150
 Wire Wire Line
-	6900 2150 7000 2150
-Connection ~ 7000 2150
+	6300 2150 6500 2150
+Connection ~ 6500 2150
 Wire Wire Line
-	7000 2150 8250 2150
+	6500 2150 7050 2150
 Wire Wire Line
-	7000 1500 7000 1150
+	6500 1600 6500 1150
 Wire Wire Line
-	7000 1150 8250 1150
+	6500 1150 8250 1150
 Wire Wire Line
 	8250 1150 8250 1300
 Wire Wire Line
@@ -2403,7 +2383,7 @@ Wire Wire Line
 	9550 2000 9500 2000
 Wire Wire Line
 	9500 2000 9500 2150
-Connection ~ 7000 1150
+Connection ~ 6500 1150
 Wire Wire Line
 	9400 1350 9400 850 
 Connection ~ 9400 1350
@@ -2414,16 +2394,16 @@ Wire Wire Line
 Wire Wire Line
 	8250 2150 8700 2150
 Wire Wire Line
-	7000 1150 6900 1150
+	6500 1150 6250 1150
 $Comp
 L power:+5V #PWR0172
 U 1 1 601A0BC8
-P 6900 1150
-F 0 "#PWR0172" H 6900 1000 50  0001 C CNN
-F 1 "+5V" H 6915 1323 50  0000 C CNN
-F 2 "" H 6900 1150 50  0001 C CNN
-F 3 "" H 6900 1150 50  0001 C CNN
-	1    6900 1150
+P 6250 1150
+F 0 "#PWR0172" H 6250 1000 50  0001 C CNN
+F 1 "+5V" H 6265 1323 50  0000 C CNN
+F 2 "" H 6250 1150 50  0001 C CNN
+F 3 "" H 6250 1150 50  0001 C CNN
+	1    6250 1150
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -2576,6 +2556,40 @@ F 3 "~" H 5600 7400 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	5400 7400 5400 7600
+$Comp
+L Connector:Conn_Coaxial_Power J?
+U 1 1 6026AA4A
+P 7050 1600
+F 0 "J?" H 7138 1596 50  0000 L CNN
+F 1 "Conn_Coaxial_Power" H 7138 1505 50  0000 L CNN
+F 2 "Connector_Coaxial:SMA_Amphenol_901-144_Vertical" H 7050 1550 50  0001 C CNN
+F 3 "~" H 7050 1550 50  0001 C CNN
+	1    7050 1600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J?
+U 1 1 60274E1F
+P 7700 1300
+F 0 "J?" H 7650 1400 50  0000 L CNN
+F 1 "CSM5VCur" H 7000 1350 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 7700 1300 50  0001 C CNN
+F 3 "~" H 7700 1300 50  0001 C CNN
+	1    7700 1300
+	0    1    -1   0   
+$EndComp
+Wire Wire Line
+	7700 1500 7850 1500
+Wire Wire Line
+	7000 1500 7050 1500
+Wire Wire Line
+	7050 1500 7600 1500
+Connection ~ 7050 1500
+Wire Wire Line
+	7050 1800 7050 2150
 Wire Bus Line
 	2700 2850 3500 2850
+Connection ~ 7050 2150
+Wire Wire Line
+	7050 2150 8250 2150
 $EndSCHEMATC
