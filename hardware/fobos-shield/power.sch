@@ -2557,10 +2557,10 @@ $EndComp
 Wire Wire Line
 	5400 7400 5400 7600
 $Comp
-L Connector:Conn_Coaxial_Power J?
+L Connector:Conn_Coaxial_Power J23
 U 1 1 6026AA4A
 P 7050 1600
-F 0 "J?" H 7138 1596 50  0000 L CNN
+F 0 "J23" H 7138 1596 50  0000 L CNN
 F 1 "Conn_Coaxial_Power" H 7138 1505 50  0000 L CNN
 F 2 "Connector_Coaxial:SMA_Amphenol_901-144_Vertical" H 7050 1550 50  0001 C CNN
 F 3 "~" H 7050 1550 50  0001 C CNN
@@ -2568,10 +2568,10 @@ F 3 "~" H 7050 1550 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x02 J?
+L Connector_Generic:Conn_01x02 J28
 U 1 1 60274E1F
 P 7700 1300
-F 0 "J?" H 7650 1400 50  0000 L CNN
+F 0 "J28" H 7650 1400 50  0000 L CNN
 F 1 "CSM5VCur" H 7000 1350 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 7700 1300 50  0001 C CNN
 F 3 "~" H 7700 1300 50  0001 C CNN
@@ -2587,9 +2587,9 @@ Wire Wire Line
 Connection ~ 7050 1500
 Wire Wire Line
 	7050 1800 7050 2150
-Wire Bus Line
-	2700 2850 3500 2850
 Connection ~ 7050 2150
 Wire Wire Line
 	7050 2150 8250 2150
+Wire Bus Line
+	2700 2850 3500 2850
 $EndSCHEMATC
