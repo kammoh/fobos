@@ -56,7 +56,7 @@ AR Path="/5F449901/600D00D8" Ref="D?"  Part="1"
 AR Path="/600CE672/600D00D8" Ref="D2"  Part="1" 
 F 0 "D2" V 1947 2428 60  0000 L CNN
 F 1 "LG_L29K-G2J1-24-Z" V 2053 2428 60  0001 L CNN
-F 2 "digikey-footprints:0603" H 2250 2450 60  0001 L CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 2250 2450 60  0001 L CNN
 F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 2250 2550 60  0001 L CNN
 F 4 "475-2709-1-ND" H 2250 2650 60  0001 L CNN "Digi-Key_PN"
 F 5 "LG L29K-G2J1-24-Z" H 2250 2750 60  0001 L CNN "MPN"
@@ -77,7 +77,7 @@ P 2050 2600
 AR Path="/5F449901/600D00E4" Ref="R?"  Part="1" 
 AR Path="/600CE672/600D00E4" Ref="R57"  Part="1" 
 F 0 "R57" V 2250 2600 50  0000 C CNN
-F 1 "800R" V 2150 2600 50  0000 C CNN
+F 1 "470R" V 2150 2600 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1980 2600 50  0001 C CNN
 F 3 "~" H 2050 2600 50  0001 C CNN
 	1    2050 2600
@@ -166,7 +166,7 @@ P 4100 2650
 AR Path="/5F449901/600D0FAE" Ref="R?"  Part="1" 
 AR Path="/600CE672/600D0FAE" Ref="R58"  Part="1" 
 F 0 "R58" V 4300 2650 50  0000 C CNN
-F 1 "800R" V 4200 2650 50  0000 C CNN
+F 1 "470R" V 4200 2650 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 4030 2650 50  0001 C CNN
 F 3 "~" H 4100 2650 50  0001 C CNN
 	1    4100 2650
@@ -191,28 +191,6 @@ Wire Wire Line
 	3800 1850 3800 2000
 Wire Wire Line
 	3800 2000 4100 2000
-$Comp
-L dk_Transistors-FETs-MOSFETs-Single:FDV301N Q?
-U 1 1 600D2B55
-P 5950 3100
-AR Path="/5F449901/600D2B55" Ref="Q?"  Part="1" 
-AR Path="/600CE672/600D2B55" Ref="Q6"  Part="1" 
-F 0 "Q6" H 6058 3153 60  0000 L CNN
-F 1 "FDV301N" H 6058 3047 60  0000 L CNN
-F 2 "digikey-footprints:SOT-23-3" H 6150 3300 60  0001 L CNN
-F 3 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 6150 3400 60  0001 L CNN
-F 4 "FDV301NCT-ND" H 6150 3500 60  0001 L CNN "Digi-Key_PN"
-F 5 "FDV301N" H 6150 3600 60  0001 L CNN "MPN"
-F 6 "Discrete Semiconductor Products" H 6150 3700 60  0001 L CNN "Category"
-F 7 "Transistors - FETs, MOSFETs - Single" H 6150 3800 60  0001 L CNN "Family"
-F 8 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 6150 3900 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/on-semiconductor/FDV301N/FDV301NCT-ND/458954" H 6150 4000 60  0001 L CNN "DK_Detail_Page"
-F 10 "MOSFET N-CH 25V 220MA SOT-23" H 6150 4100 60  0001 L CNN "Description"
-F 11 "ON Semiconductor" H 6150 4200 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 6150 4300 60  0001 L CNN "Status"
-	1    5950 3100
-	1    0    0    -1  
-$EndComp
 $Comp
 L power:GND #PWR?
 U 1 1 600D2B5B
@@ -255,7 +233,7 @@ P 5950 2650
 AR Path="/5F449901/600D2B76" Ref="R?"  Part="1" 
 AR Path="/600CE672/600D2B76" Ref="R59"  Part="1" 
 F 0 "R59" V 6150 2650 50  0000 C CNN
-F 1 "800R" V 6050 2650 50  0000 C CNN
+F 1 "470R" V 6050 2650 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 5880 2650 50  0001 C CNN
 F 3 "~" H 5950 2650 50  0001 C CNN
 	1    5950 2650
@@ -502,4 +480,130 @@ Wire Wire Line
 	7150 2700 7350 2700
 Text Notes 9400 2100 0    50   ~ 0
 User Button_1
+$Comp
+L dk_Transistors-FETs-MOSFETs-Single:FDV301N Q?
+U 1 1 602D02E9
+P 2050 5550
+AR Path="/5F449901/602D02E9" Ref="Q?"  Part="1" 
+AR Path="/600CE672/602D02E9" Ref="Q6"  Part="1" 
+F 0 "Q6" H 2158 5603 60  0000 L CNN
+F 1 "FDV301N" H 2158 5497 60  0000 L CNN
+F 2 "digikey-footprints:SOT-23-3" H 2250 5750 60  0001 L CNN
+F 3 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 2250 5850 60  0001 L CNN
+F 4 "FDV301NCT-ND" H 2250 5950 60  0001 L CNN "Digi-Key_PN"
+F 5 "FDV301N" H 2250 6050 60  0001 L CNN "MPN"
+F 6 "Discrete Semiconductor Products" H 2250 6150 60  0001 L CNN "Category"
+F 7 "Transistors - FETs, MOSFETs - Single" H 2250 6250 60  0001 L CNN "Family"
+F 8 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 2250 6350 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/on-semiconductor/FDV301N/FDV301NCT-ND/458954" H 2250 6450 60  0001 L CNN "DK_Detail_Page"
+F 10 "MOSFET N-CH 25V 220MA SOT-23" H 2250 6550 60  0001 L CNN "Description"
+F 11 "ON Semiconductor" H 2250 6650 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 2250 6750 60  0001 L CNN "Status"
+	1    2050 5550
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 602D02EF
+P 2050 6300
+AR Path="/5F449901/602D02EF" Ref="#PWR?"  Part="1" 
+AR Path="/600CE672/602D02EF" Ref="#PWR022"  Part="1" 
+F 0 "#PWR022" H 2050 6050 50  0001 C CNN
+F 1 "GND" H 2055 6127 50  0000 C CNN
+F 2 "" H 2050 6300 50  0001 C CNN
+F 3 "" H 2050 6300 50  0001 C CNN
+	1    2050 6300
+	1    0    0    -1  
+$EndComp
+$Comp
+L dk_LED-Indication-Discrete:LG_L29K-G2J1-24-Z D?
+U 1 1 602D02FE
+P 2050 4750
+AR Path="/5F449901/602D02FE" Ref="D?"  Part="1" 
+AR Path="/600CE672/602D02FE" Ref="D5"  Part="1" 
+F 0 "D5" V 1947 4928 60  0000 L CNN
+F 1 "LG_L29K-G2J1-24-Z" V 2053 4928 60  0001 L CNN
+F 2 "digikey-footprints:0603" H 2250 4950 60  0001 L CNN
+F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 2250 5050 60  0001 L CNN
+F 4 "475-2709-1-ND" H 2250 5150 60  0001 L CNN "Digi-Key_PN"
+F 5 "LG L29K-G2J1-24-Z" H 2250 5250 60  0001 L CNN "MPN"
+F 6 "Optoelectronics" H 2250 5350 60  0001 L CNN "Category"
+F 7 "LED Indication - Discrete" H 2250 5450 60  0001 L CNN "Family"
+F 8 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 2250 5550 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/osram-opto-semiconductors-inc/LG-L29K-G2J1-24-Z/475-2709-1-ND/1938876" H 2250 5650 60  0001 L CNN "DK_Detail_Page"
+F 10 "LED GREEN DIFFUSED 0603 SMD" H 2250 5750 60  0001 L CNN "Description"
+F 11 "OSRAM Opto Semiconductors Inc." H 2250 5850 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 2250 5950 60  0001 L CNN "Status"
+	1    2050 4750
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 602D0304
+P 2050 5100
+AR Path="/5F449901/602D0304" Ref="R?"  Part="1" 
+AR Path="/600CE672/602D0304" Ref="R69"  Part="1" 
+F 0 "R69" V 2250 5100 50  0000 C CNN
+F 1 "470R" V 2150 5100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1980 5100 50  0001 C CNN
+F 3 "~" H 2050 5100 50  0001 C CNN
+	1    2050 5100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2050 5350 2050 5250
+Wire Wire Line
+	2050 4950 2050 4850
+Wire Wire Line
+	1750 5650 1550 5650
+Wire Wire Line
+	1550 5650 1300 5650
+Connection ~ 1550 5650
+Wire Wire Line
+	2050 4450 2050 4550
+Text GLabel 1800 4300 2    50   Input ~ 0
+FC_3V3
+Wire Wire Line
+	1800 4300 1750 4300
+Wire Wire Line
+	1750 4300 1750 4450
+Wire Wire Line
+	1750 4450 2050 4450
+$Comp
+L Device:R R?
+U 1 1 602D0314
+P 1550 5900
+AR Path="/5F449901/602D0314" Ref="R?"  Part="1" 
+AR Path="/600CE672/602D0314" Ref="R68"  Part="1" 
+F 0 "R68" V 1343 5900 50  0000 C CNN
+F 1 "10KR" V 1434 5900 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1480 5900 50  0001 C CNN
+F 3 "~" H 1550 5900 50  0001 C CNN
+	1    1550 5900
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2050 5750 2050 6150
+Wire Wire Line
+	1550 6050 1550 6150
+Wire Wire Line
+	1550 6150 2050 6150
+Connection ~ 2050 6150
+Wire Wire Line
+	2050 6150 2050 6300
+Wire Wire Line
+	1550 5750 1550 5650
+Text Notes 1750 4150 0    50   ~ 0
+User LED_4
+$Comp
+L Transistor_FET:BSS138 Q7
+U 1 1 602D521D
+P 5850 3100
+F 0 "Q7" H 6054 3146 50  0000 L CNN
+F 1 "BSS138" H 6054 3055 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 6050 3025 50  0001 L CIN
+F 3 "https://www.fairchildsemi.com/datasheets/BS/BSS138.pdf" H 5850 3100 50  0001 L CNN
+	1    5850 3100
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

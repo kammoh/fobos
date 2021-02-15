@@ -3024,12 +3024,8 @@ F 3 "http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF" H 6850 2050 50  0001 C 
 	1    6850 2050
 	1    0    0    1   
 $EndComp
-Text GLabel 1550 5050 0    50   Input ~ 0
+Text GLabel 1750 5250 0    50   Input ~ 0
 FC_PROG
-Text GLabel 2700 5550 0    50   Input ~ 0
-FD_TF
-Text GLabel 2700 5350 0    50   Input ~ 0
-SW_DONE
 Text Notes 2200 4050 0    79   ~ 0
 Programming/DUT Communication Switches
 $Comp
@@ -3098,170 +3094,70 @@ FPGA\nPin
 $Comp
 L Device:R R?
 U 1 1 60131BF4
-P 1850 5250
+P 2050 5450
 AR Path="/5F227C5D/60131BF4" Ref="R?"  Part="1" 
 AR Path="/5F20DA36/60131BF4" Ref="R51"  Part="1" 
-F 0 "R51" V 1750 5200 50  0000 L CNN
-F 1 "10KR" V 1950 5150 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 1780 5250 50  0001 C CNN
-F 3 "~" H 1850 5250 50  0001 C CNN
-	1    1850 5250
+F 0 "R51" V 1950 5400 50  0000 L CNN
+F 1 "10KR" V 2150 5350 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1980 5450 50  0001 C CNN
+F 3 "~" H 2050 5450 50  0001 C CNN
+	1    2050 5450
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	1850 5100 1850 5050
-$Comp
-L cerg:TS3A27518EIPWRQ1 U7
-U 1 1 601820C1
-P 3000 4950
-F 0 "U7" H 3650 5000 50  0000 C CNN
-F 1 "TS3A27518EIPWRQ1" H 4000 3400 50  0000 C CNN
-F 2 "Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm" H 4000 5200 50  0001 C CNN
-F 3 "https://www.digikey.com/en/products/detail/texas-instruments/TS3A27518EIPWRQ1/2520836" H 4000 5200 50  0001 C CNN
-	1    3000 4950
-	1    0    0    -1  
-$EndComp
-Text GLabel 2700 5850 0    50   Input ~ 0
-FC_DIO0_MUX
-Text GLabel 2700 5750 0    50   Input ~ 0
-SW_CLK
-Text GLabel 2700 5950 0    50   Input ~ 0
-FC_DIO0
-Text GLabel 2700 6300 0    50   Input ~ 0
-FC_DIO1
-Text GLabel 2700 6200 0    50   Input ~ 0
-FC_DIO1_MUX
-Text GLabel 2700 6100 0    50   Input ~ 0
-SW_DIN
-Text GLabel 4250 5550 2    50   Input ~ 0
-FC_DIO2
-Text GLabel 4250 5350 2    50   Input ~ 0
-SW_PROGRAM_B
-Text GLabel 4250 5450 2    50   Input ~ 0
-FC_DIO2_MUX
-Text GLabel 4250 5850 2    50   Input ~ 0
-FC_DIO3_MUX
-Text GLabel 4250 5750 2    50   Input ~ 0
-SW_INIT_B
-Text GLabel 4250 5950 2    50   Input ~ 0
-FC_DIO3
-Wire Wire Line
-	2700 5350 2900 5350
-Wire Wire Line
-	2700 5550 2900 5550
-Wire Wire Line
-	2700 5750 2900 5750
-Wire Wire Line
-	2700 5850 2900 5850
-Wire Wire Line
-	2700 5950 2900 5950
-Wire Wire Line
-	2700 6100 2900 6100
-Wire Wire Line
-	2700 6200 2900 6200
-Wire Wire Line
-	2700 6300 2900 6300
-Wire Wire Line
-	4250 5350 4050 5350
-Wire Wire Line
-	4250 5450 4050 5450
-Wire Wire Line
-	4250 5550 4050 5550
-Wire Wire Line
-	4250 5750 4050 5750
-Wire Wire Line
-	4250 5850 4050 5850
-Wire Wire Line
-	4250 5950 4050 5950
+	2050 5300 2050 5250
 $Comp
 L Device:C C?
 U 1 1 6025643D
-P 4350 4700
+P 4850 5500
 AR Path="/5F227C5D/6025643D" Ref="C?"  Part="1" 
 AR Path="/5F20DA36/6025643D" Ref="C54"  Part="1" 
-F 0 "C54" V 4200 4650 50  0000 L CNN
-F 1 "100nF" V 4500 4550 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 4388 4550 50  0001 C CNN
-F 3 "~" H 4350 4700 50  0001 C CNN
-	1    4350 4700
+F 0 "C54" V 4700 5450 50  0000 L CNN
+F 1 "100nF" V 5000 5350 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 4888 5350 50  0001 C CNN
+F 3 "~" H 4850 5500 50  0001 C CNN
+	1    4850 5500
 	1    0    0    -1  
 $EndComp
-Text GLabel 4500 4450 2    50   Input ~ 0
+Text GLabel 5000 5250 2    50   Input ~ 0
 FC_3V3
 Wire Wire Line
-	3450 4850 3450 4450
+	4850 5350 4850 5250
+Connection ~ 4850 5250
 Wire Wire Line
-	3450 4450 4150 4450
-Wire Wire Line
-	4350 4550 4350 4450
-Connection ~ 4350 4450
-Wire Wire Line
-	4350 4450 4500 4450
-Wire Wire Line
-	4050 5050 4150 5050
-Wire Wire Line
-	4150 5050 4150 4450
-Connection ~ 4150 4450
-Wire Wire Line
-	4150 4450 4350 4450
+	4850 5250 5000 5250
 $Comp
 L power:GND #PWR?
 U 1 1 602946AE
-P 4350 4850
+P 4850 5650
 AR Path="/5B6C87CC/602946AE" Ref="#PWR?"  Part="1" 
 AR Path="/5B5AB131/602946AE" Ref="#PWR?"  Part="1" 
 AR Path="/5BE3725D/602946AE" Ref="#PWR?"  Part="1" 
 AR Path="/5F227C5D/602946AE" Ref="#PWR?"  Part="1" 
 AR Path="/5F20DA36/602946AE" Ref="#PWR041"  Part="1" 
-F 0 "#PWR041" H 4350 4600 50  0001 C CNN
-F 1 "GND" H 4355 4677 50  0000 C CNN
-F 2 "" H 4350 4850 50  0001 C CNN
-F 3 "" H 4350 4850 50  0001 C CNN
-	1    4350 4850
+F 0 "#PWR041" H 4850 5400 50  0001 C CNN
+F 1 "GND" H 4855 5477 50  0000 C CNN
+F 2 "" H 4850 5650 50  0001 C CNN
+F 3 "" H 4850 5650 50  0001 C CNN
+	1    4850 5650
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1550 5050 1850 5050
-Wire Wire Line
-	2900 5050 2800 5050
-Connection ~ 1850 5050
+	1750 5250 2050 5250
 $Comp
 L power:GND #PWR?
 U 1 1 602A9678
-P 1850 5400
+P 2050 5600
 AR Path="/5B6C87CC/602A9678" Ref="#PWR?"  Part="1" 
 AR Path="/5B5AB131/602A9678" Ref="#PWR?"  Part="1" 
 AR Path="/5BE3725D/602A9678" Ref="#PWR?"  Part="1" 
 AR Path="/5F227C5D/602A9678" Ref="#PWR?"  Part="1" 
 AR Path="/5F20DA36/602A9678" Ref="#PWR039"  Part="1" 
-F 0 "#PWR039" H 1850 5150 50  0001 C CNN
-F 1 "GND" H 1855 5227 50  0000 C CNN
-F 2 "" H 1850 5400 50  0001 C CNN
-F 3 "" H 1850 5400 50  0001 C CNN
-	1    1850 5400
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2900 5150 2800 5150
-Wire Wire Line
-	2800 5150 2800 5050
-Connection ~ 2800 5050
-Wire Wire Line
-	2800 5050 1850 5050
-$Comp
-L power:GND #PWR?
-U 1 1 602B3FF7
-P 3450 6500
-AR Path="/5B6C87CC/602B3FF7" Ref="#PWR?"  Part="1" 
-AR Path="/5B5AB131/602B3FF7" Ref="#PWR?"  Part="1" 
-AR Path="/5BE3725D/602B3FF7" Ref="#PWR?"  Part="1" 
-AR Path="/5F227C5D/602B3FF7" Ref="#PWR?"  Part="1" 
-AR Path="/5F20DA36/602B3FF7" Ref="#PWR040"  Part="1" 
-F 0 "#PWR040" H 3450 6250 50  0001 C CNN
-F 1 "GND" H 3455 6327 50  0000 C CNN
-F 2 "" H 3450 6500 50  0001 C CNN
-F 3 "" H 3450 6500 50  0001 C CNN
-	1    3450 6500
+F 0 "#PWR039" H 2050 5350 50  0001 C CNN
+F 1 "GND" H 2055 5427 50  0000 C CNN
+F 2 "" H 2050 5600 50  0001 C CNN
+F 3 "" H 2050 5600 50  0001 C CNN
+	1    2050 5600
 	1    0    0    -1  
 $EndComp
 Text Notes 7100 6500 0    50   ~ 0
@@ -3281,4 +3177,100 @@ F 3 "" H 8250 6300 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	8250 6300 8250 6350
+$Comp
+L cerg:TS3A5018DBQR U7
+U 1 1 602ABBA0
+P 3100 5150
+F 0 "U7" H 3425 5315 50  0000 C CNN
+F 1 "TS3A5018DBQR" H 3425 5224 50  0000 C CNN
+F 2 "cerg:SSOP-16_4.0x5.0mm_P0.635mm" H 3000 5400 50  0001 C CNN
+F 3 "https://www.digikey.com/en/products/detail/texas-instruments/TS3A5018DBQR/705733" H 3000 5400 50  0001 C CNN
+	1    3100 5150
+	1    0    0    -1  
+$EndComp
+Text GLabel 2900 5450 0    50   Input ~ 0
+SW_CLK
+Text GLabel 2900 5350 0    50   Input ~ 0
+FC_DIO0_MUX
+Text GLabel 2900 5550 0    50   Input ~ 0
+FC_DIO0
+Text GLabel 2900 5750 0    50   Input ~ 0
+SW_DIN
+Text GLabel 2900 5650 0    50   Input ~ 0
+FC_DIO1_MUX
+Text GLabel 2900 5850 0    50   Input ~ 0
+FC_DIO1
+Text GLabel 4000 5950 2    50   Input ~ 0
+FC_DIO3
+Text GLabel 4000 5750 2    50   Input ~ 0
+FC_DIO3_MUX
+Text GLabel 4000 5850 2    50   Input ~ 0
+SW_INIT_B
+Text GLabel 4000 5650 2    50   Input ~ 0
+FC_DIO2
+Text GLabel 4000 5450 2    50   Input ~ 0
+FC_DIO2_MUX
+Text GLabel 4000 5550 2    50   Input ~ 0
+SW_PROGRAM_B
+Wire Wire Line
+	3000 5250 2050 5250
+Connection ~ 2050 5250
+Wire Wire Line
+	3000 5350 2900 5350
+Wire Wire Line
+	3000 5450 2900 5450
+Wire Wire Line
+	3000 5550 2900 5550
+Wire Wire Line
+	3000 5650 2900 5650
+Wire Wire Line
+	3000 5750 2900 5750
+Wire Wire Line
+	3000 5850 2900 5850
+Wire Wire Line
+	4000 5450 3850 5450
+Wire Wire Line
+	4000 5550 3850 5550
+Wire Wire Line
+	4000 5650 3850 5650
+Wire Wire Line
+	4000 5750 3850 5750
+Wire Wire Line
+	4000 5850 3850 5850
+Wire Wire Line
+	4000 5950 3850 5950
+Wire Wire Line
+	3850 5250 4000 5250
+Wire Wire Line
+	3850 5350 4000 5350
+Wire Wire Line
+	4000 5350 4000 5250
+Connection ~ 4000 5250
+Wire Wire Line
+	4000 5250 4850 5250
+Text GLabel 2650 6500 0    50   Input ~ 0
+SW_DONE
+Text GLabel 2650 6900 0    50   Input ~ 0
+FD_TF
+$Comp
+L Device:R R?
+U 1 1 603A6505
+P 2850 6700
+AR Path="/5F227C5D/603A6505" Ref="R?"  Part="1" 
+AR Path="/5F20DA36/603A6505" Ref="R67"  Part="1" 
+F 0 "R67" V 2750 6650 50  0000 L CNN
+F 1 "0R" V 2950 6600 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2780 6700 50  0001 C CNN
+F 3 "~" H 2850 6700 50  0001 C CNN
+	1    2850 6700
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2850 6550 2850 6500
+Wire Wire Line
+	2850 6500 2650 6500
+Wire Wire Line
+	2850 6850 2850 6900
+Wire Wire Line
+	2850 6900 2650 6900
 $EndSCHEMATC

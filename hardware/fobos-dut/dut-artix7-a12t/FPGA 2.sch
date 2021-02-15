@@ -16,14 +16,14 @@ $EndDescr
 $Comp
 L cerg:XC7A12T-CSG325 U?
 U 5 1 6008248E
-P 2850 6150
+P 3550 5850
 AR Path="/5F22D594/6008248E" Ref="U?"  Part="5" 
 AR Path="/6004C151/6008248E" Ref="U1"  Part="5" 
-F 0 "U1" H 2850 6917 50  0000 C CNN
-F 1 "XC7A12T-CSG325" H 2850 6826 50  0000 C CNN
-F 2 "Package_BGA:Xilinx_CSG325" H 2850 6150 50  0001 C CNN
-F 3 "https://www.xilinx.com/support/documentation/data_sheets/ds180_7Series_Overview.pdf" H 2850 6150 50  0001 C CNN
-	5    2850 6150
+F 0 "U1" H 3550 6617 50  0000 C CNN
+F 1 "XC7A12T-CSG325" H 3550 6526 50  0000 C CNN
+F 2 "Package_BGA:Xilinx_CSG325" H 3550 5850 50  0001 C CNN
+F 3 "https://www.xilinx.com/support/documentation/data_sheets/ds180_7Series_Overview.pdf" H 3550 5850 50  0001 C CNN
+	5    3550 5850
 	1    0    0    -1  
 $EndComp
 $Comp
