@@ -1,177 +1,472 @@
-##FOBOS control board class
-##GMU
-##Author: Abubakr Abdulgadir
-##March 2019
+#############################################################################
+#                                                                           #
+#   Copyright 2020 CERG                                                     #
+#                                                                           #
+#   Licensed under the Apache License, Version 2.0 (the "License");         #
+#   you may not use this file except in compliance with the License.        #
+#   You may obtain a copy of the License at                                 #
+#                                                                           #
+#       http://www.apache.org/licenses/LICENSE-2.0                          #
+#                                                                           #
+#   Unless required by applicable law or agreed to in writing, software     #
+#   distributed under the License is distributed on an "AS IS" BASIS,       #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
+#   See the License for the specific language governing permissions and     #
+#   limitations under the License.                                          #
+#                                                                           #
+#############################################################################
+# FOBOS PYNQ control board class
+# Author: Abubakr Abdulgadir
+# GMU
+# Feb 25 2020
+# This class hides the Control Board hardware and provides easy to use
+# methods to configure and run operations on the DUT
+# This class will interface to a PYNQ Z-1 board
+# The board includes an ARM Cortex A9 processor
+# This uses a protocol to talk to the PYNQ board
+# The connection used is a gigabit ethernet connection
 
-from .fobosctrl import FOBOSCtrl
-import pynq.lib.dma
-from pynq import Xlnk
+import socket
+import pickle
 import numpy as np
-from pynq import Overlay
-from .clkwizard import ClockWizard
-from .openadc import OpenADC
+from sys import exit
+from .fobosctrl import FOBOSCtrl
+from .hardware_mgr import HardwareManager
 
+RCV_BYTES = 512
 
 class PYNQCtrl(FOBOSCtrl):
-    #status codes
-    OK                  = 0x00
-    ERROR               = 0x01
-    TIMEOUT             = 0x02
-    #dutcomm register offsets
-    dutcomm_START       = 0x00
-    dutcomm_STATUS      = 0x04
-    dutcomm_INTERFACE   = 0x08
-    dutcomm_EXP_OUT_LEN = 0x0c
-    ##########################
-    #dutctrl register offsets
-    dutctrl_TRGLEN      = 0x00
-    dutctrl_TRGWIAT     = 0x04
-    dutctrl_TRGMODE     = 0x08
-    dutctrl_FORCE_RST   = 0x1c
-    ###trigger modes
-    TRG_NORM            = 0X00
-    TRG_FULL            = 0x01
-    TRG_NORM_CLK        = 0x02
-    TRG_FULL_CLK        = 0x03
-    ###interface types - 4bit interface is default
-    INTERFACE_4BIT      = 0x00
-    INTERFACE_8BIT      = 0x01
-    ##########################
-    #constants
-    
-    def __init__(self, overlay):
-        self.model = "FOBOS-CTRL-PYNQ-Z1"
-        self.STATUS_LEN = 4
+    """
+    Class to wrap protocol to interface with PYNQ controller.
+    """
+
+    def __init__(self, ip, port= 9999):
+        """Init method
+        Parameters:
+        -----
+        ip   : string
+            PYNQ ip address.
+        port : int
+            port where PYNQ server is listening.
+        """
+        # get hardware
+        self.hm = HardwareManager()
+        if self.hm.lock():
+            print('Acquired hardware lock')
+        else:
+            print('Hardware is in use by another user, please try agian later. Exitting')
+            exit()
+
+        self.magic = '20200225'
         self.outLen = 0
-        self.dma = overlay.axi_dma_0
-        self.dutcomm = overlay.dutcomm_0
-        self.dutctrl = overlay.dut_controller_0
-        self.dutClkWizard =overlay.clk_wiz
-        #io buffers
-        self.xlnk = Xlnk()
-        # self.input_buffer = xlnk.cma_array(shape=(int(inputSize / 4),), dtype=np.uint32)
-        # self.output_buffer = xlnk.cma_array(shape=(int(outputSize / 4),), dtype=np.uint32)
-        # self.setOutLen(int(outputSize/4))
-        self.input_buffer = None
-        self.output_buffer = None
-        self.inputSize = 0
+        self.MSG_LEN_SIZE = 10
+        self.STATUS_SIZE = 4
+        self.OPCODE_SIZE = 4
+        self.timeToReset = 0
+        # error codes
+        # self.OK = bytearray([0x00, 0x00, 0x00, 0x00])
+        # self.ERROR = bytearray([0x01, 0x00, 0x00, 0x00])
+        # self.TIMEOUT = bytearray([0x02, 0x00, 0x00, 0x00])
+        self.model = "PYNQ-Z1"
+        try:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket.connect((ip, port))
+        except Exception as  e:
+            print(e)
+            # release hw
+            self.hm.unlock()
+        self.config = "# Acquisition parameters:\n"
 
-    def setDUTClk(self, clkFreq):
-        self.dutClkWizard.setClock0Freq(clkFreq)       
-        #self.dutClkWizard.write(0x200, 0x00000102)
-        #self.dutClkWizard.write(0x208, 0x00000064)
-        #self.dutClkWizard.write(0x25c, 0x00000003)
+    def detectHardware(self):
+        pass
 
-    def __del__(self):
-        #not sure if necessay
-        self.input_buffer.freebuffer()
-        self.output_buffer.freebuffer()
-        
-    def processData(self, data):
-        """
-        Sends data to FOBOS hardware for processing, e.g. encryption
-        data: The data to be processed. This is a hexadecimal string.
-        returns: the result of processing, e.g. ciphertext
-        """
-        inputSize = len(data)/2
-        # print(f'inputSize={inputSize}')
-        if self.inputSize != inputSize:
-            if self.input_buffer is not None:
-                self.input_buffer.freebuffer()
-            self.input_buffer = self.xlnk.cma_array(shape=(int(inputSize / 4),), dtype=np.uint32)
+    def sendMsg(self, opcode, param):
+        try:
+            ##send cmd
+            param = pickle.dumps(param)
+            msg = bytes(f'{len(param) + self.OPCODE_SIZE :<{self.MSG_LEN_SIZE}}' + f'{opcode:<{self.OPCODE_SIZE}}', 'utf-8') + param
+            # print(msg)
+            self.socket.send(msg)
+        except Exception as e:
+            print(e)
+            print('Erorr encountered while sending message. Exitting.')
+            exit()
 
-        #put data in the buffer as 32bit integers
-        data = data.strip()
-        testVector = [int(data[i:i+8],16) for i in range(0, len(data), 8)]
-        for i in range(0, len(testVector)):
-            self.input_buffer[i] = testVector[i]
-        #send via DMA
-        self.dma.recvchannel.transfer(self.output_buffer) #configure dma to receive
-        self.dma.sendchannel.transfer(self.input_buffer)  #configure dma to send 
-        self.dma.sendchannel.wait()
-        self.dma.recvchannel.wait()
-        result = ''.join(['{:08x}'.format(self.output_buffer[i]) for i in range(0, int(self.outLen / 4))])
-        ##get result in correct format
-        result2 = ''
-        for i in range(len(result)):
-            if (i % 2 == 0 and i != 0):
-                result2 += ' '
-            result2 += result[i]       
-        return result2
+    def recvMsg(self):
+        # print('receiving..')
+        full_msg = b''
+        new_msg = True
+        while True:
+            try:
+                msg = self.socket.recv(RCV_BYTES)
+                if new_msg:
+                    # print(f'new msg size is {msg[:self.MSG_LEN_SIZE]}')
+                    msg_len = int(msg[:self.MSG_LEN_SIZE])
+                    new_msg = False
+                full_msg += msg
+                if len(full_msg) - self.MSG_LEN_SIZE ==msg_len:
+                    # print(full_msg[self.MSG_LEN_SIZE:])
+                    response = pickle.loads(full_msg[self.MSG_LEN_SIZE + self.STATUS_SIZE:])
+                    # response = full_msg[MSG_LEN_SIZE + STATUS_SIZE:]
+                    # print(f'response = {response}')
+                    status = 0
+                    break
+            except Exception as e:
+                print(e)
+                print('Error encountered while receiving message. Exiting.')
+                exit()
+        return status, response
+
+    def processData(self, data, outLen):
+        self.sendMsg(FOBOSCtrl.PROCESS, data)
+        status, response = self.recvMsg()
+        return status, response
+
+    def processData2(self, data, outLen):
+        self.sendMsg(FOBOSCtrl.PROCESS_GET_TRACE, data)
+        status, response = self.recvMsg()
+        # print(response)
+        result, trace = response
+        trace = np.array(trace, dtype=np.uint16)
+        # result = ""
+        return status, result, trace
 
     def getModel(self):
+        """
+        The model of the control board
+        Returns:
+        -----
+        model: srting
+            The model of the control board
+        """
         return self.model
     
+    def getMagicNumber(self, devFile=None):
+        pass
+
     def setOutLen(self, outLen):
         """
         set Expected Output Length (outLen)
+        parameters:
+        -----
+        outLen : int
+            The number of output bytes to be returned by the DUT
+            (e.g 16 for AES-128)
+        Returns: int
+            Status
         """
         self.outLen = outLen
-        print('outlen')
-        print(outLen)
-        print(type(outLen))
-        self.dutcomm.write(PYNQCtrl.dutcomm_EXP_OUT_LEN, int(outLen / 4))
-        if self.output_buffer is not None:
-            self.output_buffer.freebuffer()
-        self.output_buffer = self.xlnk.cma_array(shape=(int(outLen / 4),), dtype=np.uint32)
+        # print(f'outlen={outLen}')
+        self.config += f'OUT_LEN = {outLen}\n'
+        self.sendMsg(opcode=FOBOSCtrl.OUT_LEN, param=outLen)
+        status, _ = self.recvMsg()
+        return status
 
-
-    def getOutLen(self):
-        """
-        get Expected Output Length (outLen)
-        """
-        return self.dutcomm.read(PYNQCtrl.dutcomm_EXP_OUT_LEN)
-    
     def setTriggerWait(self, trigWait):
         """
         set number of trigger wait cycles
+        parameters:
+        -----
+        trigWait : int
+            The number of DUT cycles after di_ready geos to 0
+            to issue the trigger.
+        Returns: int
+            Status
         """
-        self.dutctrl.write(PYNQCtrl.dutctrl_TRGWIAT, trigWait)
+        self.sendMsg(opcode=FOBOSCtrl.TRIG_WAIT, param=trigWait)
+        status, _ = self.recvMsg()
+        return status
 
-    def getTriggerWait(self):
-        """
-        get number of trigger wait cycles
-        """
-        return self.dutctrl.read(PYNQCtrl.dutctrl_TRGWIAT)
-        
     def setTriggerLen(self, trigLen):
         """
-        set number of trigger length in cycles
+        set trigger length
+        parameters:
+        -----
+        trigLen : int
+            The number of DUT cycles to keep trigger set.
+        Returns: int
+            Status
         """
-        self.dutctrl.write(PYNQCtrl.dutctrl_TRGLEN, trigLen)
+        self.sendMsg(FOBOSCtrl.TRG_LEN, trigLen)
+        status, _ = self.recvMsg()
+        return status
 
-    def getTriggerLen(self):
+    def setTriggerMode(self, trigType):
         """
-        get number of trigger length in cycles
+        set trigger mode
+        parameters:
+        -----
+        trigType : int
+            Possible values
+            TRG_NORM      = 0
+            TRG_FULL      = 1
+            TRG_NORM_CLK  = 2
+            TRG_FULL_CLK  = 3
+        Returns: int
+        -----
+            Status
         """
-        return self.dutctrl.read(PYNQCtrl.dutctrl_TRGLEN)
-    
-    
-    def setTriggerMode(self, trigMode):
+        self.sendMsg(FOBOSCtrl.TRG_MODE, trigType)
+        status, _ = self.recvMsg()
+        return status
+
+    def setTimeToReset(self, dutCycles):
         """
-        set trigger type
+        set number of clock cycles after di_ready goes to 0
+        to reset the DUT.
+        parameters:
+        -----
+        dutCycles : int
+            The number of DUT cycles to reset the DUT.
+        Returns: int
         """
-        self.dutctrl.write(PYNQCtrl.dutctrl_TRGMODE, trigMode)
-        
+        self.timeToReset = dutCycles
+        self.sendMsg(FOBOSCtrl.TIME_TO_RST, dutCycles)
+        status, _ = self.recvMsg()
+        return status
+
+    def getTimeToReset(self):
+        """
+        get number of clock cycles after di_ready goes to 0
+        to reset the DUT.
+        Returns:
+        -----
+        int
+            The number of clock cycle to reset DUT.
+        """
+        return self.timeToReset
+
+    def setTimeout(self, seconds):
+        """
+        set number of seconds to stop waiting for DUT result.
+        parameters:
+        -----
+        seconds : int
+            Time in seconds. Range 1-40 seconds.
+        Returns: int
+        """
+        self.timeout = seconds
+        self.sendMsg(FOBOSCtrl.TIMEOUT, seconds)
+        status, _ = self.recvMsg()
+        return status
+
+    def enableTestMode(self):
+        """
+        enable test mode. When this mode is enabled, the controller
+        sends test-vectors to its internal dummy DUT.
+
+        Returns:
+        -----
+        int
+            Status
+        """
+        pass
+
+    def disableTestMode(self):
+        """
+        Disable test mode. In this mode the ctrl board uses the real DUT.
+        This is the default mode.
+
+        Returns:
+        -----
+        int
+            status
+        """
+        pass
+
     def forceReset(self):
         """
-        set reset ctrl and DUT
+        Reset DUT
+
+        Returns:
+        -----
+        int
+            status
         """
-        self.dutctrl.write(PYNQCtrl.dutctrl_FORCE_RST, 1)
-    
+        self.sendMsg(FOBOSCtrl.FORCE_RST, 0)
+        status, _ = self.recvMsg()
+        return status
+
     def releaseReset(self):
         """
-        set reset ctrl and DUT
-        """
-        self.dutctrl.write(PYNQCtrl.dutctrl_FORCE_RST, 0)
+        Release  DUT reset signal
 
-    def getTriggerMode(self):
+        Returns:
+        -----
+        int
+            status
         """
-        get trigger type
+        self.sendMsg(FOBOSCtrl.RELEASE_RST, 0)
+        status, _ = self.recvMsg()
+        return status
+
+
+    def setDUTClk(self, clkFreqMhz):
         """
-        return self.dutctrl.read(PYNQCtrl.dutctrl_TRGMODE)
-    
-    def setDUTInterface(self, interfaceType):
-        self.dutcomm.write(PYNQCtrl.dutcomm_INTERFACE, interfaceType)
-    
-   
+        set DUT clock frequency generated by the control board.
+        range is between 0.4 MHz - 100 MHz.
+        parameters:
+        -----
+        clkFreqMhz : float
+            The DUT clock frequency in Mhz
+        Returns:
+        -----
+        int
+            status
+        """
+        # clkFreqMhz = int(clkFreqMhz)
+        if clkFreqMhz > 100 or clkFreqMhz < 0.4:
+            # print("Error: DUT clock must be between 100MHz and 0.4MHz")
+            raise ValueError("Error: DUT clock must be between 0.4 MHz and 100 MHz")
+        self.config += f'DUT_CLK = {clkFreqMhz}\n'
+        self.sendMsg(FOBOSCtrl.SET_DUT_CLK, clkFreqMhz * 1000)
+        status, _ = self.recvMsg()
+        return status
+
+    def loadKey(self, key):
+        """
+        set the key value in the control board.
+        parameters:
+        -----
+        key : string
+            Key to send to ctrl board in hex format
+        Returns:
+        -----
+        int
+            status
+        """
+        self.sendMsg(FOBOSCtrl.SET_KEY, key)
+        status, _ = self.recvMsg()
+        return status
+
+
+    def loadData(self, data):
+        pass
+
+    def run(self):
+        pass
+
+    def getResult(self):
+        pass
+
+    def setPowerGlitchEnable(self, val):
+        """
+        set power glithcer enable bit.
+        parameters:
+        -----
+        val : Integer
+            1 = enable, 0 = disable
+        Returns:
+        -----
+        int
+            status
+        """
+        print("enable glitch")
+        self.sendMsg(FOBOSCtrl.POWER_GLITCH_ENABLE, val)
+        status, _ = self.recvMsg()
+        return status
+
+    def setPowerGlitchWait(self, waitCycles):
+        """
+        set the power glitcher wait cycles.
+        parameters:
+        -----
+        waitCycles : int
+            The cycles to wait before relasing the glicth pattern
+        Returns:
+        -----
+        int
+            status
+        """
+        # print("set glitch wait")
+        self.sendMsg(FOBOSCtrl.POWER_GLITCH_WAIT, waitCycles)
+        status, _ = self.recvMsg()
+        return status
+
+
+    def setPowerGlitchPattern(self, pattern):
+        """
+        set the power glitch pattern reg
+        parameters:
+        -----
+        pattern : string
+            The pattern to set for glitch. The pattern is 64 bits written into 2 registers
+        Returns:
+        -----
+        int
+            status
+        """
+        print("pattern")
+        pattern0 = int(pattern[8:16], 16) #lsb
+        pattern1 = int(pattern[0:8], 16) #msb
+        print('pattern=' + pattern)
+        print('pattern0=' + str(pattern0))
+        print(pattern[0:7])
+        print('pattern1=' + str(pattern1))
+        print(pattern[8:15])
+        self.sendMsg(FOBOSCtrl.POWER_GLITCH_PATTERN0, pattern0)
+        self.sendMsg(FOBOSCtrl.POWER_GLITCH_PATTERN1, pattern1)
+        status, _ = self.recvMsg()
+        return status
+
+    def disconnect(self):
+        self.sendMsg(FOBOSCtrl.DISCONNECT, "")
+        status, response = self.recvMsg()
+        # print(response)
+        self.socket.close()
+        #release lock
+        self.hm.unlock()
+        return status, response
+
+    def setDUTInterface(self, interface):
+        self.sendMsg(FOBOSCtrl.SET_DUT_INTERFACE, interface)
+        status, _ = self.recvMsg()
+        return status
+
+    def setSamplingFrequency(self, freq):
+        freq = int(freq)
+        if freq > 100 or freq < 1:
+            raise ValueError("Error: Sampling frequency must be an integer between 1 MHz and 100 MHz")
+        self.config += f'SAMPLING_FREQ = {freq}\n'
+        self.sendMsg(FOBOSCtrl.SET_SAMPLING_FREQ, freq)
+        status, _ = self.recvMsg()
+        return status
+
+    def setADCGain(self, gain):
+        gain = int(gain)
+        if gain > 60 or gain < 0:
+            raise ValueError("Error: ADC gain must be an integer between 0 and 60")
+        self.config += f'ADC_GAIN = {gain}\n'
+        self.sendMsg(FOBOSCtrl.SET_ADC_GAIN, gain)
+        status, _ = self.recvMsg()
+        return status
+
+    def setSamplesPerTrace(self, samplesPerTrace):
+        if samplesPerTrace > 2**17  or samplesPerTrace < 0:
+            raise ValueError("Error: SamplesPerTrace must be between 0 and 2**17")
+        self.config += f'SAMPLES_PER_TRACE = {samplesPerTrace}\n'
+        self.sendMsg(FOBOSCtrl.SET_SAMPLES_PER_TRACE, samplesPerTrace)
+        status, _ = self.recvMsg()
+        return status
+
+
+
+def main():
+    import time
+    ctrl = PYNQCtrl('192.168.10.99', 9995)
+    status = ctrl.setTriggerWait(5)
+    print(status)
+    time.sleep(3)
+    status = ctrl.setTriggerLen(6)
+    print(status)
+    status = ctrl.setTimeToReset(10)
+    print(status)
+    status = ctrl.setPowerGlitchWait(5)
+    print(status)
+    # data = [1,2,3]
+    # status, resp = ctrl.processData(data, 10)
+    # print(status)
+    # print(resp)
+    ctrl.disconnect()
+if __name__=='__main__':
+    main()
