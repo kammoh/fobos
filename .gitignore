@@ -43,3 +43,4 @@ capture/ctrl/basys3ctrl/vivado/basys3ctrl
 .settings/
 .library_mapping.xml
 docs/build/*
+fp-info-cache
