@@ -174,7 +174,7 @@ class ProjectManager():
 
     def copyTools(self, captureDir):
         currDir = self.getCurrentDir()
-        viewPlotsFile = os.path.join(currDir ,'tools/viewPlots.py')
+        viewPlotsFile = os.path.join(currDir ,'foboslib/viewPlots.py')
         shutil.copy(viewPlotsFile, captureDir)
 
 
