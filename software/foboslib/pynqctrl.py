@@ -54,7 +54,7 @@ class PYNQCtrl(FOBOSCtrl):
         if self.hm.lock():
             print('Acquired hardware lock')
         else:
-            print('Hardware is in use by another user, please try agian later. Exitting')
+            print('Hardware is in use by another user, please try again later. Exiting')
             exit()
 
         self.magic = '20200225'

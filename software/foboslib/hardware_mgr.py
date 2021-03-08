@@ -11,7 +11,7 @@ class HardwareManager():
         while True:
             toc = time.time()
             if toc - tic > self.TIMEOUT:
-                print('Hardware manager: timeout while waiting for control board. Please try agin later.')
+                print('Hardware manager: timeout while waiting for control board. Please try again later.')
                 return False
             if not self.isLocked():
                 try:
@@ -25,7 +25,7 @@ class HardwareManager():
             time.sleep(1)
 
     def isLocked(self):
-        return False # WORKAROUND for single user mode
+#        return False # WORKAROUND for single user mode
         return os.path.isfile(self.LOCK_FILE_PATH)
     
     def unlock(self):
