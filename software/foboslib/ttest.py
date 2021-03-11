@@ -20,7 +20,7 @@ import numpy as np
 import os
 import argparse
 import matplotlib.pyplot as plt
-from console_progressbar import ProgressBar
+#from console_progressbar import ProgressBar  # produces error
 
 class Ttest():
 
@@ -37,7 +37,7 @@ class Ttest():
         return np.divide((mean0 - mean1), np.sqrt(((var0/numTraces) + (var1/(numTraces)))))
 
     def doTtest(self, traceFile0, traceFile1, numTraces, step, analysisDir):
-        pb = ProgressBar(total=100,prefix='Progress:', suffix='', decimals=2, length=50, fill='=', zfill='.')
+        #pb = ProgressBar(total=100,prefix='Progress:', suffix='', decimals=2, length=50, fill='=', zfill='.')
         traces0 = np.load(traceFile0, mmap_mode='r')
         traces1 = np.load(traceFile1, mmap_mode='r')
 
@@ -55,7 +55,7 @@ class Ttest():
         start = 0
         t = np.array([])
         i = 0
-        pb.print_progress_bar(0)
+        #pb.print_progress_bar(0)
         while not done:
             end = start + step
             if end > samplesPerTrace:
@@ -65,7 +65,7 @@ class Ttest():
             chunk0 = traces0[0:numTraces,start:end]
             chunk1 = traces1[0:numTraces,start:end]
             t = np.append(t,self.calcTValue(chunk0, chunk1))
-            pb.print_progress_bar(float(i * step) / samplesPerTrace * 100)
+            #pb.print_progress_bar(float(i * step) / samplesPerTrace * 100)
             #print(t)
             start = end
             i += 1

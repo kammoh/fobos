@@ -21,7 +21,6 @@
 # Aug 7 2018
 # This class provide constants used by fobos contoller protocol
 
-import os
 
 class FOBOSCtrl:
 
@@ -31,7 +30,7 @@ class FOBOSCtrl:
     # config parameters numbers. Each number can serve as register number
     # or array index. These parameters must be sent to the hardware board.
     OUT_LEN = 0
-    TRIG_WAIT = 1
+    TRG_WAIT = 1
     TRG_LEN = 2
     TRG_MODE = 3
     TIME_TO_RST = 4
@@ -49,15 +48,13 @@ class FOBOSCtrl:
     POWER_GLITCH_PATTERN3 = 16 #reserved
     SET_DUT_INTERFACE = 17
     DISCONNECT = 18
-      ####ADC
+    ####ADC
     SET_SAMPLING_FREQ = 19
     SET_ADC_GAIN = 20
     SET_SAMPLES_PER_TRACE = 21
-
+    
     PROCESS = 100
     PROCESS_GET_TRACE = 101
-
- 
 
     # Trigger parameters
     TRG_NORM = 0
@@ -72,3 +69,5 @@ class FOBOSCtrl:
     INTERFACE_4BIT      = 0x00
     INTERFACE_8BIT      = 0x01
     ##########################
+
+    
