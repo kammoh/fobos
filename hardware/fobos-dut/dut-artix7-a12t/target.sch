@@ -2411,7 +2411,7 @@ F 3 "http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF" H 9250 2050 50  0001 C 
 	1    9250 2050
 	1    0    0    1   
 $EndComp
-Text GLabel 9900 2150 2    50   Input ~ 0
+Text GLabel 8600 1950 0    50   Input ~ 0
 FC_DIO0
 Text GLabel 9900 1950 2    50   Input ~ 0
 FC_DIO1
@@ -2422,8 +2422,8 @@ Wire Wire Line
 Wire Wire Line
 	9750 2150 9800 2150
 Wire Wire Line
-	8600 2150 8700 2150
-Text GLabel 8600 1950 0    50   Input ~ 0
+	8600 3700 8700 3700
+Text GLabel 9900 3700 2    50   Input ~ 0
 FC_IO
 Connection ~ 8700 1950
 Wire Wire Line
@@ -2441,7 +2441,6 @@ Wire Wire Line
 	8750 2350 8700 2350
 Wire Wire Line
 	8700 2350 8700 2150
-Connection ~ 8700 2150
 Wire Wire Line
 	8700 2150 8750 2150
 Wire Wire Line
@@ -2505,10 +2504,8 @@ F 3 "" H 9250 2750 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	9250 2750 9250 2650
-Text GLabel 8600 3700 0    50   Input ~ 0
+Text GLabel 9900 3900 2    50   Input ~ 0
 FC2D_CLK
-Wire Wire Line
-	8600 3700 8700 3700
 Wire Wire Line
 	8600 3900 8700 3900
 Wire Wire Line
@@ -2519,7 +2516,6 @@ Wire Wire Line
 	8700 3700 8700 3500
 Wire Wire Line
 	8700 3500 8750 3500
-Connection ~ 8700 3700
 Wire Wire Line
 	8700 3700 8750 3700
 Wire Wire Line
@@ -2903,16 +2899,16 @@ Text GLabel 4000 2500 0    50   Input ~ 0
 FC_3V3
 Wire Wire Line
 	4000 2500 4250 2500
-Text GLabel 9900 3700 2    50   Input ~ 0
-(Aux)FC_PROG
-Text GLabel 9900 3900 2    50   Input ~ 0
+Text GLabel 7500 2150 2    50   Input ~ 0
+FC_PROG
+Text GLabel 8600 2150 0    50   Input ~ 0
 FD_TF
 Text GLabel 8600 3900 0    50   Input ~ 0
 FD2C_CLK
+Text GLabel 9900 2150 2    50   Input ~ 0
+FC2D_HS
 Text GLabel 6200 2150 0    50   Input ~ 0
-(Ready)FC2D_HS
-Text GLabel 7500 2150 2    50   Input ~ 0
-(Valid)FD2C_HS
+FD2C_HS
 Wire Wire Line
 	7200 1300 7250 1300
 Connection ~ 6850 1300
@@ -2920,7 +2916,7 @@ Wire Wire Line
 	6900 1300 6850 1300
 Wire Wire Line
 	6750 1300 6850 1300
-Text GLabel 8600 2150 0    50   Input ~ 0
+Text GLabel 8600 3700 0    50   Input ~ 0
 FC_RST
 Text Notes 7650 1100 0    79   ~ 0
 ESD Protection
@@ -3273,4 +3269,25 @@ Wire Wire Line
 	2850 6850 2850 6900
 Wire Wire Line
 	2850 6900 2650 6900
+Connection ~ 8700 3700
+Wire Wire Line
+	8600 2150 8700 2150
+Connection ~ 8700 2150
+$Comp
+L power:GND #PWR?
+U 1 1 60694C99
+P 2850 6100
+AR Path="/5F227C5D/60694C99" Ref="#PWR?"  Part="1" 
+AR Path="/5F20DA36/60694C99" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 2850 5850 50  0001 C CNN
+F 1 "GND" H 2855 5927 50  0000 C CNN
+F 2 "" H 2850 6100 50  0001 C CNN
+F 3 "" H 2850 6100 50  0001 C CNN
+	1    2850 6100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3000 5950 2850 5950
+Wire Wire Line
+	2850 5950 2850 6100
 $EndSCHEMATC
