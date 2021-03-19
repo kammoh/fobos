@@ -14,28 +14,6 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L dk_Transistors-FETs-MOSFETs-Single:FDV301N Q?
-U 1 1 600D00C3
-P 2050 3050
-AR Path="/5F449901/600D00C3" Ref="Q?"  Part="1" 
-AR Path="/600CE672/600D00C3" Ref="Q4"  Part="1" 
-F 0 "Q4" H 2158 3103 60  0000 L CNN
-F 1 "FDV301N" H 2158 2997 60  0000 L CNN
-F 2 "digikey-footprints:SOT-23-3" H 2250 3250 60  0001 L CNN
-F 3 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 2250 3350 60  0001 L CNN
-F 4 "FDV301NCT-ND" H 2250 3450 60  0001 L CNN "Digi-Key_PN"
-F 5 "FDV301N" H 2250 3550 60  0001 L CNN "MPN"
-F 6 "Discrete Semiconductor Products" H 2250 3650 60  0001 L CNN "Category"
-F 7 "Transistors - FETs, MOSFETs - Single" H 2250 3750 60  0001 L CNN "Family"
-F 8 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 2250 3850 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/on-semiconductor/FDV301N/FDV301NCT-ND/458954" H 2250 3950 60  0001 L CNN "DK_Detail_Page"
-F 10 "MOSFET N-CH 25V 220MA SOT-23" H 2250 4050 60  0001 L CNN "Description"
-F 11 "ON Semiconductor" H 2250 4150 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 2250 4250 60  0001 L CNN "Status"
-	1    2050 3050
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR?
 U 1 1 600D00C9
 P 2050 3800
@@ -88,11 +66,6 @@ Wire Wire Line
 Wire Wire Line
 	2050 2450 2050 2350
 Wire Wire Line
-	1750 3150 1550 3150
-Wire Wire Line
-	1550 3150 1300 3150
-Connection ~ 1550 3150
-Wire Wire Line
 	2050 1950 2050 2050
 Text GLabel 1800 1800 2    50   Input ~ 0
 FC_3V3
@@ -102,28 +75,6 @@ Wire Wire Line
 	1750 1800 1750 1950
 Wire Wire Line
 	1750 1950 2050 1950
-$Comp
-L dk_Transistors-FETs-MOSFETs-Single:FDV301N Q?
-U 1 1 600D0F8D
-P 4100 3100
-AR Path="/5F449901/600D0F8D" Ref="Q?"  Part="1" 
-AR Path="/600CE672/600D0F8D" Ref="Q5"  Part="1" 
-F 0 "Q5" H 4208 3153 60  0000 L CNN
-F 1 "FDV301N" H 4208 3047 60  0000 L CNN
-F 2 "digikey-footprints:SOT-23-3" H 4300 3300 60  0001 L CNN
-F 3 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 4300 3400 60  0001 L CNN
-F 4 "FDV301NCT-ND" H 4300 3500 60  0001 L CNN "Digi-Key_PN"
-F 5 "FDV301N" H 4300 3600 60  0001 L CNN "MPN"
-F 6 "Discrete Semiconductor Products" H 4300 3700 60  0001 L CNN "Category"
-F 7 "Transistors - FETs, MOSFETs - Single" H 4300 3800 60  0001 L CNN "Family"
-F 8 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 4300 3900 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/on-semiconductor/FDV301N/FDV301NCT-ND/458954" H 4300 4000 60  0001 L CNN "DK_Detail_Page"
-F 10 "MOSFET N-CH 25V 220MA SOT-23" H 4300 4100 60  0001 L CNN "Description"
-F 11 "ON Semiconductor" H 4300 4200 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 4300 4300 60  0001 L CNN "Status"
-	1    4100 3100
-	1    0    0    -1  
-$EndComp
 $Comp
 L power:GND #PWR?
 U 1 1 600D0F93
@@ -176,11 +127,6 @@ Wire Wire Line
 	4100 2900 4100 2800
 Wire Wire Line
 	4100 2500 4100 2400
-Wire Wire Line
-	3800 3200 3600 3200
-Wire Wire Line
-	3600 3200 3350 3200
-Connection ~ 3600 3200
 Wire Wire Line
 	4100 2000 4100 2100
 Text GLabel 3850 1850 2    50   Input ~ 0
@@ -243,11 +189,6 @@ Wire Wire Line
 	5950 2900 5950 2800
 Wire Wire Line
 	5950 2500 5950 2400
-Wire Wire Line
-	5650 3200 5450 3200
-Wire Wire Line
-	5450 3200 5200 3200
-Connection ~ 5450 3200
 Wire Wire Line
 	5950 2000 5950 2100
 Text GLabel 5700 1850 2    50   Input ~ 0
@@ -313,18 +254,12 @@ Connection ~ 5950 3700
 Wire Wire Line
 	5950 3700 5950 3850
 Wire Wire Line
-	5450 3300 5450 3200
-Wire Wire Line
-	3600 3300 3600 3200
-Wire Wire Line
 	3600 3600 3600 3700
 Wire Wire Line
 	3600 3700 4100 3700
 Connection ~ 4100 3700
 Wire Wire Line
 	4100 3700 4100 3850
-Wire Wire Line
-	1550 3150 1550 3250
 Wire Wire Line
 	1550 3550 1550 3650
 Wire Wire Line
@@ -481,28 +416,6 @@ Wire Wire Line
 Text Notes 9400 2100 0    50   ~ 0
 User Button_1
 $Comp
-L dk_Transistors-FETs-MOSFETs-Single:FDV301N Q?
-U 1 1 602D02E9
-P 2050 5550
-AR Path="/5F449901/602D02E9" Ref="Q?"  Part="1" 
-AR Path="/600CE672/602D02E9" Ref="Q6"  Part="1" 
-F 0 "Q6" H 2158 5603 60  0000 L CNN
-F 1 "FDV301N" H 2158 5497 60  0000 L CNN
-F 2 "digikey-footprints:SOT-23-3" H 2250 5750 60  0001 L CNN
-F 3 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 2250 5850 60  0001 L CNN
-F 4 "FDV301NCT-ND" H 2250 5950 60  0001 L CNN "Digi-Key_PN"
-F 5 "FDV301N" H 2250 6050 60  0001 L CNN "MPN"
-F 6 "Discrete Semiconductor Products" H 2250 6150 60  0001 L CNN "Category"
-F 7 "Transistors - FETs, MOSFETs - Single" H 2250 6250 60  0001 L CNN "Family"
-F 8 "https://www.onsemi.com/pub/Collateral/FDV301N-D.PDF" H 2250 6350 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/on-semiconductor/FDV301N/FDV301NCT-ND/458954" H 2250 6450 60  0001 L CNN "DK_Detail_Page"
-F 10 "MOSFET N-CH 25V 220MA SOT-23" H 2250 6550 60  0001 L CNN "Description"
-F 11 "ON Semiconductor" H 2250 6650 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 2250 6750 60  0001 L CNN "Status"
-	1    2050 5550
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR?
 U 1 1 602D02EF
 P 2050 6300
@@ -555,11 +468,6 @@ Wire Wire Line
 Wire Wire Line
 	2050 4950 2050 4850
 Wire Wire Line
-	1750 5650 1550 5650
-Wire Wire Line
-	1550 5650 1300 5650
-Connection ~ 1550 5650
-Wire Wire Line
 	2050 4450 2050 4550
 Text GLabel 1800 4300 2    50   Input ~ 0
 FC_3V3
@@ -591,8 +499,6 @@ Wire Wire Line
 Connection ~ 2050 6150
 Wire Wire Line
 	2050 6150 2050 6300
-Wire Wire Line
-	1550 5750 1550 5650
 Text Notes 1750 4150 0    50   ~ 0
 User LED_4
 $Comp
@@ -606,4 +512,53 @@ F 3 "https://www.fairchildsemi.com/datasheets/BS/BSS138.pdf" H 5850 3100 50  000
 	1    5850 3100
 	1    0    0    -1  
 $EndComp
+$Comp
+L Transistor:BSS138 Q5
+U 1 1 605337F1
+P 4000 3100
+F 0 "Q5" H 4204 3146 50  0000 L CNN
+F 1 "BSS138" H 4204 3055 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 4200 3025 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BSS138-D.PDF" H 4000 3100 50  0001 L CNN
+	1    4000 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor:BSS138 Q4
+U 1 1 60535EA9
+P 1950 3050
+F 0 "Q4" H 2154 3096 50  0000 L CNN
+F 1 "BSS138" H 2154 3005 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 2150 2975 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BSS138-D.PDF" H 1950 3050 50  0001 L CNN
+	1    1950 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor:BSS138 Q6
+U 1 1 60537AA7
+P 1950 5550
+F 0 "Q6" H 2154 5596 50  0000 L CNN
+F 1 "BSS138" H 2154 5505 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 2150 5475 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BSS138-D.PDF" H 1950 5550 50  0001 L CNN
+	1    1950 5550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1750 5550 1550 5550
+Wire Wire Line
+	1550 5550 1550 5750
+Wire Wire Line
+	1750 3050 1550 3050
+Wire Wire Line
+	1550 3050 1550 3250
+Wire Wire Line
+	3800 3100 3600 3100
+Wire Wire Line
+	3600 3100 3600 3300
+Wire Wire Line
+	5650 3100 5450 3100
+Wire Wire Line
+	5450 3100 5450 3300
 $EndSCHEMATC
