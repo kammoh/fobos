@@ -49,6 +49,8 @@ class CPA():
                  plotFontSize=18):
         print("    plotting correlation graph.")
         import matplotlib.pyplot as plt
+        fig = plt.figure()
+        fig.patch.set_facecolor('white')
         plt.figure(figsize=plotSize)
         plt.rcParams.update({'font.size':plotFontSize})
         plt.clf()
@@ -60,10 +62,11 @@ class CPA():
         plt.xlabel("Sample No.")
         plt.ylabel("Correlation (Pearson's r)")
         if fileName is not None:
-            plt.savefig(fileName)
+            plt.savefig(fileName,facecolor=fig.get_facecolor())
         if show == 'yes':
             plt.show()
-        plt.close()
+        plt.close('all')
+
 
     def findCorrectKey(self, C):
         C = np.abs(C)
@@ -128,6 +131,8 @@ class CPA():
         # print(corrData.shape)
         # print(corrData)
         import matplotlib.pyplot as plt
+        fig = plt.figure()
+        fig.patch.set_facecolor('white')
         plt.figure(figsize=plotSize)
         plt.rcParams.update({'font.size':plotFontSize})
         plt.clf()
@@ -148,15 +153,15 @@ class CPA():
         plt.plot(lowVals[:-1], 'b', linewidth=0.5)
 
         if stride != 1:
-            plt.xlabel("Trace No. x {})".format(stride))
+            plt.xlabel("Trace No. x {}".format(stride))
         else:
             plt.xlabel("Trace No.")
         plt.ylabel("Correlation (Pearson's r)")
         if fileName is not None:
-            plt.savefig(fileName)
+            plt.savefig(fileName,facecolor=fig.get_facecolor())
         if show == 'yes':
             plt.show()
-        plt.close()
+        plt.close('all')
 
     def doCPA(self, measuredPower, hypotheticalPower, numTraces,
               analysisDir, MTDStride, numKeys=16, plot=True, plotSize=(10,8),
