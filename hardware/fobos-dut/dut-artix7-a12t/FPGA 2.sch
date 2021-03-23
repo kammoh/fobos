@@ -82,4 +82,16 @@ F 3 "" H 3600 1600 50  0001 C CNN
 	1    3600 1600
 	1    0    0    -1  
 $EndComp
+Text GLabel 5900 3350 0    50   Input ~ 0
+VCORE_CURRENT_GAIN_0
+Text GLabel 5900 3450 0    50   Input ~ 0
+VCORE_CURRENT_GAIN_1
+Wire Wire Line
+	6050 3450 5900 3450
+Wire Wire Line
+	6050 3350 5900 3350
+Text GLabel 5050 4250 2    50   Input ~ 0
+USER_BTN_1
+Wire Wire Line
+	5050 4250 4800 4250
 $EndSCHEMATC
