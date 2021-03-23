@@ -200,7 +200,7 @@ Wire Wire Line
 Wire Wire Line
 	5650 2000 5950 2000
 Text Notes 7200 2100 0    50   ~ 0
-User Button_0
+User Button_1
 $Comp
 L Device:R R?
 U 1 1 6023D6CE
@@ -268,11 +268,11 @@ Connection ~ 2050 3650
 Wire Wire Line
 	2050 3650 2050 3800
 Text Notes 1700 1650 0    50   ~ 0
-User LED_0
+User LED_1
 Text Notes 3800 1700 0    50   ~ 0
-User LED_1\n
+User LED_2\n
 Text Notes 5650 1700 0    50   ~ 0
-User LED_2
+User LED_3
 $Comp
 L dk_Tactile-Switches:1825910-6 S4
 U 1 1 6024F1A6
@@ -414,7 +414,7 @@ Wire Wire Line
 Wire Wire Line
 	7150 2700 7350 2700
 Text Notes 9400 2100 0    50   ~ 0
-User Button_1
+User Button_2
 $Comp
 L power:GND #PWR?
 U 1 1 602D02EF
@@ -561,4 +561,29 @@ Wire Wire Line
 	5650 3100 5450 3100
 Wire Wire Line
 	5450 3100 5450 3300
+Text GLabel 1300 5550 0    50   Input ~ 0
+USER_LED_4
+Wire Wire Line
+	1550 5550 1300 5550
+Connection ~ 1550 5550
+Text GLabel 5200 3100 0    50   Input ~ 0
+USER_LED_3
+Wire Wire Line
+	5450 3100 5200 3100
+Text GLabel 3350 3100 0    50   Input ~ 0
+USER_LED_2
+Wire Wire Line
+	3600 3100 3350 3100
+Text GLabel 1300 3050 0    50   Input ~ 0
+USER_LED_1
+Wire Wire Line
+	1550 3050 1300 3050
+Text GLabel 10550 2700 2    50   Input ~ 0
+USER_BTN_2
+Text GLabel 8450 2700 2    50   Input ~ 0
+USER_BTN_1
+Wire Wire Line
+	8450 2700 8250 2700
+Wire Wire Line
+	10550 2700 10400 2700
 $EndSCHEMATC

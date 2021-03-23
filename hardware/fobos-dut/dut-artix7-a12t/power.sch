@@ -511,8 +511,6 @@ F 3 "" H 1850 1450 50  0001 C CNN
 	1    1850 1450
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	1850 1350 1850 1450
 $Bitmap
 Pos 10100 7100
 Scale 0.850000
@@ -3733,7 +3731,7 @@ Wire Wire Line
 Wire Wire Line
 	1050 1250 1050 1150
 Wire Wire Line
-	1050 1250 2000 1250
+	1050 1250 1750 1250
 Wire Wire Line
 	850  1350 1850 1350
 Wire Wire Line
@@ -3985,4 +3983,29 @@ Wire Wire Line
 Wire Wire Line
 	8350 4000 8350 3900
 Connection ~ 8350 3900
+$Comp
+L Connector_Generic:Conn_01x02 J5
+U 1 1 604CD044
+P 2300 1050
+F 0 "J5" H 2380 1042 50  0000 L CNN
+F 1 "Conn_01x02" H 2380 951 50  0000 L CNN
+F 2 "Connector_Molex:Molex_KK-254_AE-6410-02A_1x02_P2.54mm_Vertical" H 2300 1050 50  0001 C CNN
+F 3 "~" H 2300 1050 50  0001 C CNN
+	1    2300 1050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 1150 1850 1150
+Wire Wire Line
+	1850 1150 1850 1350
+Connection ~ 1850 1350
+Wire Wire Line
+	1850 1350 1850 1450
+Wire Wire Line
+	2100 1050 1750 1050
+Wire Wire Line
+	1750 1050 1750 1250
+Connection ~ 1750 1250
+Wire Wire Line
+	1750 1250 2000 1250
 $EndSCHEMATC

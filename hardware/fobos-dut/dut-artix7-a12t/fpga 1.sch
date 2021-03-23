@@ -2115,39 +2115,35 @@ E4 9D AF CF 78 A8 9D 35 3D B7 50 61 31 2C 8B AF E8 ED F8 6F 77 9E 5A C0 CF D7 CB
 2B 4E 7F 8D C4 21 BA 47 00 00 00 00 49 45 4E 44 AE 42 60 82 
 EndData
 $EndBitmap
-Text GLabel 4050 2800 0    50   Input ~ 0
+Text GLabel 7950 3000 2    50   Input ~ 0
 JA1
-Text GLabel 4050 2900 0    50   Input ~ 0
+Text GLabel 7950 3600 2    50   Input ~ 0
 JA7
-Text GLabel 4050 3200 0    50   Input ~ 0
+Text GLabel 7950 2900 2    50   Input ~ 0
 JA2
-Text GLabel 4050 3300 0    50   Input ~ 0
+Text GLabel 7950 3400 2    50   Input ~ 0
 JA8
-Text GLabel 4050 3400 0    50   Input ~ 0
+Text GLabel 7950 3100 2    50   Input ~ 0
 JA3
-Text GLabel 4050 3500 0    50   Input ~ 0
+Text GLabel 7950 3500 2    50   Input ~ 0
 JA9
-Text GLabel 4050 3800 0    50   Input ~ 0
+Text GLabel 7950 3200 2    50   Input ~ 0
 JA4
-Text GLabel 4100 3900 0    50   Input ~ 0
-JA10
 Wire Wire Line
-	4050 2800 4300 2800
+	7950 3000 7700 3000
 Wire Wire Line
-	4300 2900 4050 2900
+	7700 3600 7950 3600
 Wire Wire Line
-	4300 3200 4050 3200
+	7700 2900 7950 2900
 Wire Wire Line
-	4050 3300 4300 3300
+	7950 3400 7700 3400
 Wire Wire Line
-	4050 3400 4300 3400
+	7950 3100 7700 3100
 Wire Wire Line
-	4050 3500 4300 3500
+	7950 3500 7700 3500
 Wire Wire Line
-	4050 3800 4300 3800
-Wire Wire Line
-	4100 3900 4300 3900
-Text Notes 3350 3950 0    50   ~ 0
+	7950 3200 7700 3200
+Text Notes 8200 3250 0    50   ~ 0
 JA can be \ndifferentially\nrouted
 $Comp
 L power:GND #PWR0124
@@ -2408,4 +2404,32 @@ Wire Wire Line
 	2350 1800 2350 2100
 Wire Wire Line
 	3100 1550 3100 1700
+Text GLabel 7900 3300 2    50   Input ~ 0
+JA10
+Wire Wire Line
+	7900 3300 7700 3300
+Text GLabel 7950 3900 2    50   Input ~ 0
+USER_LED_4
+Wire Wire Line
+	7700 3900 7950 3900
+Text GLabel 7950 4000 2    50   Input ~ 0
+USER_LED_3
+Wire Wire Line
+	7700 4000 7950 4000
+Text GLabel 7950 4200 2    50   Input ~ 0
+USER_LED_2
+Wire Wire Line
+	7700 4200 7950 4200
+Text GLabel 7950 4100 2    50   Input ~ 0
+USER_LED_1
+Wire Wire Line
+	7700 4100 7950 4100
+Text GLabel 7950 4800 2    50   Input ~ 0
+USER_BTN_2
+Wire Wire Line
+	7950 4800 7700 4800
+Text GLabel 7950 4700 2    50   Input ~ 0
+USER_BTN_1
+Wire Wire Line
+	7950 4700 7700 4700
 $EndSCHEMATC
