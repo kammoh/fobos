@@ -12,7 +12,7 @@ class FobosClientWatchdog:
 
     def __init__(self):
         self.lockFile = "/tmp/fobos.lock"
-        self.timeout = 14 * 60 # (sec) must be greater than time needed for server to recover
+        self.timeout = 5 * 60 # (sec) must be greater than time needed for server to recover
     
     def checkTimeout(self):
         try:
@@ -27,7 +27,7 @@ class FobosClientWatchdog:
                 print('Timout not exceeded.')
                 return False
         except:
-            print('No lock file found.')
+            #print('No lock file found.')
             return False
     
     def removeLockFile(self):
@@ -45,7 +45,8 @@ def main():
         print('Client Watchdog: removing lock!')
         dog.removeLockFile()
     else:
-        print('Client Watchdog: Timeout not exceeded or no lock file. Nothing to do. Exiting')
+        pass
+        #print('Client Watchdog: Timeout not exceeded or no lock file. Nothing to do. Exiting')
     
 if __name__ == '__main__':
     main()
