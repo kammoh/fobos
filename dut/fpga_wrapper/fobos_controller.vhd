@@ -288,7 +288,7 @@ case pdi_current_state is
         end if;
 		  
 	WHEN READ_FINISH => 
-		  pdi_valid <= '1';
+		 -- pdi_valid <= '1';
 		  if (di_ready_ctrl = '1') then
 			pdi_next_state <= IDLE;
 		  else 
