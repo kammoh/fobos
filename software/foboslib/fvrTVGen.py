@@ -1,8 +1,8 @@
 #############################################################################
-# FOBOS Block Cipher TV generator
+# FOBOS Block Cipher Fixed-vs-Random test vector generator
 # Generates random test vector for block ciphers 
 # Author : Abubakr Abdulgadir
-# March 2021   
+# April 2021   
 #Generate TV for data acquisition module
 import numpy as np
 
