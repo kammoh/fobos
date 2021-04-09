@@ -17,10 +17,14 @@
 
 # Synthesize the project
 
-1. Open the project in Vivado and click Generate Bitstream.
-2. Copy the generated bitstream to `fobos/sources/pynq_controller/python3/`.
-3. Generate block diagram tcl file. Open the block diagram then issue the `write_bd_tcl` command in the TCL console.
-4. Copy the generated block diagram tcl file to `fobos/sources/pynq_controller/python3/`. Make sure it is named `ctrl_top_wrapper.tcl`.
+1. Open the project in Vivado. In Vivado's sources window, right-click the block design file (ctrl_top.bd) and select "Generate Output Products...".
+2. The Generate Output Products window, select "Global" under Synthesis Options then click "Generate".
+3. After the output products generation completes, click Generate Bitstream.
+4. Copy the generated bitstream to `fobos/sources/pynq_controller/python3/`.
+5. Generate block diagram tcl file. Open the block diagram then issue the `write_bd_tcl` command in the TCL console.
+6. Copy the generated block diagram tcl file to `fobos/sources/pynq_controller/python3/`. Make sure it is named `ctrl_top_wrapper.tcl`.
+
+WARNING: If steps 1 and 2 above are not completeted, synthesis may use Out-of-context (OOC) mode. This will not synthesize the tri-state logic needed for the design.
 
 # Preparing the control board
 
