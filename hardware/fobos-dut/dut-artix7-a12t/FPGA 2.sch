@@ -94,4 +94,20 @@ Text GLabel 5050 4250 2    50   Input ~ 0
 USER_BTN_1
 Wire Wire Line
 	5050 4250 4800 4250
+Text GLabel 2300 3450 0    50   Input ~ 0
+FC_DIO2_MUX
+Text GLabel 2300 3750 0    50   Input ~ 0
+FC_DIO3_MUX
+Text GLabel 4950 2150 2    50   Input ~ 0
+FC_DIO0_MUX
+Text GLabel 2300 3850 0    50   Input ~ 0
+FC_DIO1_MUX
+Wire Wire Line
+	4950 2150 4800 2150
+Wire Wire Line
+	2300 3450 2400 3450
+Wire Wire Line
+	2300 3750 2400 3750
+Wire Wire Line
+	2300 3850 2400 3850
 $EndSCHEMATC
