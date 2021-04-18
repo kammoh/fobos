@@ -2428,4 +2428,8 @@ Text GLabel 7950 4800 2    50   Input ~ 0
 USER_BTN_2
 Wire Wire Line
 	7950 4800 7700 4800
+Text GLabel 4000 4800 0    50   Input ~ 0
+FD2C_CLK
+Wire Wire Line
+	4300 4800 4000 4800
 $EndSCHEMATC

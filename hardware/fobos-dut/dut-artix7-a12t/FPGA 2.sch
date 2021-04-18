@@ -100,14 +100,34 @@ Text GLabel 2300 3750 0    50   Input ~ 0
 FC_DIO3_MUX
 Text GLabel 4950 2150 2    50   Input ~ 0
 FC_DIO0_MUX
-Text GLabel 2300 3850 0    50   Input ~ 0
-FC_DIO1_MUX
 Wire Wire Line
 	4950 2150 4800 2150
 Wire Wire Line
 	2300 3450 2400 3450
 Wire Wire Line
 	2300 3750 2400 3750
+Text GLabel 4950 2050 2    50   Input ~ 0
+FC2D_CLK
+Wire Wire Line
+	4950 2050 4800 2050
+Text GLabel 4950 3150 2    50   Input ~ 0
+FC_RST
+Text GLabel 4950 2550 2    50   Input ~ 0
+FC_IO
+Wire Wire Line
+	4950 2550 4800 2550
+Wire Wire Line
+	4800 3150 4950 3150
+Text GLabel 2300 3850 0    50   Input ~ 0
+FC_DIO1_MUX
 Wire Wire Line
 	2300 3850 2400 3850
+Text GLabel 2300 4250 0    50   Input ~ 0
+FC2D_HS
+Wire Wire Line
+	2400 4250 2300 4250
+Text GLabel 2300 3350 0    50   Input ~ 0
+FD2C_HS
+Wire Wire Line
+	2400 3350 2300 3350
 $EndSCHEMATC

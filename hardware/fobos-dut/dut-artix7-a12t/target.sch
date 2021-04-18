@@ -2411,12 +2411,6 @@ F 3 "http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF" H 9250 2050 50  0001 C 
 	1    9250 2050
 	1    0    0    1   
 $EndComp
-Text GLabel 8600 1950 0    50   Input ~ 0
-FC_DIO0
-Text GLabel 9900 1950 2    50   Input ~ 0
-FC_DIO1
-Wire Wire Line
-	8600 1950 8700 1950
 Wire Wire Line
 	9750 1950 9800 1950
 Wire Wire Line
@@ -2425,7 +2419,6 @@ Wire Wire Line
 	8600 3700 8700 3700
 Text GLabel 9900 3700 2    50   Input ~ 0
 FC_IO
-Connection ~ 8700 1950
 Wire Wire Line
 	8700 1950 8750 1950
 Wire Wire Line
@@ -2901,12 +2894,8 @@ Wire Wire Line
 	4000 2500 4250 2500
 Text GLabel 7500 2150 2    50   Input ~ 0
 FC_PROG
-Text GLabel 8600 2150 0    50   Input ~ 0
-FD_TF
 Text GLabel 8600 3900 0    50   Input ~ 0
 FD2C_CLK
-Text GLabel 9900 2150 2    50   Input ~ 0
-FC2D_HS
 Text GLabel 6200 2150 0    50   Input ~ 0
 FD2C_HS
 Wire Wire Line
@@ -3022,7 +3011,7 @@ F 3 "http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF" H 6850 2050 50  0001 C 
 $EndComp
 Text GLabel 1750 5250 0    50   Input ~ 0
 FC_PROG
-Text Notes 2200 4050 0    79   ~ 0
+Text Notes 2250 4900 0    79   ~ 0
 Programming/DUT Communication Switches
 $Comp
 L cerg:5281 TP2
@@ -3270,9 +3259,6 @@ Wire Wire Line
 Wire Wire Line
 	2850 6900 2650 6900
 Connection ~ 8700 3700
-Wire Wire Line
-	8600 2150 8700 2150
-Connection ~ 8700 2150
 $Comp
 L power:GND #PWR?
 U 1 1 60694C99
@@ -3301,4 +3287,85 @@ F 3 "" H 5650 7525 50  0001 C CNN
 	1    5650 7250
 	1    0    0    -1  
 $EndComp
+Text GLabel 8600 1950 0    50   Input ~ 0
+FD_TF
+Wire Wire Line
+	8600 1950 8700 1950
+Text GLabel 8600 2150 0    50   Input ~ 0
+FC_DIO0
+Wire Wire Line
+	8600 2150 8700 2150
+Text GLabel 9900 2150 2    50   Input ~ 0
+FC_DIO1
+Text GLabel 9900 1950 2    50   Input ~ 0
+FC2D_HS
+$Comp
+L Connector_Generic:Conn_01x02 J?
+U 1 1 60A59B2F
+P 4300 2850
+AR Path="/5F449901/60A59B2F" Ref="J?"  Part="1" 
+AR Path="/5F20DA36/60A59B2F" Ref="J10"  Part="1" 
+F 0 "J10" H 4380 2842 50  0000 L CNN
+F 1 "Conn_01x02" H 4380 2751 50  0000 L CNN
+F 2 "Connector_Molex:Molex_KK-254_AE-6410-02A_1x02_P2.54mm_Vertical" H 4300 2850 50  0001 C CNN
+F 3 "~" H 4300 2850 50  0001 C CNN
+	1    4300 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Jumper:Jumper_2_Open JP?
+U 1 1 60A66495
+P 4200 3350
+AR Path="/5F449901/60A66495" Ref="JP?"  Part="1" 
+AR Path="/5F20DA36/60A66495" Ref="JP4"  Part="1" 
+F 0 "JP4" H 4200 3585 50  0000 C CNN
+F 1 "FC3V3_3V3_SHUNT" H 4200 3494 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 4200 3350 50  0001 C CNN
+F 3 "~" H 4200 3350 50  0001 C CNN
+	1    4200 3350
+	1    0    0    -1  
+$EndComp
+Text GLabel 3800 3350 0    50   Input ~ 0
+FC_3V3
+Text GLabel 3800 2850 0    50   Input ~ 0
+FC_5V
+$Comp
+L power:GND #PWR?
+U 1 1 60A8FBF0
+P 3650 3000
+AR Path="/5B6C87CC/60A8FBF0" Ref="#PWR?"  Part="1" 
+AR Path="/5B5AB131/60A8FBF0" Ref="#PWR?"  Part="1" 
+AR Path="/5BE3725D/60A8FBF0" Ref="#PWR?"  Part="1" 
+AR Path="/5F227C5D/60A8FBF0" Ref="#PWR?"  Part="1" 
+AR Path="/5F20DA36/60A8FBF0" Ref="#PWR030"  Part="1" 
+F 0 "#PWR030" H 3650 2750 50  0001 C CNN
+F 1 "GND" H 3655 2827 50  0000 C CNN
+F 2 "" H 3650 3000 50  0001 C CNN
+F 3 "" H 3650 3000 50  0001 C CNN
+	1    3650 3000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3800 2850 4100 2850
+Wire Wire Line
+	3650 3000 3650 2950
+Wire Wire Line
+	3650 2950 4100 2950
+Wire Wire Line
+	4000 3350 3800 3350
+$Comp
+L power:+3.3V #PWR?
+U 1 1 60ABDA54
+P 4700 3350
+AR Path="/5F449901/60ABDA54" Ref="#PWR?"  Part="1" 
+AR Path="/5F20DA36/60ABDA54" Ref="#PWR031"  Part="1" 
+F 0 "#PWR031" H 4700 3200 50  0001 C CNN
+F 1 "+3.3V" H 4715 3523 50  0000 C CNN
+F 2 "" H 4700 3350 50  0001 C CNN
+F 3 "" H 4700 3350 50  0001 C CNN
+	1    4700 3350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4700 3350 4400 3350
 $EndSCHEMATC

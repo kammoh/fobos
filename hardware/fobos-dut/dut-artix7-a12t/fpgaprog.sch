@@ -2949,12 +2949,12 @@ Wire Wire Line
 $Comp
 L power:GND #PWR0139
 U 1 1 60135F4F
-P 7200 5350
-F 0 "#PWR0139" H 7200 5100 50  0001 C CNN
-F 1 "GND" H 7205 5177 50  0000 C CNN
-F 2 "" H 7200 5350 50  0001 C CNN
-F 3 "" H 7200 5350 50  0001 C CNN
-	1    7200 5350
+P 7200 5800
+F 0 "#PWR0139" H 7200 5550 50  0001 C CNN
+F 1 "GND" H 7205 5627 50  0000 C CNN
+F 2 "" H 7200 5800 50  0001 C CNN
+F 3 "" H 7200 5800 50  0001 C CNN
+	1    7200 5800
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -2984,8 +2984,6 @@ Wire Wire Line
 Wire Wire Line
 	7550 5250 7200 5250
 Connection ~ 7200 5250
-Wire Wire Line
-	7200 5250 7200 5350
 $Comp
 L Device:C C38
 U 1 1 6017F3DA
@@ -3206,15 +3204,13 @@ F 12 "Active" H 5650 2950 60  0001 L CNN "Status"
 	1    5450 1750
 	1    0    0    -1  
 $EndComp
-Text Notes 6700 2550 0    50   ~ 0
-Verify 330R\n
 $Comp
 L Device:R R?
 U 1 1 602CE1C5
 P 7000 3050
 AR Path="/5F449901/602CE1C5" Ref="R?"  Part="1" 
 AR Path="/5F3A1954/602CE1C5" Ref="R29"  Part="1" 
-F 0 "R29" H 7100 3200 50  0000 C CNN
+F 0 "R29" V 7100 3200 50  0000 C CNN
 F 1 "0R" V 7000 3050 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 6930 3050 50  0001 C CNN
 F 3 "~" H 7000 3050 50  0001 C CNN
@@ -3391,10 +3387,63 @@ P 7200 2550
 AR Path="/5F449901/601476CD" Ref="R?"  Part="1" 
 AR Path="/5F3A1954/601476CD" Ref="R53"  Part="1" 
 F 0 "R53" H 7300 2700 50  0000 C CNN
-F 1 "330R" V 7200 2550 50  0000 C CNN
+F 1 "200R" V 7200 2550 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7130 2550 50  0001 C CNN
 F 3 "~" H 7200 2550 50  0001 C CNN
 	1    7200 2550
 	-1   0    0    1   
 $EndComp
+$Comp
+L dk_LED-Indication-Discrete:LG_L29K-G2J1-24-Z D?
+U 1 1 607DEBBC
+P 6650 5550
+AR Path="/5F449901/607DEBBC" Ref="D?"  Part="1" 
+AR Path="/600CE672/607DEBBC" Ref="D?"  Part="1" 
+AR Path="/5F3A1954/607DEBBC" Ref="D6"  Part="1" 
+F 0 "D6" V 6547 5728 60  0000 L CNN
+F 1 "LG_L29K-G2J1-24-Z" V 6653 5728 60  0001 L CNN
+F 2 "digikey-footprints:0603" H 6850 5750 60  0001 L CNN
+F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 6850 5850 60  0001 L CNN
+F 4 "475-2709-1-ND" H 6850 5950 60  0001 L CNN "Digi-Key_PN"
+F 5 "LG L29K-G2J1-24-Z" H 6850 6050 60  0001 L CNN "MPN"
+F 6 "Optoelectronics" H 6850 6150 60  0001 L CNN "Category"
+F 7 "LED Indication - Discrete" H 6850 6250 60  0001 L CNN "Family"
+F 8 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 6850 6350 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/osram-opto-semiconductors-inc/LG-L29K-G2J1-24-Z/475-2709-1-ND/1938876" H 6850 6450 60  0001 L CNN "DK_Detail_Page"
+F 10 "LED GREEN DIFFUSED 0603 SMD" H 6850 6550 60  0001 L CNN "Description"
+F 11 "OSRAM Opto Semiconductors Inc." H 6850 6650 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 6850 6750 60  0001 L CNN "Status"
+	1    6650 5550
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 60805940
+P 6650 5100
+AR Path="/5F449901/60805940" Ref="R?"  Part="1" 
+AR Path="/5F3A1954/60805940" Ref="R72"  Part="1" 
+F 0 "R72" H 6750 5250 50  0000 C CNN
+F 1 "200R" V 6650 5100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 6580 5100 50  0001 C CNN
+F 3 "~" H 6650 5100 50  0001 C CNN
+	1    6650 5100
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6650 5350 6650 5250
+Wire Wire Line
+	7200 3250 7200 3550
+Wire Wire Line
+	7200 3550 6650 3550
+Wire Wire Line
+	6650 3550 6650 4950
+Wire Wire Line
+	7200 5250 7200 5750
+Wire Wire Line
+	6650 5650 6650 5750
+Wire Wire Line
+	6650 5750 7200 5750
+Connection ~ 7200 5750
+Wire Wire Line
+	7200 5750 7200 5800
 $EndSCHEMATC
