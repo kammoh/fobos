@@ -23,6 +23,9 @@ F 0 "U1" H 3550 6617 50  0000 C CNN
 F 1 "XC7A12T-CSG325" H 3550 6526 50  0000 C CNN
 F 2 "Package_BGA:Xilinx_CSG325" H 3550 5850 50  0001 C CNN
 F 3 "https://www.xilinx.com/support/documentation/data_sheets/ds180_7Series_Overview.pdf" H 3550 5850 50  0001 C CNN
+F 4 "IC FPGA 150 I/O 324CSBGA" H 3550 5850 50  0001 C CNN "Description"
+F 5 "XC7A12T-2CSG325I" H 3550 5850 50  0001 C CNN "MPN"
+F 6 "Xilinx Inc." H 3550 5850 50  0001 C CNN "Manufacturer"
 	5    3550 5850
 	1    0    0    -1  
 $EndComp
@@ -36,6 +39,9 @@ F 0 "U1" H 7550 1875 50  0000 C CNN
 F 1 "XC7A12T-CSG325" H 7550 1784 50  0000 C CNN
 F 2 "Package_BGA:Xilinx_CSG325" H 7550 3250 50  0001 C CNN
 F 3 "https://www.xilinx.com/support/documentation/data_sheets/ds180_7Series_Overview.pdf" H 7550 3250 50  0001 C CNN
+F 4 "IC FPGA 150 I/O 324CSBGA" H 7550 3250 50  0001 C CNN "Description"
+F 5 "XC7A12T-2CSG325I" H 7550 3250 50  0001 C CNN "MPN"
+F 6 "Xilinx Inc." H 7550 3250 50  0001 C CNN "Manufacturer"
 	3    7550 3250
 	1    0    0    -1  
 $EndComp
@@ -49,6 +55,9 @@ F 0 "U1" H 3600 1875 50  0000 C CNN
 F 1 "XC7A12T-CSG325" H 3600 1784 50  0000 C CNN
 F 2 "Package_BGA:Xilinx_CSG325" H 3600 3250 50  0001 C CNN
 F 3 "https://www.xilinx.com/support/documentation/data_sheets/ds180_7Series_Overview.pdf" H 3600 3250 50  0001 C CNN
+F 4 "IC FPGA 150 I/O 324CSBGA" H 3600 3250 50  0001 C CNN "Description"
+F 5 "XC7A12T-2CSG325I" H 3600 3250 50  0001 C CNN "MPN"
+F 6 "Xilinx Inc." H 3600 3250 50  0001 C CNN "Manufacturer"
 	4    3600 3250
 	1    0    0    -1  
 $EndComp
@@ -106,18 +115,14 @@ Wire Wire Line
 	2300 3450 2400 3450
 Wire Wire Line
 	2300 3750 2400 3750
-Text GLabel 4950 2050 2    50   Input ~ 0
-FC2D_CLK
-Wire Wire Line
-	4950 2050 4800 2050
-Text GLabel 4950 3150 2    50   Input ~ 0
+Text GLabel 4950 2650 2    50   Input ~ 0
 FC_RST
 Text GLabel 4950 2550 2    50   Input ~ 0
 FC_IO
 Wire Wire Line
 	4950 2550 4800 2550
 Wire Wire Line
-	4800 3150 4950 3150
+	4800 2650 4950 2650
 Text GLabel 2300 3850 0    50   Input ~ 0
 FC_DIO1_MUX
 Wire Wire Line
@@ -130,4 +135,12 @@ Text GLabel 2300 3350 0    50   Input ~ 0
 FD2C_HS
 Wire Wire Line
 	2400 3350 2300 3350
+Text GLabel 4950 2050 2    50   Input ~ 0
+FC2D_CLK
+Wire Wire Line
+	4800 2050 4950 2050
+Text GLabel 2300 4450 0    50   Input ~ 0
+FD2C_CLK
+Wire Wire Line
+	2400 4450 2300 4450
 $EndSCHEMATC

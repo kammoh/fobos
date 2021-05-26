@@ -58,6 +58,9 @@ F 0 "R57" V 2250 2600 50  0000 C CNN
 F 1 "470R" V 2150 2600 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1980 2600 50  0001 C CNN
 F 3 "~" H 2050 2600 50  0001 C CNN
+F 4 "RES 470 OHM 5% 1/10W 0603 SMD" H 2050 2600 50  0001 C CNN "Description"
+F 5 "ERJ-U03J471V" H 2050 2600 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 2050 2600 50  0001 C CNN "Manufacturer"
 	1    2050 2600
 	1    0    0    -1  
 $EndComp
@@ -96,7 +99,7 @@ AR Path="/5F449901/600D0FA2" Ref="D?"  Part="1"
 AR Path="/600CE672/600D0FA2" Ref="D3"  Part="1" 
 F 0 "D3" V 3997 2478 60  0000 L CNN
 F 1 "LG_L29K-G2J1-24-Z" V 4103 2478 60  0001 L CNN
-F 2 "digikey-footprints:0603" H 4300 2500 60  0001 L CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 4300 2500 60  0001 L CNN
 F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 4300 2600 60  0001 L CNN
 F 4 "475-2709-1-ND" H 4300 2700 60  0001 L CNN "Digi-Key_PN"
 F 5 "LG L29K-G2J1-24-Z" H 4300 2800 60  0001 L CNN "MPN"
@@ -120,6 +123,9 @@ F 0 "R58" V 4300 2650 50  0000 C CNN
 F 1 "470R" V 4200 2650 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 4030 2650 50  0001 C CNN
 F 3 "~" H 4100 2650 50  0001 C CNN
+F 4 "RES 470 OHM 5% 1/10W 0603 SMD" H 4100 2650 50  0001 C CNN "Description"
+F 5 "ERJ-U03J471V" H 4100 2650 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 4100 2650 50  0001 C CNN "Manufacturer"
 	1    4100 2650
 	1    0    0    -1  
 $EndComp
@@ -158,7 +164,7 @@ AR Path="/5F449901/600D2B6A" Ref="D?"  Part="1"
 AR Path="/600CE672/600D2B6A" Ref="D4"  Part="1" 
 F 0 "D4" V 5847 2478 60  0000 L CNN
 F 1 "LG_L29K-G2J1-24-Z" V 5953 2478 60  0001 L CNN
-F 2 "digikey-footprints:0603" H 6150 2500 60  0001 L CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 6150 2500 60  0001 L CNN
 F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 6150 2600 60  0001 L CNN
 F 4 "475-2709-1-ND" H 6150 2700 60  0001 L CNN "Digi-Key_PN"
 F 5 "LG L29K-G2J1-24-Z" H 6150 2800 60  0001 L CNN "MPN"
@@ -182,6 +188,9 @@ F 0 "R59" V 6150 2650 50  0000 C CNN
 F 1 "470R" V 6050 2650 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 5880 2650 50  0001 C CNN
 F 3 "~" H 5950 2650 50  0001 C CNN
+F 4 "RES 470 OHM 5% 1/10W 0603 SMD" H 5950 2650 50  0001 C CNN "Description"
+F 5 "ERJ-U03J471V" H 5950 2650 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 5950 2650 50  0001 C CNN "Manufacturer"
 	1    5950 2650
 	1    0    0    -1  
 $EndComp
@@ -211,6 +220,9 @@ F 0 "R60" V 1343 3400 50  0000 C CNN
 F 1 "10KR" V 1434 3400 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1480 3400 50  0001 C CNN
 F 3 "~" H 1550 3400 50  0001 C CNN
+F 4 "RES SMD 10K OHM 1% 1/10W 0603" H 1550 3400 50  0001 C CNN "Description"
+F 5 "ERJ-3EKF1002V" H 1550 3400 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 1550 3400 50  0001 C CNN "Manufacturer"
 	1    1550 3400
 	-1   0    0    1   
 $EndComp
@@ -224,6 +236,9 @@ F 0 "R61" V 3393 3450 50  0000 C CNN
 F 1 "10KR" V 3484 3450 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 3530 3450 50  0001 C CNN
 F 3 "~" H 3600 3450 50  0001 C CNN
+F 4 "RES SMD 10K OHM 1% 1/10W 0603" H 3600 3450 50  0001 C CNN "Description"
+F 5 "ERJ-3EKF1002V" H 3600 3450 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 3600 3450 50  0001 C CNN "Manufacturer"
 	1    3600 3450
 	-1   0    0    1   
 $EndComp
@@ -237,6 +252,9 @@ F 0 "R62" V 5243 3450 50  0000 C CNN
 F 1 "10KR" V 5334 3450 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 5380 3450 50  0001 C CNN
 F 3 "~" H 5450 3450 50  0001 C CNN
+F 4 "RES SMD 10K OHM 1% 1/10W 0603" H 5450 3450 50  0001 C CNN "Description"
+F 5 "ERJ-3EKF1002V" H 5450 3450 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 5450 3450 50  0001 C CNN "Manufacturer"
 	1    5450 3450
 	-1   0    0    1   
 $EndComp
@@ -274,46 +292,6 @@ User LED_2\n
 Text Notes 5650 1700 0    50   ~ 0
 User LED_3
 $Comp
-L dk_Tactile-Switches:1825910-6 S4
-U 1 1 6024F1A6
-P 7550 2800
-F 0 "S4" H 7550 3147 60  0000 C CNN
-F 1 "1825910-6" H 7550 3041 60  0000 C CNN
-F 2 "digikey-footprints:Switch_Tactile_THT_6x6mm" H 7750 3000 60  0001 L CNN
-F 3 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English" H 7750 3100 60  0001 L CNN
-F 4 "450-1650-ND" H 7750 3200 60  0001 L CNN "Digi-Key_PN"
-F 5 "1825910-6" H 7750 3300 60  0001 L CNN "MPN"
-F 6 "Switches" H 7750 3400 60  0001 L CNN "Category"
-F 7 "Tactile Switches" H 7750 3500 60  0001 L CNN "Family"
-F 8 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English" H 7750 3600 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/te-connectivity-alcoswitch-switches/1825910-6/450-1650-ND/1632536" H 7750 3700 60  0001 L CNN "DK_Detail_Page"
-F 10 "SWITCH TACTILE SPST-NO 0.05A 24V" H 7750 3800 60  0001 L CNN "Description"
-F 11 "TE Connectivity ALCOSWITCH Switches" H 7750 3900 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 7750 4000 60  0001 L CNN "Status"
-	1    7550 2800
-	1    0    0    -1  
-$EndComp
-$Comp
-L dk_Tactile-Switches:1825910-6 S5
-U 1 1 6024F95B
-P 9700 2800
-F 0 "S5" H 9700 3147 60  0000 C CNN
-F 1 "1825910-6" H 9700 3041 60  0000 C CNN
-F 2 "digikey-footprints:Switch_Tactile_THT_6x6mm" H 9900 3000 60  0001 L CNN
-F 3 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English" H 9900 3100 60  0001 L CNN
-F 4 "450-1650-ND" H 9900 3200 60  0001 L CNN "Digi-Key_PN"
-F 5 "1825910-6" H 9900 3300 60  0001 L CNN "MPN"
-F 6 "Switches" H 9900 3400 60  0001 L CNN "Category"
-F 7 "Tactile Switches" H 9900 3500 60  0001 L CNN "Family"
-F 8 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English" H 9900 3600 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/te-connectivity-alcoswitch-switches/1825910-6/450-1650-ND/1632536" H 9900 3700 60  0001 L CNN "DK_Detail_Page"
-F 10 "SWITCH TACTILE SPST-NO 0.05A 24V" H 9900 3800 60  0001 L CNN "Description"
-F 11 "TE Connectivity ALCOSWITCH Switches" H 9900 3900 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 9900 4000 60  0001 L CNN "Status"
-	1    9700 2800
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:R R?
 U 1 1 60253141
 P 7950 3050
@@ -323,6 +301,9 @@ F 0 "R63" V 7743 3050 50  0000 C CNN
 F 1 "10KR" V 7834 3050 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 7880 3050 50  0001 C CNN
 F 3 "~" H 7950 3050 50  0001 C CNN
+F 4 "RES SMD 10K OHM 1% 1/10W 0603" H 7950 3050 50  0001 C CNN "Description"
+F 5 "ERJ-3EKF1002V" H 7950 3050 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 7950 3050 50  0001 C CNN "Manufacturer"
 	1    7950 3050
 	-1   0    0    1   
 $EndComp
@@ -336,6 +317,9 @@ F 0 "R65" V 9893 3050 50  0000 C CNN
 F 1 "10KR" V 9984 3050 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 10030 3050 50  0001 C CNN
 F 3 "~" H 10100 3050 50  0001 C CNN
+F 4 "RES SMD 10K OHM 1% 1/10W 0603" H 10100 3050 50  0001 C CNN "Description"
+F 5 "ERJ-3EKF1002V" H 10100 3050 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 10100 3050 50  0001 C CNN "Manufacturer"
 	1    10100 3050
 	-1   0    0    1   
 $EndComp
@@ -349,6 +333,9 @@ F 0 "R64" V 7893 2700 50  0000 C CNN
 F 1 "10KR" V 7984 2700 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 8030 2700 50  0001 C CNN
 F 3 "~" H 8100 2700 50  0001 C CNN
+F 4 "RES SMD 10K OHM 1% 1/10W 0603" H 8100 2700 50  0001 C CNN "Description"
+F 5 "ERJ-3EKF1002V" H 8100 2700 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 8100 2700 50  0001 C CNN "Manufacturer"
 	1    8100 2700
 	0    -1   -1   0   
 $EndComp
@@ -362,6 +349,9 @@ F 0 "R66" V 10043 2700 50  0000 C CNN
 F 1 "10KR" V 10134 2700 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 10180 2700 50  0001 C CNN
 F 3 "~" H 10250 2700 50  0001 C CNN
+F 4 "RES SMD 10K OHM 1% 1/10W 0603" H 10250 2700 50  0001 C CNN "Description"
+F 5 "ERJ-3EKF1002V" H 10250 2700 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 10250 2700 50  0001 C CNN "Manufacturer"
 	1    10250 2700
 	0    -1   -1   0   
 $EndComp
@@ -436,7 +426,7 @@ AR Path="/5F449901/602D02FE" Ref="D?"  Part="1"
 AR Path="/600CE672/602D02FE" Ref="D5"  Part="1" 
 F 0 "D5" V 1947 4928 60  0000 L CNN
 F 1 "LG_L29K-G2J1-24-Z" V 2053 4928 60  0001 L CNN
-F 2 "digikey-footprints:0603" H 2250 4950 60  0001 L CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 2250 4950 60  0001 L CNN
 F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 2250 5050 60  0001 L CNN
 F 4 "475-2709-1-ND" H 2250 5150 60  0001 L CNN "Digi-Key_PN"
 F 5 "LG L29K-G2J1-24-Z" H 2250 5250 60  0001 L CNN "MPN"
@@ -460,6 +450,9 @@ F 0 "R69" V 2250 5100 50  0000 C CNN
 F 1 "470R" V 2150 5100 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1980 5100 50  0001 C CNN
 F 3 "~" H 2050 5100 50  0001 C CNN
+F 4 "RES 470 OHM 5% 1/10W 0603 SMD" H 2050 5100 50  0001 C CNN "Description"
+F 5 "ERJ-U03J471V" H 2050 5100 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 2050 5100 50  0001 C CNN "Manufacturer"
 	1    2050 5100
 	1    0    0    -1  
 $EndComp
@@ -487,6 +480,9 @@ F 0 "R68" V 1343 5900 50  0000 C CNN
 F 1 "10KR" V 1434 5900 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1480 5900 50  0001 C CNN
 F 3 "~" H 1550 5900 50  0001 C CNN
+F 4 "RES SMD 10K OHM 1% 1/10W 0603" H 1550 5900 50  0001 C CNN "Description"
+F 5 "ERJ-3EKF1002V" H 1550 5900 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 1550 5900 50  0001 C CNN "Manufacturer"
 	1    1550 5900
 	-1   0    0    1   
 $EndComp
@@ -509,6 +505,9 @@ F 0 "Q7" H 6054 3146 50  0000 L CNN
 F 1 "BSS138" H 6054 3055 50  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23" H 6050 3025 50  0001 L CIN
 F 3 "https://www.fairchildsemi.com/datasheets/BS/BSS138.pdf" H 5850 3100 50  0001 L CNN
+F 4 "MOSFET N-CH 50V 220MA SOT23-3" H 5850 3100 50  0001 C CNN "Description"
+F 5 "BSS138" H 5850 3100 50  0001 C CNN "MPN"
+F 6 "ON Semiconductor" H 5850 3100 50  0001 C CNN "Manufacturer"
 	1    5850 3100
 	1    0    0    -1  
 $EndComp
@@ -520,6 +519,9 @@ F 0 "Q5" H 4204 3146 50  0000 L CNN
 F 1 "BSS138" H 4204 3055 50  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23" H 4200 3025 50  0001 L CIN
 F 3 "https://www.onsemi.com/pub/Collateral/BSS138-D.PDF" H 4000 3100 50  0001 L CNN
+F 4 "MOSFET N-CH 50V 220MA SOT23-3" H 4000 3100 50  0001 C CNN "Description"
+F 5 "BSS138" H 4000 3100 50  0001 C CNN "MPN"
+F 6 "ON Semiconductor" H 4000 3100 50  0001 C CNN "Manufacturer"
 	1    4000 3100
 	1    0    0    -1  
 $EndComp
@@ -531,6 +533,9 @@ F 0 "Q4" H 2154 3096 50  0000 L CNN
 F 1 "BSS138" H 2154 3005 50  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23" H 2150 2975 50  0001 L CIN
 F 3 "https://www.onsemi.com/pub/Collateral/BSS138-D.PDF" H 1950 3050 50  0001 L CNN
+F 4 "MOSFET N-CH 50V 220MA SOT23-3" H 1950 3050 50  0001 C CNN "Description"
+F 5 "BSS138" H 1950 3050 50  0001 C CNN "MPN"
+F 6 "ON Semiconductor" H 1950 3050 50  0001 C CNN "Manufacturer"
 	1    1950 3050
 	1    0    0    -1  
 $EndComp
@@ -542,6 +547,9 @@ F 0 "Q6" H 2154 5596 50  0000 L CNN
 F 1 "BSS138" H 2154 5505 50  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23" H 2150 5475 50  0001 L CIN
 F 3 "https://www.onsemi.com/pub/Collateral/BSS138-D.PDF" H 1950 5550 50  0001 L CNN
+F 4 "MOSFET N-CH 50V 220MA SOT23-3" H 1950 5550 50  0001 C CNN "Description"
+F 5 "BSS138" H 1950 5550 50  0001 C CNN "MPN"
+F 6 "ON Semiconductor" H 1950 5550 50  0001 C CNN "Manufacturer"
 	1    1950 5550
 	1    0    0    -1  
 $EndComp
@@ -586,4 +594,44 @@ Wire Wire Line
 	8450 2700 8250 2700
 Wire Wire Line
 	10550 2700 10400 2700
+$Comp
+L cerg:1825910-6 S4
+U 1 1 60B3AD58
+P 7550 2800
+F 0 "S4" H 7550 3147 60  0000 C CNN
+F 1 "1825910-6" H 7550 3041 60  0000 C CNN
+F 2 "cerg:Switch_Tactile_THT_6x6mm" H 7750 3000 60  0001 L CNN
+F 3 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English" H 7750 3100 60  0001 L CNN
+F 4 "450-1650-ND" H 7750 3200 60  0001 L CNN "Digi-Key_PN"
+F 5 "1825910-6" H 7750 3300 60  0001 L CNN "MPN"
+F 6 "Switches" H 7750 3400 60  0001 L CNN "Category"
+F 7 "Tactile Switches" H 7750 3500 60  0001 L CNN "Family"
+F 8 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English" H 7750 3600 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/te-connectivity-alcoswitch-switches/1825910-6/450-1650-ND/1632536" H 7750 3700 60  0001 L CNN "DK_Detail_Page"
+F 10 "SWITCH TACTILE SPST-NO 0.05A 24V" H 7750 3800 60  0001 L CNN "Description"
+F 11 "TE Connectivity ALCOSWITCH Switches" H 7750 3900 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 7750 4000 60  0001 L CNN "Status"
+	1    7550 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L cerg:1825910-6 S5
+U 1 1 60B3B8EB
+P 9700 2800
+F 0 "S5" H 9700 3147 60  0000 C CNN
+F 1 "1825910-6" H 9700 3041 60  0000 C CNN
+F 2 "cerg:Switch_Tactile_THT_6x6mm" H 9900 3000 60  0001 L CNN
+F 3 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English" H 9900 3100 60  0001 L CNN
+F 4 "450-1650-ND" H 9900 3200 60  0001 L CNN "Digi-Key_PN"
+F 5 "1825910-6" H 9900 3300 60  0001 L CNN "MPN"
+F 6 "Switches" H 9900 3400 60  0001 L CNN "Category"
+F 7 "Tactile Switches" H 9900 3500 60  0001 L CNN "Family"
+F 8 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English" H 9900 3600 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/te-connectivity-alcoswitch-switches/1825910-6/450-1650-ND/1632536" H 9900 3700 60  0001 L CNN "DK_Detail_Page"
+F 10 "SWITCH TACTILE SPST-NO 0.05A 24V" H 9900 3800 60  0001 L CNN "Description"
+F 11 "TE Connectivity ALCOSWITCH Switches" H 9900 3900 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 9900 4000 60  0001 L CNN "Status"
+	1    9700 2800
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

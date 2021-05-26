@@ -21,6 +21,9 @@ F 0 "U1" H 6000 2325 50  0000 C CNN
 F 1 "XC7A12T-CSG325" H 6000 2234 50  0000 C CNN
 F 2 "Package_BGA:Xilinx_CSG325" H 6000 3700 50  0001 C CNN
 F 3 "https://www.xilinx.com/support/documentation/data_sheets/ds180_7Series_Overview.pdf" H 6000 3700 50  0001 C CNN
+F 4 "IC FPGA 150 I/O 324CSBGA" H 6000 3700 50  0001 C CNN "Description"
+F 5 "XC7A12T-2CSG325I" H 6000 3700 50  0001 C CNN "MPN"
+F 6 "Xilinx Inc." H 6000 3700 50  0001 C CNN "Manufacturer"
 	2    6000 3700
 	1    0    0    -1  
 $EndComp
@@ -2164,6 +2167,9 @@ F 0 "R28" V 3700 2700 50  0000 C CNN
 F 1 "33R" V 3600 2700 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 3530 2700 50  0001 C CNN
 F 3 "~" H 3600 2700 50  0001 C CNN
+F 4 "RES SMD 33 OHM 0.5% 1/10W 0603" H 3600 2700 50  0001 C CNN "Description"
+F 5 "ERA-3AHD330V" H 3600 2700 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 3600 2700 50  0001 C CNN "Manufacturer"
 	1    3600 2700
 	0    1    1    0   
 $EndComp
@@ -2175,6 +2181,9 @@ F 0 "R27" V 3700 2500 50  0000 C CNN
 F 1 "33R" V 3600 2500 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 3530 2500 50  0001 C CNN
 F 3 "~" H 3600 2500 50  0001 C CNN
+F 4 "RES SMD 33 OHM 0.5% 1/10W 0603" H 3600 2500 50  0001 C CNN "Description"
+F 5 "ERA-3AHD330V" H 3600 2500 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 3600 2500 50  0001 C CNN "Manufacturer"
 	1    3600 2500
 	0    1    1    0   
 $EndComp
@@ -2190,6 +2199,9 @@ F 0 "R25" H 800 2150 50  0000 C CNN
 F 1 "4.7KR" V 950 2150 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 880 2150 50  0001 C CNN
 F 3 "~" H 950 2150 50  0001 C CNN
+F 4 "RES SMD 4.7K OHM 5% 1/10W 0603" H 950 2150 50  0001 C CNN "Description"
+F 5 "ERJ-3GEYJ472V" H 950 2150 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 950 2150 50  0001 C CNN "Manufacturer"
 	1    950  2150
 	-1   0    0    1   
 $EndComp
@@ -2203,6 +2215,9 @@ F 0 "R30" V 4250 1700 50  0000 C CNN
 F 1 "0R" V 4150 1700 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 4080 1700 50  0001 C CNN
 F 3 "~" H 4150 1700 50  0001 C CNN
+F 4 "RES 0 OHM JUMPER 1/10W 0603" H 4150 1700 50  0001 C CNN "Description"
+F 5 "RMCF0603ZT0R00" H 4150 1700 50  0001 C CNN "MPN"
+F 6 "Stackpole Electronics Inc" H 4150 1700 50  0001 C CNN "Manufacturer"
 	1    4150 1700
 	0    1    1    0   
 $EndComp
@@ -2220,6 +2235,8 @@ F 1 "IS25LP256D-JMLE" H 2750 1250 50  0000 C CNN
 F 2 "Package_SO:SOIC-16W_7.5x10.3mm_P1.27mm" H 2000 2200 50  0001 C CNN
 F 3 "https://www.digikey.com/en/products/detail/issi-integrated-silicon-solution-inc/IS25LP256D-JMLE/7567432" H 2000 2200 50  0001 C CNN
 F 4 "IS25LP256D-JMLE" H 2000 2200 50  0001 C CNN "MPN"
+F 5 "IC FLASH 256MBIT SPI/QUAD 16SOIC" H 2000 2200 50  0001 C CNN "Description"
+F 6 "ISSI, Integrated Silicon Solution Inc" H 2000 2200 50  0001 C CNN "Manufacturer"
 	1    2000 2200
 	1    0    0    -1  
 $EndComp
@@ -2249,9 +2266,12 @@ L Device:C C16
 U 1 1 5F6B9D0D
 P 3100 1850
 F 0 "C16" H 3215 1896 50  0000 L CNN
-F 1 "100n" H 3215 1805 50  0000 L CNN
+F 1 "100nF" H 3215 1805 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 3138 1700 50  0001 C CNN
 F 3 "~" H 3100 1850 50  0001 C CNN
+F 4 "CAP CER 0.1UF 6.3V X7R 0603" H 3100 1850 50  0001 C CNN "Description"
+F 5 "06036C104KAT4A" H 3100 1850 50  0001 C CNN "MPN"
+F 6 "AVX Corporation" H 3100 1850 50  0001 C CNN "Manufacturer"
 	1    3100 1850
 	1    0    0    -1  
 $EndComp
@@ -2265,6 +2285,9 @@ F 0 "R52" H 1400 2150 50  0000 C CNN
 F 1 "4.7KR" V 1550 2150 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1480 2150 50  0001 C CNN
 F 3 "~" H 1550 2150 50  0001 C CNN
+F 4 "RES SMD 4.7K OHM 5% 1/10W 0603" H 1550 2150 50  0001 C CNN "Description"
+F 5 "ERJ-3GEYJ472V" H 1550 2150 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 1550 2150 50  0001 C CNN "Manufacturer"
 	1    1550 2150
 	-1   0    0    1   
 $EndComp
@@ -2276,6 +2299,9 @@ F 0 "R26" H 1100 2150 50  0000 C CNN
 F 1 "4.7KR" V 1250 2150 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 1180 2150 50  0001 C CNN
 F 3 "~" H 1250 2150 50  0001 C CNN
+F 4 "RES SMD 4.7K OHM 5% 1/10W 0603" H 1250 2150 50  0001 C CNN "Description"
+F 5 "ERJ-3GEYJ472V" H 1250 2150 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 1250 2150 50  0001 C CNN "Manufacturer"
 	1    1250 2150
 	-1   0    0    1   
 $EndComp
@@ -2318,6 +2344,9 @@ F 0 "R56" V 3700 2300 50  0000 C CNN
 F 1 "33R" V 3600 2300 50  0000 C CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" V 3530 2300 50  0001 C CNN
 F 3 "~" H 3600 2300 50  0001 C CNN
+F 4 "RES SMD 33 OHM 0.5% 1/10W 0603" H 3600 2300 50  0001 C CNN "Description"
+F 5 "ERA-3AHD330V" H 3600 2300 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 3600 2300 50  0001 C CNN "Manufacturer"
 	1    3600 2300
 	0    1    1    0   
 $EndComp
@@ -2428,8 +2457,4 @@ Text GLabel 7950 4800 2    50   Input ~ 0
 USER_BTN_2
 Wire Wire Line
 	7950 4800 7700 4800
-Text GLabel 4000 4800 0    50   Input ~ 0
-FD2C_CLK
-Wire Wire Line
-	4300 4800 4000 4800
 $EndSCHEMATC
