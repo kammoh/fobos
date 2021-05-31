@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr USLetter 11000 8500
 encoding utf-8
-Sheet 2 7
+Sheet 2 8
 Title "FOBOS Artix-7 a12t DUT - Connectors, IO"
 Date "2020-07-28"
 Rev "1.0"

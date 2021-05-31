@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr USLetter 11000 8500
 encoding utf-8
-Sheet 1 7
+Sheet 1 8
 Title "FOBOS Artix-7 a12t DUT"
 Date "2020-07-28"
 Rev "1.0"
@@ -2180,7 +2180,7 @@ $EndSheet
 $Sheet
 S 1550 2650 1850 1000
 U 5F3A1954
-F0 "FPGA Power and Programming" 50
+F0 "FPGA Programming" 50
 F1 "fpgaprog.sch" 50
 $EndSheet
 $Sheet
@@ -2194,5 +2194,11 @@ S 1550 4050 1850 1000
 U 600CE672
 F0 "User Button and IO" 50
 F1 "User Button and IO.sch" 50
+$EndSheet
+$Sheet
+S 1550 5600 1850 1050
+U 60D2F94F
+F0 "FPGA Power" 50
+F1 "fpgapower.sch" 50
 $EndSheet
 $EndSCHEMATC
