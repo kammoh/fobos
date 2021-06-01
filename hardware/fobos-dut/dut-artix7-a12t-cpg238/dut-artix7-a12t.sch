@@ -2184,12 +2184,6 @@ F0 "FPGA Programming" 50
 F1 "fpgaprog.sch" 50
 $EndSheet
 $Sheet
-S 4100 4050 1850 1000
-U 6004C151
-F0 "FPGA 2" 50
-F1 "FPGA 2.sch" 50
-$EndSheet
-$Sheet
 S 1550 4050 1850 1000
 U 600CE672
 F0 "User Button and IO" 50
@@ -2200,5 +2194,11 @@ S 1550 5600 1850 1050
 U 60D2F94F
 F0 "FPGA Power" 50
 F1 "fpgapower.sch" 50
+$EndSheet
+$Sheet
+S 4100 4050 1850 1000
+U 6004C151
+F0 "FPGA 2" 50
+F1 "FPGA 2.sch" 50
 $EndSheet
 $EndSCHEMATC

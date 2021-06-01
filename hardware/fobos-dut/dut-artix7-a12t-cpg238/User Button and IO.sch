@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 7 8
+Sheet 6 8
 Title ""
 Date ""
 Rev ""
@@ -634,4 +634,131 @@ F 12 "Active" H 9900 4000 60  0001 L CNN "Status"
 	1    9700 2800
 	1    0    0    -1  
 $EndComp
+Text Notes 7200 4150 0    50   ~ 0
+Reset Button ACTIVE HIGH OR LOW?
+$Comp
+L Device:R R?
+U 1 1 60EF3D05
+P 7950 4900
+AR Path="/5F449901/60EF3D05" Ref="R?"  Part="1" 
+AR Path="/600CE672/60EF3D05" Ref="R73"  Part="1" 
+F 0 "R73" V 7743 4900 50  0000 C CNN
+F 1 "10KR" V 7834 4900 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 7880 4900 50  0001 C CNN
+F 3 "~" H 7950 4900 50  0001 C CNN
+F 4 "RES SMD 10K OHM 1% 1/10W 0603" H 7950 4900 50  0001 C CNN "Description"
+F 5 "ERJ-3EKF1002V" H 7950 4900 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 7950 4900 50  0001 C CNN "Manufacturer"
+	1    7950 4900
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 60EF3D0E
+P 8100 4550
+AR Path="/5F449901/60EF3D0E" Ref="R?"  Part="1" 
+AR Path="/600CE672/60EF3D0E" Ref="R74"  Part="1" 
+F 0 "R74" V 7893 4550 50  0000 C CNN
+F 1 "10KR" V 7984 4550 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 8030 4550 50  0001 C CNN
+F 3 "~" H 8100 4550 50  0001 C CNN
+F 4 "RES SMD 10K OHM 1% 1/10W 0603" H 8100 4550 50  0001 C CNN "Description"
+F 5 "ERJ-3EKF1002V" H 8100 4550 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 8100 4550 50  0001 C CNN "Manufacturer"
+	1    8100 4550
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	7750 4550 7950 4550
+Wire Wire Line
+	7950 4750 7950 4550
+Connection ~ 7950 4550
+$Comp
+L power:GND #PWR?
+U 1 1 60EF3D17
+P 7950 5350
+AR Path="/5F449901/60EF3D17" Ref="#PWR?"  Part="1" 
+AR Path="/600CE672/60EF3D17" Ref="#PWR033"  Part="1" 
+F 0 "#PWR033" H 7950 5100 50  0001 C CNN
+F 1 "GND" H 7955 5177 50  0000 C CNN
+F 2 "" H 7950 5350 50  0001 C CNN
+F 3 "" H 7950 5350 50  0001 C CNN
+	1    7950 5350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7950 5050 7950 5350
+Text GLabel 7150 4550 0    50   Input ~ 0
+FC_3V3
+Wire Wire Line
+	7150 4550 7350 4550
+Text GLabel 8450 4550 2    50   Input ~ 0
+USER_BTN_1
+Wire Wire Line
+	8450 4550 8250 4550
+$Comp
+L cerg:1825910-6 S2
+U 1 1 60EF3D2B
+P 7550 4650
+F 0 "S2" H 7550 4997 60  0000 C CNN
+F 1 "1825910-6" H 7550 4891 60  0000 C CNN
+F 2 "cerg:Switch_Tactile_THT_6x6mm" H 7750 4850 60  0001 L CNN
+F 3 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English" H 7750 4950 60  0001 L CNN
+F 4 "450-1650-ND" H 7750 5050 60  0001 L CNN "Digi-Key_PN"
+F 5 "1825910-6" H 7750 5150 60  0001 L CNN "MPN"
+F 6 "Switches" H 7750 5250 60  0001 L CNN "Category"
+F 7 "Tactile Switches" H 7750 5350 60  0001 L CNN "Family"
+F 8 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English" H 7750 5450 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/te-connectivity-alcoswitch-switches/1825910-6/450-1650-ND/1632536" H 7750 5550 60  0001 L CNN "DK_Detail_Page"
+F 10 "SWITCH TACTILE SPST-NO 0.05A 24V" H 7750 5650 60  0001 L CNN "Description"
+F 11 "TE Connectivity ALCOSWITCH Switches" H 7750 5750 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 7750 5850 60  0001 L CNN "Status"
+	1    7550 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 60FBBA52
+P 10450 4950
+AR Path="/5F3A1954/60FBBA52" Ref="#PWR?"  Part="1" 
+AR Path="/600CE672/60FBBA52" Ref="#PWR034"  Part="1" 
+F 0 "#PWR034" H 10450 4700 50  0001 C CNN
+F 1 "GND" H 10455 4777 50  0000 C CNN
+F 2 "" H 10450 4950 50  0001 C CNN
+F 3 "" H 10450 4950 50  0001 C CNN
+	1    10450 4950
+	1    0    0    -1  
+$EndComp
+Text GLabel 9750 4800 0    50   Input ~ 0
+SW_PROGRAM_B
+Wire Wire Line
+	10350 4800 10450 4800
+Wire Wire Line
+	10450 4800 10450 4950
+Wire Wire Line
+	9950 4800 9750 4800
+$Comp
+L cerg:1825910-6 S?
+U 1 1 60FBBA65
+P 10150 4700
+AR Path="/5F3A1954/60FBBA65" Ref="S?"  Part="1" 
+AR Path="/600CE672/60FBBA65" Ref="S3"  Part="1" 
+F 0 "S3" H 10150 5047 60  0000 C CNN
+F 1 "1825910-6" H 10150 4941 60  0000 C CNN
+F 2 "cerg:Switch_Tactile_THT_6x6mm" H 10350 4900 60  0001 L CNN
+F 3 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English" H 10350 5000 60  0001 L CNN
+F 4 "450-1650-ND" H 10350 5100 60  0001 L CNN "Digi-Key_PN"
+F 5 "1825910-6" H 10350 5200 60  0001 L CNN "MPN"
+F 6 "Switches" H 10350 5300 60  0001 L CNN "Category"
+F 7 "Tactile Switches" H 10350 5400 60  0001 L CNN "Family"
+F 8 "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English" H 10350 5500 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/te-connectivity-alcoswitch-switches/1825910-6/450-1650-ND/1632536" H 10350 5600 60  0001 L CNN "DK_Detail_Page"
+F 10 "SWITCH TACTILE SPST-NO 0.05A 24V" H 10350 5700 60  0001 L CNN "Description"
+F 11 "TE Connectivity ALCOSWITCH Switches" H 10350 5800 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 10350 5900 60  0001 L CNN "Status"
+	1    10150 4700
+	1    0    0    -1  
+$EndComp
+Text Notes 9800 4150 0    50   ~ 0
+Progam_B Button
 $EndSCHEMATC
