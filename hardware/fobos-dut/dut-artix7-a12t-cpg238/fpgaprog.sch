@@ -2217,15 +2217,13 @@ Wire Wire Line
 	3750 4550 3750 4450
 Connection ~ 3750 4550
 Wire Wire Line
-	4450 4450 4450 4400
-Wire Wire Line
 	5050 4650 5050 4250
 Wire Wire Line
 	5150 4750 5150 4450
 Wire Wire Line
 	5250 4850 5250 4350
 $Comp
-L dk_Rectangular-Connectors-Headers-Male-Pins:0878321420 J?
+L Connector_Generic:Conn_02x07_Odd_Even J?
 U 1 1 600F5844
 P 4100 4750
 AR Path="/5F22D594/600F5844" Ref="J?"  Part="1" 
@@ -2261,14 +2259,6 @@ Wire Wire Line
 	3750 4950 3900 4950
 Wire Wire Line
 	3750 5050 3900 5050
-Wire Wire Line
-	4300 4850 5250 4850
-Wire Wire Line
-	4300 4750 5150 4750
-Wire Wire Line
-	4300 4650 5050 4650
-Wire Wire Line
-	4300 4450 4450 4450
 $Comp
 L cerg:SW_DIP_x03 SW1
 U 1 1 5FEAB8CB
@@ -2583,8 +2573,6 @@ Wire Wire Line
 Wire Wire Line
 	5150 4450 5900 4450
 Wire Wire Line
-	5900 4550 4300 4550
-Wire Wire Line
 	5350 4650 5900 4650
 Wire Wire Line
 	5350 4650 5350 4750
@@ -2672,4 +2660,18 @@ F 3 "" H 4650 2600 50  0001 C CNN
 	1    4650 2600
 	1    0    0    -1  
 $EndComp
+Text Label 5450 3950 0    50   ~ 0
+MODE_1
+Wire Wire Line
+	4400 4450 4450 4450
+Wire Wire Line
+	4450 4450 4450 4400
+Wire Wire Line
+	4400 4550 5900 4550
+Wire Wire Line
+	5050 4650 4400 4650
+Wire Wire Line
+	5150 4750 4400 4750
+Wire Wire Line
+	5250 4850 4400 4850
 $EndSCHEMATC

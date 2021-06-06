@@ -223,7 +223,7 @@ AR Path="/5F227C5D/5F45A227" Ref="J?"  Part="1"
 AR Path="/5F449901/5F45A227" Ref="J6"  Part="1" 
 F 0 "J6" H 9250 2650 50  0000 L CNN
 F 1 "Measure" H 9050 2550 50  0000 L CNN
-F 2 "cerg:SMA-JOHNSON-142-0701-801" H 9450 2600 50  0001 C CNN
+F 2 "cerg:SMA-JOHNSON-142-0701-201" H 9450 2600 50  0001 C CNN
 F 3 "~" H 9450 2600 50  0001 C CNN
 F 4 "CONN SMA JACK STR 50OHM EDGE MNT" H 9450 2650 50  0001 C CNN "Description"
 F 5 "142-0701-801" H 9450 2650 50  0001 C CNN "MPN"
@@ -3679,24 +3679,24 @@ F 3 "" H 8550 6250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L dk_LED-Indication-Discrete:LG_L29K-G2J1-24-Z D1
+L device:LED D1
 U 1 1 5FE31482
-P 8550 5100
-F 0 "D1" V 8447 5278 60  0000 L CNN
-F 1 "LG_L29K-G2J1-24-Z" V 8553 5278 60  0001 L CNN
-F 2 "LED_SMD:LED_0603_1608Metric" H 8750 5300 60  0001 L CNN
-F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 8750 5400 60  0001 L CNN
-F 4 "475-2709-1-ND" H 8750 5500 60  0001 L CNN "Digi-Key_PN"
-F 5 "LG L29K-G2J1-24-Z" H 8750 5600 60  0001 L CNN "MPN"
-F 6 "Optoelectronics" H 8750 5700 60  0001 L CNN "Category"
-F 7 "LED Indication - Discrete" H 8750 5800 60  0001 L CNN "Family"
-F 8 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 8750 5900 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/osram-opto-semiconductors-inc/LG-L29K-G2J1-24-Z/475-2709-1-ND/1938876" H 8750 6000 60  0001 L CNN "DK_Detail_Page"
-F 10 "LED GREEN DIFFUSED 0603 SMD" H 8750 6100 60  0001 L CNN "Description"
-F 11 "OSRAM Opto Semiconductors Inc." H 8750 6200 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 8750 6300 60  0001 L CNN "Status"
-	1    8550 5100
-	0    1    1    0   
+P 8550 5050
+F 0 "D1" V 8447 5228 60  0000 L CNN
+F 1 "LG_L29K-G2J1-24-Z" V 8553 5228 60  0001 L CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 8750 5250 60  0001 L CNN
+F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 8750 5350 60  0001 L CNN
+F 4 "475-2709-1-ND" H 8750 5450 60  0001 L CNN "Digi-Key_PN"
+F 5 "LG L29K-G2J1-24-Z" H 8750 5550 60  0001 L CNN "MPN"
+F 6 "Optoelectronics" H 8750 5650 60  0001 L CNN "Category"
+F 7 "LED Indication - Discrete" H 8750 5750 60  0001 L CNN "Family"
+F 8 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 8750 5850 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/osram-opto-semiconductors-inc/LG-L29K-G2J1-24-Z/475-2709-1-ND/1938876" H 8750 5950 60  0001 L CNN "DK_Detail_Page"
+F 10 "LED GREEN DIFFUSED 0603 SMD" H 8750 6050 60  0001 L CNN "Description"
+F 11 "OSRAM Opto Semiconductors Inc." H 8750 6150 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 8750 6250 60  0001 L CNN "Status"
+	1    8550 5050
+	0    -1   -1   0   
 $EndComp
 $Comp
 L Device:R R49
