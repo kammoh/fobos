@@ -3044,4 +3044,6 @@ Text Label 6750 2250 0    50   ~ 0
 DIN
 Text Label 6750 2600 0    50   ~ 0
 FCS
+Text Label 7200 2000 0    50   ~ 0
+PUDC
 $EndSCHEMATC

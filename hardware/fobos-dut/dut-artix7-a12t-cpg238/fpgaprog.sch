@@ -2686,4 +2686,6 @@ Text Label 5450 4450 0    50   ~ 0
 TDO
 Text Label 5450 4550 0    50   ~ 0
 TMS
+Text Label 5700 3250 0    50   ~ 0
+CCLK
 $EndSCHEMATC
