@@ -4001,16 +4001,16 @@ $EndComp
 $Comp
 L cerg:SW_DIP_x03 SW2
 U 1 1 604378F8
-P 7850 4100
-F 0 "SW2" H 7850 4567 50  0000 C CNN
-F 1 "SW_DIP_x03" H 7850 4476 50  0000 C CNN
-F 2 "cerg:DS04-254-2-03BK-SMT" H 7850 4100 50  0001 C CNN
-F 3 "https://www.cuidevices.com/product/resource/ds04-254-smt.pdf" H 7850 4100 50  0001 C CNN
-F 4 "DS04-254-2-03BK-SMT" H 7850 4475 50  0001 C CNN "MPN"
-F 5 "DIP SWITCH, SPST, 2.54 PITCH, FL" H 7850 4100 50  0001 C CNN "Description"
-F 6 "CUI Devices" H 7850 4100 50  0001 C CNN "Manufacturer"
-	1    7850 4100
-	1    0    0    -1  
+P 7850 3900
+F 0 "SW2" H 7850 4367 50  0000 C CNN
+F 1 "SW_DIP_x03" H 7850 4276 50  0000 C CNN
+F 2 "cerg:DS04-254-2-03BK-SMT" H 7850 3900 50  0001 C CNN
+F 3 "https://www.cuidevices.com/product/resource/ds04-254-smt.pdf" H 7850 3900 50  0001 C CNN
+F 4 "DS04-254-2-03BK-SMT" H 7850 4275 50  0001 C CNN "MPN"
+F 5 "DIP SWITCH, SPST, 2.54 PITCH, FL" H 7850 3900 50  0001 C CNN "Description"
+F 6 "CUI Devices" H 7850 3900 50  0001 C CNN "Manufacturer"
+	1    7850 3900
+	1    0    0    1   
 $EndComp
 Wire Wire Line
 	7150 3100 7500 3100
