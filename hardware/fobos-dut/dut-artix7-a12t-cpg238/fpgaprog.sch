@@ -2674,4 +2674,16 @@ Wire Wire Line
 	5150 4750 4400 4750
 Wire Wire Line
 	5250 4850 4400 4850
+Text Label 5450 3850 0    50   ~ 0
+MODE_0
+Text Label 5450 4050 0    50   ~ 0
+MODE_2
+Text Label 5450 4250 0    50   ~ 0
+TCK
+Text Label 5450 4350 0    50   ~ 0
+TDI
+Text Label 5450 4450 0    50   ~ 0
+TDO
+Text Label 5450 4550 0    50   ~ 0
+TMS
 $EndSCHEMATC

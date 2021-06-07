@@ -2970,11 +2970,11 @@ Text GLabel 4000 2400 0    50   Input ~ 0
 FC_3V3
 Wire Wire Line
 	4000 2400 4250 2400
-Text GLabel 7500 2150 2    50   Input ~ 0
+Text GLabel 7500 1950 2    50   Input ~ 0
 FC_PROG
 Text GLabel 8600 3900 0    50   Input ~ 0
 FD2C_CLK
-Text GLabel 6200 2150 0    50   Input ~ 0
+Text GLabel 6200 1950 0    50   Input ~ 0
 FD2C_HS
 Wire Wire Line
 	7200 1300 7250 1300
@@ -3044,7 +3044,7 @@ Wire Wire Line
 	6300 1750 6350 1750
 Wire Wire Line
 	6300 1950 6300 1750
-Text GLabel 7500 1950 2    50   Input ~ 0
+Text GLabel 7500 2150 2    50   Input ~ 0
 FC_DIO3
 Wire Wire Line
 	6850 2650 6850 2750
@@ -3073,7 +3073,7 @@ F 3 "" H 6850 2750 50  0001 C CNN
 $EndComp
 Text GLabel 6750 1300 0    50   Input ~ 0
 FC_3V3
-Text GLabel 6200 1950 0    50   Input ~ 0
+Text GLabel 6200 2150 0    50   Input ~ 0
 FC_DIO2
 $Comp
 L cerg:SP3003-04ATG U?
@@ -3275,29 +3275,29 @@ F 6 "Texas Instruments" H 3100 5150 50  0001 C CNN "Manufacturer"
 	1    3100 5150
 	1    0    0    -1  
 $EndComp
-Text GLabel 2900 5450 0    50   Input ~ 0
-SW_CLK
-Text GLabel 2900 5350 0    50   Input ~ 0
-FC_DIO0_MUX
-Text GLabel 2900 5550 0    50   Input ~ 0
-FC_DIO0
-Text GLabel 2900 5750 0    50   Input ~ 0
-SW_DIN
-Text GLabel 2900 5650 0    50   Input ~ 0
-FC_DIO1_MUX
-Text GLabel 2900 5850 0    50   Input ~ 0
-FC_DIO1
-Text GLabel 4000 5950 2    50   Input ~ 0
-FC_DIO3
-Text GLabel 4000 5750 2    50   Input ~ 0
-FC_DIO3_MUX
 Text GLabel 4000 5850 2    50   Input ~ 0
-SW_INIT_B
-Text GLabel 4000 5650 2    50   Input ~ 0
-FC_DIO2
-Text GLabel 4000 5450 2    50   Input ~ 0
-FC_DIO2_MUX
+SW_CLK
+Text GLabel 4000 5750 2    50   Input ~ 0
+FC_DIO0_MUX
+Text GLabel 4000 5950 2    50   Input ~ 0
+FC_DIO0
 Text GLabel 4000 5550 2    50   Input ~ 0
+SW_DIN
+Text GLabel 4000 5450 2    50   Input ~ 0
+FC_DIO1_MUX
+Text GLabel 4000 5650 2    50   Input ~ 0
+FC_DIO1
+Text GLabel 2900 5550 0    50   Input ~ 0
+FC_DIO3
+Text GLabel 2900 5350 0    50   Input ~ 0
+FC_DIO3_MUX
+Text GLabel 2900 5450 0    50   Input ~ 0
+SW_INIT_B
+Text GLabel 2900 5850 0    50   Input ~ 0
+FC_DIO2
+Text GLabel 2900 5650 0    50   Input ~ 0
+FC_DIO2_MUX
+Text GLabel 2900 5750 0    50   Input ~ 0
 SW_PROGRAM_B
 Wire Wire Line
 	3000 5250 2050 5250

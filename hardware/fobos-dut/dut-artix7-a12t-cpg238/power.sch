@@ -3679,7 +3679,7 @@ F 3 "" H 8550 6250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L device:LED D1
+L Device:LED D1
 U 1 1 5FE31482
 P 8550 5050
 F 0 "D1" V 8447 5228 60  0000 L CNN
@@ -4147,7 +4147,7 @@ Connection ~ 1750 1250
 Wire Wire Line
 	1750 1250 2000 1250
 $Comp
-L Transistor:BSS138 Q3
+L Transistor_FET:BSS138 Q3
 U 1 1 60AC196A
 P 8450 5900
 F 0 "Q3" H 8654 5946 50  0000 L CNN

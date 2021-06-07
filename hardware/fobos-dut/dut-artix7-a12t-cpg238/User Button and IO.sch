@@ -419,7 +419,7 @@ F 3 "" H 2050 6300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L dk_LED-Indication-Discrete:LG_L29K-G2J1-24-Z D?
+L Device:LED D?
 U 1 1 602D02FE
 P 2050 4750
 AR Path="/5F449901/602D02FE" Ref="D?"  Part="1" 
@@ -512,7 +512,7 @@ F 6 "ON Semiconductor" H 5850 3100 50  0001 C CNN "Manufacturer"
 	1    0    0    -1  
 $EndComp
 $Comp
-L Transistor:BSS138 Q5
+L Transistor_FET:BSS138 Q5
 U 1 1 605337F1
 P 4000 3100
 F 0 "Q5" H 4204 3146 50  0000 L CNN
@@ -526,7 +526,7 @@ F 6 "ON Semiconductor" H 4000 3100 50  0001 C CNN "Manufacturer"
 	1    0    0    -1  
 $EndComp
 $Comp
-L Transistor:BSS138 Q4
+L Transistor_FET:BSS138 Q4
 U 1 1 60535EA9
 P 1950 3050
 F 0 "Q4" H 2154 3096 50  0000 L CNN
@@ -540,7 +540,7 @@ F 6 "ON Semiconductor" H 1950 3050 50  0001 C CNN "Manufacturer"
 	1    0    0    -1  
 $EndComp
 $Comp
-L Transistor:BSS138 Q6
+L Transistor_FET:BSS138 Q6
 U 1 1 60537AA7
 P 1950 5550
 F 0 "Q6" H 2154 5596 50  0000 L CNN
@@ -761,4 +761,6 @@ F 12 "Active" H 10350 5900 60  0001 L CNN "Status"
 $EndComp
 Text Notes 9800 4150 0    50   ~ 0
 Progam_B Button
+Text Notes 2350 4550 0    79   ~ 0
+Isn't this LED pointing the wrong way?
 $EndSCHEMATC
