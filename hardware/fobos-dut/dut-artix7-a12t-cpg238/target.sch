@@ -2701,7 +2701,7 @@ U 1 1 5F280E02
 P 8200 5650
 F 0 "J2" H 8250 6067 50  0000 C CNN
 F 1 "Pmod 2x6" H 8250 5976 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_2x06_P2.54mm_Horizontal" H 8200 5650 50  0001 C CNN
+F 2 "fobos-shield:PinSocket_2x06_P2.54mm_Horizontal_FLipped" H 8200 5650 50  0001 C CNN
 F 3 "~" H 8200 5650 50  0001 C CNN
 F 4 "CONN HEADER R/A 12POS 2.54MM" H 8200 5650 50  0001 C CNN "Description"
 F 5 "PH2RA-12-UA" H 8200 5650 50  0001 C CNN "MPN"
@@ -3244,8 +3244,6 @@ F 3 "" H 2050 5600 50  0001 C CNN
 	1    2050 5600
 	1    0    0    -1  
 $EndComp
-Text Notes 7100 6500 0    50   ~ 0
-Make footprint compatible with Digilent inc PMOD standard
 $Comp
 L power:+3V3 #PWR?
 U 1 1 60336087
