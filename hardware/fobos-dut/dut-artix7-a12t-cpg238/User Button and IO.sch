@@ -421,24 +421,24 @@ $EndComp
 $Comp
 L Device:LED D?
 U 1 1 602D02FE
-P 2050 4750
+P 2050 4700
 AR Path="/5F449901/602D02FE" Ref="D?"  Part="1" 
 AR Path="/600CE672/602D02FE" Ref="D5"  Part="1" 
-F 0 "D5" V 1947 4928 60  0000 L CNN
-F 1 "LG_L29K-G2J1-24-Z" V 2053 4928 60  0001 L CNN
-F 2 "LED_SMD:LED_0603_1608Metric" H 2250 4950 60  0001 L CNN
-F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 2250 5050 60  0001 L CNN
-F 4 "475-2709-1-ND" H 2250 5150 60  0001 L CNN "Digi-Key_PN"
-F 5 "LG L29K-G2J1-24-Z" H 2250 5250 60  0001 L CNN "MPN"
-F 6 "Optoelectronics" H 2250 5350 60  0001 L CNN "Category"
-F 7 "LED Indication - Discrete" H 2250 5450 60  0001 L CNN "Family"
-F 8 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 2250 5550 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/osram-opto-semiconductors-inc/LG-L29K-G2J1-24-Z/475-2709-1-ND/1938876" H 2250 5650 60  0001 L CNN "DK_Detail_Page"
-F 10 "LED GREEN DIFFUSED 0603 SMD" H 2250 5750 60  0001 L CNN "Description"
-F 11 "OSRAM Opto Semiconductors Inc." H 2250 5850 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 2250 5950 60  0001 L CNN "Status"
-	1    2050 4750
-	0    1    1    0   
+F 0 "D5" V 1947 4878 60  0000 L CNN
+F 1 "LG_L29K-G2J1-24-Z" V 2053 4878 60  0001 L CNN
+F 2 "LED_SMD:LED_0603_1608Metric" H 2250 4900 60  0001 L CNN
+F 3 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 2250 5000 60  0001 L CNN
+F 4 "475-2709-1-ND" H 2250 5100 60  0001 L CNN "Digi-Key_PN"
+F 5 "LG L29K-G2J1-24-Z" H 2250 5200 60  0001 L CNN "MPN"
+F 6 "Optoelectronics" H 2250 5300 60  0001 L CNN "Category"
+F 7 "LED Indication - Discrete" H 2250 5400 60  0001 L CNN "Family"
+F 8 "https://dammedia.osram.info/media/resource/hires/osram-dam-2493945/LG%20L29K.pdf" H 2250 5500 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/osram-opto-semiconductors-inc/LG-L29K-G2J1-24-Z/475-2709-1-ND/1938876" H 2250 5600 60  0001 L CNN "DK_Detail_Page"
+F 10 "LED GREEN DIFFUSED 0603 SMD" H 2250 5700 60  0001 L CNN "Description"
+F 11 "OSRAM Opto Semiconductors Inc." H 2250 5800 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 2250 5900 60  0001 L CNN "Status"
+	1    2050 4700
+	0    -1   -1   0   
 $EndComp
 $Comp
 L Device:R R?
@@ -458,8 +458,6 @@ F 6 "Panasonic Electronic Components" H 2050 5100 50  0001 C CNN "Manufacturer"
 $EndComp
 Wire Wire Line
 	2050 5350 2050 5250
-Wire Wire Line
-	2050 4950 2050 4850
 Wire Wire Line
 	2050 4450 2050 4550
 Text GLabel 1800 4300 2    50   Input ~ 0
@@ -693,7 +691,7 @@ FC_3V3
 Wire Wire Line
 	7150 4550 7350 4550
 Text GLabel 8450 4550 2    50   Input ~ 0
-USER_BTN_1
+FC_RST
 Wire Wire Line
 	8450 4550 8250 4550
 $Comp
@@ -761,6 +759,6 @@ F 12 "Active" H 10350 5900 60  0001 L CNN "Status"
 $EndComp
 Text Notes 9800 4150 0    50   ~ 0
 Progam_B Button
-Text Notes 2350 4550 0    79   ~ 0
-Isn't this LED pointing the wrong way?
+Wire Wire Line
+	2050 4850 2050 4950
 $EndSCHEMATC
