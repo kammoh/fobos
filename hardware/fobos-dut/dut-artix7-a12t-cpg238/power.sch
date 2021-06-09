@@ -3139,34 +3139,6 @@ Connection ~ 1450 6350
 Wire Wire Line
 	1450 6350 1450 6400
 $Comp
-L Transistor_BJT:MBT3904DW1 Q2
-U 1 1 5FE4035B
-P 2250 7250
-F 0 "Q2" H 2440 7296 50  0000 L CNN
-F 1 "MBT3904DW1" H 2440 7205 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-363_SC-70-6" H 2450 7350 50  0001 C CNN
-F 3 "http://www.onsemi.com/pub_link/Collateral/MBT3904DW1T1-D.PDF" H 2250 7250 50  0001 C CNN
-F 4 "TRANS 2NPN 40V 0.2A SC88" H 2250 7250 50  0001 C CNN "Description"
-F 5 "MBT3904DW1T1G" H 2250 7250 50  0001 C CNN "MPN"
-F 6 "ON Semiconductor" H 2250 7250 50  0001 C CNN "Manufacturer"
-	1    2250 7250
-	1    0    0    -1  
-$EndComp
-$Comp
-L Transistor_BJT:MBT3904DW1 Q2
-U 2 1 5FE416AF
-P 1700 7500
-F 0 "Q2" H 1890 7546 50  0000 L CNN
-F 1 "MBT3904DW1" H 1890 7455 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-363_SC-70-6" H 1900 7600 50  0001 C CNN
-F 3 "http://www.onsemi.com/pub_link/Collateral/MBT3904DW1T1-D.PDF" H 1700 7500 50  0001 C CNN
-F 4 "TRANS 2NPN 40V 0.2A SC88" H 1700 7500 50  0001 C CNN "Description"
-F 5 "MBT3904DW1T1G" H 1700 7500 50  0001 C CNN "MPN"
-F 6 "ON Semiconductor" H 1700 7500 50  0001 C CNN "Manufacturer"
-	2    1700 7500
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:R R40
 U 1 1 5FE4BAD6
 P 2350 6800
@@ -4310,4 +4282,48 @@ Wire Wire Line
 Connection ~ 7300 5650
 Wire Wire Line
 	7300 5650 7100 5650
+$Comp
+L Transistor_BJT:MMBT3904 Q2
+U 1 1 60C2A20E
+P 1700 7500
+F 0 "Q2" H 1891 7546 50  0000 L CNN
+F 1 "MMBT3904" H 1891 7455 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 1900 7425 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/2N3903-D.PDF" H 1700 7500 50  0001 L CNN
+	1    1700 7500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_BJT:MMBT3904 Q8
+U 1 1 60C2BF42
+P 2250 7250
+F 0 "Q8" H 2441 7296 50  0000 L CNN
+F 1 "MMBT3904" H 2441 7205 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 2450 7175 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/2N3903-D.PDF" H 2250 7250 50  0001 L CNN
+	1    2250 7250
+	1    0    0    -1  
+$EndComp
+Text Label 6100 6150 0    50   ~ 0
+pre3V3
+Text Label 6150 5650 0    50   ~ 0
+pre1V8
+Text Label 2600 5950 0    50   ~ 0
+EN3
+Text Label 2800 6800 0    50   ~ 0
+EN2
+Text Label 2600 6200 0    50   ~ 0
+MODE
+Text Label 4750 5550 0    50   ~ 0
+FB1
+Text Label 4750 6050 0    50   ~ 0
+FB2
+Text Label 4750 6550 0    50   ~ 0
+FB3
+Text Label 4650 5150 0    50   ~ 0
+SW1
+Text Label 4700 5650 0    50   ~ 0
+SW2
+Text Label 4700 6150 0    50   ~ 0
+SW3
 $EndSCHEMATC
