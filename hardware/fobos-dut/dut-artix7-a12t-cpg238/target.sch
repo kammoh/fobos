@@ -2830,18 +2830,13 @@ Wire Wire Line
 Wire Wire Line
 	7850 5850 7850 6050
 Wire Wire Line
-	8250 6350 8550 6350
-Wire Wire Line
-	8550 6350 8550 5950
+	8550 6100 8550 5950
 Wire Wire Line
 	8550 5950 8500 5950
-Connection ~ 8250 6350
 Wire Wire Line
 	8000 5950 7950 5950
 Wire Wire Line
-	7950 5950 7950 6350
-Wire Wire Line
-	7950 6350 8250 6350
+	7950 5950 7950 6100
 $Comp
 L power:GND #PWR?
 U 1 1 5F2FF09F
@@ -3245,21 +3240,6 @@ F 3 "" H 2050 5600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+3V3 #PWR?
-U 1 1 60336087
-P 8250 6300
-AR Path="/5F3A1954/60336087" Ref="#PWR?"  Part="1" 
-AR Path="/5F20DA36/60336087" Ref="#PWR0111"  Part="1" 
-F 0 "#PWR0111" H 8250 6150 50  0001 C CNN
-F 1 "+3V3" H 8265 6473 50  0000 C CNN
-F 2 "" H 8250 6300 50  0001 C CNN
-F 3 "" H 8250 6300 50  0001 C CNN
-	1    8250 6300
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8250 6300 8250 6350
-$Comp
 L cerg:TS3A5018DBQR U7
 U 1 1 602ABBA0
 P 3100 5150
@@ -3476,4 +3456,249 @@ Wire Wire Line
 	4300 2750 4100 2750
 Wire Wire Line
 	4100 2750 4100 2850
+Text GLabel 8300 6200 0    50   Input ~ 0
+FC_3V3
+Wire Wire Line
+	7950 6100 8400 6100
+Wire Wire Line
+	8300 6200 8400 6200
+Wire Wire Line
+	8400 6200 8400 6100
+Connection ~ 8400 6100
+Wire Wire Line
+	8400 6100 8550 6100
+$Comp
+L cerg:SP3003-04ATG U?
+U 1 1 60C7A42A
+P 7350 3850
+AR Path="/60C7A42A" Ref="U?"  Part="1" 
+AR Path="/5BE3725D/60C7A42A" Ref="U?"  Part="1" 
+AR Path="/5F227C5D/60C7A42A" Ref="U?"  Part="1" 
+AR Path="/5F20DA36/60C7A42A" Ref="U11"  Part="1" 
+F 0 "U11" H 7100 3400 50  0000 C CNN
+F 1 "SP3003-04ATG" H 6950 4300 50  0000 C CNN
+F 2 "Package_SO:MSOP-10_3x3mm_P0.5mm" H 8050 4300 50  0001 C CNN
+F 3 "http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF" H 7350 3850 50  0001 C CNN
+F 4 "TVS DIODE 6V 15V 10MSOP" H 7350 3850 50  0001 C CNN "Description"
+F 5 "SP3003-04ATG" H 7350 3850 50  0001 C CNN "MPN"
+F 6 "Littelfuse Inc." H 7350 3850 50  0001 C CNN "Manufacturer"
+	1    7350 3850
+	1    0    0    1   
+$EndComp
+$Comp
+L cerg:SP3003-04ATG U?
+U 1 1 60C7BDAF
+P 5700 3850
+AR Path="/60C7BDAF" Ref="U?"  Part="1" 
+AR Path="/5BE3725D/60C7BDAF" Ref="U?"  Part="1" 
+AR Path="/5F227C5D/60C7BDAF" Ref="U?"  Part="1" 
+AR Path="/5F20DA36/60C7BDAF" Ref="U10"  Part="1" 
+F 0 "U10" H 5450 3400 50  0000 C CNN
+F 1 "SP3003-04ATG" H 5300 4300 50  0000 C CNN
+F 2 "Package_SO:MSOP-10_3x3mm_P0.5mm" H 6400 4300 50  0001 C CNN
+F 3 "http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF" H 5700 3850 50  0001 C CNN
+F 4 "TVS DIODE 6V 15V 10MSOP" H 5700 3850 50  0001 C CNN "Description"
+F 5 "SP3003-04ATG" H 5700 3850 50  0001 C CNN "MPN"
+F 6 "Littelfuse Inc." H 5700 3850 50  0001 C CNN "Manufacturer"
+	1    5700 3850
+	1    0    0    1   
+$EndComp
+Text GLabel 7100 3150 0    50   Input ~ 0
+FC_3V3
+Text GLabel 5550 3150 0    50   Input ~ 0
+FC_3V3
+$Comp
+L power:GND #PWR?
+U 1 1 60C7DBA1
+P 5700 4500
+AR Path="/5F227C5D/60C7DBA1" Ref="#PWR?"  Part="1" 
+AR Path="/5F20DA36/60C7DBA1" Ref="#PWR0111"  Part="1" 
+F 0 "#PWR0111" H 5700 4250 50  0001 C CNN
+F 1 "GND" H 5705 4327 50  0000 C CNN
+F 2 "" H 5700 4500 50  0001 C CNN
+F 3 "" H 5700 4500 50  0001 C CNN
+	1    5700 4500
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 60C7E184
+P 7350 4500
+AR Path="/5F227C5D/60C7E184" Ref="#PWR?"  Part="1" 
+AR Path="/5F20DA36/60C7E184" Ref="#PWR0132"  Part="1" 
+F 0 "#PWR0132" H 7350 4250 50  0001 C CNN
+F 1 "GND" H 7355 4327 50  0000 C CNN
+F 2 "" H 7350 4500 50  0001 C CNN
+F 3 "" H 7350 4500 50  0001 C CNN
+	1    7350 4500
+	1    0    0    -1  
+$EndComp
+Text GLabel 6300 3750 2    50   Input ~ 0
+JA1
+Text GLabel 6300 3950 2    50   Input ~ 0
+JA2
+Text GLabel 5100 3750 0    50   Input ~ 0
+JA3
+Text GLabel 5100 3950 0    50   Input ~ 0
+JA4
+$Comp
+L Device:C C?
+U 1 1 60C96081
+P 5950 3150
+AR Path="/5F227C5D/60C96081" Ref="C?"  Part="1" 
+AR Path="/5F20DA36/60C96081" Ref="C57"  Part="1" 
+F 0 "C57" V 5800 3100 50  0000 L CNN
+F 1 "100nF" V 6100 3000 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5988 3000 50  0001 C CNN
+F 3 "~" H 5950 3150 50  0001 C CNN
+F 4 "CAP CER 0.1UF 6.3V X7R 0603" H 5950 3150 50  0001 C CNN "Description"
+F 5 "06036C104KAT4A" H 5950 3150 50  0001 C CNN "MPN"
+F 6 "AVX Corporation" H 5950 3150 50  0001 C CNN "Manufacturer"
+	1    5950 3150
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 60C9685A
+P 7600 3150
+AR Path="/5F227C5D/60C9685A" Ref="C?"  Part="1" 
+AR Path="/5F20DA36/60C9685A" Ref="C58"  Part="1" 
+F 0 "C58" V 7450 3100 50  0000 L CNN
+F 1 "100nF" V 7750 3000 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7638 3000 50  0001 C CNN
+F 3 "~" H 7600 3150 50  0001 C CNN
+F 4 "CAP CER 0.1UF 6.3V X7R 0603" H 7600 3150 50  0001 C CNN "Description"
+F 5 "06036C104KAT4A" H 7600 3150 50  0001 C CNN "MPN"
+F 6 "AVX Corporation" H 7600 3150 50  0001 C CNN "Manufacturer"
+	1    7600 3150
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 60C96F78
+P 7900 3150
+AR Path="/5F227C5D/60C96F78" Ref="#PWR?"  Part="1" 
+AR Path="/5F20DA36/60C96F78" Ref="#PWR0133"  Part="1" 
+F 0 "#PWR0133" H 7900 2900 50  0001 C CNN
+F 1 "GND" H 7905 2977 50  0000 C CNN
+F 2 "" H 7900 3150 50  0001 C CNN
+F 3 "" H 7900 3150 50  0001 C CNN
+	1    7900 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 60C9755B
+P 6200 3150
+AR Path="/5F227C5D/60C9755B" Ref="#PWR?"  Part="1" 
+AR Path="/5F20DA36/60C9755B" Ref="#PWR0134"  Part="1" 
+F 0 "#PWR0134" H 6200 2900 50  0001 C CNN
+F 1 "GND" H 6205 2977 50  0000 C CNN
+F 2 "" H 6200 3150 50  0001 C CNN
+F 3 "" H 6200 3150 50  0001 C CNN
+	1    6200 3150
+	1    0    0    -1  
+$EndComp
+Text GLabel 7950 3750 2    50   Input ~ 0
+JA7
+Text GLabel 7950 3950 2    50   Input ~ 0
+JA8
+Text GLabel 6750 3750 0    50   Input ~ 0
+JA9
+Text GLabel 6750 3950 0    50   Input ~ 0
+JA10
+Wire Wire Line
+	7950 3750 7900 3750
+Wire Wire Line
+	7850 3550 7900 3550
+Wire Wire Line
+	7900 3550 7900 3750
+Connection ~ 7900 3750
+Wire Wire Line
+	7900 3750 7850 3750
+Wire Wire Line
+	7850 3950 7900 3950
+Wire Wire Line
+	7850 4150 7900 4150
+Wire Wire Line
+	7900 4150 7900 3950
+Connection ~ 7900 3950
+Wire Wire Line
+	7900 3950 7950 3950
+Wire Wire Line
+	7350 4450 7350 4500
+Wire Wire Line
+	7350 3250 7350 3150
+Wire Wire Line
+	7350 3150 7100 3150
+Wire Wire Line
+	7350 3150 7450 3150
+Connection ~ 7350 3150
+Wire Wire Line
+	7750 3150 7900 3150
+Wire Wire Line
+	6850 3550 6800 3550
+Wire Wire Line
+	6800 3550 6800 3750
+Wire Wire Line
+	6800 3750 6750 3750
+Wire Wire Line
+	6800 3750 6850 3750
+Connection ~ 6800 3750
+Wire Wire Line
+	6850 3950 6800 3950
+Wire Wire Line
+	6850 4150 6800 4150
+Wire Wire Line
+	6800 4150 6800 3950
+Connection ~ 6800 3950
+Wire Wire Line
+	6800 3950 6750 3950
+Wire Wire Line
+	6300 3750 6250 3750
+Wire Wire Line
+	6200 3550 6250 3550
+Wire Wire Line
+	6250 3550 6250 3750
+Connection ~ 6250 3750
+Wire Wire Line
+	6250 3750 6200 3750
+Wire Wire Line
+	6200 3950 6250 3950
+Wire Wire Line
+	6200 4150 6250 4150
+Wire Wire Line
+	6250 4150 6250 3950
+Connection ~ 6250 3950
+Wire Wire Line
+	6250 3950 6300 3950
+Wire Wire Line
+	5700 3250 5700 3150
+Wire Wire Line
+	5700 3150 5550 3150
+Wire Wire Line
+	5700 3150 5800 3150
+Connection ~ 5700 3150
+Wire Wire Line
+	6100 3150 6200 3150
+Wire Wire Line
+	5700 4450 5700 4500
+Wire Wire Line
+	5100 3750 5150 3750
+Wire Wire Line
+	5200 3550 5150 3550
+Wire Wire Line
+	5150 3550 5150 3750
+Connection ~ 5150 3750
+Wire Wire Line
+	5150 3750 5200 3750
+Wire Wire Line
+	5100 3950 5150 3950
+Wire Wire Line
+	5200 4150 5150 4150
+Wire Wire Line
+	5150 4150 5150 3950
+Connection ~ 5150 3950
+Wire Wire Line
+	5150 3950 5200 3950
 $EndSCHEMATC
