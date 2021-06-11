@@ -4137,21 +4137,21 @@ Wire Wire Line
 $Comp
 L cerg:JS202011SCQN S1
 U 1 1 60AFF5C6
-P 9800 5850
-F 0 "S1" H 9800 5325 50  0000 C CNN
-F 1 "JS202011SCQN" H 9800 5416 50  0000 C CNN
-F 2 "cerg:Switch_Slide_JS202011SCQN" H 10000 6050 50  0001 L CNN
-F 3 "https://www.ckswitches.com/media/1422/js.pdf" H 10000 6150 60  0001 L CNN
-F 4 "401-2002-1-ND" H 10000 6250 60  0001 L CNN "Digi-Key_PN"
-F 5 "JS202011SCQN" H 10000 6350 60  0001 L CNN "MPN"
-F 6 "Switches" H 10000 6450 60  0001 L CNN "Category"
-F 7 "Slide Switches" H 10000 6550 60  0001 L CNN "Family"
-F 8 "https://www.ckswitches.com/media/1422/js.pdf" H 10000 6650 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/c-k/JS202011SCQN/401-2002-1-ND/1640098" H 10000 6750 60  0001 L CNN "DK_Detail_Page"
-F 10 "SWITCH SLIDE DPDT 300MA 6V" H 10000 6850 60  0001 L CNN "Description"
-F 11 "C&K" H 10000 6950 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 10000 7050 60  0001 L CNN "Status"
-	1    9800 5850
+P 9800 5450
+F 0 "S1" H 9800 4925 50  0000 C CNN
+F 1 "JS202011SCQN" H 9800 5016 50  0000 C CNN
+F 2 "cerg:Switch_Slide_JS202011SCQN" H 10000 5650 50  0001 L CNN
+F 3 "https://www.ckswitches.com/media/1422/js.pdf" H 10000 5750 60  0001 L CNN
+F 4 "401-2002-1-ND" H 10000 5850 60  0001 L CNN "Digi-Key_PN"
+F 5 "JS202011SCQN" H 10000 5950 60  0001 L CNN "MPN"
+F 6 "Switches" H 10000 6050 60  0001 L CNN "Category"
+F 7 "Slide Switches" H 10000 6150 60  0001 L CNN "Family"
+F 8 "https://www.ckswitches.com/media/1422/js.pdf" H 10000 6250 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/c-k/JS202011SCQN/401-2002-1-ND/1640098" H 10000 6350 60  0001 L CNN "DK_Detail_Page"
+F 10 "SWITCH SLIDE DPDT 300MA 6V" H 10000 6450 60  0001 L CNN "Description"
+F 11 "C&K" H 10000 6550 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 10000 6650 60  0001 L CNN "Status"
+	1    9800 5450
 	-1   0    0    1   
 $EndComp
 Text Notes 1500 6100 1    50   ~ 10

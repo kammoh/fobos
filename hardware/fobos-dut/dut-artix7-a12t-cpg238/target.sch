@@ -3535,11 +3535,11 @@ F 3 "" H 7350 4500 50  0001 C CNN
 $EndComp
 Text GLabel 6300 3750 2    50   Input ~ 0
 JA1
-Text GLabel 6300 3950 2    50   Input ~ 0
-JA2
 Text GLabel 5100 3750 0    50   Input ~ 0
+JA2
+Text GLabel 7950 3750 2    50   Input ~ 0
 JA3
-Text GLabel 5100 3950 0    50   Input ~ 0
+Text GLabel 6750 3750 0    50   Input ~ 0
 JA4
 $Comp
 L Device:C C?
@@ -3599,11 +3599,11 @@ F 3 "" H 6200 3150 50  0001 C CNN
 	1    6200 3150
 	1    0    0    -1  
 $EndComp
-Text GLabel 7950 3750 2    50   Input ~ 0
+Text GLabel 6300 3950 2    50   Input ~ 0
 JA7
-Text GLabel 7950 3950 2    50   Input ~ 0
+Text GLabel 5100 3950 0    50   Input ~ 0
 JA8
-Text GLabel 6750 3750 0    50   Input ~ 0
+Text GLabel 7950 3950 2    50   Input ~ 0
 JA9
 Text GLabel 6750 3950 0    50   Input ~ 0
 JA10
