@@ -306,36 +306,18 @@ F 3 "~" H 2400 1700 50  0001 C CNN
 	1    2400 1700
 	1    0    0    -1  
 $EndComp
-Text GLabel 1600 1300 0    50   Input ~ 0
-CW_5V
 Text GLabel 1600 1500 0    50   Input ~ 0
-CW_RST
+FC_RST
 Text GLabel 1600 1600 0    50   Input ~ 0
-CW_MISO
+FC_IO
 Text GLabel 1600 1700 0    50   Input ~ 0
-CW_MOSI
+FD_TF
 Text GLabel 1600 1800 0    50   Input ~ 0
-CW_SCK
+FC2D_HS
 Text GLabel 1600 1900 0    50   Input ~ 0
-CW_PDIC
+FD2C_HS
 Text GLabel 1600 2000 0    50   Input ~ 0
-CW_PDID
-Text GLabel 3300 1400 2    50   Input ~ 0
-CW_HS1
-Text GLabel 3300 1500 2    50   Input ~ 0
-CW_HS2
-Text GLabel 3300 1600 2    50   Input ~ 0
-CW_VREF
-Text GLabel 3300 1700 2    50   Input ~ 0
-CW_TARG1
-Text GLabel 3300 1800 2    50   Input ~ 0
-CW_TARG2
-Text GLabel 3300 1900 2    50   Input ~ 0
-CW_TARG3
-Text GLabel 3300 2000 2    50   Input ~ 0
-CW_TARG4
-Text GLabel 3300 2200 2    50   Input ~ 0
-CW_5V
+FC_PROG
 $Comp
 L power:GND #PWR0150
 U 1 1 5B6D7DAD
@@ -400,7 +382,7 @@ Wire Wire Line
 Wire Wire Line
 	2700 2200 3300 2200
 Text Label 2050 1500 2    50   ~ 0
-CV_RST
+CW_RST
 Wire Wire Line
 	1600 1500 2200 1500
 Text Label 2050 1600 2    50   ~ 0
@@ -1038,9 +1020,9 @@ $EndComp
 Wire Wire Line
 	2350 5950 2350 5800
 Text GLabel 1950 5650 0    50   Input ~ 0
-CW_HS1
+FD2C_CLK
 Text GLabel 2750 5650 2    50   Input ~ 0
-CW_HS2
+FC2D_CLK
 Wire Wire Line
 	1950 5650 2100 5650
 Wire Wire Line
@@ -1055,26 +1037,22 @@ U 1 1 5B84A46F
 P 2350 3250
 F 0 "J16" H 2430 3292 50  0000 L CNN
 F 1 "Conn_01x01" H 2430 3201 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 2350 3250 50  0001 C CNN
-F 3 "~" H 2350 3250 50  0001 C CNN
+F 2 "TestPoint:TestPoint_Loop_D2.60mm_Drill1.6mm_Beaded" H 2350 3250 50  0001 C CNN
+F 3 "https://www.mouser.com/datasheet/2/215/005-5009-743680.pdf" H 2350 3250 50  0001 C CNN
 	1    2350 3250
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	2150 3250 2150 3350
 Connection ~ 2150 3350
-Text GLabel 1600 1400 0    50   Input ~ 0
-CW_3V3
-Text GLabel 3300 2100 2    50   Input ~ 0
-CW_3V3
 $Comp
 L Connector_Generic:Conn_01x01 J22
 U 1 1 5B899B87
 P 2450 3900
 F 0 "J22" H 2530 3942 50  0000 L CNN
 F 1 "GND" H 2530 3851 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 2450 3900 50  0001 C CNN
-F 3 "~" H 2450 3900 50  0001 C CNN
+F 2 "TestPoint:TestPoint_Loop_D2.60mm_Drill1.6mm_Beaded" H 2450 3900 50  0001 C CNN
+F 3 "https://www.mouser.com/datasheet/2/215/005-5009-743680.pdf" H 2450 3900 50  0001 C CNN
 	1    2450 3900
 	1    0    0    -1  
 $EndComp
@@ -1083,20 +1061,6 @@ Wire Wire Line
 	2150 3900 2150 4050
 Wire Wire Line
 	2150 3900 2250 3900
-$Comp
-L Connector_Generic:Conn_01x01 J21
-U 1 1 5B89C960
-P 4350 1150
-F 0 "J21" H 4430 1192 50  0000 L CNN
-F 1 "GND" H 4430 1101 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 4350 1150 50  0001 C CNN
-F 3 "~" H 4350 1150 50  0001 C CNN
-	1    4350 1150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4150 1150 4150 1300
-Connection ~ 4150 1300
 Text Notes 1000 1550 0    50   ~ 0
 T14
 Text Notes 1000 1650 0    50   ~ 0
@@ -1127,4 +1091,26 @@ Text Notes 3800 1950 0    50   ~ 0
 V13
 Text Notes 3800 2050 0    50   ~ 0
 V7
+Text GLabel 1600 1400 0    50   Input ~ 0
+FC_3V3
+Text GLabel 1600 1300 0    50   Input ~ 0
+FC_5V
+Text GLabel 3300 2200 2    50   Input ~ 0
+FC_5V
+Text GLabel 3300 2100 2    50   Input ~ 0
+FC_3V3
+Text GLabel 3300 1600 2    50   Input ~ 0
+FD_VREF
+Text GLabel 3300 2000 2    50   Input ~ 0
+FC_DIO3
+Text GLabel 3300 1900 2    50   Input ~ 0
+FC_DIO2
+Text GLabel 3300 1800 2    50   Input ~ 0
+FC_DIO1
+Text GLabel 3300 1700 2    50   Input ~ 0
+FC_DIO0
+Text GLabel 3300 1500 2    50   Input ~ 0
+FC2D_CLK
+Text GLabel 3300 1400 2    50   Input ~ 0
+FD2C_CLK
 $EndSCHEMATC

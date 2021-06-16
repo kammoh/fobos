@@ -25,47 +25,25 @@ F 3 "~" H 3100 1350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector_Generic:Conn_02x08_Odd_Even J4
-U 1 1 5B5BA5A7
-P 7400 2400
-F 0 "J4" H 7450 1900 50  0000 C CNN
-F 1 "IOH" H 7450 1800 50  0000 C CNN
-F 2 "cerg:PinHeader_2x08_P2.54mm_Vertical_Flipped" H 7400 2400 50  0001 C CNN
-F 3 "~" H 7400 2400 50  0001 C CNN
-	1    7400 2400
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector_Generic:Conn_01x04 J6
-U 1 1 5B5BA5EA
-P 3150 2100
-F 0 "J6" H 3229 2092 50  0000 L CNN
-F 1 "Analog2" H 3229 2001 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 3150 2100 50  0001 C CNN
-F 3 "~" H 3150 2100 50  0001 C CNN
-	1    3150 2100
-	1    0    0    -1  
-$EndComp
-$Comp
 L Connector_Generic:Conn_01x08 J7
 U 1 1 5B5BA638
-P 3150 3350
-F 0 "J7" H 3230 3342 50  0000 L CNN
-F 1 "Power" H 3230 3251 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical" H 3150 3350 50  0001 C CNN
-F 3 "~" H 3150 3350 50  0001 C CNN
-	1    3150 3350
+P 3150 2950
+F 0 "J7" H 3230 2942 50  0000 L CNN
+F 1 "Power" H 3230 2851 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical" H 3150 2950 50  0001 C CNN
+F 3 "~" H 3150 2950 50  0001 C CNN
+	1    3150 2950
 	1    0    0    -1  
 $EndComp
 $Comp
 L Connector_Generic:Conn_02x03_Odd_Even J5
 U 1 1 5B5BA6C7
-P 3100 4850
-F 0 "J5" H 3150 5167 50  0000 C CNN
-F 1 "SPI" H 3150 5076 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_2x03_P2.54mm_Vertical" H 3100 4850 50  0001 C CNN
-F 3 "~" H 3100 4850 50  0001 C CNN
-	1    3100 4850
+P 4900 5300
+F 0 "J5" H 4950 5617 50  0000 C CNN
+F 1 "SPI" H 4950 5526 50  0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_2x03_P2.54mm_Vertical" H 4900 5300 50  0001 C CNN
+F 3 "~" H 4900 5300 50  0001 C CNN
+	1    4900 5300
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -82,134 +60,92 @@ $EndComp
 $Comp
 L Connector_Generic:Conn_01x02 J9
 U 1 1 5B5BAA30
-P 3150 5450
-F 0 "J9" H 3230 5442 50  0000 L CNN
-F 1 "SPI2" H 3230 5351 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 3150 5450 50  0001 C CNN
-F 3 "~" H 3150 5450 50  0001 C CNN
-	1    3150 5450
+P 7400 3700
+F 0 "J9" H 7480 3692 50  0000 L CNN
+F 1 "SPI2" H 7480 3601 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 7400 3700 50  0001 C CNN
+F 3 "~" H 7400 3700 50  0001 C CNN
+	1    7400 3700
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	7200 1050 6900 1050
-Text GLabel 6900 1050 0    50   Input ~ 0
-CW_RST
-Text GLabel 6900 1150 0    50   Input ~ 0
-CW_TARG1
-Text GLabel 6900 1250 0    50   Input ~ 0
-CW_TARG2
-Text GLabel 6900 1350 0    50   Input ~ 0
-CW_TARG3
-Text GLabel 6900 1450 0    50   Input ~ 0
-CW_PDIC
-Text GLabel 6900 1550 0    50   Input ~ 0
-CW_PDID
-Wire Wire Line
-	7200 1650 6150 1650
-Wire Wire Line
-	6900 1550 7200 1550
-Wire Wire Line
-	7200 1450 6900 1450
-Wire Wire Line
-	6900 1350 7200 1350
-Wire Wire Line
-	7200 1250 6900 1250
-Wire Wire Line
-	6900 1150 7200 1150
-Text GLabel 1650 1450 0    50   Input ~ 0
-CSM5V
-Text GLabel 1650 1350 0    50   Input ~ 0
+Text GLabel 6850 3700 0    50   Input ~ 0
+FC_RST
+Text GLabel 6800 2200 0    50   Input ~ 0
+FC_DIO0
+Text GLabel 6800 2100 0    50   Input ~ 0
+FC_DIO1
+Text GLabel 6800 1750 0    50   Input ~ 0
+FC_DIO2
+Text GLabel 8200 1750 2    50   Input ~ 0
+FD2C_HS
+Text GLabel 8200 1650 2    50   Input ~ 0
+FC_PROG
+Text GLabel 1650 1650 0    50   Input ~ 0
+FC_5V
+Text GLabel 1650 1550 0    50   Input ~ 0
 CSM5VCur
-Text GLabel 1650 1150 0    50   Input ~ 0
-CSM3V3
 Text GLabel 1650 1250 0    50   Input ~ 0
+FC_3V3
+Text GLabel 1650 1150 0    50   Input ~ 0
 CSM3V3Cur
-Text GLabel 2550 1550 0    50   Input ~ 0
-A4
-Text GLabel 2550 1650 0    50   Input ~ 0
-A5
-Wire Wire Line
-	2900 1550 2550 1550
-Wire Wire Line
-	2900 1650 2550 1650
-Text GLabel 3750 1450 2    50   Input ~ 0
+Text GLabel 3750 1650 2    50   Input ~ 0
 CSM5VGain0
-Text GLabel 3750 1350 2    50   Input ~ 0
+Text GLabel 3750 1550 2    50   Input ~ 0
 CSM5VGain1
 Wire Wire Line
-	2600 5450 2950 5450
+	6850 3700 7200 3700
 Wire Wire Line
-	2600 5550 2950 5550
-Text GLabel 2500 4750 0    50   Input ~ 0
+	6850 3800 7200 3800
+Text GLabel 4300 5400 0    50   Input ~ 0
 GlitchLP
-Text GLabel 2400 4850 0    50   Input ~ 0
+Text GLabel 5450 5300 2    50   Input ~ 0
 Glitch
 Wire Wire Line
-	2400 4850 2900 4850
-Text GLabel 8200 1050 2    50   Input ~ 0
-CW_MISO
-Text GLabel 8200 1150 2    50   Input ~ 0
-CW_MOSI
-Text GLabel 8200 1250 2    50   Input ~ 0
-CW_SCK
-Text GLabel 8200 1350 2    50   Input ~ 0
-CW_HS1
-Text GLabel 8200 1450 2    50   Input ~ 0
-CW_TARG4
-Text GLabel 8200 2400 2    50   Input ~ 0
-CW_HS2
+	4300 5300 4700 5300
+Text GLabel 8200 2300 2    50   Input ~ 0
+FC_IO
+Text GLabel 8200 2200 2    50   Input ~ 0
+FD_TF
 Text GLabel 8200 2800 2    50   Input ~ 0
+FD2C_CLK
+Text GLabel 6800 1650 0    50   Input ~ 0
+FC_DIO3
+Text GLabel 8200 2400 2    50   Input ~ 0
+FC2D_CLK
+Text GLabel 8200 1350 2    50   Input ~ 0
 ADC_CLK
-Text GLabel 2600 5450 0    50   Input ~ 0
+Text GLabel 6800 2800 0    50   Input ~ 0
 PWR_EN
-Text GLabel 3750 1250 2    50   Input ~ 0
-CSM3V3Gain0
 Text GLabel 3750 1150 2    50   Input ~ 0
+CSM3V3Gain0
+Text GLabel 3750 1250 2    50   Input ~ 0
 CSM3V3Gain1
-Text GLabel 3750 1550 2    50   Input ~ 0
-A10
-Text GLabel 3750 1650 2    50   Input ~ 0
+Text GLabel 6850 3800 0    50   Input ~ 0
 Trigger
-Text GLabel 2850 2000 0    50   Input ~ 0
-XADC_V_P
-Text GLabel 2850 2100 0    50   Input ~ 0
-XADC_V_N
-Text GLabel 2850 2200 0    50   Input ~ 0
-XADCGND
-Text GLabel 2850 2300 0    50   Input ~ 0
-XADCVREF
-Text GLabel 1900 3350 0    50   Input ~ 0
+Text GLabel 1900 2950 0    50   Input ~ 0
 VCC3V3
-Text GLabel 1900 3450 0    50   Input ~ 0
+Text GLabel 1900 3050 0    50   Input ~ 0
 VCC5V0
-Text GLabel 2250 3650 0    50   Input ~ 0
+Text GLabel 2250 3250 0    50   Input ~ 0
 GND
-Text GLabel 2250 3750 0    50   Input ~ 0
+Text GLabel 2250 3350 0    50   Input ~ 0
 VU_CK
 Wire Wire Line
-	2950 3350 2500 3350
+	2950 2950 2500 2950
+Wire Wire Line
+	2950 2750 2500 2750
+Wire Wire Line
+	2500 2750 2500 2950
+Connection ~ 2500 2950
+Wire Wire Line
+	2950 3250 2500 3250
 Wire Wire Line
 	2950 3150 2500 3150
 Wire Wire Line
-	2500 3150 2500 3350
-Connection ~ 2500 3350
+	2500 3150 2500 3250
+Connection ~ 2500 3250
 Wire Wire Line
-	2950 3650 2500 3650
-Wire Wire Line
-	2950 3550 2500 3550
-Wire Wire Line
-	2500 3550 2500 3650
-Connection ~ 2500 3650
-Wire Wire Line
-	2500 3650 2250 3650
-Wire Wire Line
-	2950 2300 2850 2300
-Wire Wire Line
-	2950 2200 2850 2200
-Wire Wire Line
-	2950 2100 2850 2100
-Wire Wire Line
-	2950 2000 2850 2000
+	2500 3250 2250 3250
 Wire Wire Line
 	3400 1150 3750 1150
 Wire Wire Line
@@ -227,22 +163,12 @@ Wire Wire Line
 Wire Wire Line
 	7700 2800 8200 2800
 Wire Wire Line
-	7700 1050 8200 1050
-Wire Wire Line
-	7700 1150 8200 1150
-Wire Wire Line
-	7700 1250 8200 1250
-Wire Wire Line
 	7700 1350 8200 1350
 Wire Wire Line
-	7700 1450 8200 1450
-Wire Wire Line
 	7700 1550 9050 1550
-Wire Wire Line
-	7700 1750 9050 1750
-Text GLabel 3650 4850 2    50   Input ~ 0
+Text GLabel 4300 5300 0    50   Input ~ 0
 VGA_GAIN
-Text GLabel 2550 4950 0    50   Input ~ 0
+Text GLabel 4300 5200 0    50   Input ~ 0
 VGA_HILO
 Text GLabel 9350 1450 2    50   Input ~ 0
 ADC_D[9..0]
@@ -261,42 +187,38 @@ Wire Wire Line
 	6950 3050 6950 2700
 Wire Wire Line
 	6950 2700 7200 2700
-Text GLabel 8200 2300 2    50   Input ~ 0
+Text GLabel 6800 1550 0    50   Input ~ 0
 ADC_OR
-Wire Wire Line
-	6150 1750 7200 1750
-Wire Wire Line
-	7700 1650 9050 1650
-Text Notes 3450 5550 0    50   ~ 0
+Text Notes 7700 3800 0    50   ~ 0
 These pins have 2k2 pull-up resistors\non the PYNQ board
 Wire Wire Line
-	2500 4750 2900 4750
-Text Label 3400 4850 0    50   ~ 0
+	4300 5200 4700 5200
+Text Label 5200 5300 0    50   ~ 0
 MOSI
-Text Label 2850 4950 2    50   ~ 0
+Text Label 4650 5400 2    50   ~ 0
 SS
-Text Label 2850 4850 2    50   ~ 0
+Text Label 4650 5300 2    50   ~ 0
 SCK
-Text Label 2850 4750 2    50   ~ 0
+Text Label 4650 5200 2    50   ~ 0
 MISO
 Wire Wire Line
-	2550 4950 2900 4950
+	4300 5400 4700 5400
 Wire Wire Line
-	3400 4850 3650 4850
+	5200 5300 5450 5300
 $Comp
 L power:GND #PWR0153
 U 1 1 5B734381
-P 3700 4950
-F 0 "#PWR0153" H 3700 4700 50  0001 C CNN
-F 1 "GND" H 3705 4777 50  0000 C CNN
-F 2 "" H 3700 4950 50  0001 C CNN
-F 3 "" H 3700 4950 50  0001 C CNN
-	1    3700 4950
+P 5500 5400
+F 0 "#PWR0153" H 5500 5150 50  0001 C CNN
+F 1 "GND" H 5505 5227 50  0000 C CNN
+F 2 "" H 5500 5400 50  0001 C CNN
+F 3 "" H 5500 5400 50  0001 C CNN
+	1    5500 5400
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3400 4950 3700 4950
-Text Label 3400 4950 0    50   ~ 0
+	5200 5400 5500 5400
+Text Label 5200 5400 0    50   ~ 0
 GND
 Text Label 7150 1050 2    50   ~ 0
 IO0
@@ -362,52 +284,12 @@ Text Label 7150 2800 2    50   ~ 0
 IOa
 Wire Wire Line
 	7700 2300 8200 2300
-Wire Wire Line
-	7700 2200 9050 2200
-Wire Wire Line
-	7700 2100 9050 2100
-Wire Wire Line
-	6150 2300 7200 2300
-Wire Wire Line
-	6150 2200 7200 2200
-Wire Wire Line
-	6150 2100 7200 2100
 Text Label 9000 1550 2    50   ~ 0
-ADC_D0
-Text Label 6500 1650 2    50   ~ 0
-ADC_D1
-Text Label 9000 1650 2    50   ~ 0
-ADC_D2
-Text Label 6500 1750 2    50   ~ 0
-ADC_D3
-Text Label 9000 1750 2    50   ~ 0
-ADC_D4
-Text Label 6450 2100 2    50   ~ 0
-ADC_D5
-Text Label 9000 2100 2    50   ~ 0
-ADC_D6
-Text Label 6450 2200 2    50   ~ 0
-ADC_D7
-Text Label 9000 2200 2    50   ~ 0
-ADC_D8
-Text Label 6450 2300 2    50   ~ 0
 ADC_D9
 Entry Wire Line
 	9050 1550 9150 1650
-Entry Wire Line
-	9050 1650 9150 1750
-Entry Wire Line
-	9050 1750 9150 1850
 Wire Bus Line
 	9150 1450 9350 1450
-Entry Wire Line
-	6050 1750 6150 1650
-Entry Wire Line
-	6050 1850 6150 1750
-Entry Wire Line
-	9050 2100 9150 2200
-Entry Wire Line
-	9050 2200 9150 2300
 Wire Bus Line
 	6050 1900 9150 1900
 Connection ~ 9150 1900
@@ -456,25 +338,25 @@ PWR[5..0]
 Wire Bus Line
 	9050 3300 6150 3300
 Connection ~ 9050 3300
-Text Label 2800 5450 0    50   ~ 0
+Text Label 7050 3700 0    50   ~ 0
 SDA
-Text Label 2800 5550 0    50   ~ 0
+Text Label 7050 3800 0    50   ~ 0
 SCL
-Text Label 2650 3250 0    50   ~ 0
+Text Label 2650 2850 0    50   ~ 0
 RST
 Text Label 7000 2700 0    50   ~ 0
 GND
-Text Label 2650 3550 0    50   ~ 0
-GND
-Text Label 2650 3650 0    50   ~ 0
-GND
-Text Label 2650 3450 0    50   ~ 0
-5V0
-Text Label 2650 3350 0    50   ~ 0
-3V3
 Text Label 2650 3150 0    50   ~ 0
+GND
+Text Label 2650 3250 0    50   ~ 0
+GND
+Text Label 2650 3050 0    50   ~ 0
+5V0
+Text Label 2650 2950 0    50   ~ 0
+3V3
+Text Label 2650 2750 0    50   ~ 0
 IOREF
-Text Label 2650 3750 0    50   ~ 0
+Text Label 2650 3350 0    50   ~ 0
 VU_CK
 $Bitmap
 Pos 9950 7100
@@ -1060,7 +942,7 @@ C9 44 60 4D 92 BC B6 A0 F2 80 D2 E1 20 5A AF 6C D6 15 BD 5E 60 21 F0 EB FF 00 E0
 A4 DB 00 00 00 00 49 45 4E 44 AE 42 60 82 
 EndData
 $EndBitmap
-Text GLabel 6800 2800 0    50   Input ~ 0
+Text GLabel 6800 2300 0    50   Input ~ 0
 PWR_PG
 Text Label 2700 1150 0    50   ~ 0
 A0
@@ -1149,11 +1031,9 @@ Wire Wire Line
 Wire Wire Line
 	2250 1450 2900 1450
 Wire Wire Line
-	1900 3350 2500 3350
+	1900 2950 2500 2950
 Wire Wire Line
-	1900 3450 2950 3450
-Text GLabel 2600 5550 0    50   Input ~ 0
-SCL
+	1900 3050 2950 3050
 Text Notes 4400 1050 0    50   ~ 0
 FPGA\nPin
 Text Notes 4400 1200 0    50   ~ 0
@@ -1190,9 +1070,9 @@ Text Notes 950  1500 0    50   ~ 0
 K16
 Text Notes 700  1500 0    50   ~ 0
 J16
-Text Notes 2000 5500 0    50   ~ 0
+Text Notes 6250 3750 0    50   ~ 0
 P15
-Text Notes 2000 5350 0    50   ~ 0
+Text Notes 6250 3600 0    50   ~ 0
 FPGA\nPin
 Text Notes 9250 1350 0    50   ~ 0
 FPGA\nPin
@@ -1212,12 +1092,6 @@ Text Notes 5800 2600 0    50   ~ 0
 N17
 Text Notes 5800 2800 0    50   ~ 0
 Y13
-Entry Wire Line
-	6050 2200 6150 2300
-Entry Wire Line
-	6050 2100 6150 2200
-Entry Wire Line
-	6050 2000 6150 2100
 Connection ~ 6050 1900
 Text Notes 5800 1650 0    50   ~ 0
 R16
@@ -1243,30 +1117,187 @@ Text Notes 9250 2300 0    50   ~ 0
 Y6
 Text Notes 9250 2800 0    50   ~ 0
 Y9
-Text Notes 4150 4900 0    50   ~ 0
+Text Notes 6300 5300 0    50   ~ 0
 T12
-Text Notes 1900 4750 0    50   ~ 0
+Text Notes 3700 5200 0    50   ~ 0
 W15
-Text Notes 1900 4850 0    50   ~ 0
+Text Notes 3700 5300 0    50   ~ 0
 H15
-Text Notes 1900 4950 0    50   ~ 0
+Text Notes 3700 5400 0    50   ~ 0
 F16
-Text Notes 1900 4600 0    50   ~ 0
+Text Notes 3700 5050 0    50   ~ 0
 FPGA\nPin
-Text Notes 4150 4750 0    50   ~ 0
+Text Notes 6300 5200 0    50   ~ 0
 FPGA\nPin
 Wire Wire Line
-	2250 3750 2950 3750
-Wire Bus Line
-	6050 1750 6050 1900
+	2250 3350 2950 3350
+Entry Wire Line
+	6050 1150 6150 1050
+Wire Wire Line
+	6150 1050 7200 1050
+Text Label 6200 1050 0    50   ~ 0
+ADC_D0
+Connection ~ 9150 1450
+Entry Wire Line
+	9050 1050 9150 1150
+Wire Wire Line
+	7700 1050 9050 1050
+Text Label 8700 1050 0    50   ~ 0
+ADC_D1
+Text GLabel 8200 2100 2    50   Input ~ 0
+FC2D_HS
+Entry Wire Line
+	9050 1150 9150 1250
+Entry Wire Line
+	9050 1250 9150 1350
+Entry Wire Line
+	9050 1450 9150 1550
+Entry Wire Line
+	6050 1250 6150 1150
+Entry Wire Line
+	6050 1350 6150 1250
+Entry Wire Line
+	6050 1450 6150 1350
+Entry Wire Line
+	6050 1550 6150 1450
+Wire Wire Line
+	7700 1150 9050 1150
+Wire Wire Line
+	7700 1250 9050 1250
+Wire Wire Line
+	7700 1450 9050 1450
+Wire Wire Line
+	6150 1150 7200 1150
+Wire Wire Line
+	6150 1250 7200 1250
+Wire Wire Line
+	6150 1350 7200 1350
+Wire Wire Line
+	6150 1450 7200 1450
 Wire Bus Line
 	9150 1900 9150 2300
+Wire Bus Line
+	6050 1900 6050 2200
+Text Label 6200 1150 0    50   ~ 0
+ADC_D2
+Text Label 8700 1150 0    50   ~ 0
+ADC_D3
+Text Label 8700 1250 0    50   ~ 0
+ADC_D5
+Text Label 6200 1250 0    50   ~ 0
+ADC_D4
+Text Label 6200 1350 0    50   ~ 0
+ADC_D6
+Text Label 8700 1450 0    50   ~ 0
+ADC_D7
+Text Label 6200 1450 0    50   ~ 0
+ADC_D8
+Wire Wire Line
+	6800 1550 7200 1550
+Wire Wire Line
+	7700 1650 8200 1650
+Wire Wire Line
+	8200 1750 7700 1750
+Wire Wire Line
+	7200 1750 6800 1750
+Wire Wire Line
+	7200 1650 6800 1650
+Wire Wire Line
+	6800 2100 7200 2100
+Wire Wire Line
+	6800 2200 7200 2200
+Wire Wire Line
+	7700 2100 8200 2100
+Wire Wire Line
+	7700 2200 8200 2200
+Wire Wire Line
+	6800 2300 7200 2300
+$Comp
+L Device:R R34
+U 1 1 604EBE45
+P 2100 1550
+F 0 "R34" V 2100 1550 50  0000 C CNN
+F 1 "1k69 1%" V 2050 1850 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1550 50  0001 C CNN
+F 3 "~" H 2100 1550 50  0001 C CNN
+	1    2100 1550
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R36
+U 1 1 604EC27B
+P 2100 1650
+F 0 "R36" V 2100 1650 50  0000 C CNN
+F 1 "1k69 1%" V 2050 1950 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2030 1650 50  0001 C CNN
+F 3 "~" H 2100 1650 50  0001 C CNN
+	1    2100 1650
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2250 1550 2900 1550
+Wire Wire Line
+	2250 1650 2900 1650
+Text GLabel 1650 1450 0    50   Input ~ 0
+FC_Var
+Text GLabel 1650 1350 0    50   Input ~ 0
+CSMVarCur
+Text GLabel 3750 1450 2    50   Input ~ 0
+CSMVarGain1
+Text GLabel 3750 1350 2    50   Input ~ 0
+CSMVarGain0
+Wire Wire Line
+	1650 1550 1950 1550
+Wire Wire Line
+	1650 1650 1950 1650
+Text Notes 5200 5200 0    50   ~ 0
+not connected on PYNQ
+$Comp
+L Connector_Generic:Conn_02x08_Odd_Even J4
+U 1 1 5B5BA5A7
+P 7400 2400
+F 0 "J4" H 7450 1900 50  0000 C CNN
+F 1 "IOH" H 7450 1800 50  0000 C CNN
+F 2 "cerg:PinHeader_2x08_P2.54mm_Vertical_Flipped" H 7400 2400 50  0001 C CNN
+F 3 "~" H 7400 2400 50  0001 C CNN
+	1    7400 2400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2950 2000 2850 2000
+Wire Wire Line
+	2950 2100 2850 2100
+Wire Wire Line
+	2950 2200 2850 2200
+Wire Wire Line
+	2950 2300 2850 2300
+Text GLabel 2850 2300 0    50   Input ~ 0
+XADCVREF
+Text GLabel 2850 2200 0    50   Input ~ 0
+XADCGND
+Text GLabel 2850 2100 0    50   Input ~ 0
+XADC_V_N
+Text GLabel 2850 2000 0    50   Input ~ 0
+XADC_V_P
+$Comp
+L Connector_Generic:Conn_01x04 J6
+U 1 1 5B5BA5EA
+P 3150 2100
+F 0 "J6" H 3229 2092 50  0000 L CNN
+F 1 "Analog2" H 3229 2001 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 3150 2100 50  0001 C CNN
+F 3 "~" H 3150 2100 50  0001 C CNN
+	1    3150 2100
+	1    0    0    -1  
+$EndComp
+Wire Bus Line
+	9150 1450 9150 1900
 Wire Bus Line
 	6150 2500 6150 3300
 Wire Bus Line
 	9050 2600 9050 3300
 Wire Bus Line
-	6050 1900 6050 2200
+	9150 1000 9150 1450
 Wire Bus Line
-	9150 1450 9150 1900
+	6050 1000 6050 1900
 $EndSCHEMATC

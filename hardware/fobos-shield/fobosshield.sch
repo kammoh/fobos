@@ -632,4 +632,15 @@ F 3 "~" H 8300 4500 50  0001 C CNN
 	1    8300 4500
 	1    0    0    -1  
 $EndComp
+$Comp
+L Mechanical:MountingHole H3
+U 1 1 5FE69375
+P 2800 6500
+F 0 "H3" H 2900 6546 50  0000 L CNN
+F 1 "MountingHole" H 2900 6455 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3_DIN965_Pad_TopBottom" H 2800 6500 50  0001 C CNN
+F 3 "~" H 2800 6500 50  0001 C CNN
+	1    2800 6500
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
