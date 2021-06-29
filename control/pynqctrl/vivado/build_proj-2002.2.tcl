@@ -35,45 +35,7 @@
 #
 #*****************************************************************************************
 
-# Check file required for this script exists
-proc checkRequiredFiles { origin_dir} {
-  set status true
-  set files [list \
-   "/home/jkaps/projects/FOBOS/fobos3/control/pynqctrl/vivado/pynq_controller/pynq_controller.srcs/sources_1/bd/ctrl_top/ctrl_top.bd" \
-   "/home/jkaps/projects/FOBOS/fobos3/control/pynqctrl/vivado/pynq_controller/pynq_controller.srcs/sources_1/imports/hdl/ctrl_top_wrapper.vhd" \
-  ]
-  foreach ifile $files {
-    if { ![file isfile $ifile] } {
-      puts " Could not find local file $ifile "
-      set status false
-    }
-  }
 
-  set files [list \
-   "/home/jkaps/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/pynq.xdc" \
-   "/home/jkaps/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/debug.xdc" \
-   "/home/jkaps/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/pynqctrl_nexys3dut.xdc" \
-   "/home/jkaps/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/pynqctrl_artix7dut.xdc" \
-  ]
-  foreach ifile $files {
-    if { ![file isfile $ifile] } {
-      puts " Could not find remote file $ifile "
-      set status false
-    }
-  }
-
-  set paths [list \
-   [file normalize "$origin_dir/projects/FOBOS/fobos3/control/ip_repo"] \
-  ]
-  foreach ipath $paths {
-    if { ![file isdirectory $ipath] } {
-      puts " Could not access $ipath "
-      set status false
-    }
-  }
-
-  return $status
-}
 # Set the reference directory for source file relative paths (by default the value is script directory path)
 set origin_dir "."
 
@@ -139,7 +101,7 @@ if { $::argc > 0 } {
 }
 
 # Set the directory path for the original project from where this script was exported
-set orig_proj_dir "[file normalize "$origin_dir/projects/FOBOS/fobos3/control/pynqctrl/vivado/pynq_controller"]"
+set orig_proj_dir "[file normalize "$origin_dir/pynq_controller"]"
 
 # Check for paths and files needed for project creation
 set validate_required 0
@@ -187,32 +149,11 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 # Set IP repository paths
 set obj [get_filesets sources_1]
 if { $obj != {} } {
-   set_property "ip_repo_paths" "[file normalize "$origin_dir/projects/FOBOS/fobos3/control/ip_repo"]" $obj
+   set_property "ip_repo_paths" "[file normalize "$origin_dir/../../ip_repo"]" $obj
 
    # Rebuild user ip_repo's index before adding any source files
    update_ip_catalog -rebuild
 }
-
-# Set 'sources_1' fileset object
-set obj [get_filesets sources_1]
-# Import local files from the original project
-set files [list \
- [file normalize "${origin_dir}/projects/FOBOS/fobos3/control/pynqctrl/vivado/pynq_controller/pynq_controller.srcs/sources_1/bd/ctrl_top/ctrl_top.bd" ]\
- [file normalize "${origin_dir}/projects/FOBOS/fobos3/control/pynqctrl/vivado/pynq_controller/pynq_controller.srcs/sources_1/imports/hdl/ctrl_top_wrapper.vhd"]\
-]
-set imported_files [import_files -fileset sources_1 $files]
-
-# Set 'sources_1' fileset file properties for remote files
-# None
-
-# Set 'sources_1' fileset file properties for local files
-set file "ctrl_top/ctrl_top.bd"
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "registered_with_manager" -value "1" -objects $file_obj
-
-set file "hdl/ctrl_top_wrapper.vhd"
-set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
-set_property -name "file_type" -value "VHDL" -objects $file_obj
 
 
 # Set 'sources_1' fileset properties
@@ -229,34 +170,34 @@ if {[string equal [get_filesets -quiet constrs_1] ""]} {
 set obj [get_filesets constrs_1]
 
 # Add/Import constrs file and set constrs file properties
-set file "[file normalize "$origin_dir/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/pynq.xdc"]"
+set file "[file normalize "$origin_dir/src/constr/pynq.xdc"]"
 set file_added [add_files -norecurse -fileset $obj [list $file]]
-set file "$origin_dir/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/pynq.xdc"
+set file "$origin_dir/src/constr/pynq.xdc"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
 set_property -name "file_type" -value "XDC" -objects $file_obj
 
 # Add/Import constrs file and set constrs file properties
-set file "[file normalize "$origin_dir/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/debug.xdc"]"
+set file "[file normalize "$origin_dir/src/constr/debug.xdc"]"
 set file_added [add_files -norecurse -fileset $obj [list $file]]
-set file "$origin_dir/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/debug.xdc"
+set file "$origin_dir/src/constr/debug.xdc"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
 set_property -name "file_type" -value "XDC" -objects $file_obj
 
 # Add/Import constrs file and set constrs file properties
-set file "[file normalize "$origin_dir/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/pynqctrl_nexys3dut.xdc"]"
+set file "[file normalize "$origin_dir/src/constr/pynqctrl_nexys3dut.xdc"]"
 set file_added [add_files -norecurse -fileset $obj [list $file]]
-set file "$origin_dir/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/pynqctrl_nexys3dut.xdc"
+set file "$origin_dir/src/constr/pynqctrl_nexys3dut.xdc"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
 set_property -name "file_type" -value "XDC" -objects $file_obj
 set_property -name "is_enabled" -value "0" -objects $file_obj
 
 # Add/Import constrs file and set constrs file properties
-set file "[file normalize "$origin_dir/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/pynqctrl_artix7dut.xdc"]"
+set file "[file normalize "$origin_dir/src/constr/pynqctrl_artix7dut.xdc"]"
 set file_added [add_files -norecurse -fileset $obj [list $file]]
-set file "$origin_dir/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/pynqctrl_artix7dut.xdc"
+set file "$origin_dir/src/constr/pynqctrl_artix7dut.xdc"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
 set_property -name "file_type" -value "XDC" -objects $file_obj
@@ -264,9 +205,9 @@ set_property -name "is_enabled" -value "0" -objects $file_obj
 
 # Set 'constrs_1' fileset properties
 set obj [get_filesets constrs_1]
-set_property -name "target_constrs_file" -value "[file normalize "$origin_dir/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/debug.xdc"]" -objects $obj
+set_property -name "target_constrs_file" -value "[file normalize "$origin_dir/src/constr/debug.xdc"]" -objects $obj
 set_property -name "target_part" -value "xc7z020clg400-1" -objects $obj
-set_property -name "target_ucf" -value "[file normalize "$origin_dir/projects/FOBOS/fobos3/control/pynqctrl/vivado/src/constr/debug.xdc"]" -objects $obj
+set_property -name "target_ucf" -value "[file normalize "$origin_dir/src/constr/debug.xdc"]" -objects $obj
 
 # Create 'sim_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sim_1] ""]} {
@@ -608,3 +549,13 @@ move_dashboard_gadget -name {drc_1} -row 2 -col 0
 move_dashboard_gadget -name {timing_1} -row 0 -col 1
 move_dashboard_gadget -name {utilization_2} -row 1 -col 1
 move_dashboard_gadget -name {methodology_1} -row 2 -col 1
+
+######Added manually to create block design and wrapper
+# Create block design
+ source $origin_dir/src/bd/ctrl_top.tcl
+
+# Generate the wrapper
+ set design_name [get_bd_designs]
+ make_wrapper -files [get_files $design_name.bd] -top -import
+
+#####END ADDED
