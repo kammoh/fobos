@@ -71,8 +71,8 @@ entity powermanagetop is
           max_curvar   : out std_logic_vector(15 downto 0);
           samplcnt     : out std_logic_vector(19 downto 0);          
           trigger      : in  std_logic;
-          ck_an_n      : in std_logic_vector(3 downto 0);
-          ck_an_p      : in std_logic_vector(3 downto 0));
+          ck_an_n      : in std_logic_vector(5 downto 0);
+          ck_an_p      : in std_logic_vector(5 downto 0));
 end powermanagetop;
 
 

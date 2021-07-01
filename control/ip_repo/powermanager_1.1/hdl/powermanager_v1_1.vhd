@@ -16,13 +16,14 @@ entity powermanager_v1_1 is
 	);
 	port (
 		-- Users to add ports here
-		ck_an_n   : in std_logic_vector(3 downto 0);
-        ck_an_p   : in std_logic_vector(3 downto 0);
+		ck_an_n   : in std_logic_vector(5 downto 0);
+        ck_an_p   : in std_logic_vector(5 downto 0);
         trigger   : in std_logic; 
         gain_0    : out std_logic_vector(1 downto 0);
         gain_1    : out std_logic_vector(1 downto 0);
         gain_2    : out std_logic_vector(1 downto 0);
-        power     : out std_logic_vector(5 downto 0);
+        pwr_O     : out std_logic_vector(5 downto 0);
+        pwr_T     : out std_logic_vector(5 downto 0);
         power_en  : out std_logic;
         power_ok  : in std_logic;
 		-- User ports ends
@@ -63,13 +64,14 @@ architecture arch_imp of powermanager_v1_1 is
 		C_S_AXI_ADDR_WIDTH	: integer	:= 7
 		);
 		port (
-	    ck_an_n         : in std_logic_vector(3 downto 0);
-        ck_an_p         : in std_logic_vector(3 downto 0);
+	    ck_an_n         : in std_logic_vector(5 downto 0);
+        ck_an_p         : in std_logic_vector(5 downto 0);
         trigger         : in std_logic;
         gain_0          : out std_logic_vector(1 downto 0);
         gain_1          : out std_logic_vector(1 downto 0);
         gain_2          : out std_logic_vector(1 downto 0);
-        power           : out std_logic_vector(5 downto 0);
+        pwr_O           : out std_logic_vector(5 downto 0);
+        pwr_T           : out std_logic_vector(5 downto 0);
         power_en        : out std_logic;
         power_ok        : in std_logic;
 		S_AXI_ACLK	: in std_logic;
@@ -111,7 +113,8 @@ powermanager_v1_1_S00_AXI_inst : powermanager_v1_1_S00_AXI
         gain_0      => gain_0,
         gain_1      => gain_1,
         gain_2      => gain_2,     
-        power       => power,
+        pwr_O       => pwr_O,
+        pwr_T       => pwr_T,
         power_en    => power_en,
         power_ok    => power_ok,  
 		S_AXI_ACLK	=> s00_axi_aclk,

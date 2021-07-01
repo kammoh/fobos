@@ -16,13 +16,14 @@ entity powermanager_v1_1_S00_AXI is
 	);
 	port (
 		-- Users to add ports here
-		ck_an_n     : in std_logic_vector(3 downto 0);
-        ck_an_p     : in std_logic_vector(3 downto 0);                      
+		ck_an_n     : in std_logic_vector(5 downto 0);
+        ck_an_p     : in std_logic_vector(5 downto 0);                      
         trigger     : in std_logic;
         gain_0      : out std_logic_vector(1 downto 0);
         gain_1      : out std_logic_vector(1 downto 0);
         gain_2      : out std_logic_vector(1 downto 0);
-        power       : out std_logic_vector(5 downto 0);
+        pwr_O       : out std_logic_vector(5 downto 0); -- Output Value, always 0
+        pwr_T       : out std_logic_vector(5 downto 0); -- Tristate enable on bits that are not 0
         power_en    : out std_logic;
         power_ok    : in std_logic;
 		-- User ports ends
@@ -115,7 +116,7 @@ architecture arch_imp of powermanager_v1_1_S00_AXI is
 	------------------------------------------------
 	---- Signals for user logic register space 
 	--------------------------------------------------
-		signal status        : std_logic_vector(15 downto 0);
+    signal status        : std_logic_vector(15 downto 0);
 	signal now_volt3v3   : std_logic_vector(15 downto 0);
 	signal now_cur3v3    : std_logic_vector(15 downto 0);
     signal now_volt5v    : std_logic_vector(15 downto 0);
@@ -689,50 +690,70 @@ begin
 	    -- Address decoding for reading registers
 	    loc_addr := axi_araddr(ADDR_LSB + OPT_MEM_ADDR_BITS downto ADDR_LSB);
 	    case loc_addr is
-	      when b"00000" =>
+	      when b"00000" => -- Command
 	        reg_data_out <= slv_reg0;
-	      when b"00001" =>
-	        reg_data_out <= slv_reg1;
-	      when b"00010" =>
-	        reg_data_out <= slv_reg2;
-	      when b"00011" =>
-	        reg_data_out <= slv_reg3;
-	      when b"00100" =>
-	        reg_data_out <= slv_reg4;
-	      when b"00101" =>
-	        reg_data_out <= slv_reg5;
-	      when b"00110" =>
-	        reg_data_out <= slv_reg6;
-	      when b"00111" =>
-	        reg_data_out <= slv_reg7;
-	      when b"01000" =>
-	        reg_data_out <= slv_reg8;
-	      when b"01001" =>
-	        reg_data_out <= slv_reg9;
-	      when b"01010" =>
-	        reg_data_out <= slv_reg10;
-	      when b"01011" =>
-	        reg_data_out <= slv_reg11;
-	      when b"01100" =>
-	        reg_data_out <= slv_reg12;
-	      when b"01101" =>
-	        reg_data_out <= slv_reg13;
-	      when b"01110" =>
-	        reg_data_out <= slv_reg14;
-	      when b"01111" =>
-	        reg_data_out <= slv_reg15;
-	      when b"10000" =>
-	        reg_data_out <= slv_reg16;
-	      when b"10001" =>
-	        reg_data_out <= slv_reg17;
-	      when b"10010" =>
-	        reg_data_out <= slv_reg18;
-	      when b"10011" =>
-	        reg_data_out <= slv_reg19;
-	      when b"10100" =>
+	      when b"00001" => -- Status
+	        reg_data_out <= status;
+            reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"00010" => -- Actual 3V3 Voltage
+	        reg_data_out <= now_volt3v3;
+            reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"00011" => -- Actual 3V3 Current
+	        reg_data_out <= now_cur3v3;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"00100" => -- Actual 5V Voltage
+	        reg_data_out <= now_volt5v;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"00101" => -- Actual 5V Current
+	        reg_data_out <= now_cur5v;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"00110" => -- Actual Var Voltage
+	        reg_data_out <= now_voltvar;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"00111" => -- Actual Var Current
+	        reg_data_out <= now_curvar;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"01000" => -- Average 3V3 Voltage
+	        reg_data_out <= avg_volt3v3;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"01001" => -- Average 3V3 Current
+	        reg_data_out <= avg_cur3v3;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"01010" => -- Average 5V Voltage
+	        reg_data_out <= avg_volt5v;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"01011" => -- Average 5V Current 
+	        reg_data_out <= avg_cur5v;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"01100" => -- Average Var Voltage
+	        reg_data_out <= avg_voltvar;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"01101" => -- Average Var Current
+	        reg_data_out <= avg_curvar;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"01110" => -- Maximum 3V3 Voltage
+	        reg_data_out <= max_volt3v3;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"01111" => -- Maximum 3V3 Current
+	        reg_data_out <= max_cur3v3;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"10000" => -- Maximum 5V Voltage
+	        reg_data_out <= max_volt5v;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"10001" => -- Maximum 5V Current
+	        reg_data_out <= max_cur5v;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"10010" => -- Maximum Var Voltage
+	        reg_data_out <= max_voltvar;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"10011" => -- Maximum Var Current
+	        reg_data_out <= max_curvar;
+	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
+	      when b"10100" => -- Variable Voltage Setting
 	        reg_data_out <= slv_reg20;
 	      when b"10101" =>
-	        reg_data_out <= slv_reg21;
+	        reg_data_out(19 downto 0) <= samplcnt;
+            reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 20) <= (others => '0');
 	      when b"10110" =>
 	        reg_data_out <= slv_reg22;
 	      when b"10111" =>
@@ -778,29 +799,33 @@ begin
 
 
 	-- Add user logic here
+	
+	-- Output Commands
+	power_en    <= slv_reg0(0);
     gain_0 <= slv_reg0(3 downto 2);
 	gain_1 <= slv_reg0(5 downto 4);
-	gain_2
+	gain_2 <= slv_reg0(7 downto 6);
+	
+	-- Set Status
+	status(0)   <= power_ok;
 	status(3 downto 2) <= slv_reg0(3 downto 2);
 	status(5 downto 4) <= slv_reg0(5 downto 4);
-	power_en    <= slv_reg0(0);
-	status(0)   <= power_ok;
+	status(7 downto 6) <= slv_reg0(7 downto 6);
 	
-	-- Fix Tristate
-	TRI: for i in 0 to 5 generate
-	    power(i)  <= 'Z' when slv_reg14(i) = '1' else '0';
-	end generate TRI;
+    -- Output 0 or Z for power
+    pwr_O <= "000000"; 
+	pwr_T <= slv_reg14;
 	
     PMRTL: entity work.powermanagetop(Behavioral)
       port map(         
             clk          => S_AXI_ACLK,
             clear        => slv_reg0(1),
             busy         => status(1),  
-            trigenhw     => slv_reg0(6),
-            trigsw       => slv_reg0(7),
-            triggedhw    => status(6),
-            triggedsw    => status(7),
-            cntover      => status(8),           
+            trigenhw     => slv_reg0(8),
+            trigsw       => slv_reg0(9),
+            triggedhw    => status(8),
+            triggedsw    => status(9),
+            cntover      => status(10),           
             now_volt3v3  => now_volt3v3, 
             now_cur3v3   => now_cur3v3,  
             now_volt5v   => now_volt5v,  
