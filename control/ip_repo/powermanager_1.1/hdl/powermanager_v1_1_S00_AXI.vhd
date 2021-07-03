@@ -693,61 +693,61 @@ begin
 	      when b"00000" => -- Command
 	        reg_data_out <= slv_reg0;
 	      when b"00001" => -- Status
-	        reg_data_out <= status;
+	        reg_data_out(15 downto 0) <= status;
             reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"00010" => -- Actual 3V3 Voltage
-	        reg_data_out <= now_volt3v3;
+	        reg_data_out(15 downto 0) <= now_volt3v3;
             reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"00011" => -- Actual 3V3 Current
-	        reg_data_out <= now_cur3v3;
+	        reg_data_out(15 downto 0) <= now_cur3v3;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"00100" => -- Actual 5V Voltage
-	        reg_data_out <= now_volt5v;
+	        reg_data_out(15 downto 0) <= now_volt5v;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"00101" => -- Actual 5V Current
-	        reg_data_out <= now_cur5v;
+	        reg_data_out(15 downto 0) <= now_cur5v;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"00110" => -- Actual Var Voltage
-	        reg_data_out <= now_voltvar;
+	        reg_data_out(15 downto 0) <= now_voltvar;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"00111" => -- Actual Var Current
-	        reg_data_out <= now_curvar;
+	        reg_data_out(15 downto 0) <= now_curvar;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"01000" => -- Average 3V3 Voltage
-	        reg_data_out <= avg_volt3v3;
+	        reg_data_out(15 downto 0) <= avg_volt3v3;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"01001" => -- Average 3V3 Current
-	        reg_data_out <= avg_cur3v3;
+	        reg_data_out(15 downto 0) <= avg_cur3v3;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"01010" => -- Average 5V Voltage
-	        reg_data_out <= avg_volt5v;
+	        reg_data_out(15 downto 0) <= avg_volt5v;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"01011" => -- Average 5V Current 
-	        reg_data_out <= avg_cur5v;
+	        reg_data_out(15 downto 0) <= avg_cur5v;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"01100" => -- Average Var Voltage
-	        reg_data_out <= avg_voltvar;
+	        reg_data_out(15 downto 0) <= avg_voltvar;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"01101" => -- Average Var Current
-	        reg_data_out <= avg_curvar;
+	        reg_data_out(15 downto 0) <= avg_curvar;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"01110" => -- Maximum 3V3 Voltage
-	        reg_data_out <= max_volt3v3;
+	        reg_data_out(15 downto 0) <= max_volt3v3;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"01111" => -- Maximum 3V3 Current
-	        reg_data_out <= max_cur3v3;
+	        reg_data_out(15 downto 0) <= max_cur3v3;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"10000" => -- Maximum 5V Voltage
-	        reg_data_out <= max_volt5v;
+	        reg_data_out(15 downto 0) <= max_volt5v;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"10001" => -- Maximum 5V Current
-	        reg_data_out <= max_cur5v;
+	        reg_data_out(15 downto 0) <= max_cur5v;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"10010" => -- Maximum Var Voltage
-	        reg_data_out <= max_voltvar;
+	        reg_data_out(15 downto 0) <= max_voltvar;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"10011" => -- Maximum Var Current
-	        reg_data_out <= max_curvar;
+	        reg_data_out(15 downto 0) <= max_curvar;
 	        reg_data_out(C_S_AXI_DATA_WIDTH-1 downto 16) <= (others => '0');
 	      when b"10100" => -- Variable Voltage Setting
 	        reg_data_out <= slv_reg20;
@@ -814,7 +814,7 @@ begin
 	
     -- Output 0 or Z for power
     pwr_O <= "000000"; 
-	pwr_T <= slv_reg14;
+	pwr_T <= slv_reg14(5 downto 0);
 	
     PMRTL: entity work.powermanagetop(Behavioral)
       port map(         

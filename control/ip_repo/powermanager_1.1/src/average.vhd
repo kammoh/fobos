@@ -85,7 +85,7 @@ begin
    
    avgadd <= ain + bin + unsigned'("" & cin);
    
-   divider: entity xil_defaultlib.divider_s(Behavioral) port map(
+   divider: entity work.divider_s(Behavioral) port map(
         dividend  => dividend, -- x_k - M_{k-1}
         divisor   => std_logic_vector(cntk),     -- division by k
         quotient  => quotient,   -- result

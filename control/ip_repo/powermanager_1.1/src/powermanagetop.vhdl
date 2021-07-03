@@ -432,7 +432,7 @@ end process;
     max_volt3v3 <= maxvolt3v3;
 
 --- invoke Averaging Circuit      
-    avgcirvolt3v3: entity xil_defaultlib.average(Behavioral) port map(
+    avgcirvolt3v3: entity work.average(Behavioral) port map(
             value     => volt3v3_reg,    -- x_k
             value_vld => valueready,   -- new value valid, start computation
             average   => avgvolt3v3,   -- result: M_k, stays constant till new result
@@ -461,7 +461,7 @@ end process;
     max_cur3v3 <= maxcur3v3;
 
 --- invoke Averaging Circuit      
-    avgcircur3v3: entity xil_defaultlib.average(Behavioral) port map(
+    avgcircur3v3: entity work.average(Behavioral) port map(
             value     => cur3v3_reg,    -- x_k
             value_vld => valueready,   -- new value valid, start computation
             average   => avgcur3v3,   -- result: M_k, stays constant till new result
@@ -492,7 +492,7 @@ end process;
     max_volt5v <= maxvolt5v;
 
 --- invoke Averaging Circuit      
-    avgcirvolt5v: entity xil_defaultlib.average(Behavioral) port map(
+    avgcirvolt5v: entity work.average(Behavioral) port map(
             value     => volt5v_reg,    -- x_k
             value_vld => valueready,   -- new value valid, start computation
             average   => avgvolt5v,   -- result: M_k, stays constant till new result
@@ -521,7 +521,7 @@ end process;
     max_cur5v <= maxcur5v;
 
 --- invoke Averaging Circuit      
-    avgcircur5v: entity xil_defaultlib.average(Behavioral) port map(
+    avgcircur5v: entity work.average(Behavioral) port map(
             value     => cur5v_reg,    -- x_k
             value_vld => valueready,   -- new value valid, start computation
             average   => avgcur5v,   -- result: M_k, stays constant till new result
@@ -551,7 +551,7 @@ end process;
     max_voltvar <= maxvoltvar;
 
 --- invoke Averaging Circuit      
-    avgcirvoltvar: entity xil_defaultlib.average(Behavioral) port map(
+    avgcirvoltvar: entity work.average(Behavioral) port map(
             value     => voltvar_reg,    -- x_k
             value_vld => valueready,   -- new value valid, start computation
             average   => avgvoltvar,   -- result: M_k, stays constant till new result
@@ -580,7 +580,7 @@ end process;
     max_curvar <= maxcurvar;
 
 --- invoke Averaging Circuit      
-    avgcircurvar: entity xil_defaultlib.average(Behavioral) port map(
+    avgcircurvar: entity work.average(Behavioral) port map(
             value     => curvar_reg,    -- x_k
             value_vld => valueready,   -- new value valid, start computation
             average   => avgcurvar,   -- result: M_k, stays constant till new result

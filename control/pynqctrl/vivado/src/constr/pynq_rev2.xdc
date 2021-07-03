@@ -44,7 +44,7 @@
 set_property -dict {PACKAGE_PIN Y18 IOSTANDARD LVCMOS33} [get_ports { dut_rst }]; #IO_L17P_T2_34 Sch=ja_p[1]
 set_property -dict {PACKAGE_PIN Y19 IOSTANDARD LVCMOS33} [get_ports do_ready]
 set_property -dict {PACKAGE_PIN Y16 IOSTANDARD LVCMOS33} [get_ports {din[3]}]
-set_property -dict {PACKAGE_PIN Y17 IOSTANDARD LVCMOS33} [get_ports {iic_rtl_scl_io}]
+#set_property -dict {PACKAGE_PIN Y17 IOSTANDARD LVCMOS33} [get_ports {iic_rtl_scl_io}]
 set_property -dict {PACKAGE_PIN U18 IOSTANDARD LVCMOS33} [get_ports do_valid]
 ##repeated for Artix7 DUT
 set_property -dict {PACKAGE_PIN U19 IOSTANDARD LVCMOS33} [get_ports {din[1]}]; #IO_L12N_T1_MRCC_34 Sch=ja_n[3] 
@@ -57,7 +57,7 @@ set_property -dict {PACKAGE_PIN W14 IOSTANDARD LVCMOS33} [get_ports {dut_clk}]; 
 set_property -dict {PACKAGE_PIN Y14 IOSTANDARD LVCMOS33} [get_ports di_ready]
 set_property -dict {PACKAGE_PIN T11 IOSTANDARD LVCMOS33} [get_ports {dout[3]}]
 set_property -dict {PACKAGE_PIN T10 IOSTANDARD LVCMOS33} [get_ports {dout[1]}]
-set_property -dict {PACKAGE_PIN V16 IOSTANDARD LVCMOS33} [get_ports { iic_rtl_sda_io }]; #IO_L18P_T2_34 Sch=jb_p[3]
+#set_property -dict {PACKAGE_PIN V16 IOSTANDARD LVCMOS33} [get_ports { iic_rtl_sda_io }]; #IO_L18P_T2_34 Sch=jb_p[3]
 set_property -dict {PACKAGE_PIN W16 IOSTANDARD LVCMOS33} [get_ports di_valid]
 set_property -dict {PACKAGE_PIN V12 IOSTANDARD LVCMOS33} [get_ports {dout[2]}]
 set_property -dict {PACKAGE_PIN W13 IOSTANDARD LVCMOS33} [get_ports {dout[0]}]
