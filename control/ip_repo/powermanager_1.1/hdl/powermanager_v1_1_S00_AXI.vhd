@@ -813,6 +813,14 @@ begin
 	status(7 downto 6) <= slv_reg0(7 downto 6);
 	
     -- Output 0 or Z for power
+    -- add to wrapper
+    --  signal pwr_O: std_logic_vector(5 downto 0);
+    --  signal pwr_T: std_logic_vector(5 downto 0);
+    --
+    --  POWERTRI: for i in 0 to 5 generate
+    --    power(i) <= 'Z' when pwr_T(i) = '1' else pwr_O(i);
+    --  end generate POWERTRI;
+    
     pwr_O <= "000000"; 
 	pwr_T <= slv_reg14(5 downto 0);
 	

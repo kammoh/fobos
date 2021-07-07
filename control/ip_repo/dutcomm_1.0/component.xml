@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <spirit:vendor>user.org</spirit:vendor>
-  <spirit:library>user</spirit:library>
+  <spirit:vendor>CERG</spirit:vendor>
+  <spirit:library>cerg</spirit:library>
   <spirit:name>dutcomm</spirit:name>
   <spirit:version>1.0</spirit:version>
   <spirit:busInterfaces>
@@ -620,7 +620,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>eedc5618</spirit:value>
+            <spirit:value>94b18ad8</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -636,7 +636,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>eedc5618</spirit:value>
+            <spirit:value>94b18ad8</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -664,15 +664,9 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>96c9fad6</spirit:value>
+            <spirit:value>1abfefea</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
-      </spirit:view>
-      <spirit:view>
-        <spirit:name>xilinx_testbench</spirit:name>
-        <spirit:displayName>Test Bench</spirit:displayName>
-        <spirit:envIdentifier>:vivado.xilinx.com:simulation.testbench</spirit:envIdentifier>
-        <spirit:modelName>dutcomm_v1_0</spirit:modelName>
       </spirit:view>
     </spirit:views>
     <spirit:ports>
@@ -880,16 +874,46 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>dio</spirit:name>
+        <spirit:name>dio_I</spirit:name>
         <spirit:wire>
-          <spirit:direction>inout</spirit:direction>
+          <spirit:direction>in</spirit:direction>
           <spirit:vector>
             <spirit:left spirit:format="long">3</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
-              <spirit:typeName>STD_LOGIC_VECTOR</spirit:typeName>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dio_O</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dio_T</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
               <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
               <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
@@ -910,50 +934,7 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>m_axis_tdata</spirit:name>
-        <spirit:wire>
-          <spirit:direction>out</spirit:direction>
-          <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXIS_TDATA_WIDTH&apos;)) - 1)">31</spirit:left>
-            <spirit:right spirit:format="long">0</spirit:right>
-          </spirit:vector>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
-        <spirit:name>m_axis_tlast</spirit:name>
-        <spirit:wire>
-          <spirit:direction>out</spirit:direction>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
-        <spirit:name>m_axis_tvalid</spirit:name>
-        <spirit:wire>
-          <spirit:direction>out</spirit:direction>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
-        <spirit:name>m_axis_tready</spirit:name>
+        <spirit:name>s_axi_aclk</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:wireTypeDefs>
@@ -966,89 +947,7 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>m_axis_aclk</spirit:name>
-        <spirit:wire>
-          <spirit:direction>in</spirit:direction>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
-        <spirit:name>m_axis_aresetn</spirit:name>
-        <spirit:wire>
-          <spirit:direction>in</spirit:direction>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
-        <spirit:name>s_axis_tdata</spirit:name>
-        <spirit:wire>
-          <spirit:direction>in</spirit:direction>
-          <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_S_AXIS_TDATA_WIDTH&apos;)) - 1)">31</spirit:left>
-            <spirit:right spirit:format="long">0</spirit:right>
-          </spirit:vector>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
-        <spirit:name>s_axis_tvalid</spirit:name>
-        <spirit:wire>
-          <spirit:direction>in</spirit:direction>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
-        <spirit:name>s_axis_tready</spirit:name>
-        <spirit:wire>
-          <spirit:direction>out</spirit:direction>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
-        <spirit:name>s_axis_aclk</spirit:name>
-        <spirit:wire>
-          <spirit:direction>in</spirit:direction>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
-        <spirit:name>s_axis_aresetn</spirit:name>
+        <spirit:name>s_axi_aresetn</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:wireTypeDefs>
@@ -1344,7 +1243,7 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>s_axi_aclk</spirit:name>
+        <spirit:name>m_axis_aclk</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:wireTypeDefs>
@@ -1357,7 +1256,132 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>s_axi_aresetn</spirit:name>
+        <spirit:name>m_axis_aresetn</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_M_AXIS_TDATA_WIDTH&apos;)) - 1)">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tlast</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>m_axis_tready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_aclk</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_aresetn</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_tready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_tdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_S_AXIS_TDATA_WIDTH&apos;)) - 1)">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axis_tvalid</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:wireTypeDefs>
@@ -1423,11 +1447,11 @@
     <spirit:fileSet>
       <spirit:name>xilinx_vhdlsynthesis_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/dutcomm_v1_0_S_AXI.vhd</spirit:name>
+        <spirit:name>hdl/dutCommCtrl.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dutCommCtrl.vhd</spirit:name>
+        <spirit:name>hdl/dutComm.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -1439,23 +1463,23 @@
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dutComm.vhd</spirit:name>
+        <spirit:name>hdl/dutcomm_v1_0_S_AXI.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/dutcomm_v1_0.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_361f49e1</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_2e2393e4</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/dutcomm_v1_0_S_AXI.vhd</spirit:name>
+        <spirit:name>hdl/dutCommCtrl.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dutCommCtrl.vhd</spirit:name>
+        <spirit:name>hdl/dutComm.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -1467,7 +1491,7 @@
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dutComm.vhd</spirit:name>
+        <spirit:name>hdl/dutcomm_v1_0_S_AXI.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -1512,7 +1536,7 @@
       <spirit:file>
         <spirit:name>xgui/dutcomm_v1_0.tcl</spirit:name>
         <spirit:fileType>tclSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_96c9fad6</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_1abfefea</spirit:userFileType>
         <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -1610,26 +1634,91 @@
     <xilinx:coreExtensions>
       <xilinx:supportedFamilies>
         <xilinx:family xilinx:lifeCycle="Pre-Production">zynq</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Beta">artix7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Pre-Production">artix7</xilinx:family>
       </xilinx:supportedFamilies>
       <xilinx:taxonomies>
         <xilinx:taxonomy>AXI_Peripheral</xilinx:taxonomy>
       </xilinx:taxonomies>
       <xilinx:displayName>dutcomm_v1.0</xilinx:displayName>
-      <xilinx:coreRevision>45</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2019-08-27T18:08:25Z</xilinx:coreCreationDateTime>
+      <xilinx:vendorDisplayName>Cryptographic Engineering Research Group</xilinx:vendorDisplayName>
+      <xilinx:vendorURL>https://cryptography.gmu.edu</xilinx:vendorURL>
+      <xilinx:coreRevision>2</xilinx:coreRevision>
+      <xilinx:upgrades>
+        <xilinx:canUpgradeFrom>user.org:user:dutcomm:1.0</xilinx:canUpgradeFrom>
+      </xilinx:upgrades>
+      <xilinx:coreCreationDateTime>2021-07-07T22:18:25Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="user.org:user:dutcomm:1.0_ARCHIVE_LOCATION">/nhome/aabdulga/repos/gitlab/fobos/capture/ctrl/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@51c1293a_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7b6bd911_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1bab3913_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@13df0686_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7406d11a_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1a47274b_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bf38dc2_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@31245ba1_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4179a559_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@71feae52_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@31eae0bf_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6f3f334e_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2cf4500a_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@234c534_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6405adcd_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40851158_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@53e0592_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5566edcc_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@30530533_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2fbd0c0e_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1aadfdb2_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@107c142d_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@48f6def5_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@29136315_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@ef639a7_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@644118b0_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5dcb0a67_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@617aa43b_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@24e7931_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@482d6226_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@11154969_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c05ecb2_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@142ccf46_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@20068981_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7273f09d_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d52591a_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64bbd1a2_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@15470967_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@315af0d3_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@119a6b80_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6528b403_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4dcbfca1_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3cf7af6b_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@500aefc6_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2fc22945_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ea18bbc_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6cfb797e_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@581bef25_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@8d7a1f9_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@314908a7_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@52358b58_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1fa1d4ca_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@d46b91d_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@69f00100_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7aa15912_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@19e881a0_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2ad0d8ed_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7719aa00_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@8b09b2_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@44fe2d43_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dutcomm_1.0</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
-      <xilinx:xilinxVersion>2017.2</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="7bf946db"/>
-      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="59f5074b"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="b115e93e"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="de470474"/>
-      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="08187499"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="3bed13a2"/>
+      <xilinx:xilinxVersion>2020.2</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="50c1425e"/>
+      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="c30980da"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="bf1210a1"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="12e7669e"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="73315461"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="fc0158a2"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
 </spirit:component>

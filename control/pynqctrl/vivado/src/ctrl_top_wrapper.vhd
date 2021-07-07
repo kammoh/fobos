@@ -1,7 +1,7 @@
 --Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
---Date        : Fri Jul  2 17:52:30 2021
+--Date        : Wed Jul  7 16:43:49 2021
 --Host        : goedel running 64-bit Ubuntu 20.04.2 LTS
 --Command     : generate_target ctrl_top_wrapper.bd
 --Design      : ctrl_top_wrapper
@@ -44,6 +44,7 @@ entity ctrl_top_wrapper is
     di_ready : in STD_LOGIC;
     di_valid : out STD_LOGIC;
     din : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    fc_dio : inout STD_LOGIC_VECTOR ( 3 downto 0 );
     do_ready : out STD_LOGIC;
     do_valid : in STD_LOGIC;
     dout : in STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -51,7 +52,6 @@ entity ctrl_top_wrapper is
     dut_rst : out STD_LOGIC;
     fc2d_clk : out STD_LOGIC_VECTOR ( 0 to 0 );
     fc2d_hs : out STD_LOGIC;
-    fc_dio : inout STD_LOGIC_VECTOR ( 3 downto 0 );
     fc_io : out STD_LOGIC;
     fc_prog : out STD_LOGIC;
     fc_rst : out STD_LOGIC;
@@ -71,10 +71,6 @@ entity ctrl_top_wrapper is
 end ctrl_top_wrapper;
 
 architecture STRUCTURE of ctrl_top_wrapper is
-
-  signal pwr_O: std_logic_vector(5 downto 0);
-  signal pwr_T: std_logic_vector(5 downto 0);
-  
   component ctrl_top is
   port (
     adc : in STD_LOGIC_VECTOR ( 9 downto 0 );
@@ -103,18 +99,13 @@ architecture STRUCTURE of ctrl_top_wrapper is
     fd_tf : in STD_LOGIC;
     fd2c_clk : in STD_LOGIC;
     fc2d_clk : out STD_LOGIC_VECTOR ( 0 to 0 );
-    fc_dio : inout STD_LOGIC_VECTOR ( 3 downto 0 );
     fc2d_hs : out STD_LOGIC;
     fd2c_hs : in STD_LOGIC;
     gain_3v3 : out STD_LOGIC_VECTOR ( 1 downto 0 );
     gain_5v : out STD_LOGIC_VECTOR ( 1 downto 0 );
     gain_var : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    FIXED_IO_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
-    FIXED_IO_ddr_vrn : inout STD_LOGIC;
-    FIXED_IO_ddr_vrp : inout STD_LOGIC;
-    FIXED_IO_ps_srstb : inout STD_LOGIC;
-    FIXED_IO_ps_clk : inout STD_LOGIC;
-    FIXED_IO_ps_porb : inout STD_LOGIC;
+    pwr_O : out STD_LOGIC_VECTOR ( 5 downto 0 );
+    pwr_T : out STD_LOGIC_VECTOR ( 5 downto 0 );
     DDR_cas_n : inout STD_LOGIC;
     DDR_cke : inout STD_LOGIC;
     DDR_ck_n : inout STD_LOGIC;
@@ -130,16 +121,35 @@ architecture STRUCTURE of ctrl_top_wrapper is
     DDR_dq : inout STD_LOGIC_VECTOR ( 31 downto 0 );
     DDR_dqs_n : inout STD_LOGIC_VECTOR ( 3 downto 0 );
     DDR_dqs_p : inout STD_LOGIC_VECTOR ( 3 downto 0 );
-    pwr_O : out STD_LOGIC_VECTOR ( 5 downto 0 );
-    pwr_T : out STD_LOGIC_VECTOR ( 5 downto 0 )
+    FIXED_IO_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
+    FIXED_IO_ddr_vrn : inout STD_LOGIC;
+    FIXED_IO_ddr_vrp : inout STD_LOGIC;
+    FIXED_IO_ps_srstb : inout STD_LOGIC;
+    FIXED_IO_ps_clk : inout STD_LOGIC;
+    FIXED_IO_ps_porb : inout STD_LOGIC;
+    dio_I : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    dio_O : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    dio_T : out STD_LOGIC
   );
   end component ctrl_top;
-begin  
-
-  POWERTRI: for i in 0 to 5 generate
-    power(i) <= 'Z' when pwr_T(i) = '1' else pwr_O(i);
-  end generate POWERTRI;
   
+  signal pwr_O: std_logic_vector(5 downto 0);
+  signal pwr_T: std_logic_vector(5 downto 0);
+  
+  signal dio_I: std_logic_vector(3 downto 0);
+  signal dio_O: std_logic_vector(3 downto 0);
+  signal dio_T: std_logic;
+   
+begin
+    
+    POWERTRI: for i in 0 to 5 generate
+      power(i) <= 'Z' when pwr_T(i) = '1' else pwr_O(i);
+    end generate POWERTRI;
+    
+    fc_dio <= dio_O  when dio_T = '1' else (others => 'Z');
+    dio_I  <= fc_dio when dio_T = '0' else (others => '0');
+
+    
 ctrl_top_i: component ctrl_top
      port map (
       DDR_addr(14 downto 0) => DDR_addr(14 downto 0),
@@ -173,6 +183,9 @@ ctrl_top_i: component ctrl_top
       di_ready => di_ready,
       di_valid => di_valid,
       din(3 downto 0) => din(3 downto 0),
+      dio_I(3 downto 0) => dio_I(3 downto 0),
+      dio_O(3 downto 0) => dio_O(3 downto 0),
+      dio_T => dio_T,
       do_ready => do_ready,
       do_valid => do_valid,
       dout(3 downto 0) => dout(3 downto 0),
@@ -180,7 +193,6 @@ ctrl_top_i: component ctrl_top
       dut_rst => dut_rst,
       fc2d_clk(0) => fc2d_clk(0),
       fc2d_hs => fc2d_hs,
-      fc_dio(3 downto 0) => fc_dio(3 downto 0),
       fc_io => fc_io,
       fc_prog => fc_prog,
       fc_rst => fc_rst,
@@ -198,4 +210,5 @@ ctrl_top_i: component ctrl_top
       pwr_T(5 downto 0) => pwr_T(5 downto 0),
       trigger => trigger
     );
+    
 end STRUCTURE;

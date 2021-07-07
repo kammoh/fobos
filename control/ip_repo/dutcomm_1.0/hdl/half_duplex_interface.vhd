@@ -26,7 +26,9 @@ entity half_duplex_interface is
 		--external bus
 		shared_handshake_out : out   std_logic;
 		shared_handshake_in  : in    std_logic;
-		dbus                 : inout STD_LOGIC_VECTOR(3 downto 0);
+		dio_I                : in    std_logic_vector(3 downto 0);
+		dio_O                : out   std_logic_vector(3 downto 0);
+		dio_T                : out   std_logic;
 		direction_out        : out   std_logic;
 		--user connection
 		---out/in from the view point of the interface user
@@ -50,8 +52,8 @@ architecture behav of half_duplex_interface is
 begin
 	--
 	direction_out        <= direction_in;
-	---Handsahke 
-	--mux phase0 and phase1 outgoing handsahe signals
+	---Handshake 
+	--mux phase0 and phase1 outgoing handshake signals
 	shared_handshake_out <= handshake0_out when direction_in = '0' else handshake1_out;
 	---d-mux
 	handshake0_in        <= shared_handshake_in when direction_in = '0' else '0';
@@ -65,7 +67,16 @@ begin
 		snd <= direction_in;            -- in phase 0 slave is a receiver 
 	end generate;
 
-	dbus <= dout when snd = '1' else (others => 'Z');
-	din  <= dbus when snd = '0' else (others => '0');
+-- add to wrapper
+--  signal dio_I: std_logic_vector(3 downto 0);
+--  signal dio_O: std_logic_vector(3 downto 0);
+--  signal dio_T: std_logic;
+--  
+--  fc_dio <= dio_O  when dio_T = '1' else (others => 'Z');
+--  dio_I  <= fc_dio when dio_T = '0' else (others => '0');
+
+    dio_O <= dout;
+    din   <= dio_I;
+    dio_T <= snd;
 
 end behav;
