@@ -6,6 +6,8 @@ create_project:
 	cd ../../../../../
 synth: create_project
 	vivado -mode batch -source synth.tcl
+	cp pynq_controller/pynq_controller.gen/sources_1/bd/ctrl_top/hw_handoff/ctrl_top.hwh fobos_ctrl.hwh
+	cp pynq_controller/pynq_controller.runs/impl_1/ctrl_top_wrapper.bit fobos_ctrl.bit
 
 ### removes vivado log and jou files ###
 clean:

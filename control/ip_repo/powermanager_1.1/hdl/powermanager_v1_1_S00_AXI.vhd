@@ -822,7 +822,7 @@ begin
     --  end generate POWERTRI;
     
     pwr_O <= "000000"; 
-	pwr_T <= slv_reg14(5 downto 0);
+	pwr_T <= slv_reg20(5 downto 0);
 	
     PMRTL: entity work.powermanagetop(Behavioral)
       port map(         
@@ -838,6 +838,8 @@ begin
             now_cur3v3   => now_cur3v3,  
             now_volt5v   => now_volt5v,  
             now_cur5v    => now_cur5v,   
+            now_voltvar  => now_voltvar,
+            now_curvar   => now_curvar,
             avg_volt3v3  => avg_volt3v3, 
             max_volt3v3  => max_volt3v3, 
             avg_cur3v3   => avg_cur3v3,  

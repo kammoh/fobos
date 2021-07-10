@@ -191,17 +191,17 @@ ADC : xadc_wiz_0
     drdy_out => drdy,                      -- Data ready signal for the dynamic reconfiguration port
     dclk_in => clk,                        -- Clock input for the dynamic reconfiguration port
     reset_in => '0',                       -- Reset signal for the System Monitor control logic
-    vauxp1 => vauxp1,                      -- Auxiliary Channel 1
+    vauxp1 => vauxp1,                      -- Auxiliary Channel 1  cur 3v3,  A0
     vauxn1 => vauxn1,                                                                                
-    vauxp5 => vauxp5,                      -- Auxiliary Channel 5
+    vauxp5 => vauxp5,                      -- Auxiliary Channel 5  cur 5v,   A4
     vauxn5 => vauxn5,                                              
-    vauxp6 => vauxp6,                      -- Auxiliary Channel 6
+    vauxp6 => vauxp6,                      -- Auxiliary Channel 6  cur var,  A2
     vauxn6 => vauxn6,                                                                                
-    vauxp9 => vauxp9,                      -- Auxiliary Channel 9
+    vauxp9 => vauxp9,                      -- Auxiliary Channel 9  volt 3v3, A1
     vauxn9 => vauxn9,
-    vauxp13 => vauxp13,                    -- Auxiliary Channel 13
+    vauxp13 => vauxp13,                    -- Auxiliary Channel 13 volt 5v,  A5
     vauxn13 => vauxn13,                                                                                
-    vauxp15 => vauxp15,                    -- Auxiliary Channel 15
+    vauxp15 => vauxp15,                    -- Auxiliary Channel 15 volt var, A3
     vauxn15 => vauxn15,                                                                              
     busy_out => open,                      -- ADC Busy signal
     channel_out => open,                   -- Channel Selection Outputs
@@ -333,7 +333,7 @@ begin
              daddr     <= x"1F";
              den       <= '0';
              if (drdy = '1') then
-                 volt5v    <= adc_value;
+                 voltvar   <= adc_value;
                  nxt_state <= read_curvar;
              else
                  nxt_state <= wait_voltvar;
@@ -346,7 +346,7 @@ begin
              daddr     <= x"16";
              den       <= '0';
              if (drdy = '1') then
-                 cur5v     <= adc_value;
+                 curvar    <= adc_value;
                  gotvalues <= '1'; -- now all values are ready
                  nxt_state <= start;
              else
