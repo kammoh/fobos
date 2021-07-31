@@ -1,0 +1,285 @@
+
+from pynq import DefaultIP
+import time
+
+class PowerDriver(DefaultIP):
+    """
+    Power is the Python driver for the FOBOS Power module
+    """
+
+    # Register Definitions (rev 2)
+    command       = 0x00
+    status        = 0x04
+    volt3v3       = 0x08
+    current3v3    = 0x0C
+    volt5v        = 0x10
+    current5v     = 0x14
+    voltvar       = 0x18
+    currentvar    = 0x1C
+    avgvolt3v3    = 0x20
+    avgcurrent3v3 = 0x24
+    avgvolt5v     = 0x28
+    avgcurrent5v  = 0x2C
+    avgvoltvar    = 0x30
+    avgcurrentvar = 0x34
+    maxvolt3v3    = 0x38
+    maxcurrent3v3 = 0x3C
+    maxvolt5v     = 0x40
+    maxcurrent5v  = 0x44
+    maxvoltvar    = 0x48
+    maxcurrentvar = 0x4C
+    volt_output   = 0x50
+    sampelcount   = 0x54
+
+    # Command and Status Bits
+    power_good    = 0x00000001
+    out_enable    = 0x00000001
+    clear         = 0x002
+    busy          = 0x002
+    trighw        = 0x100
+    trigsw        = 0x200
+    oflow         = 0x400
+
+    # XADC and XBP  parameters
+    xadc_resolution = 65535  # 2^16 -1
+    xadc_max = 5 # Volt
+    xadc_multiplier = xadc_max / xadc_resolution
+    xbp_shunt = 0.1 # Ohm, should be 0.1
+    xbpgains = [25, 50, 100, 200]
+    varvolts = [3.65, 3.6, 3.55, 3.5, 3.45, 3.4, 3.35, 3.3, 3.25, 3.2, 3.15, 3.1, 3.05, 3, 2.95, 2.9, 2.85, 2.8, 2.75, 2.7,
+                2.65, 2.6, 2.55, 2.5, 2.45, 2.4, 2.35, 2.3, 2.25, 2.2, 2.15, 2.1, 2.05, 2, 1.95, 1.9, 1.85, 1.8, 1.75, 1.7,
+                1.65, 1.6, 1.55, 1.5, 1.45, 1.4, 1.35, 1.3, 1.25, 1.2, 1.15, 1.1, 1.05, 1, 0.95, 0.9]
+               
+    # to be loaded in future
+    callcoeffs = [ 0.01008823, -0.08145512,  0.22064704, -0.01857877]
+
+    def __init__(self, description, *args, **kwargs):
+        """
+        Construct a new 'Power' object.
+        """
+        super().__init__(description=description)        
+
+    bindto = ['CERG:cerg:powermanager:1.1']
+
+    def writeGain3v3(self, gain):
+        try:
+            gainbits = self.xbpgains.index(gain)
+        except ValueError:
+            print("Valid gain values are: 25, 50, 100, and 200.")
+        else:
+            cmd = self.mmio.read(self.command)
+            cmd = cmd & 0xFFFFFFF3
+            cmd = cmd | (gainbits << 2)
+            self.mmio.write(self.command,cmd)
+            return 
+
+    def readGain3v3(self):
+        return (self.xbpgains[(self.mmio.read(self.status) >> 2) & 0x00000003])
+
+    def writeGain5v(self, gain):
+        try:
+            gainbits = self.xbpgains.index(gain)
+        except ValueError:
+            print("Valid gain values are: 25, 50, 100, and 200.")
+        else:
+            cmd = self.mmio.read(self.command)
+            cmd = cmd & 0xFFFFFFCF
+            cmd = cmd | (gainbits << 4)
+            self.mmio.write(self.command,cmd)
+            return 
+
+    def readGain5v(self):
+        return (self.xbpgains[(self.mmio.read(self.status) >> 4) & 0x00000003])
+    
+    def writeGainVar(self, gain):
+        try:
+            gainbits = self.xbpgains.index(gain)
+        except ValueError:
+            print("Valid gain values are: 25, 50, 100, and 200.")
+        else:
+            cmd = self.mmio.read(self.command)
+            cmd = cmd & 0xFFFFFF3F
+            cmd = cmd | (gainbits << 6)
+            self.mmio.write(self.command,cmd)
+            return 
+
+    def readGainVar(self):
+        return (self.xbpgains[(self.mmio.read(self.status) >> 6) & 0x00000003])
+    
+    def readVarSetting(self):
+        return (self.varvolts[(self.mmio.read(self.volt_output))])
+    
+    def writeVarSetting(self, value):
+        try:
+            voltbits = self.varvolts.index(value)
+        except ValueError:
+            print("Only voltages between 0.9V and 3.65V in 0.05V steps are allowed.")
+            return 0
+        else:
+            self.mmio.write(self.volt_output, voltbits)
+            return 1
+
+    def enableVar(self):
+        cmd = self.mmio.read(self.command)
+        cmd = cmd | self.out_enable
+        self.mmio.write(self.command, cmd)
+        return
+    
+    def disableVar(self):
+        cmd = self.mmio.read(self.command)
+        cmd = cmd & ~self.out_enable
+        self.mmio.write(self.command, cmd)
+        return
+    
+    def checkVarGood(self):
+        return (self.mmio.read(self.status) & self.power_good)
+    
+    def checkVarOn(self):
+        return (self.mmio.read(self.command) & self.out_enable)
+
+    def convertVolt(self, value):
+        value = value * self.xadc_multiplier
+        value = value + self.callcoeffs[0]*value**3 + self.callcoeffs[1]*value**2 + self.callcoeffs[2]*value + self.callcoeffs[3]
+        return value
+    
+    def readVolt3v3(self):
+        return self.convertVolt(self.mmio.read(self.volt3v3))
+
+    def readVolt5v(self):
+        return self.convertVolt(self.mmio.read(self.volt5v))
+
+    def readVoltVar(self):
+        return self.convertVolt(value = self.mmio.read(self.voltvar))
+        
+
+class PowerManager():
+    """
+    FOBOS Power Manager collection of functions
+    """
+
+    PowerIF = None
+
+    def __init__(self, overlay):
+        self.PowerIF = overlay.powermanager_0
+        # read callibration values. If file does not exist promt user to run callibration
+        # self.PowerIF.loadCal()
+        
+
+    def Gain3v3Set(self, gain):
+        self.PowerIF.writeGain3v3(gain)
+
+    def Gain3v3Get(self):
+        print(self.PowerIF.readGain3v3())
+
+    def Gain5vSet(self, gain):
+        self.PowerIF.writeGain5v(gain)
+
+    def Gain5vGet(self):
+        print(self.PowerIF.readGain5v())
+
+    def GainVarSet(self, gain):
+        self.PowerIF.writeGainVar(gain)
+
+    def GainVarGet(self):
+        print(self.PowerIF.readGainVar())
+        
+    def OutVarOn(self):
+        self.PowerIF.enableVar()
+        trycnt = 0
+        while True:
+            try:
+                self.PowerIF.checkVarGood()
+            except 0:
+                if trycnt > 2:
+                    self.PowerIF.disableVar()
+                    print("Var power is not good and now turned off. Check load.")
+                    return
+                trycnt = trycnt + 1
+                timesleep(0.5)
+            else:
+                print(self.PowerIF.readVarSetting())
+                return
+
+    def OutVarOff(self):
+        self.PowerIF.disableVar()
+        
+    def OutVarSet(self, value):
+        if self.PowerIF.writeVarSetting(value):
+            if self.PowerIF.checkVarOn():
+                self.OutVarOn()  # run VarOn again to confirm if Power still good
+        else:
+            self.OutVarOff() # can't set invalid value, hence turn Var Power off.
+            print("Var power is turned off.")
+        
+    def OutVarGet(self):
+        print(self.PowerIF.readVarSetting())
+        
+    def MeasVolt3v3(self):
+        print(self.PowerIF.readVolt3v3())
+
+    def MeasVolt5v(self):
+        print(self.PowerIF.readVolt5v())
+
+    def MeasVoltVar(self):
+        print(self.PowerIF.readVoltVar())
+
+
+    
+    
+    # Notes on Commands
+    # 3 Channels: CH1 3v3, CH2 5v, CH3 Var
+    
+    # CLS clears all measurement results, i.e. average and maximum values as well as the sample counter
+    # RST same as CLS, also clears setting of var power
+    
+    # OutpVarOn
+    # OutpVarOff
+    # OutpVarSet(value)
+    # OutpVarGet
+    # 
+    # Gain3v3Set(gain)
+    # Gain3v3Get
+    # Gain5vSet(gain)
+    # Gain5vGet
+    # GainVarSet(gain)
+    # GainVarGet
+    # 
+    # MeasVolt3v3
+    # MeasCurr3v3
+    # MeasVolt5v
+    # MeasCurr5v
+    # MeasVoltVar
+    # MeasCurrVar
+    # 
+    # MeasMaxVolt3v3
+    # MeasAvgVolt3v3
+    # MeasMaxCurr3v3
+    # MeasAvgCurr3v3
+    # 
+    # MeasMaxVolt5v
+    # MeasAvgVolt5v
+    # MeasMaxCurr5v
+    # MeasAvgCurr5v
+    # 
+    # MeasMaxVoltVar
+    # MeasAvgVoltVar
+    # MeasMaxCurrVar
+    # MeasAvgCurrVar
+    # 
+    # MeasClear
+    # MeasCountValue
+    # MeasCountOverflow
+    # MeasBusy
+    # 
+    # 
+    # 
+    # TrigHwEnOn
+    # TrigHwEnOff
+    # TrigSwEnOn
+    # TrigSwEnOff
+    # TrigHwStat # status of Hardware trigger
+    # 
+    # CalVoltStart # start callibration
+    # CalCurrStart
+    # 
+ 
