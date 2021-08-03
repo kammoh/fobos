@@ -29,16 +29,16 @@ class PowerDriver(DefaultIP):
     maxvoltvar    = 0x48
     maxcurrentvar = 0x4C
     volt_output   = 0x50
-    sampelcount   = 0x54
+    samplecount   = 0x54
 
     # Command and Status Bits
     power_good    = 0x00000001
     out_enable    = 0x00000001
-    clear         = 0x002
-    busy          = 0x002
-    trighw        = 0x100
-    trigsw        = 0x200
-    oflow         = 0x400
+    clear_bit     = 0x00000002
+    busy          = 0x00000002
+    trighw        = 0x00000100
+    trigsw        = 0x00000200
+    oflow         = 0x00000400
 
     # XADC and XBP  parameters
     xadc_resolution = 65535  # 2^16 -1
@@ -150,8 +150,74 @@ class PowerDriver(DefaultIP):
 
     def readVoltVar(self):
         return self.convertVolt(value = self.mmio.read(self.voltvar))
-        
+       
+    def readCurr3v3(self):
+        value = self.mmio.read(self.current3v3) * self.xadc_multiplier
+        value = value / (self.xbp_shunt * self.readGain3v3())
+        # value = value + self.callcoeffs[0]*value**3 + self.callcoeffs[1]*value**2 + self.callcoeffs[2]*value + self.callcoeffs[3]        
+        return value
 
+    def readCurr5v(self):
+        value = self.mmio.read(self.current5v) * self.xadc_multiplier
+        value = value / (self.xbp_shunt * self.readGain5v())
+        # value = value + self.callcoeffs[0]*value**3 + self.callcoeffs[1]*value**2 + self.callcoeffs[2]*value + self.callcoeffs[3]        
+        return value
+    
+    def readCurrVar(self):
+        value = self.mmio.read(self.currentvar) * self.xadc_multiplier
+        value = value / (self.xbp_shunt * self.readGainVar())
+        # value = value + self.callcoeffs[0]*value**3 + self.callcoeffs[1]*value**2 + self.callcoeffs[2]*value + self.callcoeffs[3]        
+        return value
+    
+    def enableSwTrig(self):
+        cmd = self.mmio.read(self.command)
+        cmd = cmd | self.trigsw
+        self.mmio.write(self.command, cmd)
+        return        
+    
+    def disableSwTrig(self):
+        cmd = self.mmio.read(self.command)
+        cmd = cmd & ~self.trigsw
+        self.mmio.write(self.command, cmd)
+        return
+    
+    def statusSwTrig(self):
+        return ((self.mmio.read(self.status) & self.trigsw) >> 9) 
+    
+    def enableHwTrig(self):
+        cmd = self.mmio.read(self.command)
+        cmd = cmd | self.trighw
+        self.mmio.write(self.command, cmd)
+        return        
+    
+    def disableHwTrig(self):
+        cmd = self.mmio.read(self.command)
+        cmd = cmd & ~self.trighw
+        self.mmio.write(self.command, cmd)
+        return
+    
+    def statusHwTrig(self):
+        return ((self.mmio.read(self.status) & self.trighw) >> 8) 
+    
+    def clearregs(self):
+        cmd = self.mmio.read(self.command)
+        cmd = cmd | self.clear_bit
+        self.mmio.write(self.command, cmd)
+        cmd = cmd & ~self.clear_bit
+        self.mmio.write(self.command, cmd)
+        return
+    
+    def reset(self):
+        self.mmio.write(self.command, self.clear_bit)
+        self.mmio.write(self.command, 0x00000000)
+        return
+    
+    def cntover(self):
+        return ((self.mmio.read(self.status) & self.oflow) >> 10)
+    
+    def samplecnt(self):
+        return self.mmio.read(self.samplecount)
+    
 class PowerManager():
     """
     FOBOS Power Manager collection of functions
@@ -195,7 +261,7 @@ class PowerManager():
                     print("Var power is not good and now turned off. Check load.")
                     return
                 trycnt = trycnt + 1
-                timesleep(0.5)
+                timesleep(0.1)
             else:
                 print(self.PowerIF.readVarSetting())
                 return
@@ -223,14 +289,62 @@ class PowerManager():
     def MeasVoltVar(self):
         print(self.PowerIF.readVoltVar())
 
+    def MeasCurr3v3(self):
+        print(self.PowerIF.readCurr3v3())
+    
+    def MeasCurr5v(self):
+        print(self.PowerIF.readCurr5v())
+    
+    def MeasCurrVar(self):
+        print(self.PowerIF.readCurrVar())
+    
+    def TrigSwEnOn(self):
+        self.PowerIF.enableSwTrig()
+        
+    def TrigSwEnOff(self):
+        self.PowerIF.disableSwTrig()
+        
+    def TrigSwStat(self):
+        if (self.PowerIF.statusSwTrig()):
+            print("Software trigger has fired")
+        else:
+            print("Software trigger has not fired")
 
-    
-    
+    def TrigHwEnOn(self):
+        self.PowerIF.enableHwTrig()
+        
+    def TrigHwEnOff(self):
+        self.PowerIF.disableHwTrig()
+        
+    def TrigHwStat(self):
+        if (self.PowerIF.statusHwTrig()):
+            print("Hadware trigger has fired")
+        else:
+            print("Hardware trigger has not fired")
+
+    def MeasClear(self):
+        self.PowerIF.clearregs()
+        
+    def Reset(self):
+        self.PowerIF.reset()
+        
+    def MeasCountValue(self):
+        if (self.PowerIF.cntover()):
+            print("Sample Counter has overflown.")
+        else:
+            print(self.PowerIF.samplecnt())
+        
+    def MeasCountOverflow(self):
+        if (self.PowerIF.cntover()):
+            print("Sample Counter has overflown.")
+        else:
+            print("Sample Counter has not overflown.")
+        
     # Notes on Commands
     # 3 Channels: CH1 3v3, CH2 5v, CH3 Var
     
     # CLS clears all measurement results, i.e. average and maximum values as well as the sample counter
-    # RST same as CLS, also clears setting of var power
+    # RST same as CLS, also clears setting of var power and gains
     
     # OutpVarOn
     # OutpVarOff
@@ -278,6 +392,7 @@ class PowerManager():
     # TrigSwEnOn
     # TrigSwEnOff
     # TrigHwStat # status of Hardware trigger
+    # TrigSwStat # status of Software trigger
     # 
     # CalVoltStart # start callibration
     # CalCurrStart
