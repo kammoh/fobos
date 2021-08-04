@@ -52,6 +52,7 @@ class PowerDriver(DefaultIP):
                
     # to be loaded in future
     callcoeffs = [ 0.01008823, -0.08145512,  0.22064704, -0.01857877]
+    callcurroffs = [250, 540, 250]  # 0 offset for 3v3, 5v, and var
 
     def __init__(self, description, *args, **kwargs):
         """
@@ -152,19 +153,19 @@ class PowerDriver(DefaultIP):
         return self.convertVolt(value = self.mmio.read(self.voltvar))
        
     def readCurr3v3(self):
-        value = self.mmio.read(self.current3v3) * self.xadc_multiplier
+        value = (self.mmio.read(self.current3v3)-self.callcurroffs[0]) * self.xadc_multiplier
         value = value / (self.xbp_shunt * self.readGain3v3())
         # value = value + self.callcoeffs[0]*value**3 + self.callcoeffs[1]*value**2 + self.callcoeffs[2]*value + self.callcoeffs[3]        
         return value
 
     def readCurr5v(self):
-        value = self.mmio.read(self.current5v) * self.xadc_multiplier
+        value = (self.mmio.read(self.current5v)-self.callcurroffs[1]) * self.xadc_multiplier
         value = value / (self.xbp_shunt * self.readGain5v())
         # value = value + self.callcoeffs[0]*value**3 + self.callcoeffs[1]*value**2 + self.callcoeffs[2]*value + self.callcoeffs[3]        
         return value
     
     def readCurrVar(self):
-        value = self.mmio.read(self.currentvar) * self.xadc_multiplier
+        value = (self.mmio.read(self.currentvar)-self.callcurroffs[2]) * self.xadc_multiplier
         value = value / (self.xbp_shunt * self.readGainVar())
         # value = value + self.callcoeffs[0]*value**3 + self.callcoeffs[1]*value**2 + self.callcoeffs[2]*value + self.callcoeffs[3]        
         return value
