@@ -85,7 +85,7 @@ begin
 		end if;
 	end process;
 
-	process(current_state, tx_valid, di_ready, do_valid, din_cnt_last, rx_ready, dout_cnt_last, last_word)
+	process(current_state, tx_valid, di_ready, do_valid, din_cnt_last, rx_ready, dout_cnt_last, last_word, wait_for_rst, rst_cmd)
 	begin
 		--default outputs
 		direction     <= '0';

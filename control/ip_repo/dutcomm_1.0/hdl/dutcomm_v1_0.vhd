@@ -36,7 +36,9 @@ entity dutcomm_v1_0 is
 		--shared half duplex interface
 		handshake_c2d  : out   std_logic;
 		handshake_d2c  : in    std_logic;
-		dio            : inout STD_LOGIC_VECTOR(3 downto 0);
+		dio_I          : in    std_logic_vector(3 downto 0);
+		dio_O          : out   std_logic_vector(3 downto 0);
+		dio_T          : out   std_logic;
 		io             : out   std_logic;
 		-- User ports ends
 		-- Do not modify the ports beyond this line
@@ -189,7 +191,9 @@ begin
 			---
 			shared_handshake_out => handshake_c2d,
 			shared_handshake_in  => handshake_d2c,
-			dbus                 => dio,
+			dio_I                => dio_I,
+			dio_O                => dio_O,
+			dio_T                => dio_T,
 			direction_out        => io,
 			wait_for_rst         => wait_for_rst,
 			rst_cmd              => rst_cmd

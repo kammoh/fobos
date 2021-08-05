@@ -21,6 +21,7 @@ entity powermanage_v1_0_S00_AXI is
         trigger     : in std_logic;
         gain_0      : out std_logic_vector(1 downto 0);
         gain_1      : out std_logic_vector(1 downto 0);
+        gain_2      : out std_logic_vector(1 downto 0);
         power       : out std_logic_vector(5 downto 0);
         power_en    : out std_logic;
         power_ok    : in std_logic;
@@ -127,6 +128,10 @@ architecture arch_imp of powermanage_v1_0_S00_AXI is
     signal max_volt5v    : std_logic_vector(15 downto 0);
     signal avg_cur5v     : std_logic_vector(15 downto 0);
     signal max_cur5v     : std_logic_vector(15 downto 0);
+    signal avg_voltvar   : std_logic_vector(15 downto 0);
+    signal max_voltvar   : std_logic_vector(15 downto 0);
+    signal avg_curvar    : std_logic_vector(15 downto 0);
+    signal max_curvar    : std_logic_vector(15 downto 0);
     signal samplcnt      : std_logic_vector(19 downto 0);
 
 	---- Number of Slave Registers 16
@@ -580,11 +585,13 @@ begin
 	-- Add user logic here
 	gain_0 <= slv_reg0(3 downto 2);
 	gain_1 <= slv_reg0(5 downto 4);
+	gain_2
 	status(3 downto 2) <= slv_reg0(3 downto 2);
 	status(5 downto 4) <= slv_reg0(5 downto 4);
 	power_en    <= slv_reg0(0);
 	status(0)   <= power_ok;
 	
+	-- Fix Tristate
 	TRI: for i in 0 to 5 generate
 	    power(i)  <= 'Z' when slv_reg14(i) = '1' else '0';
 	end generate TRI;
@@ -610,7 +617,11 @@ begin
             avg_volt5v   => avg_volt5v,  
             max_volt5v   => max_volt5v,  
             avg_cur5v    => avg_cur5v,   
-            max_cur5v    => max_cur5v,   
+            max_cur5v    => max_cur5v,
+            avg_voltvar  => avg_voltvar,  
+            max_voltvar  => max_voltvar,  
+            avg_curvar   => avg_curvar,   
+            max_curvar   => max_curvar,   
             samplcnt     => samplcnt,                
             trigger      => trigger,  
             ck_an_n      => ck_an_n,

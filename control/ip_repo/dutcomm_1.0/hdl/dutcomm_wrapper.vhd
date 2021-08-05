@@ -48,7 +48,9 @@ entity dutcomm_wrapper is
 		---External bus--half duplex interface 
 		shared_handshake_out : out   std_logic;
 		shared_handshake_in  : in    std_logic;
-		dbus                 : inout STD_LOGIC_VECTOR(3 downto 0);
+		dio_I                : in    std_logic_vector(3 downto 0);
+		dio_O                : out   std_logic_vector(3 downto 0);
+		dio_T                : out   std_logic;
 		direction_out        : out   std_logic;
 		wait_for_rst         : in    std_logic;
 		rst_cmd              : in    std_logic
@@ -113,7 +115,9 @@ begin
 			--external bus
 			shared_handshake_out => shared_handshake_out,
 			shared_handshake_in  => shared_handshake_in,
-			dbus                 => dbus,
+			dio_I                => dio_I,
+			dio_O                => dio_O,
+			dio_T                => dio_T,
 			direction_out        => direction_out,
 			--user connection
 			---out/in from the view point of the interface user

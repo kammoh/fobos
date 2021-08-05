@@ -813,7 +813,7 @@ Wire Wire Line
 	1150 2650 1150 2700
 Connection ~ 1150 2700
 Text Notes 1650 2600 0    50   ~ 0
-VCC BRAM Pins\nN11, B11\n
+VCC BRAM Pins\nN11, M11\n
 Text Notes 1650 3500 0    50   ~ 0
 VCCAUX Pins\nH13, J13
 $EndSCHEMATC
