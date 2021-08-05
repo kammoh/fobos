@@ -634,7 +634,7 @@ F 3 "~" H 4650 7450 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Regulator_Linear:AP2204K-3.3 U?
+L fobosshield-rescue:AP2204K-3.3-Regulator_Linear U?
 U 1 1 5B6C8916
 P 3250 7300
 AR Path="/5B6C8916" Ref="U?"  Part="1" 
