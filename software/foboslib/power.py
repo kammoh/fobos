@@ -1,3 +1,25 @@
+#############################################################################
+#                                                                           #
+#   Copyright 2021 CERG                                                     #
+#                                                                           #
+#   Licensed under the Apache License, Version 2.0 (the "License");         #
+#   you may not use this file except in compliance with the License.        #
+#   You may obtain a copy of the License at                                 #
+#                                                                           #
+#       http://www.apache.org/licenses/LICENSE-2.0                          #
+#                                                                           #
+#   Unless required by applicable law or agreed to in writing, software     #
+#   distributed under the License is distributed on an "AS IS" BASIS,       #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
+#   See the License for the specific language governing permissions and     #
+#   limitations under the License.                                          #
+#                                                                           #
+#############################################################################
+# FOBOS Shield Powermanager class
+# Author: Jens-Peter Kaps
+# GMU
+# August 5, 2021
+# This class hides the Powermanager hardware of the FOBOS Shield rev 2
 
 from pynq import DefaultIP
 import time
@@ -219,6 +241,43 @@ class PowerDriver(DefaultIP):
     def samplecnt(self):
         return self.mmio.read(self.samplecount)
     
+    def readMaxVolt3v3(self):
+        return self.convertVolt(self.mmio.read(self.maxvolt3v3))
+    
+    def readMaxVolt5v(self):
+        return self.convertVolt(self.mmio.read(self.maxvolt5v))
+    
+    def readMaxVoltVar(self):
+        return self.convertVolt(self.mmio.read(self.maxvoltvar))
+    
+    def readAvgVolt3v3(self):
+        return self.convertVolt(self.mmio.read(self.avgvolt3v3))
+    
+    def readAvgVolt5v(self):
+        return self.convertVolt(self.mmio.read(self.avgvolt5v))
+    
+    def readAvgVoltVar(self):
+        return self.convertVolt(self.mmio.read(self.avgvoltvar))
+    
+    def readMaxCurr3v3(self):
+        return self.convertVolt(self.mmio.read(self.maxcurrent3v3))
+    
+    def readMaxCurr5v(self):
+        return self.convertVolt(self.mmio.read(self.maxcurrent5v))
+    
+    def readMaxCurrVar(self):
+        return self.convertVolt(self.mmio.read(self.maxcurrentvar))
+    
+    def readAvgCurr3v3(self):
+        return self.convertVolt(self.mmio.read(self.avgcurrent3v3))
+    
+    def readAvgCurr3v3(self):
+        return self.convertVolt(self.mmio.read(self.avgcurrent5v))
+    
+    def readAvgCurrVar(self):
+        return self.convertVolt(self.mmio.read(self.avgcurrentvar))
+
+    
 class PowerManager():
     """
     FOBOS Power Manager collection of functions
@@ -341,6 +400,44 @@ class PowerManager():
         else:
             print("Sample Counter has not overflown.")
         
+    def MeasMaxVolt3v3(self):
+        print(self.PowerIF.readMaxVolt3v3())
+    
+    def MeasMaxVolt5v(self):
+        print(self.PowerIF.readMaxVolt5v())
+            
+    def MeasMaxVoltVar(self):
+        print(self.PowerIF.readMaxVoltVar())
+
+        
+    def MeasAvgVolt3v3(self):
+        print(self.PowerIF.readAvgVolt3v3())
+    
+    def MeasAvgVolt5v(self):
+        print(self.PowerIF.readAvgVolt5v())
+            
+    def MeasAvgVoltVar(self):
+        print(self.PowerIF.readAvgVoltVar())
+
+    def MeasMaxCurr3v3(self):
+        print(self.PowerIF.readMaxCurr3v3())
+    
+    def MeasMaxCurr5v(self):
+        print(self.PowerIF.readMaxCurr5v())
+            
+    def MeasMaxCurrVar(self):
+        print(self.PowerIF.readMaxCurrVar())
+
+    def MeasAvgCurr3v3(self):
+        print(self.PowerIF.readAvgCurr3v3())
+    
+    def MeasAvgCurr5v(self):
+        print(self.PowerIF.readAvgCurr5v())
+            
+    def MeasAvgCurrVar(self):
+        print(self.PowerIF.readAvgCurrVar())
+
+            
     # Notes on Commands
     # 3 Channels: CH1 3v3, CH2 5v, CH3 Var
     
@@ -386,8 +483,6 @@ class PowerManager():
     # MeasCountOverflow
     # MeasBusy
     # 
-    # 
-    # 
     # TrigHwEnOn
     # TrigHwEnOff
     # TrigSwEnOn
@@ -395,7 +490,7 @@ class PowerManager():
     # TrigHwStat # status of Hardware trigger
     # TrigSwStat # status of Software trigger
     # 
-    # CalVoltStart # start callibration
-    # CalCurrStart
+    # CaliVoltStart # start callibration
+    # CaliCurrStart
     # 
  
