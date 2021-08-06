@@ -20,6 +20,9 @@
 # GMU
 # August 5, 2021
 # This class hides the Powermanager hardware of the FOBOS Shield rev 2
+# Rev 2 had 3 power channels: 3v3, 5v, Var supplying nominal 3.3V, 5V, 
+# and a variable voltage between 0.9V and 3.65V respectively
+
 
 from pynq import DefaultIP
 import time
@@ -241,6 +244,9 @@ class PowerDriver(DefaultIP):
     def samplecnt(self):
         return self.mmio.read(self.samplecount)
     
+    def readBusy(self):
+        return ((self.mmio.read(self.status) & self.busy) >> 1)
+    
     def readMaxVolt3v3(self):
         return self.convertVolt(self.mmio.read(self.maxvolt3v3))
     
@@ -295,19 +301,19 @@ class PowerManager():
         self.PowerIF.writeGain3v3(gain)
 
     def Gain3v3Get(self):
-        print(self.PowerIF.readGain3v3())
+        return(self.PowerIF.readGain3v3())
 
     def Gain5vSet(self, gain):
         self.PowerIF.writeGain5v(gain)
 
     def Gain5vGet(self):
-        print(self.PowerIF.readGain5v())
+        return(self.PowerIF.readGain5v())
 
     def GainVarSet(self, gain):
         self.PowerIF.writeGainVar(gain)
 
     def GainVarGet(self):
-        print(self.PowerIF.readGainVar())
+        return(self.PowerIF.readGainVar())
         
     def OutVarOn(self):
         self.PowerIF.enableVar()
@@ -323,7 +329,7 @@ class PowerManager():
                 trycnt = trycnt + 1
                 timesleep(0.1)
             else:
-                print(self.PowerIF.readVarSetting())
+                return(self.PowerIF.readVarSetting())
                 return
 
     def OutVarOff(self):
@@ -338,25 +344,25 @@ class PowerManager():
             print("Var power is turned off.")
         
     def OutVarGet(self):
-        print(self.PowerIF.readVarSetting())
+        return(self.PowerIF.readVarSetting())
         
     def MeasVolt3v3(self):
-        print(self.PowerIF.readVolt3v3())
+        return(self.PowerIF.readVolt3v3())
 
     def MeasVolt5v(self):
-        print(self.PowerIF.readVolt5v())
+        return(self.PowerIF.readVolt5v())
 
     def MeasVoltVar(self):
-        print(self.PowerIF.readVoltVar())
+        return(self.PowerIF.readVoltVar())
 
     def MeasCurr3v3(self):
-        print(self.PowerIF.readCurr3v3())
+        return(self.PowerIF.readCurr3v3())
     
     def MeasCurr5v(self):
-        print(self.PowerIF.readCurr5v())
+        return(self.PowerIF.readCurr5v())
     
     def MeasCurrVar(self):
-        print(self.PowerIF.readCurrVar())
+        return(self.PowerIF.readCurrVar())
     
     def TrigSwEnOn(self):
         self.PowerIF.enableSwTrig()
@@ -378,117 +384,99 @@ class PowerManager():
         
     def TrigHwStat(self):
         if (self.PowerIF.statusHwTrig()):
-            print("Hadware trigger has fired")
+            print("Hardware trigger has fired")
         else:
             print("Hardware trigger has not fired")
 
     def MeasClear(self):
+        """
+        Clears all measurement results, i.e. average and maximum values as 
+        well as the sample counter. Resets trigger status to not fired.
+        """
         self.PowerIF.clearregs()
         
     def Reset(self):
+        """
+        Clears all measurement results, i.e. average and maximum values as 
+        well as the sample counter. Resets trigger status to not fired.
+        Also turns off var power, sets var power back to the default 3.65V. 
+        Returns all gains back to default 25.
+        """
         self.PowerIF.reset()
         
     def MeasCountValue(self):
         if (self.PowerIF.cntover()):
             print("Sample Counter has overflown.")
         else:
-            print(self.PowerIF.samplecnt())
+            return(self.PowerIF.samplecnt())
         
     def MeasCountOverflow(self):
         if (self.PowerIF.cntover()):
             print("Sample Counter has overflown.")
         else:
             print("Sample Counter has not overflown.")
+            
+    def MeasBusy(self):
+        """
+        After a trigger (HW or SW) fires, the powermanager will be busy
+        until the trigger is released. While its busy, the maximum and 
+        average values will be updated and won't be steady.
+        -----
+        Returns: int
+            0 when not busy
+            1 when busy
+        """
+        return(self.PowerIF.readBusy())
         
     def MeasMaxVolt3v3(self):
-        print(self.PowerIF.readMaxVolt3v3())
+        return(self.PowerIF.readMaxVolt3v3())
     
     def MeasMaxVolt5v(self):
-        print(self.PowerIF.readMaxVolt5v())
+        return(self.PowerIF.readMaxVolt5v())
             
     def MeasMaxVoltVar(self):
-        print(self.PowerIF.readMaxVoltVar())
+        return(self.PowerIF.readMaxVoltVar())
 
         
     def MeasAvgVolt3v3(self):
-        print(self.PowerIF.readAvgVolt3v3())
+        if (self.PowerIF.cntover()):
+            print("Sample Counter has overflown. Value will not be correct.")
+        return(self.PowerIF.readAvgVolt3v3())
     
     def MeasAvgVolt5v(self):
-        print(self.PowerIF.readAvgVolt5v())
+        if (self.PowerIF.cntover()):
+            print("Sample Counter has overflown. Value will not be correct.")
+        return(self.PowerIF.readAvgVolt5v())
             
     def MeasAvgVoltVar(self):
-        print(self.PowerIF.readAvgVoltVar())
+        if (self.PowerIF.cntover()):
+            print("Sample Counter has overflown. Value will not be correct.")
+        return(self.PowerIF.readAvgVoltVar())
 
     def MeasMaxCurr3v3(self):
-        print(self.PowerIF.readMaxCurr3v3())
+        return(self.PowerIF.readMaxCurr3v3())
     
     def MeasMaxCurr5v(self):
-        print(self.PowerIF.readMaxCurr5v())
+        return(self.PowerIF.readMaxCurr5v())
             
     def MeasMaxCurrVar(self):
-        print(self.PowerIF.readMaxCurrVar())
+        return(self.PowerIF.readMaxCurrVar())
 
     def MeasAvgCurr3v3(self):
-        print(self.PowerIF.readAvgCurr3v3())
+        if (self.PowerIF.cntover()):
+            print("Sample Counter has overflown. Value will not be correct.")
+        return(self.PowerIF.readAvgCurr3v3())
     
     def MeasAvgCurr5v(self):
-        print(self.PowerIF.readAvgCurr5v())
+        if (self.PowerIF.cntover()):
+            print("Sample Counter has overflown. Value will not be correct.")
+        return(self.PowerIF.readAvgCurr5v())
             
     def MeasAvgCurrVar(self):
-        print(self.PowerIF.readAvgCurrVar())
+        if (self.PowerIF.cntover()):
+            print("Sample Counter has overflown. Value will not be correct.")
+        return(self.PowerIF.readAvgCurrVar())            
 
-            
-    # Notes on Commands
-    # 3 Channels: CH1 3v3, CH2 5v, CH3 Var
-    
-    # CLS clears all measurement results, i.e. average and maximum values as well as the sample counter
-    # RST same as CLS, also clears setting of var power and gains
-    
-    # OutpVarOn
-    # OutpVarOff
-    # OutpVarSet(value)
-    # OutpVarGet
-    # 
-    # Gain3v3Set(gain)
-    # Gain3v3Get
-    # Gain5vSet(gain)
-    # Gain5vGet
-    # GainVarSet(gain)
-    # GainVarGet
-    # 
-    # MeasVolt3v3
-    # MeasCurr3v3
-    # MeasVolt5v
-    # MeasCurr5v
-    # MeasVoltVar
-    # MeasCurrVar
-    # 
-    # MeasMaxVolt3v3
-    # MeasAvgVolt3v3
-    # MeasMaxCurr3v3
-    # MeasAvgCurr3v3
-    # 
-    # MeasMaxVolt5v
-    # MeasAvgVolt5v
-    # MeasMaxCurr5v
-    # MeasAvgCurr5v
-    # 
-    # MeasMaxVoltVar
-    # MeasAvgVoltVar
-    # MeasMaxCurrVar
-    # MeasAvgCurrVar
-    # 
-    # MeasClear
-    # MeasCountValue
-    # MeasCountOverflow
-    # MeasBusy
-    # 
-    # TrigHwEnOn
-    # TrigHwEnOff
-    # TrigSwEnOn
-    # TrigSwEnOff
-    # TrigHwStat # status of Hardware trigger
-    # TrigSwStat # status of Software trigger
     # 
     # CaliVoltStart # start callibration
     # CaliCurrStart
