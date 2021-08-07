@@ -20,6 +20,7 @@ entity openadc_v1_0_S_AXI is
         ADC_LSB_CONF : out std_logic_vector(5 downto 0);
         HI_LO : out std_logic;
         GAIN_DUTY_CYCLE : out std_logic_vector(7 downto 0);
+        OVER_RANGE : in std_logic;
         BLOCK_SIZE : out std_logic_vector(9 downto 0) := "1000000000";
         CAPTURE_MODE : out std_logic;
         RESET_TRANSMIT : out std_logic;
@@ -372,14 +373,15 @@ begin
 	-- and the slave is ready to accept the read address.
 	slv_reg_rden <= axi_arready and S_AXI_ARVALID and (not axi_rvalid) ;
 
-	process (openadc_sr, count_reg, divisor, slv_reg3, axi_araddr, S_AXI_ARESETN, slv_reg_rden)
+	process (openadc_sr, count_reg, divisor, slv_reg3, axi_araddr, S_AXI_ARESETN, slv_reg_rden, OVER_RANGE)
 	variable loc_addr :std_logic_vector(OPT_MEM_ADDR_BITS downto 0);
 	begin
 	    -- Address decoding for reading registers
 	    loc_addr := axi_araddr(ADDR_LSB + OPT_MEM_ADDR_BITS downto ADDR_LSB);
 	    case loc_addr is
 	      when b"00" =>
-	        reg_data_out <= openadc_sr;
+	        reg_data_out(31 downto 1) <= openadc_sr(31 downto 1);
+	        reg_data_out(0) <= OVER_RANGE;
 	      when b"01" =>
 	        reg_data_out <= count_reg;
 	      when b"10" =>

@@ -131,7 +131,7 @@ xilinx.com:ip:c_counter_binary:12.0\
 xilinx.com:ip:clk_wiz:6.0\
 user.org:user:dut_controller:1.0\
 CERG:cerg:dutcomm:1.0\
-xilinx.com:user:openadc_interface_v1_0:1.0\
+CERG:cerg:openadc_interface_v1_0:1.0\
 CERG:cerg:powermanager:1.1\
 xilinx.com:ip:proc_sys_reset:5.0\
 xilinx.com:ip:processing_system7:5.5\
@@ -344,7 +344,7 @@ proc create_root_design { parentCell } {
   set dutcomm_0 [ create_bd_cell -type ip -vlnv CERG:cerg:dutcomm:1.0 dutcomm_0 ]
 
   # Create instance: openadc_interface_v1_0_0, and set properties
-  set openadc_interface_v1_0_0 [ create_bd_cell -type ip -vlnv xilinx.com:user:openadc_interface_v1_0:1.0 openadc_interface_v1_0_0 ]
+  set openadc_interface_v1_0_0 [ create_bd_cell -type ip -vlnv CERG:cerg:openadc_interface_v1_0:1.0 openadc_interface_v1_0_0 ]
 
   # Create instance: powermanager_0, and set properties
   set powermanager_0 [ create_bd_cell -type ip -vlnv CERG:cerg:powermanager:1.1 powermanager_0 ]
@@ -972,6 +972,7 @@ proc create_root_design { parentCell } {
 
   # Create port connections
   connect_bd_net -net adc_in_1 [get_bd_ports adc] [get_bd_pins openadc_interface_v1_0_0/adc_in]
+  connect_bd_net -net adc_or_1 [get_bd_ports adc_or] [get_bd_pins openadc_interface_v1_0_0/adc_or]
   connect_bd_net -net axi_dma_0_mm2s_introut [get_bd_pins axi_dma_0/mm2s_introut] [get_bd_pins xlconcat_0/In0]
   connect_bd_net -net axi_dma_0_s2mm_introut [get_bd_pins axi_dma_0/s2mm_introut] [get_bd_pins xlconcat_0/In1]
   connect_bd_net -net axi_dma_1_s2mm_introut [get_bd_pins axi_dma_1/s2mm_introut] [get_bd_pins xlconcat_0/In2]
