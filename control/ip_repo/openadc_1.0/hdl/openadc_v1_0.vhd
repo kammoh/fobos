@@ -30,6 +30,7 @@ entity openadc_v1_0 is
         gain_mode : out STD_LOGIC := '0';
         adc_clk : out STD_LOGIC;
         adc_in : in STD_LOGIC_VECTOR (9 downto 0) := "0000000000";
+        adc_or: in std_logic;
         en_cntr : out STD_LOGIC;
 		-- User ports ends
 		-- Do not modify the ports beyond this line
@@ -82,6 +83,7 @@ architecture arch_imp of openadc_v1_0 is
 		ADC_LSB_CONF : out std_logic_vector(5 downto 0);
         HI_LO : out std_logic;
         GAIN_DUTY_CYCLE : out std_logic_vector(7 downto 0);
+        OVER_RANGE : in std_logic;
         BLOCK_SIZE : out std_logic_vector (9 downto 0);
         CAPTURE_MODE : out std_logic;
         RESET_TRANSMIT : out std_logic;
@@ -217,6 +219,7 @@ openadc_v1_0_S_AXI_inst : openadc_v1_0_S_AXI
 	    ADC_LSB_CONF => adc_lsb_conf,
 	    HI_LO => hi_lo_bit,
 	    GAIN_DUTY_CYCLE => gain_duty_cycle_out,
+	    OVER_RANGE => adc_or,
 	    BLOCK_SIZE => block_size_conf,
 	    CAPTURE_MODE => capture_mode,
 	    RESET_TRANSMIT => reset_tx,

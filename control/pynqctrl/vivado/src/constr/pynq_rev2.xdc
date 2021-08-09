@@ -77,10 +77,10 @@ set_property -dict {PACKAGE_PIN G20 IOSTANDARD LVCMOS33} [get_ports {ck_an_n[5]}
 set_property -dict {PACKAGE_PIN G19 IOSTANDARD LVCMOS33} [get_ports {ck_an_p[5]}]
 
 ## Current Sense Monitor Gain Selects
-set_property -dict {PACKAGE_PIN F19 IOSTANDARD LVCMOS33} [get_ports {gain_3v3[0]}];  # CSM 3V3 supply
-set_property -dict {PACKAGE_PIN F20 IOSTANDARD LVCMOS33} [get_ports {gain_3v3[1]}]
-set_property -dict {PACKAGE_PIN C20 IOSTANDARD LVCMOS33} [get_ports {gain_var[0]}];  # CSM Var(iable) supply
-set_property -dict {PACKAGE_PIN B20 IOSTANDARD LVCMOS33} [get_ports {gain_var[1]}]
+set_property -dict {PACKAGE_PIN F19 IOSTANDARD LVCMOS33} [get_ports {gain_3v3[1]}];  # CSM 3V3 supply
+set_property -dict {PACKAGE_PIN F20 IOSTANDARD LVCMOS33} [get_ports {gain_3v3[0]}]
+set_property -dict {PACKAGE_PIN C20 IOSTANDARD LVCMOS33} [get_ports {gain_var[1]}];  # CSM Var(iable) supply
+set_property -dict {PACKAGE_PIN B20 IOSTANDARD LVCMOS33} [get_ports {gain_var[0]}]
 set_property -dict {PACKAGE_PIN B19 IOSTANDARD LVCMOS33} [get_ports {gain_5v[0]}];  # CSM 5V supply
 set_property -dict {PACKAGE_PIN A20 IOSTANDARD LVCMOS33} [get_ports {gain_5v[1]}]
 
