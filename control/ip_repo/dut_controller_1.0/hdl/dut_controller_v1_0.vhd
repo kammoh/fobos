@@ -37,6 +37,11 @@ entity dut_controller_v1_0 is
 		rst_cmd          : out std_logic;
 		--glitch module
 		glitch_out       : out std_logic;
+		--DUT specific ports
+		fd2c_clk_O       : out std_logic; -- output value
+		fd2c_clk_I       : in  std_logic; -- input clock
+		fd2c_clk_D       : out std_logic; -- direction '1' if output, '0' if input
+		clk_out          : out std_logic; -- clock from DUT
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 
@@ -110,7 +115,9 @@ architecture arch_imp of dut_controller_v1_0 is
 			-- power glitch module
 			glitch_pattern : out std_logic_vector(63 downto 0);
 		    glitch_wait    : out std_logic_vector(31 downto 0);
-		    config_done   : out std_logic
+		    config_done    : out std_logic;
+		    --DUT specific ports
+            dut_select     : out std_logic_vector(31 downto 0)
 		);
 	end component dut_controller_v1_0_S_AXI;
 	---user defined 
@@ -159,6 +166,16 @@ architecture arch_imp of dut_controller_v1_0 is
            glitch_out : out std_logic
          );
     end component;
+    
+    component dut_switch is 
+    port (  fd2c_clk_O: out std_logic;
+            fd2c_clk_I: in  std_logic;
+            fd2c_clk_D: out std_logic;
+            clk_out:    out std_logic;
+            dut_rst:    in  std_logic;
+            dut_select: in std_logic_vector(31 downto 0)
+         );
+    end component;
 
 	--signals for trigger module
 	signal rst            : std_logic;
@@ -173,11 +190,15 @@ architecture arch_imp of dut_controller_v1_0 is
 	signal time_to_rst    : std_logic_vector(31 downto 0);
 	signal force_rst      : std_logic;
 	signal dut_rst_cmd    : std_logic;
+	signal dut_reset      : std_logic;
 	
 	--power glitch module
 	signal glitch_pattern : std_logic_vector(63 downto 0);
     signal glitch_wait    : std_logic_vector(31 downto 0);
-	signal config_done   : std_logic;
+	signal config_done    : std_logic;
+	
+    --DUT specific ports
+    signal dut_select     :std_logic_vector(31 downto 0); 
 
 	---end user defined 
 
@@ -225,8 +246,10 @@ begin
 			force_rst      => force_rst,
 			--glitch module
 			glitch_pattern => glitch_pattern,
-			glitch_wait => glitch_wait,
-			config_done => config_done
+			glitch_wait    => glitch_wait,
+			config_done    => config_done,
+		    --DUT specific ports
+            dut_select     => dut_select
 			
 		);
 
@@ -265,7 +288,8 @@ begin
 			wait_for_rst => wait_for_rst
 		);
 	rst_cmd  <= dut_rst_cmd;
-	dut_rst  <= dut_rst_cmd or force_rst;
+	dut_reset  <= dut_rst_cmd or force_rst;
+	dut_rst <= dut_reset;
 	ctrl_rst <= force_rst;
 
     power_glitch: power_glitcher
@@ -286,6 +310,18 @@ begin
 	d_glitch_wait <= glitch_wait;
 	d_glitch_pattern <= glitch_pattern;
 	d_config_done <= config_done;
+	
+	dutswitch: dut_switch
+	    port map(
+	       fd2c_clk_O => fd2c_clk_O,
+	       fd2c_clk_I => fd2c_clk_I,
+	       fd2c_clk_D => fd2c_clk_D,
+	       clk_out    => clk_out,
+	       dut_rst    => dut_reset,
+	       dut_select => dut_select
+	       );
+
+
 	-- User logic ends
 
 end arch_imp;

@@ -30,7 +30,9 @@ entity dut_controller_v1_0_S_AXI is
 		-- power glitch module
 		glitch_pattern : out std_logic_vector(63 downto 0);
 		glitch_wait    : out std_logic_vector(31 downto 0);
-		config_done   : out std_logic;
+		config_done    : out std_logic;
+	    --DUT specific ports
+        dut_select     : out std_logic_vector(31 downto 0); 
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 
@@ -790,6 +792,9 @@ begin
 	--reserve slv_reg10,11 for feature purposes
 	glitch_pattern(31 downto 0) <= slv_reg12;
 	glitch_pattern(63 downto 32) <= slv_reg13;
+	
+	-- DUT Config
+	dut_select <= slv_reg14;
 	
 	---
 	---if timeout_status is read, issue ack signal

@@ -45,11 +45,11 @@ entity half_duplex_dut is
        dio : inout STD_LOGIC_VECTOR (3 downto 0);
        io : in std_logic
 		 --debug
-		 ;
-		 di_valid_deb : out std_logic;
-		 di_ready_deb  : out std_logic;
-		 do_valid_deb : out std_logic;
-		 do_ready_deb  : out std_logic
+--		 ;
+--		 di_valid_deb : out std_logic;
+--		 di_ready_deb  : out std_logic;
+--		 do_valid_deb : out std_logic;
+--  	 do_ready_deb  : out std_logic
        );
        
 end half_duplex_dut;
@@ -65,10 +65,10 @@ signal do_ready_s    :  STD_LOGIC;
 
 begin
 --debug
-		di_valid_deb <= di_valid_s;
-		 di_ready_deb  <= di_ready_s;
-		 do_valid_deb <= do_valid_s;
-		 do_ready_deb  <= do_ready_s;
+--		di_valid_deb <= di_valid_s;
+--		 di_ready_deb  <= di_ready_s;
+--		 do_valid_deb <= do_valid_s;
+--		 do_ready_deb  <= do_ready_s;
 --end debug
     
     hd_int: entity work.half_duplex_interface(behav)

@@ -121,14 +121,14 @@ begin
 
 -- insert victim algorithm here
 
-victim: entity work.dummy(behav)
+victim: entity work.aes_axi(behav)
 
 -- Choices for W and SW are independently any multiple of 4, defined in generics above
 
-    generic map  (
-        N          => 8,
-        NUMWORDS        => 7
-    )
+--    generic map  (
+--        N          => 8,
+--        NUMWORDS        => 7
+--    )
 
 port map(
 	clk => clk,
