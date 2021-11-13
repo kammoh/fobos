@@ -55,7 +55,7 @@ entity ctrl_top_wrapper is
     fc_io : out STD_LOGIC;
     fc_prog : out STD_LOGIC;
     fc_rst : out STD_LOGIC;
-    fd2c_clk : in STD_LOGIC;
+    fd2c_clk : inout STD_LOGIC;
     fd2c_hs : in STD_LOGIC;
     fd_tf : in STD_LOGIC;
     gain_3v3 : out STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -97,7 +97,9 @@ architecture STRUCTURE of ctrl_top_wrapper is
     fc_io : out STD_LOGIC;
     fc_rst : out STD_LOGIC;
     fd_tf : in STD_LOGIC;
-    fd2c_clk : in STD_LOGIC;
+    fd2c_clk_I : in STD_LOGIC;
+    fd2c_clk_O : out STD_LOGIC;
+    fd2c_clk_D : out STD_LOGIC;
     fc2d_clk : out STD_LOGIC_VECTOR ( 0 to 0 );
     fc2d_hs : out STD_LOGIC;
     fd2c_hs : in STD_LOGIC;
@@ -139,6 +141,10 @@ architecture STRUCTURE of ctrl_top_wrapper is
   signal dio_I: std_logic_vector(3 downto 0);
   signal dio_O: std_logic_vector(3 downto 0);
   signal dio_T: std_logic;
+  
+  signal fd2c_clk_I: std_logic;
+  signal fd2c_clk_O: std_logic;
+  signal fd2c_clk_D: std_logic;
    
 begin
     
@@ -148,6 +154,9 @@ begin
     
     fc_dio <= dio_O  when dio_T = '1' else (others => 'Z');
     dio_I  <= fc_dio when dio_T = '0' else (others => '0');
+    
+    fd2c_clk <= fd2c_clk_O when fd2c_clk_D = '1' else 'Z';
+    fd2c_clk_I <= fd2c_clk when fd2c_clk_D = '0' else '0';
 
     
 ctrl_top_i: component ctrl_top
@@ -196,9 +205,11 @@ ctrl_top_i: component ctrl_top
       fc_io => fc_io,
       fc_prog => fc_prog,
       fc_rst => fc_rst,
-      fd2c_clk => fd2c_clk,
       fd2c_hs => fd2c_hs,
       fd_tf => fd_tf,
+      fd2c_clk_I => fd2c_clk_I,
+      fd2c_clk_O => fd2c_clk_O,
+      fd2c_clk_D => fd2c_clk_D,
       gain_3v3(1 downto 0) => gain_3v3(1 downto 0),
       gain_5v(1 downto 0) => gain_5v(1 downto 0),
       gain_var(1 downto 0) => gain_var(1 downto 0),

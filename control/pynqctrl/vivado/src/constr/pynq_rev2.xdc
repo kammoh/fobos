@@ -118,7 +118,7 @@ set_property -dict {PACKAGE_PIN W9  IOSTANDARD LVCMOS33} [get_ports {power[5]}];
 set_property -dict {PACKAGE_PIN T16 IOSTANDARD LVCMOS33} [get_ports {power_ok}];      #IO10
 set_property -dict {PACKAGE_PIN Y13 IOSTANDARD LVCMOS33} [get_ports power_en];        #IOA
 
-## TARGET Heade
+## TARGET Header
 set_property -dict {PACKAGE_PIN P15 IOSTANDARD LVCMOS33} [get_ports {fc_rst}];        #i2c-sda
 
 set_property -dict {PACKAGE_PIN V18 IOSTANDARD LVCMOS33} [get_ports {fc_dio[0]}];     #IO9
