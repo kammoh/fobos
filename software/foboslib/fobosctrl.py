@@ -31,7 +31,7 @@ class FOBOSCtrl:
     # config parameters numbers. Each number can serve as register number
     # or array index. These parameters must be sent to the hardware board.
     OUT_LEN = 0
-    TRIG_WAIT = 1
+    TRG_WAIT = 1
     TRG_LEN = 2
     TRG_MODE = 3
     TIME_TO_RST = 4
@@ -53,6 +53,9 @@ class FOBOSCtrl:
     SET_SAMPLING_FREQ = 19
     SET_ADC_GAIN = 20
     SET_SAMPLES_PER_TRACE = 21
+    SET_ADC_HILO = 22
+
+    SET_DUT = 23
 
     PROCESS = 100
     PROCESS_GET_TRACE = 101
@@ -71,4 +74,9 @@ class FOBOSCtrl:
     ###interface types - 4bit interface is default
     INTERFACE_4BIT      = 0x00
     INTERFACE_8BIT      = 0x01
+
+    ##DUT
+    NEXYS3      = 0x00
+    NEXYS4      = 0x00
+    CW305       = 0x01
     ##########################
