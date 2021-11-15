@@ -129,7 +129,7 @@ xilinx.com:ip:smartconnect:1.0\
 xilinx.com:ip:axis_data_fifo:2.0\
 xilinx.com:ip:c_counter_binary:12.0\
 xilinx.com:ip:clk_wiz:6.0\
-user.org:user:dut_controller:1.0\
+cryptography.gmu.edu:Cerg:dut_controller:1.0\
 CERG:cerg:dutcomm:1.0\
 CERG:cerg:openadc_interface_v1_0:1.0\
 CERG:cerg:powermanager:1.1\
@@ -229,7 +229,9 @@ proc create_root_design { parentCell } {
   set fc_io [ create_bd_port -dir O fc_io ]
   set fc_prog [ create_bd_port -dir O fc_prog ]
   set fc_rst [ create_bd_port -dir O fc_rst ]
-  set fd2c_clk [ create_bd_port -dir I -type clk -freq_hz 100000000 fd2c_clk ]
+  set fd2c_clk_D [ create_bd_port -dir O fd2c_clk_D ]
+  set fd2c_clk_I [ create_bd_port -dir I -type clk -freq_hz 100000000 fd2c_clk_I ]
+  set fd2c_clk_O [ create_bd_port -dir O -type data fd2c_clk_O ]
   set fd2c_hs [ create_bd_port -dir I fd2c_hs ]
   set fd_tf [ create_bd_port -dir I fd_tf ]
   set gain_3v3 [ create_bd_port -dir O -from 1 -to 0 gain_3v3 ]
@@ -338,7 +340,7 @@ proc create_root_design { parentCell } {
  ] $clk_wiz_adc
 
   # Create instance: dut_controller_0, and set properties
-  set dut_controller_0 [ create_bd_cell -type ip -vlnv user.org:user:dut_controller:1.0 dut_controller_0 ]
+  set dut_controller_0 [ create_bd_cell -type ip -vlnv cryptography.gmu.edu:Cerg:dut_controller:1.0 dut_controller_0 ]
 
   # Create instance: dutcomm_0, and set properties
   set dutcomm_0 [ create_bd_cell -type ip -vlnv CERG:cerg:dutcomm:1.0 dutcomm_0 ]
@@ -989,6 +991,8 @@ proc create_root_design { parentCell } {
   connect_bd_net -net dout_1 [get_bd_ports dout] [get_bd_pins dutcomm_0/dout]
   connect_bd_net -net dut_controller_0_ctrl_rst [get_bd_pins dut_controller_0/ctrl_rst] [get_bd_pins dutcomm_0/rst]
   connect_bd_net -net dut_controller_0_dut_rst [get_bd_ports dut_rst] [get_bd_ports fc_rst] [get_bd_pins dut_controller_0/dut_rst]
+  connect_bd_net -net dut_controller_0_fd2c_clk_D [get_bd_ports fd2c_clk_D] [get_bd_pins dut_controller_0/fd2c_clk_D]
+  connect_bd_net -net dut_controller_0_fd2c_clk_O [get_bd_ports fd2c_clk_O] [get_bd_pins dut_controller_0/fd2c_clk_O]
   connect_bd_net -net dut_controller_0_glitch_out [get_bd_ports glitch] [get_bd_pins dut_controller_0/glitch_out]
   connect_bd_net -net dut_controller_0_rst_cmd [get_bd_pins dut_controller_0/rst_cmd] [get_bd_pins dutcomm_0/rst_cmd]
   connect_bd_net -net dut_controller_0_trigger_out [get_bd_ports trigger] [get_bd_pins dut_controller_0/trigger_out] [get_bd_pins openadc_interface_v1_0_0/capture_en] [get_bd_pins powermanager_0/trigger]
@@ -1003,6 +1007,7 @@ proc create_root_design { parentCell } {
   connect_bd_net -net dutcomm_0_io [get_bd_ports fc_io] [get_bd_pins dutcomm_0/io]
   connect_bd_net -net dutcomm_0_op_done [get_bd_pins dut_controller_0/op_done] [get_bd_pins dutcomm_0/op_done]
   connect_bd_net -net dutcomm_0_started [get_bd_pins dut_controller_0/snd_start] [get_bd_pins dutcomm_0/started]
+  connect_bd_net -net fd2c_clk_I_1 [get_bd_ports fd2c_clk_I] [get_bd_pins dut_controller_0/fd2c_clk_I]
   connect_bd_net -net fd2c_hs_1 [get_bd_ports fd2c_hs] [get_bd_pins dutcomm_0/handshake_d2c]
   connect_bd_net -net openadc_interface_v1_0_0_adc_clk [get_bd_ports adc_clk] [get_bd_pins openadc_interface_v1_0_0/adc_clk]
   connect_bd_net -net openadc_interface_v1_0_0_en_cntr [get_bd_pins c_counter_binary_0/CE] [get_bd_pins openadc_interface_v1_0_0/en_cntr]
