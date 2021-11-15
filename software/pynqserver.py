@@ -6,7 +6,7 @@ import numpy as np
 from pynq import Overlay
 from pynq import Xlnk
 from foboslib.fobosctrl import FOBOSCtrl
-from foboslib.pynqctrl import PYNQCtrl
+from foboslib.pynqlocal import PYNQCtrl
 from foboslib import openadc
 #import numpy as np
 MSG_LEN_SIZE = 10
@@ -15,8 +15,9 @@ OPCODE_SIZE = 4
 STATUS_SIZE = 4
 DONE_CMD = 9999
 RCV_BYTES = 512
-IP = '192.168.10.99'
+IP = '192.168.2.99'
 PORT = 9995
+OVERLAY_FILE = "pynq_ctrl.bit"
 SOCKET_TIMEOUT = 2 * 60
 ##change these settings. they must be dynamic
 TV_SIZE = 48
@@ -28,6 +29,7 @@ SAMPLING_FREQ   = 10
 DUT_CLK         = 1
 SAMPLE_NUM      = 1000
 ADC_GAIN        = 20
+ADC_HILO        = 22
 TV_SIZE         = 48 #108
 OUTPUT_SIZE     = 16 #44
 STATUS_FILE = "/tmp/fobos_status.txt"
@@ -41,7 +43,7 @@ class server():
 
     def init(self):
         # instantiate hardware driver
-        overlay = Overlay("ctrl_top_wrapper.bit")
+        overlay = Overlay(OVERLAY_FILE)
         self.ctrl = PYNQCtrl(overlay)
         self.fobosAcq = openadc.OpenADCScope(overlay)
         # self.fobosAcq.setAdcClockFreq(SAMPLING_FREQ)
@@ -266,6 +268,12 @@ class server():
                 response = f"Set dut interface = {param}"
                 print(f"Set dut interface = {param}")
 
+            elif opcode == FOBOSCtrl.SET_DUT:
+                self.ctrl.setDUT(param)
+                self.dut = param
+                response = f"Set dut = {param}"
+                print(f"Set dut = {param}")
+
             elif opcode == FOBOSCtrl.SET_SAMPLING_FREQ:
                 response = f"Set sampling frequency = {param}"
                 print(response)
@@ -275,6 +283,11 @@ class server():
                 response = f"Set ADC gain  = {param}"
                 print(response)
                 self.fobosAcq.setGain(param)
+
+            elif opcode == FOBOSCtrl.SET_ADC_HILO:
+                response = f"Set ADC HiLo  = {param}"
+                print(response)
+                self.fobosAcq.setHiLo(param)
 
             elif opcode == FOBOSCtrl.SET_SAMPLES_PER_TRACE:
                 response = f"samples per trace  = {param}"
