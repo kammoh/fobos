@@ -50,7 +50,7 @@ entity dutcomm_wrapper is
 		shared_handshake_in  : in    std_logic;
 		dio_I                : in    std_logic_vector(3 downto 0);
 		dio_O                : out   std_logic_vector(3 downto 0);
-		dio_T                : out   std_logic;
+		dio_T                : out   std_logic_vector(3 downto 0);
 		direction_out        : out   std_logic;
 		wait_for_rst         : in    std_logic;
 		rst_cmd              : in    std_logic

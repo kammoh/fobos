@@ -70,7 +70,7 @@ begin
 		end if;
 	end process;
 
-	p_comb : process(current_state, dut_working, cnt_exceed)
+	p_comb : process(current_state, dut_working, cnt_exceed, en_module)
 	begin
 		--default outputs
 		clr_rst_cnt <= '0';

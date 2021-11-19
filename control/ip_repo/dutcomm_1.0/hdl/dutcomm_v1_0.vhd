@@ -38,8 +38,12 @@ entity dutcomm_v1_0 is
 		handshake_d2c  : in    std_logic;
 		dio_I          : in    std_logic_vector(3 downto 0);
 		dio_O          : out   std_logic_vector(3 downto 0);
-		dio_T          : out   std_logic;
+		dio_T          : out   std_logic_vector(3 downto 0);
 		io             : out   std_logic;
+		--serial interface
+		serial_en      : in    std_logic;
+		serial_tx      : in    std_logic; -- TX from UART
+		serial_rx      : out   std_logic; -- RX TO UART
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 		-- Ports of Axi Slave Bus Interface S_AXI
@@ -120,12 +124,69 @@ architecture arch_imp of dutcomm_v1_0 is
 			S_AXI_RREADY     : in  std_logic
 		);
 	end component dutcomm_v1_0_S_AXI;
+	
+	component dutcomm_wrapper is
+		port(
+		clk                  : in    STD_LOGIC;
+		rst                  : in    STD_LOGIC; --also resets the dut
+		tx_data              : in    STD_LOGIC_VECTOR(31 downto 0);
+		tx_valid             : in    STD_LOGIC;
+		tx_ready             : out   STD_LOGIC;
+		rx_data              : out   STD_LOGIC_VECTOR(31 downto 0);
+		rx_valid             : out   STD_LOGIC;
+		rx_ready             : in    STD_LOGIC;
+		rx_last              : out   std_logic;
+		dut_rst              : out   std_logic;
+		status               : out   std_logic_vector(7 downto 0);
+		snd_start            : out   std_logic; --tell other that sending data to dut started.
+		op_done              : out   std_logic; --tell others that operation (i.e. encryption) is done.
+		dut_working          : out   std_logic;
+		started              : out   std_logic;
+		expected_out_len     : in    std_logic_vector(31 downto 0);
+		--interface selection
+		legacy_interface     : in    std_logic;
+		---External bus--original interface
+		din                  : out   STD_LOGIC_VECTOR(3 downto 0);
+		di_valid             : out   STD_LOGIC;
+		di_ready             : in    STD_LOGIC;
+		dout                 : in    STD_LOGIC_VECTOR(3 downto 0);
+		do_valid             : in    STD_LOGIC;
+		do_ready             : out   STD_LOGIC;
+		---External bus--half duplex interface 
+		shared_handshake_out : out   std_logic;
+		shared_handshake_in  : in    std_logic;
+		dio_I                : in    std_logic_vector(3 downto 0);
+		dio_O                : out   std_logic_vector(3 downto 0);
+		dio_T                : out   std_logic_vector(3 downto 0);
+		direction_out        : out   std_logic;
+		wait_for_rst         : in    std_logic;
+		rst_cmd              : in    std_logic
+	);
+	end component dutcomm_wrapper;
+	
+    component target_switch is
+        port (
+            serial_en       : in  std_logic;
+            serial_tx       : in  std_logic;
+            serial_rx       : out std_logic;
+            dio_I           : in  std_logic_vector(3 downto 0);
+		    dio_O           : out std_logic_vector(3 downto 0);
+		    dio_T           : out std_logic_vector(3 downto 0);
+		    dio_out         : in  std_logic_vector(3 downto 0);
+		    dio_dir         : in  std_logic_vector(3 downto 0);
+            dut_working     : out std_logic;
+            dut_busy        : in  std_logic
+        );
+    end component target_switch;
 
 	--user defined signals
 	signal start            : std_logic;
 	signal status           : std_logic_vector(7 downto 0);
 	signal expected_out_len : std_logic_vector(31 downto 0);
 	signal legacy_interface : std_logic;
+	signal dio_out          : std_logic_vector(3 downto 0);
+	signal dio_dir          : std_logic_vector(3 downto 0);
+	signal dut_busy         : std_logic;
 
 begin
 
@@ -164,7 +225,8 @@ begin
 			S_AXI_RREADY     => s_axi_rready
 		);
 	-- Add user logic here
-	dutcomm : entity work.dutcomm_wrapper(behav)
+	
+	dutcomm: dutcomm_wrapper
 		port map(
 			clk                  => m_axis_aclk,
 			rst                  => rst,
@@ -184,7 +246,7 @@ begin
 			dut_rst              => dut_rst,
 			status               => status,
 			op_done              => op_done,
-			dut_working          => dut_working,
+			dut_working          => dut_busy,
 			started              => started,
 			expected_out_len     => expected_out_len,
 			legacy_interface     => legacy_interface,
@@ -192,13 +254,27 @@ begin
 			shared_handshake_out => handshake_c2d,
 			shared_handshake_in  => handshake_d2c,
 			dio_I                => dio_I,
-			dio_O                => dio_O,
-			dio_T                => dio_T,
+			dio_O                => dio_out,
+			dio_T                => dio_dir,
 			direction_out        => io,
 			wait_for_rst         => wait_for_rst,
 			rst_cmd              => rst_cmd
 		);
 
+    target: target_switch
+        port map(
+            serial_en       => serial_en,
+            serial_tx       => serial_tx,
+            serial_rx       => serial_rx,
+            dio_I           => dio_I,
+            dio_O           => dio_O,
+            dio_T           => dio_T,
+            dio_out         => dio_out,
+            dio_dir         => dio_dir,
+            dut_working     => dut_working,
+            dut_busy        => dut_busy
+        );
+        
 		-- User logic ends
 
 end arch_imp;
