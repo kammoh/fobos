@@ -78,7 +78,7 @@ begin
 		end if;
 	end process;
 
-	p_comb : process(current_state, snd_start, op_done, timedout, ack)
+	p_comb : process(current_state, snd_start, op_done, timedout, ack, en_module)
 	begin
 		--default outputs
 		status          <= (others => '0');

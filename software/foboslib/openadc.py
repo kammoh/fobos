@@ -16,7 +16,7 @@ class OpenADC(DefaultIP):
         """
         super().__init__(description=description)        
 
-    bindto = ['xilinx.com:user:openadc_interface_v1_0:1.0']
+    bindto = ['CERG:cerg:openadc_interface_v1_0:1.0']
     
     def readSR(self):
         """
@@ -53,10 +53,6 @@ class OpenADC(DefaultIP):
         r = self.mmio.read(self.sr_offset)
         sr = sr & 0xffffffef
         self.mmio.write(self.sr_offset, sr)
-        
-    def readOverRange(self):
-        sr = self.mmio.read(self.sr_offset)
-        return (sr & 0x00000001)
 
     def writeCaptureMode(self, mode):
         sr = self.mmio.read(self.sr_offset)
@@ -453,4 +449,6 @@ class OpenADCScope():
 
     def setGain(self, gain):
         self.openADCInterface.writeGain(gain)
-        
+
+    def setHiLo(self, hilo):
+        self.openADCInterface.writeHiLo(hilo)        

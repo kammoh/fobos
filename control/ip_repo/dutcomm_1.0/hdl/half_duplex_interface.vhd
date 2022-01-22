@@ -28,7 +28,7 @@ entity half_duplex_interface is
 		shared_handshake_in  : in    std_logic;
 		dio_I                : in    std_logic_vector(3 downto 0);
 		dio_O                : out   std_logic_vector(3 downto 0);
-		dio_T                : out   std_logic;
+		dio_T                : out   std_logic_vector(3 downto 0);
 		direction_out        : out   std_logic;
 		--user connection
 		---out/in from the view point of the interface user
@@ -70,13 +70,19 @@ begin
 -- add to wrapper
 --  signal dio_I: std_logic_vector(3 downto 0);
 --  signal dio_O: std_logic_vector(3 downto 0);
---  signal dio_T: std_logic;
+--  signal dio_T: std_logic_vector(3 donwto 0);
 --  
---  fc_dio <= dio_O  when dio_T = '1' else (others => 'Z');
---  dio_I  <= fc_dio when dio_T = '0' else (others => '0');
+--  fc_dio(0) <= dio_O(0)  when dio_T(0) = '1' else (others => 'Z');
+--  dio_I(0)  <= fc_dio(0) when dio_T(0) = '0' else (others => '0');
+--  fc_dio(1) <= dio_O(1)  when dio_T(1) = '1' else (others => 'Z');
+--  dio_I(1)  <= fc_dio(1) when dio_T(1) = '0' else (others => '0');
+--  fc_dio(2) <= dio_O(2)  when dio_T(2) = '1' else (others => 'Z');
+--  dio_I(2)  <= fc_dio(2) when dio_T(2) = '0' else (others => '0');
+--  fc_dio(3) <= dio_O(3)  when dio_T(3) = '1' else (others => 'Z');
+--  dio_I(3)  <= fc_dio(3) when dio_T(3) = '0' else (others => '0');
 
     dio_O <= dout;
     din   <= dio_I;
-    dio_T <= snd;
+    dio_T <= snd & snd & snd & snd;
 
 end behav;
