@@ -2116,12 +2116,6 @@ Text GLabel 1800 1850 0    50   Input ~ 0
 FD2C_HS
 Text GLabel 1800 1950 0    50   Input ~ 0
 FC_PROG
-Text GLabel 4250 1350 2    50   Input ~ 0
-FD2C_CLK
-Text GLabel 4250 1450 2    50   Input ~ 0
-FC2D_CLK
-Text GLabel 4250 1550 2    50   Input ~ 0
-FD_VREF
 Text GLabel 4250 1850 2    50   Input ~ 0
 FC_DIO2
 Text GLabel 1800 1750 0    50   Input ~ 0
@@ -2384,13 +2378,7 @@ F 6 "Panasonic Electronic Components" H 3900 1350 50  0001 C CNN "Manufacturer"
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	4050 1350 4250 1350
-Wire Wire Line
-	4050 1450 4250 1450
-Wire Wire Line
 	4050 1850 4250 1850
-Wire Wire Line
-	3250 1550 4250 1550
 Wire Wire Line
 	3250 1950 3750 1950
 $Comp
@@ -3701,4 +3689,16 @@ Wire Wire Line
 Connection ~ 5150 3950
 Wire Wire Line
 	5150 3950 5200 3950
+Wire Wire Line
+	3250 1550 4250 1550
+Wire Wire Line
+	4050 1450 4250 1450
+Wire Wire Line
+	4050 1350 4250 1350
+Text GLabel 4250 1550 2    50   Input ~ 0
+FD_VREF
+Text GLabel 4250 1450 2    50   Input ~ 0
+FC2D_CLK
+Text GLabel 4250 1350 2    50   Input ~ 0
+FD2C_CLK
 $EndSCHEMATC

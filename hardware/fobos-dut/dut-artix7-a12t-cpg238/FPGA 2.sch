@@ -312,4 +312,76 @@ F 3 "" H 750 950 50  0001 C CNN
 $EndComp
 Text Notes 1600 6900 0    50   ~ 0
 WHEN USING MRCC PINS AS A SINGLE ENDED CLOCK, THE SIGNAL MUST BE CONNECTED TO THE POSITIVE PIN
+Text GLabel 3050 2050 2    50   Input ~ 0
+JA1
+Text GLabel 3050 2650 2    50   Input ~ 0
+JA7
+Text GLabel 3050 1950 2    50   Input ~ 0
+JA2
+Text GLabel 3900 1800 0    50   Input ~ 0
+JA8
+Text GLabel 5000 2050 0    50   Input ~ 0
+JA3
+Text GLabel 5000 1850 0    50   Input ~ 0
+JA9
+Text GLabel 5000 1750 0    50   Input ~ 0
+JA4
+Wire Wire Line
+	3050 2050 2800 2050
+Wire Wire Line
+	2800 2650 3050 2650
+Wire Wire Line
+	2800 1950 3050 1950
+Wire Wire Line
+	3900 1800 4150 1800
+Wire Wire Line
+	5000 2050 5250 2050
+Wire Wire Line
+	5000 1850 5250 1850
+Wire Wire Line
+	5000 1750 5250 1750
+Text Notes 3300 2300 0    50   ~ 0
+JA can be \ndifferentially\nrouted
+Text GLabel 5050 1450 0    50   Input ~ 0
+JA10
+Wire Wire Line
+	5050 1450 5250 1450
+$Comp
+L power:GND #PWR?
+U 1 1 61EBD061
+P 5100 6300
+AR Path="/5F3A1954/61EBD061" Ref="#PWR?"  Part="1" 
+AR Path="/60D2F94F/61EBD061" Ref="#PWR?"  Part="1" 
+AR Path="/6004C151/61EBD061" Ref="#PWR0135"  Part="1" 
+F 0 "#PWR0135" H 5100 6050 50  0001 C CNN
+F 1 "GND" H 5105 6127 50  0000 C CNN
+F 2 "" H 5100 6300 50  0001 C CNN
+F 3 "" H 5100 6300 50  0001 C CNN
+	1    5100 6300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5250 2150 5100 2150
+Wire Wire Line
+	5100 2150 5100 3150
+Wire Wire Line
+	5250 3150 5100 3150
+Connection ~ 5100 3150
+Wire Wire Line
+	5100 3150 5100 3650
+Wire Wire Line
+	5250 3650 5100 3650
+Connection ~ 5100 3650
+Wire Wire Line
+	5100 3650 5100 5050
+Wire Wire Line
+	5250 5050 5100 5050
+Connection ~ 5100 5050
+Wire Wire Line
+	5100 5050 5100 5850
+Wire Wire Line
+	5250 5850 5100 5850
+Connection ~ 5100 5850
+Wire Wire Line
+	5100 5850 5100 6300
 $EndSCHEMATC
