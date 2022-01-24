@@ -2371,26 +2371,6 @@ Wire Wire Line
 	5000 1350 5000 1650
 Wire Wire Line
 	5750 1100 5750 1250
-Text GLabel 900  6250 2    50   Input ~ 0
-USER_LED_4
-Wire Wire Line
-	650  6250 900  6250
-Text GLabel 900  6350 2    50   Input ~ 0
-USER_LED_3
-Wire Wire Line
-	650  6350 900  6350
-Text GLabel 900  6550 2    50   Input ~ 0
-USER_LED_2
-Wire Wire Line
-	650  6550 900  6550
-Text GLabel 900  6450 2    50   Input ~ 0
-USER_LED_1
-Wire Wire Line
-	650  6450 900  6450
-Text GLabel 900  7150 2    50   Input ~ 0
-USER_BTN_2
-Wire Wire Line
-	900  7150 650  7150
 $Comp
 L cerg:XC7A12T-CPG238 U1
 U 3 1 60E6ACBC
@@ -3093,4 +3073,24 @@ Wire Wire Line
 Connection ~ 7350 1600
 Wire Wire Line
 	7350 1600 7450 1600
+Wire Wire Line
+	7450 6100 7050 6100
+Text GLabel 7050 6100 0    50   Input ~ 0
+MODE_0
+Wire Wire Line
+	3350 4150 3600 4150
+Text GLabel 3350 4150 0    50   Input ~ 0
+USER_BTN_1
+Wire Wire Line
+	3600 4050 3350 4050
+Text GLabel 3350 4050 0    50   Input ~ 0
+USER_LED_1
+Text GLabel 7050 5400 0    50   Input ~ 0
+FC2D_HS
+Text GLabel 7050 6300 0    50   Input ~ 0
+FD2C_HS
+Wire Wire Line
+	7050 6300 7450 6300
+Wire Wire Line
+	7050 5400 7450 5400
 $EndSCHEMATC

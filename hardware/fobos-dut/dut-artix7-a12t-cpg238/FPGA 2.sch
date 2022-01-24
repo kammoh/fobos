@@ -28,50 +28,10 @@ F 3 "" H 7050 800 50  0001 C CNN
 	1    7050 800 
 	1    0    0    -1  
 $EndComp
-Text GLabel 2250 5200 0    50   Input ~ 0
+Text GLabel 5000 5150 0    50   Input ~ 0
 VCORE_CURRENT_GAIN_0
-Text GLabel 2250 5300 0    50   Input ~ 0
+Text GLabel 5000 5250 0    50   Input ~ 0
 VCORE_CURRENT_GAIN_1
-Wire Wire Line
-	2400 5300 2250 5300
-Wire Wire Line
-	2400 5200 2250 5200
-Text GLabel 1900 6100 0    50   Input ~ 0
-USER_BTN_1
-Wire Wire Line
-	1900 6100 2150 6100
-Text GLabel 1900 3100 0    50   Input ~ 0
-FC_DIO3_MUX
-Text GLabel 1700 3950 0    50   Input ~ 0
-FC_DIO0_MUX
-Wire Wire Line
-	1700 3950 1850 3950
-Wire Wire Line
-	1900 3100 2000 3100
-Text GLabel 1600 4650 0    50   Input ~ 0
-FC_RST
-Text GLabel 1600 4750 0    50   Input ~ 0
-FC_IO
-Wire Wire Line
-	1600 4750 1750 4750
-Wire Wire Line
-	1750 4650 1600 4650
-Text GLabel 1900 3200 0    50   Input ~ 0
-FC_DIO1_MUX
-Wire Wire Line
-	1900 3200 2000 3200
-Text GLabel 1900 3600 0    50   Input ~ 0
-FC2D_HS
-Wire Wire Line
-	2000 3600 1900 3600
-Text GLabel 1700 4050 0    50   Input ~ 0
-FC2D_CLK
-Wire Wire Line
-	1850 4050 1700 4050
-Text GLabel 1900 3800 0    50   Input ~ 0
-FD2C_CLK
-Wire Wire Line
-	2000 3800 1900 3800
 $Comp
 L cerg:XC7A12T-CPG238 U1
 U 5 1 60C0A0EC
@@ -83,14 +43,6 @@ F 3 "" H 5250 1250 50  0001 C CNN
 	5    5250 1250
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	2000 2700 1900 2700
-Text GLabel 1900 2700 0    50   Input ~ 0
-FD2C_HS
-Wire Wire Line
-	1900 2800 2000 2800
-Text GLabel 1900 2800 0    50   Input ~ 0
-FC_DIO2_MUX
 Wire Wire Line
 	7350 950  7350 800 
 Wire Wire Line
@@ -312,40 +264,40 @@ F 3 "" H 750 950 50  0001 C CNN
 $EndComp
 Text Notes 1600 6900 0    50   ~ 0
 WHEN USING MRCC PINS AS A SINGLE ENDED CLOCK, THE SIGNAL MUST BE CONNECTED TO THE POSITIVE PIN
-Text GLabel 3050 2050 2    50   Input ~ 0
+Text GLabel 5000 4050 0    50   Input ~ 0
 JA1
-Text GLabel 3050 2650 2    50   Input ~ 0
+Text GLabel 5000 3950 0    50   Input ~ 0
 JA7
-Text GLabel 3050 1950 2    50   Input ~ 0
+Text GLabel 5000 3450 0    50   Input ~ 0
 JA2
-Text GLabel 3900 1800 0    50   Input ~ 0
+Text GLabel 5000 3350 0    50   Input ~ 0
 JA8
-Text GLabel 5000 2050 0    50   Input ~ 0
+Text GLabel 5000 3050 0    50   Input ~ 0
 JA3
-Text GLabel 5000 1850 0    50   Input ~ 0
+Text GLabel 5000 2950 0    50   Input ~ 0
 JA9
-Text GLabel 5000 1750 0    50   Input ~ 0
+Text GLabel 5000 2650 0    50   Input ~ 0
 JA4
 Wire Wire Line
-	3050 2050 2800 2050
+	5000 4050 5250 4050
 Wire Wire Line
-	2800 2650 3050 2650
+	5250 3950 5000 3950
 Wire Wire Line
-	2800 1950 3050 1950
+	5250 3450 5000 3450
 Wire Wire Line
-	3900 1800 4150 1800
+	5000 3350 5250 3350
 Wire Wire Line
-	5000 2050 5250 2050
+	5000 3050 5250 3050
 Wire Wire Line
-	5000 1850 5250 1850
+	5000 2950 5250 2950
 Wire Wire Line
-	5000 1750 5250 1750
+	5000 2650 5250 2650
 Text Notes 3300 2300 0    50   ~ 0
 JA can be \ndifferentially\nrouted
-Text GLabel 5050 1450 0    50   Input ~ 0
+Text GLabel 5050 2550 0    50   Input ~ 0
 JA10
 Wire Wire Line
-	5050 1450 5250 1450
+	5050 2550 5250 2550
 $Comp
 L power:GND #PWR?
 U 1 1 61EBD061
@@ -384,4 +336,28 @@ Wire Wire Line
 Connection ~ 5100 5850
 Wire Wire Line
 	5100 5850 5100 6300
+Text GLabel 5000 5750 0    50   Input ~ 0
+TDO
+Wire Wire Line
+	5250 5750 5000 5750
+Wire Wire Line
+	5250 1850 5000 1850
+Text GLabel 5000 1850 0    50   Input ~ 0
+USER_LED_3
+Wire Wire Line
+	5250 2050 5000 2050
+Text GLabel 5000 2050 0    50   Input ~ 0
+USER_LED_4
+Text GLabel 5000 1750 0    50   Input ~ 0
+USER_BTN_2
+Text GLabel 5000 1450 0    50   Input ~ 0
+USER_LED_2
+Wire Wire Line
+	5250 1750 5000 1750
+Wire Wire Line
+	5250 1450 5000 1450
+Wire Wire Line
+	5000 5150 5250 5150
+Wire Wire Line
+	5000 5250 5250 5250
 $EndSCHEMATC
