@@ -25,7 +25,7 @@ AR Path="/5F227C5D/5F45A1C4" Ref="J?"  Part="1"
 AR Path="/5F449901/5F45A1C4" Ref="J4"  Part="1" 
 F 0 "J4" H 6288 2296 50  0000 L CNN
 F 1 "Glitch" H 6288 2205 50  0000 L CNN
-F 2 "cerg:SMA-JOHNSON-142-0701-801" H 6200 2250 50  0001 C CNN
+F 2 "cerg:SMA-JOHNSON-142-0701-201" H 6200 2250 50  0001 C CNN
 F 3 "~" H 6200 2250 50  0001 C CNN
 F 4 "CONN SMA JACK STR 50OHM EDGE MNT" H 6200 2300 50  0001 C CNN "Description"
 F 5 "142-0701-801" H 6200 2300 50  0001 C CNN "MPN"
@@ -223,7 +223,7 @@ AR Path="/5F227C5D/5F45A227" Ref="J?"  Part="1"
 AR Path="/5F449901/5F45A227" Ref="J6"  Part="1" 
 F 0 "J6" H 9250 2650 50  0000 L CNN
 F 1 "Measure" H 9050 2550 50  0000 L CNN
-F 2 "cerg:SMA-JOHNSON-142-0701-201" H 9450 2600 50  0001 C CNN
+F 2 "cerg:SMA-JOHNSON-142-0701-801" H 9450 2600 50  0001 C CNN
 F 3 "~" H 9450 2600 50  0001 C CNN
 F 4 "CONN SMA JACK STR 50OHM EDGE MNT" H 9450 2650 50  0001 C CNN "Description"
 F 5 "142-0701-801" H 9450 2650 50  0001 C CNN "MPN"
@@ -249,8 +249,6 @@ F 3 "" H 9450 3000 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	6200 1900 6200 2200
-Wire Wire Line
-	6200 1900 6300 1900
 Connection ~ 6200 1900
 Text Notes 3450 950  0    79   ~ 0
 Power Filter and Power Measurement
@@ -302,43 +300,6 @@ F 6 "Amphenol ICC (FCI)" H 4650 1900 50  0001 C CNN "Manufacturer"
 $EndComp
 Wire Wire Line
 	4450 1900 4350 1900
-Wire Wire Line
-	6400 1700 6300 1700
-Wire Wire Line
-	6300 1700 6300 1900
-Connection ~ 6300 1900
-$Comp
-L Connector_Generic:Conn_01x02 JP5
-U 1 1 5F45A276
-P 6600 1700
-F 0 "JP5" H 6519 1375 50  0000 C CNN
-F 1 "Conn_01x02" H 6519 1466 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 6600 1700 50  0001 C CNN
-F 3 "~" H 6600 1700 50  0001 C CNN
-F 4 "CONN HEADER VERT 2POS 2.54MM" H 6600 1700 50  0001 C CNN "Description"
-F 5 "10129378-902001BLF" H 6600 1700 50  0001 C CNN "MPN"
-F 6 "Amphenol ICC (FCI)" H 6600 1700 50  0001 C CNN "Manufacturer"
-	1    6600 1700
-	1    0    0    1   
-$EndComp
-$Comp
-L power:GND #PWR?
-U 1 1 5F45A27C
-P 6150 1600
-AR Path="/5B6DA40D/5F45A27C" Ref="#PWR?"  Part="1" 
-AR Path="/5B6C87CC/5F45A27C" Ref="#PWR?"  Part="1" 
-AR Path="/5BE3725D/5F45A27C" Ref="#PWR?"  Part="1" 
-AR Path="/5F227C5D/5F45A27C" Ref="#PWR?"  Part="1" 
-AR Path="/5F449901/5F45A27C" Ref="#PWR0115"  Part="1" 
-F 0 "#PWR0115" H 6150 1350 50  0001 C CNN
-F 1 "GND" H 6155 1427 50  0000 C CNN
-F 2 "" H 6150 1600 50  0001 C CNN
-F 3 "" H 6150 1600 50  0001 C CNN
-	1    6150 1600
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	6400 1600 6150 1600
 Wire Wire Line
 	5550 1550 5800 1550
 $Comp
@@ -2851,8 +2812,6 @@ F 3 "" H 6850 1900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	6300 1900 6850 1900
-Wire Wire Line
 	3000 2800 3000 2850
 Wire Wire Line
 	3000 2850 2800 2850
@@ -3836,34 +3795,6 @@ F 6 "Keystone Electronics" H 7550 5050 50  0001 C CNN "Manufacturer"
 	1    0    0    -1  
 $EndComp
 $Comp
-L cerg:5281 TP6
-U 1 1 5FFD5035
-P 7550 5550
-F 0 "TP6" H 7628 5542 50  0000 L CNN
-F 1 "5281" H 7628 5497 50  0001 L CNN
-F 2 "cerg:5281" H 7550 5550 50  0001 C CNN
-F 3 "https://www.keyelco.com/product.cfm/product_id/14628/stepAccess/2813779" H 7550 5550 50  0001 C CNN
-F 4 "TEST POINT (BLACK) - MULTIPURPOS" H 7550 5550 50  0001 C CNN "Description"
-F 5 "5281" H 7550 5550 50  0001 C CNN "MPN"
-F 6 "Keystone Electronics" H 7550 5550 50  0001 C CNN "Manufacturer"
-	1    7550 5550
-	1    0    0    -1  
-$EndComp
-$Comp
-L cerg:5281 TP7
-U 1 1 5FFD53A8
-P 7550 6050
-F 0 "TP7" V 7545 6178 50  0000 L CNN
-F 1 "5281" V 7590 6178 50  0001 L CNN
-F 2 "cerg:5281" H 7550 6050 50  0001 C CNN
-F 3 "https://www.keyelco.com/product.cfm/product_id/14628/stepAccess/2813779" H 7550 6050 50  0001 C CNN
-F 4 "TEST POINT (BLACK) - MULTIPURPOS" H 7550 6050 50  0001 C CNN "Description"
-F 5 "5281" H 7550 6050 50  0001 C CNN "MPN"
-F 6 "Keystone Electronics" H 7550 6050 50  0001 C CNN "Manufacturer"
-	1    7550 6050
-	1    0    0    -1  
-$EndComp
-$Comp
 L cerg:5281 TP1
 U 1 1 6000136A
 P 3000 2700
@@ -4209,10 +4140,10 @@ F 6 "Keystone Electronics" H 6800 5500 50  0001 C CNN "Manufacturer"
 	1    0    0    -1  
 $EndComp
 $Comp
-L cerg:5281 TP10
+L cerg:5281 TP6
 U 1 1 60C21AB4
 P 7100 5500
-F 0 "TP10" V 7095 5628 50  0000 L CNN
+F 0 "TP6" V 7095 5628 50  0000 L CNN
 F 1 "5281" V 7140 5628 50  0001 L CNN
 F 2 "cerg:5281" H 7100 5500 50  0001 C CNN
 F 3 "https://www.keyelco.com/product.cfm/product_id/14628/stepAccess/2813779" H 7100 5500 50  0001 C CNN
@@ -4237,10 +4168,10 @@ F 6 "Keystone Electronics" H 6800 6000 50  0001 C CNN "Manufacturer"
 	1    0    0    -1  
 $EndComp
 $Comp
-L cerg:5281 TP11
+L cerg:5281 TP7
 U 1 1 60C22508
 P 7100 6000
-F 0 "TP11" V 7095 6128 50  0000 L CNN
+F 0 "TP7" V 7095 6128 50  0000 L CNN
 F 1 "5281" V 7140 6128 50  0001 L CNN
 F 2 "cerg:5281" H 7100 6000 50  0001 C CNN
 F 3 "https://www.keyelco.com/product.cfm/product_id/14628/stepAccess/2813779" H 7100 6000 50  0001 C CNN
@@ -4258,16 +4189,11 @@ Wire Wire Line
 Connection ~ 6800 6150
 Wire Wire Line
 	7100 6100 7100 6150
-Wire Wire Line
-	7550 6150 7300 6150
 Connection ~ 7100 6150
 Wire Wire Line
 	7300 6100 7300 6150
-Connection ~ 7300 6150
 Wire Wire Line
 	7300 6150 7100 6150
-Wire Wire Line
-	7550 5650 7300 5650
 Wire Wire Line
 	7100 5600 7100 5650
 Connection ~ 7100 5650
@@ -4279,7 +4205,6 @@ Connection ~ 6800 5650
 Connection ~ 6500 5650
 Wire Wire Line
 	7300 5600 7300 5650
-Connection ~ 7300 5650
 Wire Wire Line
 	7300 5650 7100 5650
 $Comp
@@ -4326,4 +4251,6 @@ Text Label 4700 5650 0    50   ~ 0
 SW2
 Text Label 4700 6150 0    50   ~ 0
 SW3
+Wire Wire Line
+	6200 1900 6850 1900
 $EndSCHEMATC
