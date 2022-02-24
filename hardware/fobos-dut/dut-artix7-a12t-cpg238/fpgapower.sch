@@ -4,14 +4,14 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 7 8
-Title ""
+Title "FOBOS Artix-7 a12t DUT - FPGA Power"
 Date ""
-Rev ""
-Comp ""
-Comment1 ""
-Comment2 ""
-Comment3 ""
-Comment4 ""
+Rev "1.0"
+Comp "Cryptographic Engineering Research Group"
+Comment1 "License: Apache License Version 2.0"
+Comment2 "Copyright © Cryptographic Engineering Research Group"
+Comment3 "Author: Jens-Peter Kaps, Eddie Ferrufino"
+Comment4 "Project: FOBOS Artix-7 a12t DUT"
 $EndDescr
 $Comp
 L cerg:XC7A12T-CPG238 U?

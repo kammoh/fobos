@@ -2992,9 +2992,9 @@ Text Label 6750 2600 0    50   ~ 0
 FCS
 Text Label 7200 2000 0    50   ~ 0
 PUDC
-Text GLabel 7050 4100 0    50   Input ~ 0
-FC2D_CLK
 Text GLabel 7050 4000 0    50   Input ~ 0
+FC2D_CLK
+Text GLabel 7050 3800 0    50   Input ~ 0
 FD2C_CLK
 Text GLabel 7100 2400 0    50   Input ~ 0
 FC_RST
@@ -3014,8 +3014,6 @@ Wire Wire Line
 	7050 4500 7450 4500
 Wire Wire Line
 	7050 4000 7450 4000
-Wire Wire Line
-	7050 4100 7450 4100
 Text GLabel 7050 4600 0    50   Input ~ 0
 FC_DIO1_MUX
 Wire Wire Line
@@ -3093,4 +3091,18 @@ Wire Wire Line
 	7050 6300 7450 6300
 Wire Wire Line
 	7050 5400 7450 5400
+Wire Wire Line
+	7450 3800 7300 3800
+Wire Wire Line
+	7450 3600 7300 3600
+Wire Wire Line
+	7300 3600 7300 3800
+Connection ~ 7300 3800
+Wire Wire Line
+	7300 3800 7050 3800
+Wire Wire Line
+	7450 3100 7300 3100
+Wire Wire Line
+	7300 3100 7300 3600
+Connection ~ 7300 3600
 $EndSCHEMATC

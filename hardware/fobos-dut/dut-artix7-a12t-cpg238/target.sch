@@ -10,7 +10,7 @@ Rev "1.0"
 Comp "Cryptographic Engineering Research Group"
 Comment1 "License: Apache License Version 2.0"
 Comment2 "Copyright © Cryptographic Engineering Research Group"
-Comment3 "Author: Jens-Peter Kaps"
+Comment3 "Author: Jens-Peter Kaps, Eddie Ferrufino"
 Comment4 "Project: FOBOS Artix-7 a12t DUT"
 $EndDescr
 $Bitmap
@@ -3173,40 +3173,40 @@ Wire Wire Line
 $Comp
 L Device:C C?
 U 1 1 6025643D
-P 4850 5500
+P 5300 5500
 AR Path="/5F227C5D/6025643D" Ref="C?"  Part="1" 
 AR Path="/5F20DA36/6025643D" Ref="C54"  Part="1" 
-F 0 "C54" V 4700 5450 50  0000 L CNN
-F 1 "100nF" V 5000 5350 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 4888 5350 50  0001 C CNN
-F 3 "~" H 4850 5500 50  0001 C CNN
-F 4 "CAP CER 0.1UF 6.3V X7R 0603" H 4850 5500 50  0001 C CNN "Description"
-F 5 "06036C104KAT4A" H 4850 5500 50  0001 C CNN "MPN"
-F 6 "AVX Corporation" H 4850 5500 50  0001 C CNN "Manufacturer"
-	1    4850 5500
+F 0 "C54" V 5150 5450 50  0000 L CNN
+F 1 "100nF" V 5450 5350 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5338 5350 50  0001 C CNN
+F 3 "~" H 5300 5500 50  0001 C CNN
+F 4 "CAP CER 0.1UF 6.3V X7R 0603" H 5300 5500 50  0001 C CNN "Description"
+F 5 "06036C104KAT4A" H 5300 5500 50  0001 C CNN "MPN"
+F 6 "AVX Corporation" H 5300 5500 50  0001 C CNN "Manufacturer"
+	1    5300 5500
 	1    0    0    -1  
 $EndComp
-Text GLabel 5000 5250 2    50   Input ~ 0
+Text GLabel 5450 5250 2    50   Input ~ 0
 FC_3V3
 Wire Wire Line
-	4850 5350 4850 5250
-Connection ~ 4850 5250
+	5300 5350 5300 5250
+Connection ~ 5300 5250
 Wire Wire Line
-	4850 5250 5000 5250
+	5300 5250 5450 5250
 $Comp
 L power:GND #PWR?
 U 1 1 602946AE
-P 4850 5650
+P 5300 5650
 AR Path="/5B6C87CC/602946AE" Ref="#PWR?"  Part="1" 
 AR Path="/5B5AB131/602946AE" Ref="#PWR?"  Part="1" 
 AR Path="/5BE3725D/602946AE" Ref="#PWR?"  Part="1" 
 AR Path="/5F227C5D/602946AE" Ref="#PWR?"  Part="1" 
 AR Path="/5F20DA36/602946AE" Ref="#PWR041"  Part="1" 
-F 0 "#PWR041" H 4850 5400 50  0001 C CNN
-F 1 "GND" H 4855 5477 50  0000 C CNN
-F 2 "" H 4850 5650 50  0001 C CNN
-F 3 "" H 4850 5650 50  0001 C CNN
-	1    4850 5650
+F 0 "#PWR041" H 5300 5400 50  0001 C CNN
+F 1 "GND" H 5305 5477 50  0000 C CNN
+F 2 "" H 5300 5650 50  0001 C CNN
+F 3 "" H 5300 5650 50  0001 C CNN
+	1    5300 5650
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -3292,15 +3292,6 @@ Wire Wire Line
 	4000 5850 3850 5850
 Wire Wire Line
 	4000 5950 3850 5950
-Wire Wire Line
-	3850 5250 4000 5250
-Wire Wire Line
-	3850 5350 4000 5350
-Wire Wire Line
-	4000 5350 4000 5250
-Connection ~ 4000 5250
-Wire Wire Line
-	4000 5250 4850 5250
 Text GLabel 2650 6500 0    50   Input ~ 0
 SW_DONE
 Text GLabel 2650 6900 0    50   Input ~ 0
@@ -3701,4 +3692,26 @@ Text GLabel 4250 1450 2    50   Input ~ 0
 FC2D_CLK
 Text GLabel 4250 1350 2    50   Input ~ 0
 FD2C_CLK
+Wire Wire Line
+	3850 5250 5300 5250
+$Comp
+L power:GND #PWR?
+U 1 1 6221A5F4
+P 5000 5650
+AR Path="/5B6C87CC/6221A5F4" Ref="#PWR?"  Part="1" 
+AR Path="/5B5AB131/6221A5F4" Ref="#PWR?"  Part="1" 
+AR Path="/5BE3725D/6221A5F4" Ref="#PWR?"  Part="1" 
+AR Path="/5F227C5D/6221A5F4" Ref="#PWR?"  Part="1" 
+AR Path="/5F20DA36/6221A5F4" Ref="#PWR0115"  Part="1" 
+F 0 "#PWR0115" H 5000 5400 50  0001 C CNN
+F 1 "GND" H 5005 5477 50  0000 C CNN
+F 2 "" H 5000 5650 50  0001 C CNN
+F 3 "" H 5000 5650 50  0001 C CNN
+	1    5000 5650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3850 5350 5000 5350
+Wire Wire Line
+	5000 5350 5000 5650
 $EndSCHEMATC

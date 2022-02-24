@@ -11,7 +11,7 @@ Comp "Cryptographic Engineering Research Group"
 Comment1 "License: Apache License Version 2.0"
 Comment2 "Copyright © Cryptographic Engineering Research Group"
 Comment3 "Author: Jens-Peter Kaps, Eddie Ferrufino"
-Comment4 "Project: FOBOS ARTIX7-A12T-CPG238 DUT"
+Comment4 "Project: FOBOS Artix-7 a12t DUT"
 $EndDescr
 $Bitmap
 Pos 10050 7100
