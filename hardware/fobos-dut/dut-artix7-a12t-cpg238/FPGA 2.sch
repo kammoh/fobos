@@ -292,8 +292,6 @@ Wire Wire Line
 	5000 2950 5250 2950
 Wire Wire Line
 	5000 2650 5250 2650
-Text Notes 3300 2300 0    50   ~ 0
-JA can be \ndifferentially\nrouted
 Text GLabel 5050 2550 0    50   Input ~ 0
 JA10
 Wire Wire Line
