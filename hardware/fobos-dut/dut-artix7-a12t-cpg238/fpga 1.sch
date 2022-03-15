@@ -2104,36 +2104,6 @@ E4 9D AF CF 78 A8 9D 35 3D B7 50 61 31 2C 8B AF E8 ED F8 6F 77 9E 5A C0 CF D7 CB
 2B 4E 7F 8D C4 21 BA 47 00 00 00 00 49 45 4E 44 AE 42 60 82 
 EndData
 $EndBitmap
-Text GLabel 900  5350 2    50   Input ~ 0
-JA1
-Text GLabel 900  5950 2    50   Input ~ 0
-JA7
-Text GLabel 900  5250 2    50   Input ~ 0
-JA2
-Text GLabel 900  5750 2    50   Input ~ 0
-JA8
-Text GLabel 900  5450 2    50   Input ~ 0
-JA3
-Text GLabel 900  5850 2    50   Input ~ 0
-JA9
-Text GLabel 900  5550 2    50   Input ~ 0
-JA4
-Wire Wire Line
-	900  5350 650  5350
-Wire Wire Line
-	650  5950 900  5950
-Wire Wire Line
-	650  5250 900  5250
-Wire Wire Line
-	900  5750 650  5750
-Wire Wire Line
-	900  5450 650  5450
-Wire Wire Line
-	900  5850 650  5850
-Wire Wire Line
-	900  5550 650  5550
-Text Notes 1150 5600 0    50   ~ 0
-JA can be \ndifferentially\nrouted
 $Comp
 L power:GND #PWR0124
 U 1 1 5F6B7D67
@@ -2401,30 +2371,6 @@ Wire Wire Line
 	5000 1350 5000 1650
 Wire Wire Line
 	5750 1100 5750 1250
-Text GLabel 850  5650 2    50   Input ~ 0
-JA10
-Wire Wire Line
-	850  5650 650  5650
-Text GLabel 900  6250 2    50   Input ~ 0
-USER_LED_4
-Wire Wire Line
-	650  6250 900  6250
-Text GLabel 900  6350 2    50   Input ~ 0
-USER_LED_3
-Wire Wire Line
-	650  6350 900  6350
-Text GLabel 900  6550 2    50   Input ~ 0
-USER_LED_2
-Wire Wire Line
-	650  6550 900  6550
-Text GLabel 900  6450 2    50   Input ~ 0
-USER_LED_1
-Wire Wire Line
-	650  6450 900  6450
-Text GLabel 900  7150 2    50   Input ~ 0
-USER_BTN_2
-Wire Wire Line
-	900  7150 650  7150
 $Comp
 L cerg:XC7A12T-CPG238 U1
 U 3 1 60E6ACBC
@@ -2680,7 +2626,7 @@ $EndComp
 Wire Wire Line
 	7100 1700 7450 1700
 Wire Wire Line
-	7000 1600 7450 1600
+	7000 1600 7350 1600
 Text Notes 1650 2250 0    50   ~ 0
 BANK15\nB19, C14, C18, G13
 $Comp
@@ -3036,7 +2982,7 @@ Wire Wire Line
 Connection ~ 3300 7000
 Wire Wire Line
 	3300 7000 3300 7150
-Text Notes 2850 5500 0    50   ~ 0
+Text Notes 1850 5500 0    50   ~ 0
 WHEN USING MRCC PINS AS A SINGLE ENDED CLOCK, THE SIGNAL MUST BE CONNECTED TO THE POSITIVE PIN
 Text Label 6750 2050 0    50   ~ 0
 MOSI
@@ -3046,4 +2992,117 @@ Text Label 6750 2600 0    50   ~ 0
 FCS
 Text Label 7200 2000 0    50   ~ 0
 PUDC
+Text GLabel 7050 4000 0    50   Input ~ 0
+FC2D_CLK
+Text GLabel 7050 3800 0    50   Input ~ 0
+FD2C_CLK
+Text GLabel 7100 2400 0    50   Input ~ 0
+FC_RST
+Wire Wire Line
+	7100 2400 7150 2400
+Wire Wire Line
+	7150 2400 7150 1800
+Wire Wire Line
+	7150 1800 7450 1800
+Text GLabel 7050 4400 0    50   Input ~ 0
+FC_IO
+Wire Wire Line
+	7050 4400 7450 4400
+Text GLabel 7050 4500 0    50   Input ~ 0
+FC_DIO0_MUX
+Wire Wire Line
+	7050 4500 7450 4500
+Wire Wire Line
+	7050 4000 7450 4000
+Text GLabel 7050 4600 0    50   Input ~ 0
+FC_DIO1_MUX
+Wire Wire Line
+	7450 4600 7050 4600
+Text GLabel 7050 4700 0    50   Input ~ 0
+FC_DIO2_MUX
+Wire Wire Line
+	7450 4700 7050 4700
+Text GLabel 7050 5500 0    50   Input ~ 0
+FC_DIO3_MUX
+Wire Wire Line
+	7450 5500 7050 5500
+$Comp
+L power:GND #PWR?
+U 1 1 61EE39A7
+P 7250 6500
+AR Path="/5F3A1954/61EE39A7" Ref="#PWR?"  Part="1" 
+AR Path="/60D2F94F/61EE39A7" Ref="#PWR?"  Part="1" 
+AR Path="/5F22D594/61EE39A7" Ref="#PWR0136"  Part="1" 
+F 0 "#PWR0136" H 7250 6250 50  0001 C CNN
+F 1 "GND" H 7255 6327 50  0000 C CNN
+F 2 "" H 7250 6500 50  0001 C CNN
+F 3 "" H 7250 6500 50  0001 C CNN
+	1    7250 6500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7450 5800 7250 5800
+Wire Wire Line
+	7250 5800 7250 6500
+Wire Wire Line
+	7450 4900 7250 4900
+Wire Wire Line
+	7250 4900 7250 5800
+Connection ~ 7250 5800
+Wire Wire Line
+	7450 3400 7250 3400
+Wire Wire Line
+	7250 3400 7250 4900
+Connection ~ 7250 4900
+Wire Wire Line
+	7450 3000 7250 3000
+Wire Wire Line
+	7250 3000 7250 3400
+Connection ~ 7250 3400
+Wire Wire Line
+	7450 2400 7250 2400
+Wire Wire Line
+	7250 2400 7250 3000
+Connection ~ 7250 3000
+Wire Wire Line
+	7450 1500 7350 1500
+Wire Wire Line
+	7350 1500 7350 1600
+Connection ~ 7350 1600
+Wire Wire Line
+	7350 1600 7450 1600
+Wire Wire Line
+	7450 6100 7050 6100
+Text GLabel 7050 6100 0    50   Input ~ 0
+MODE_0
+Wire Wire Line
+	3350 4150 3600 4150
+Text GLabel 3350 4150 0    50   Input ~ 0
+USER_BTN_1
+Wire Wire Line
+	3600 4050 3350 4050
+Text GLabel 3350 4050 0    50   Input ~ 0
+USER_LED_1
+Text GLabel 7050 5400 0    50   Input ~ 0
+FC2D_HS
+Text GLabel 7050 6300 0    50   Input ~ 0
+FD2C_HS
+Wire Wire Line
+	7050 6300 7450 6300
+Wire Wire Line
+	7050 5400 7450 5400
+Wire Wire Line
+	7450 3800 7300 3800
+Wire Wire Line
+	7450 3600 7300 3600
+Wire Wire Line
+	7300 3600 7300 3800
+Connection ~ 7300 3800
+Wire Wire Line
+	7300 3800 7050 3800
+Wire Wire Line
+	7450 3100 7300 3100
+Wire Wire Line
+	7300 3100 7300 3600
+Connection ~ 7300 3600
 $EndSCHEMATC

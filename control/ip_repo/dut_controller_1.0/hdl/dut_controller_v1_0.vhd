@@ -42,6 +42,7 @@ entity dut_controller_v1_0 is
 		fd2c_clk_I       : in  std_logic; -- input clock
 		fd2c_clk_D       : out std_logic; -- direction '1' if output, '0' if input
 		clk_out          : out std_logic; -- clock from DUT
+		en_serial        : out std_logic; -- enable serial communication
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 
@@ -172,6 +173,7 @@ architecture arch_imp of dut_controller_v1_0 is
             fd2c_clk_I: in  std_logic;
             fd2c_clk_D: out std_logic;
             clk_out:    out std_logic;
+            en_serial:  out std_logic;
             dut_rst:    in  std_logic;
             dut_select: in std_logic_vector(31 downto 0)
          );
@@ -317,8 +319,9 @@ begin
 	       fd2c_clk_I => fd2c_clk_I,
 	       fd2c_clk_D => fd2c_clk_D,
 	       clk_out    => clk_out,
+	       en_serial  => en_serial,
 	       dut_rst    => dut_reset,
-	       dut_select => dut_select
+	       dut_select => dut_select	       
 	       );
 
 

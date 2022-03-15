@@ -28,6 +28,7 @@ entity dut_switch is
             fd2c_clk_I: in  std_logic; -- input clock
             fd2c_clk_D: out std_logic; -- direction '1' if output, '0' if input
             clk_out:    out std_logic; -- clock from DUT
+            en_serial:  out std_logic; -- enable serial communication with DUT
             dut_rst:    in  std_logic;
             dut_select: in std_logic_vector(31 downto 0)
          );
@@ -49,11 +50,19 @@ begin
             fd2c_clk_O <= dut_rst;
             fd2c_clk_D <= '1';
             clk_out    <= '0';
+            en_serial  <= '0';
+            
+        when "0010" =>  -- CW 305, enable serial on DIO0 and DIO1
+            fd2c_clk_O <= '0';
+            fd2c_clk_D <= '0';
+            clk_out    <= fd2c_clk_I;
+            en_serial  <= '1';
             
         when others =>   -- FOBOS
             fd2c_clk_O <= '0';
             fd2c_clk_D <= '0';
             clk_out    <= fd2c_clk_I;
+            en_serial  <= '0';
         
        end case;
     end process;

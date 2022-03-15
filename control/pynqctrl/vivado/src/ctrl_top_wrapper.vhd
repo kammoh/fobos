@@ -131,7 +131,7 @@ architecture STRUCTURE of ctrl_top_wrapper is
     FIXED_IO_ps_porb : inout STD_LOGIC;
     dio_I : in STD_LOGIC_VECTOR ( 3 downto 0 );
     dio_O : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    dio_T : out STD_LOGIC
+    dio_T : out STD_LOGIC_VECTOR (3 downto 0)
   );
   end component ctrl_top;
   
@@ -140,7 +140,7 @@ architecture STRUCTURE of ctrl_top_wrapper is
   
   signal dio_I: std_logic_vector(3 downto 0);
   signal dio_O: std_logic_vector(3 downto 0);
-  signal dio_T: std_logic;
+  signal dio_T: std_logic_vector(3 downto 0);
   
   signal fd2c_clk_I: std_logic;
   signal fd2c_clk_O: std_logic;
@@ -152,8 +152,14 @@ begin
       power(i) <= 'Z' when pwr_T(i) = '1' else pwr_O(i);
     end generate POWERTRI;
     
-    fc_dio <= dio_O  when dio_T = '1' else (others => 'Z');
-    dio_I  <= fc_dio when dio_T = '0' else (others => '0');
+    fc_dio(0) <= dio_O(0)  when dio_T(0) = '1' else 'Z';
+    dio_I(0)  <= fc_dio(0) when dio_T(0) = '0' else '0';
+    fc_dio(1) <= dio_O(1)  when dio_T(1) = '1' else 'Z';
+    dio_I(1)  <= fc_dio(1) when dio_T(1) = '0' else '0';
+    fc_dio(2) <= dio_O(2)  when dio_T(2) = '1' else 'Z';
+    dio_I(2)  <= fc_dio(2) when dio_T(2) = '0' else '0';
+    fc_dio(3) <= dio_O(3)  when dio_T(3) = '1' else 'Z';
+    dio_I(3)  <= fc_dio(3) when dio_T(3) = '0' else '0';
     
     fd2c_clk <= fd2c_clk_O when fd2c_clk_D = '1' else 'Z';
     fd2c_clk_I <= fd2c_clk when fd2c_clk_D = '0' else '0';
@@ -194,7 +200,7 @@ ctrl_top_i: component ctrl_top
       din(3 downto 0) => din(3 downto 0),
       dio_I(3 downto 0) => dio_I(3 downto 0),
       dio_O(3 downto 0) => dio_O(3 downto 0),
-      dio_T => dio_T,
+      dio_T(3 downto 0) => dio_T(3 downto 0),
       do_ready => do_ready,
       do_valid => do_valid,
       dout(3 downto 0) => dout(3 downto 0),

@@ -11,7 +11,7 @@ Comp "Cryptographic Engineering Research Group"
 Comment1 "License: Apache License Version 2.0"
 Comment2 "Copyright © Cryptographic Engineering Research Group"
 Comment3 "Author: Jens-Peter Kaps, Eddie Ferrufino"
-Comment4 "Project: FOBOS ARTIX7-A12T-CPG238 DUT"
+Comment4 "Project: FOBOS Artix-7 a12t DUT"
 $EndDescr
 $Bitmap
 Pos 10050 7100
@@ -2164,7 +2164,7 @@ F 6 "Panasonic Electronic Components" H 4150 2950 50  0001 C CNN "Manufacturer"
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4150 3100 4150 3850
+	4150 3100 4150 3350
 Connection ~ 4150 3850
 Wire Wire Line
 	4350 3100 4350 3950
@@ -2217,7 +2217,7 @@ Wire Wire Line
 	3750 4550 3750 4450
 Connection ~ 3750 4550
 Wire Wire Line
-	5050 4650 5050 4250
+	4900 4650 4900 4250
 Wire Wire Line
 	5150 4750 5150 4450
 Wire Wire Line
@@ -2567,7 +2567,7 @@ Wire Wire Line
 Wire Wire Line
 	7700 5400 7700 5500
 Wire Wire Line
-	5050 4250 5900 4250
+	4900 4250 5900 4250
 Wire Wire Line
 	5250 4350 5900 4350
 Wire Wire Line
@@ -2669,7 +2669,7 @@ Wire Wire Line
 Wire Wire Line
 	4400 4550 5900 4550
 Wire Wire Line
-	5050 4650 4400 4650
+	4900 4650 4400 4650
 Wire Wire Line
 	5150 4750 4400 4750
 Wire Wire Line
@@ -2688,4 +2688,13 @@ Text Label 5450 4550 0    50   ~ 0
 TMS
 Text Label 5700 3250 0    50   ~ 0
 CCLK
+Text GLabel 5150 4450 0    50   Input ~ 0
+TDO
+Text GLabel 4000 3350 0    50   Input ~ 0
+MODE_0
+Wire Wire Line
+	4000 3350 4150 3350
+Connection ~ 4150 3350
+Wire Wire Line
+	4150 3350 4150 3850
 $EndSCHEMATC
