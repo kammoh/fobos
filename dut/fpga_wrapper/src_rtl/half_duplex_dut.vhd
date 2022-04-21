@@ -95,10 +95,11 @@ begin
                    
         );
         
-    dut: entity work.FOBOS_DUT(structural)
+    dut: entity work.core_wrapper(behav)
         generic map(       
-            W => W,
-            SW => SW                                    
+            FIFO_0_WIDTH   => 128,
+            FIFO_1_WIDTH   => 128,
+            FIFO_OUT_WIDTH => 128                                  
         )
         port map(
             clk => clk_c2d,
