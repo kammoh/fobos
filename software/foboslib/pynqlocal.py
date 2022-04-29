@@ -82,6 +82,7 @@ class PYNQCtrl(FOBOSCtrl):
             if self.input_buffer is not None:
                 self.input_buffer.freebuffer()
             self.input_buffer = allocate(shape=(int(inputSize / 4),), dtype=np.uint32)
+            self.inputSize = inputSize
 
         #put data in the buffer as 32bit integers
         data = data.strip()
