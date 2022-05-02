@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name cerg)(type KiCad)(uri D:/_Grad_School/CERG_2020/fobos/hardware/fobos-shield/cerg.pretty)(options "")(descr ""))
+)
