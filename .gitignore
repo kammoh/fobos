@@ -47,3 +47,5 @@ capture/ctrl/basys3ctrl/vivado/basys3ctrl
 docs/build/*
 fp-info-cache
 .~lock*
+sds_trace_data.dat
+control/pynqctrl/vivado/NONE/

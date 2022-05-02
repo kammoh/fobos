@@ -1,7 +1,6 @@
-
 #############################################################################
 #                                                                           #
-#   Copyright 2021 CERG                                                     #
+#   Copyright 2019 CERG                                                     #
 #                                                                           #
 #   Licensed under the Apache License, Version 2.0 (the "License");         #
 #   you may not use this file except in compliance with the License.        #
@@ -17,44 +16,53 @@
 #                                                                           #
 #############################################################################
 # DUT utilities 
-# This can be used to program CW305 DUT
-# Requiremet : This requires Chipwhisperer utilities to be installed
-import os
-from chipwhisperer.capture.targets.CW305 import CW305
+# This can be used to program DUT
+# Requiremet : This requires Digilent Adept runtime and utilities to be installed
+
+import subprocess
 
 
-class CW305DUT:
+class Nexys3DUT:
 
     def __init__(self):
         self.bitFile = ""
-        
+        self.deviceID = "Nexys3"
+        self.jtagID = 0
+
     def setBitFile(self, bitFile):
         self.bitFile = bitFile
 
     def program(self):
         """
-        Uses NewAE Chipwhisperer library to program CW305 
-        This requires Chipwhisperer to be installed
+        runs a command similar to
+        djtgcfg prog -d Nexys3 -i 0 -f ~/fobos_workspace/aes/FOBOS_DUT.bit
+        This requires Digilent Adept runtime and utilities to be installed
         """
         if self.bitFile == "":
             print("FATAL Error: DUT programming bit file not set. Please set it to a valid .bit file. Exiting...")
             exit()
 
-        if os.path.isfile(self.bitFile) == True:
-            print("programming DUT. Please wait ...")
-            cw = CW305()
-            cw.con(bsfile=self.bitFile, force=True)
-            print("CW305 DUT programming done!")
-            cw.dis()
-        else:
-            print(f"FATAL Error: DUT programming bit file :{self.bitFile} does not exist. \nPlease set it to a valid .bit file. Exiting...")
+        cmd_init = ['djtgcfg', 'init', '-d', self.deviceID]
+        cmd_prog = ['djtgcfg', 'prog', '-d', self.deviceID, '-i',
+                    str(self.jtagID), '-f', self.bitFile]
+        print("Programming device using the following commands:")
+        print(" ".join(cmd_init))
+        print(" ".join(cmd_prog))
+        subprocess.check_output(cmd_init)
+        output = subprocess.check_output(cmd_prog)
+        # print(output.decode('utf-8'))
+        if not (output.strip().endswith(b"Programming succeeded.")):
+            print("FATAL Error: DUT programming failed!. Exiting...")
             exit()
+        else:
+            print('DUT board programmed successfuly.')
 
-def test():
-    dut = CW305DUT()
-    bitFile = "/home/aabdulga/vivado_projects/aes_cw305_half_duplex/aes_cw305_half_duplex.runs/impl_1/half_duplex_dut.bit"
-    dut.setBitFile(bitFile)
+
+def main():
+    dut = Nexys3DUT()
+    dut.setBitFile("/home/aabdulga/fobos_workspace/aes/FOBOS_DUT.bit")
     dut.program()
 
+
 if __name__ == "__main__":
-    test()
+    main()
