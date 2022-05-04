@@ -15,7 +15,7 @@ OPCODE_SIZE = 4
 STATUS_SIZE = 4
 DONE_CMD = 9999
 RCV_BYTES = 512
-IP = '192.168.2.99'
+IP = '192.168.10.99'
 PORT = 9995
 OVERLAY_FILE = "pynq_ctrl.bit"
 SOCKET_TIMEOUT = 2 * 60
@@ -173,9 +173,9 @@ class server():
             elif opcode == FOBOSCtrl.PROCESS_GET_TRACE:
                 # print("get trace")
                 self.fobosAcq.arm(self.outputBuffer,int(self.samplesPerTrace/4))
-                # print(param)
+                print(param)
                 result = self.ctrl.processData(param)
-                # print(result)
+                print(result)
                 self.fobosAcq.waitForTrace()
                 trace = self.outputBuffer.view('uint16').tolist()
                 response = (result, trace[:self.samplesPerTrace],)
@@ -296,6 +296,10 @@ class server():
                 self.outputBuffer.freebuffer()
                 self.outputBuffer = self.xlnk.cma_array(shape=(int(self.samplesPerTrace / 4 + 2),), dtype=np.uint64)
 
+            elif opcode == FOBOSCtrl.CONF_DUT:
+                response = self.ctrl.sendDUTConf(param)
+                print('configured DUT warpper')
+
             else:
                 response = 'Not implemented'
                 status = -1
@@ -313,3 +317,4 @@ class server():
 
 s = server(IP, PORT)
 s.run()
+

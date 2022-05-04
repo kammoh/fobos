@@ -80,7 +80,9 @@ class PYNQCtrl(FOBOSCtrl):
         #print(f'inputSize={inputSize}')
         if self.inputSize != inputSize:
             if self.input_buffer is not None:
+                #print('free buffer')
                 self.input_buffer.freebuffer()
+            #print('allocate buffer')
             self.input_buffer = allocate(shape=(int(inputSize / 4),), dtype=np.uint32)
             self.inputSize = inputSize
 
@@ -98,6 +100,7 @@ class PYNQCtrl(FOBOSCtrl):
         #self.dma.recvchannel.transfer(self.output_buffer,0,self.output_buffer.nbytes) #configure dma to receive
         self.dma.recvchannel.transfer(self.output_buffer) #configure dma to receive
         self.dma.sendchannel.transfer(self.input_buffer)  #configure dma to send 
+        #print(f'in buf = {self.input_buffer}')
         self.dma.sendchannel.wait()
         self.dma.recvchannel.wait()
         result = ''.join(['{:08x}'.format(self.output_buffer[i]) for i in range(0, int(self.outLen / 4))])
@@ -109,6 +112,43 @@ class PYNQCtrl(FOBOSCtrl):
             result2 += result[i]       
         return result2
 
+    def sendDUTConf(self, data):
+        """
+        Sends data to FOBOS hardware for configuration, e.g. encryption
+        data: The config parameters and command. This is a hexadecimal string.
+        """
+        print(f'Sending conf : {data}')
+        inputSize = int(len(data)/2)
+        input_buffer = allocate(shape=(int(inputSize / 4),), dtype=np.uint32)
+        output_buffer = allocate(shape=(1,), dtype=np.uint32) # 32 bit ack
+        #put data in the buffer as 32-bit integers
+        data = data.strip()
+        data_list = [int(data[i:i+8],16) for i in range(0, len(data), 8)]
+        for i in range(0, len(data_list)):
+            input_buffer[i] = data_list[i]
+        
+        prevOutLen = self.outLen #save outlen
+        self.setOutLen(4) # ack size is 32 bits
+        #send via DMA
+        print('DUT config sent')
+        ##
+        self.dma.recvchannel.transfer(output_buffer) #configure dma to receive
+        self.dma.sendchannel.transfer(input_buffer)  #configure dma to send
+        print(f'out buf = {self.output_buffer}')
+        self.dma.sendchannel.wait()
+        self.dma.recvchannel.wait()
+        input_buffer.freebuffer()
+        output_buffer.freebuffer()
+        self.setOutLen(prevOutLen)
+        result = ''.join(['{:08x}'.format(output_buffer[i]) for i in range(0,1)])
+        ##get result in correct format
+        result2 = ''
+        for i in range(len(result)):
+            if (i % 2 == 0 and i != 0):
+                result2 += ' '
+            result2 += result[i]
+        return result2
+
     def getModel(self):
         return self.model
     
@@ -117,13 +157,14 @@ class PYNQCtrl(FOBOSCtrl):
         set Expected Output Length (outLen)
         """
         self.outLen = outLen
-        #print('outlen')
-        #print(outLen)
-        #print(type(outLen))
+        print('outlen')
+        print(outLen)
+        print(type(outLen))
         self.dutcomm.write(PYNQCtrl.dutcomm_EXP_OUT_LEN, int(outLen * 2))
         if self.output_buffer is not None:
             self.output_buffer.freebuffer()
-        self.output_buffer = allocate(shape=(int(outLen / 4),), dtype=np.uint32)
+        if outLen > 0:
+            self.output_buffer = allocate(shape=(int(outLen / 4),), dtype=np.uint32)
         #print(self.output_buffer.shape)
 
     def getOutLen(self):
@@ -190,3 +231,4 @@ class PYNQCtrl(FOBOSCtrl):
         set trigger type
         """
         self.dutctrl.write(PYNQCtrl.dutctrl_DUT, dut)
+

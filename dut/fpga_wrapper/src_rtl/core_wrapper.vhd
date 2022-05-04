@@ -68,7 +68,7 @@ architecture behav of core_wrapper is
 
     type state_type is (CLR, INST0, INST1, INST2, INST3, PARAM0, PARAM1, 
                         PARAM2, PARAM3, LOAD_FIFO, RUN, UNLOAD, 
-                        GEN_RAND, CONF_PRNG, INVALID_INST);
+                        GEN_RAND, CONF_PRNG, SND_ACK, DELAY, INVALID_INST);
     signal state_r, nx_state : state_type;
     signal cnt_r, nx_cnt : unsigned(15 downto 0);
 
@@ -157,14 +157,39 @@ architecture behav of core_wrapper is
     signal rnd_piso_do_data : std_logic_vector(31 downto 0);
 
     signal rnd_sipo_do_valid, rnd_sipo_do_ready : std_logic;
-    signal rnd_sipo_do_data : std_logic_vector(31 downto 0);
+    signal rnd_sipo_do_data : std_logic_vector(FIFO_RDI_WIDTH-1 downto 0);
 
     signal rdi_fifo_do_valid, rdi_fifo_do_ready : std_logic;
     signal rdi_fifo_dout : std_logic_vector(FIFO_RDI_WIDTH-1 downto 0);
-
+    --
+    signal sel_out : std_logic;
+    signal ctrl_status : std_logic_vector(4-1 downto 0);
     -- contsants
     constant CMD_START      : std_logic_vector(3 downto 0) := x"1";
     constant CMD_GEN_RAND   : std_logic_vector(3 downto 0) := x"2";
+    
+    --
+    COMPONENT ila_0
+    PORT (
+	   clk : IN STD_LOGIC;
+	   probe0 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	   probe1 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	   probe2 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	   probe3 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+	   probe4 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	   probe5 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+	   probe6 : IN STD_LOGIC_VECTOR(3 DOWNTO 0)
+    );
+    END COMPONENT  ;
+    
+    attribute mark_debug : string;
+    attribute mark_debug of di_valid : signal is "true";
+    attribute mark_debug of di_ready : signal is "true";
+    attribute mark_debug of din : signal is "true";
+    attribute mark_debug of do_valid : signal is "true";
+    attribute mark_debug of do_ready : signal is "true";
+    attribute mark_debug of dout : signal is "true";
+    attribute mark_debug of rst: signal is "true";
 
 begin
     --commads
@@ -181,7 +206,7 @@ begin
     --                    64-bit seed for the prng. Registers are not needed after the 
     -- BEGING USER CRYPTO  =============================================================================
     -- Instantiate your core here
-    crypto_core : entity work.aes_axi(behav)
+    crypto_core : entity work.LWC_SCA(structure)
     port map(
     	clk         => clk,
     	rst         => not crypto_input_en,
@@ -198,10 +223,10 @@ begin
     	do_ready    => crypto_do_ready,
     	do_valid    => crypto_do_valid
 
-        ----! if rdi_interface for side-channel protected versions is required, uncomment the rdi interface
-        -- ,rdi_data => crypto_rdi_data,
-        -- rdi_ready => crypto_rdi_ready,
-        -- rdi_valid => crypto_rdi_valid
+        --! if rdi_interface for side-channel protected versions is required, uncomment the rdi interface
+        ,rdi_data => crypto_rdi_data,
+        rdi_ready => crypto_rdi_ready,
+        rdi_valid => crypto_rdi_valid
     );
     -- END USER CRYPTO
     --=============================================
@@ -333,9 +358,10 @@ begin
         din	      => out_fifo_dout,
         do_valid  => out_piso_do_valid,
         do_ready  => out_piso_do_ready,
-        dout      => dout
+        dout      => out_piso_dout
     );
 
+    dout <= ctrl_status when sel_out = '1' else out_piso_dout;
     --==============================================
     comb : process(all) begin
         --default values
@@ -358,6 +384,8 @@ begin
         crypto_input_en <= '0';
         out_piso_do_ready <= '0';
         --
+        sel_out <= '0'; --select output from ctrl (to send status)
+        ctrl_status <= (others=>'0');
         status <= '0';
         --prng
         prng_en <= '0';
@@ -388,7 +416,7 @@ begin
                     clr_cmd_reg <= '1';
                     nx_rand_requested <= '1';
                     nx_rand_words <= conf_reg2_r;
-                    nx_state <= GEN_RAND;
+                    nx_state <= DELAY;
                 elsif cmd = CMD_START then -- start cmd
                     clr_cmd_reg <= '1';
                     nx_state <= RUN;
@@ -500,6 +528,29 @@ begin
                     end if;
                 end if;
 
+            when DELAY =>
+                if cnt_r = 16-1 then -- 32-bit status
+                    nx_cnt <= (others=>'0');
+                    nx_state <= SND_ACK;
+                else
+                    nx_cnt <= cnt_r + 1;
+                    nx_state <= DELAY;
+                end if;
+            
+            when SND_ACK =>
+                sel_out <= '1';
+                do_valid <= '1';
+                ctrl_status <= x"A";
+                if do_ready = '1' then
+                    if cnt_r = 8-1 then -- 32-bit status
+                        nx_cnt <= (others=>'0');
+                        nx_state <= GEN_RAND;
+                    else
+                        nx_cnt <= cnt_r + 1;
+                        nx_state <= SND_ACK;
+                    end if;
+                end if;
+                
             when GEN_RAND =>
                 prng_en <= '1';
                 if prng_seeded_r = '1' then
@@ -726,4 +777,17 @@ begin
         dout_ready  => rdi_fifo_do_ready,
         dout        => rdi_fifo_dout
     );
+    
+    --! DEBUG
+--    U_ILA : ila_0
+--    port map(
+--        clk => clk,
+--        Probe0 => (others=>rst),
+--        Probe1 => (others=>di_valid),
+--        Probe2 => (others=>di_ready),
+--        Probe3 => din,
+--        Probe4 => (others=>do_valid),
+--        Probe5 => (others=>do_ready),
+--        Probe6 => dout
+--    );
 end behav;

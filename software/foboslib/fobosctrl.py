@@ -59,6 +59,7 @@ class FOBOSCtrl:
 
     PROCESS = 100
     PROCESS_GET_TRACE = 101
+    CONF_DUT = 102
 
  
 
