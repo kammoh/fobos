@@ -448,8 +448,27 @@ class PYNQCtrl(FOBOSCtrl):
         self.sendMsg(FOBOSCtrl.SET_SAMPLES_PER_TRACE, samplesPerTrace)
         status, _ = self.recvMsg()
         return status
-
-
+    
+    def confPrng(self, seed, num_rand_words):
+        # use 64-bit seed and number of 32-bit words to configure the dut prng
+        seed_0 = seed & 0xffff
+        seed = seed >> 16
+        seed_1 = seed & 0xffff
+        seed = seed >> 16
+        seed_2 = seed & 0xffff
+        seed = seed >> 16
+        seed_3 = seed & 0xffff
+        seed = seed >> 16
+        cfg =  "0082" + hex(num_rand_words)[2:].zfill(4) # set conf_reg 2
+        cfg += "0084" + hex(seed_0)[2:].zfill(4) # set conf_reg 4
+        cfg += "0085" + hex(seed_1)[2:].zfill(4) # set conf_reg 5
+        cfg += "0086" + hex(seed_2)[2:].zfill(4) # set conf_reg 6
+        cfg += "0087" + hex(seed_3)[2:].zfill(4) # set conf_reg 7
+        cfg += "00800002" # gen_rand command
+        print(cfg)
+        self.sendMsg(FOBOSCtrl.CONF_DUT, cfg)
+        status, response = self.recvMsg()
+        print(response)
 
 def main():
     import time
