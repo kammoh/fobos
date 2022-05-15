@@ -2181,74 +2181,6 @@ Connection ~ 3300 1850
 Wire Wire Line
 	3300 1750 3300 1850
 $Comp
-L power:GND #PWR0131
-U 1 1 5F52AC29
-P 2250 6500
-F 0 "#PWR0131" H 2250 6250 50  0001 C CNN
-F 1 "GND" H 2255 6327 50  0000 C CNN
-F 2 "" H 2250 6500 50  0001 C CNN
-F 3 "" H 2250 6500 50  0001 C CNN
-	1    2250 6500
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2250 6500 2250 6350
-Wire Wire Line
-	2250 6350 2250 6250
-Connection ~ 2250 6350
-Wire Wire Line
-	2250 6250 2250 6150
-Connection ~ 2250 6250
-Wire Wire Line
-	2250 6150 2250 6050
-Connection ~ 2250 6150
-Wire Wire Line
-	2250 6050 2250 5950
-Connection ~ 2250 6050
-Wire Wire Line
-	2250 5950 2250 5850
-Connection ~ 2250 5950
-Wire Wire Line
-	2250 5850 2250 5750
-Connection ~ 2250 5850
-$Comp
-L Connector_Generic:Conn_02x07_Odd_Even J?
-U 1 1 600F5844
-P 2600 6050
-AR Path="/5F22D594/600F5844" Ref="J?"  Part="1" 
-AR Path="/6004C151/600F5844" Ref="J?"  Part="1" 
-AR Path="/5F3A1954/600F5844" Ref="J7"  Part="1" 
-F 0 "J7" H 2600 6575 50  0000 C CNN
-F 1 "0878321420" H 2600 6484 50  0000 C CNN
-F 2 "cerg:PinHeader_2x7_P2mm_SMD" H 2800 6250 60  0001 L CNN
-F 3 "https://www.molex.com/pdm_docs/sd/878322620_sd.pdf" H 2800 6350 60  0001 L CNN
-F 4 "WM18641-ND" H 2800 6450 60  0001 L CNN "Digi-Key_PN"
-F 5 "0878321420" H 2800 6550 60  0001 L CNN "MPN"
-F 6 "Connectors, Interconnects" H 2800 6650 60  0001 L CNN "Category"
-F 7 "Rectangular Connectors - Headers, Male Pins" H 2800 6750 60  0001 L CNN "Family"
-F 8 "https://www.molex.com/pdm_docs/sd/878322620_sd.pdf" H 2800 6850 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/molex/0878321420/WM18641-ND/662451" H 2800 6950 60  0001 L CNN "DK_Detail_Page"
-F 10 "CONN HEADER SMD 14POS 2MM" H 2800 7050 60  0001 L CNN "Description"
-F 11 "Molex" H 2800 7150 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 2800 7250 60  0001 L CNN "Status"
-	1    2600 6050
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2250 5750 2400 5750
-Wire Wire Line
-	2250 5850 2400 5850
-Wire Wire Line
-	2250 5950 2400 5950
-Wire Wire Line
-	2250 6050 2400 6050
-Wire Wire Line
-	2250 6150 2400 6150
-Wire Wire Line
-	2250 6250 2400 6250
-Wire Wire Line
-	2250 6350 2400 6350
-$Comp
 L cerg:SW_DIP_x03 SW1
 U 1 1 5FEAB8CB
 P 2750 3200
@@ -2269,12 +2201,12 @@ SW_D_CLK
 $Comp
 L power:+3V3 #PWR0141
 U 1 1 60303D00
-P 2950 5700
-F 0 "#PWR0141" H 2950 5550 50  0001 C CNN
-F 1 "+3V3" H 2965 5873 50  0000 C CNN
-F 2 "" H 2950 5700 50  0001 C CNN
-F 3 "" H 2950 5700 50  0001 C CNN
-	1    2950 5700
+P 3000 6150
+F 0 "#PWR0141" H 3000 6000 50  0001 C CNN
+F 1 "+3V3" H 3015 6323 50  0000 C CNN
+F 2 "" H 3000 6150 50  0001 C CNN
+F 3 "" H 3000 6150 50  0001 C CNN
+	1    3000 6150
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -2305,20 +2237,16 @@ $EndComp
 Text Label 4500 3100 0    50   ~ 0
 MODE_1
 Wire Wire Line
-	2900 5750 2950 5750
-Wire Wire Line
-	2950 5750 2950 5700
+	3000 6200 3000 6150
 Text Label 4500 3000 0    50   ~ 0
 MODE_0
 Text Label 4500 3200 0    50   ~ 0
 MODE_2
-Text Label 3150 5950 0    50   ~ 0
+Text Label 2000 6100 2    50   ~ 0
 TCK
-Text Label 3150 6150 0    50   ~ 0
+Text Label 2000 6500 2    50   ~ 0
 TDI
-Text Label 3150 6050 0    50   ~ 0
-TDO
-Text Label 3150 5850 0    50   ~ 0
+Text Label 2000 6300 2    50   ~ 0
 TMS
 $Comp
 L cerg:10CL016YU256I7G U?
@@ -2365,9 +2293,9 @@ Wire Wire Line
 	5650 6050 5200 6050
 Text Notes 1150 1300 0    50   ~ 0
 What JTAG programmer do we plan to use to configure the Cyclone 10?
-Text GLabel 4700 5250 0    50   Input ~ 0
-SW_nCONFIG
 Text GLabel 4700 5750 0    50   Input ~ 0
+SW_nCONFIG
+Text GLabel 4700 5250 0    50   Input ~ 0
 SW_nSTATUS
 Wire Wire Line
 	3100 2250 3100 3000
@@ -2405,19 +2333,19 @@ F 6 "Panasonic Electronic Components" H 5100 2100 50  0001 C CNN "Manufacturer"
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	4700 5750 5650 5750
+	4700 5250 5650 5250
 Wire Wire Line
 	4700 5650 5650 5650
 Wire Wire Line
 	4700 5550 5650 5550
 Wire Wire Line
-	4700 5250 5650 5250
-Text Label 4850 5750 0    50   ~ 0
+	4700 5750 5650 5750
+Text Label 4950 5250 0    50   ~ 0
 nSTATUS
-Text Label 4750 2750 0    50   ~ 0
+Text Label 4750 2500 0    50   ~ 0
 nSTATUS
 Wire Wire Line
-	4750 2750 5100 2750
+	4750 2500 5100 2500
 $Comp
 L power:+3V3 #PWR0144
 U 1 1 60306744
@@ -2464,7 +2392,7 @@ Wire Wire Line
 Wire Wire Line
 	5400 2250 5400 2900
 Wire Wire Line
-	5100 2250 5100 2750
+	5100 2250 5100 2500
 Text Label 5200 6050 0    50   ~ 0
 TMS
 Text Label 5200 5950 0    50   ~ 0
@@ -2474,13 +2402,11 @@ TDO
 Text Label 5200 5850 0    50   ~ 0
 TDI
 Wire Wire Line
-	2900 5850 3300 5850
+	2100 6300 1700 6300
 Wire Wire Line
-	2900 5950 3300 5950
+	2100 6100 1700 6100
 Wire Wire Line
-	2900 6050 3300 6050
-Wire Wire Line
-	2900 6150 3300 6150
+	2100 6500 1700 6500
 Connection ~ 3100 3000
 Connection ~ 3300 3100
 Connection ~ 3500 3200
@@ -2490,4 +2416,242 @@ Wire Wire Line
 	3300 3100 5650 3100
 Wire Wire Line
 	3500 3200 5650 3200
+$Comp
+L cerg:MX25L51245GMI-08G U9
+U 1 1 627E5EE4
+P 1750 3900
+F 0 "U9" H 2225 4065 50  0000 C CNN
+F 1 "MX25L51245GMI-08G" H 2225 3974 50  0000 C CNN
+F 2 "Package_SO:SOIC-16W_7.5x10.3mm_P1.27mm" H 1750 3900 50  0001 C CNN
+F 3 "https://www.newark.com/macronix/mx25l51245gmi-08g/flash-memory-512mbit-40-to-85deg/dp/07AH6746?CMP=AFC-OP" H 1750 3900 50  0001 C CNN
+	1    1750 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR025
+U 1 1 627F51C9
+P 1550 4800
+F 0 "#PWR025" H 1550 4550 50  0001 C CNN
+F 1 "GND" H 1555 4627 50  0000 C CNN
+F 2 "" H 1550 4800 50  0001 C CNN
+F 3 "" H 1550 4800 50  0001 C CNN
+	1    1550 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1650 4700 1550 4700
+Wire Wire Line
+	1550 4700 1550 4800
+Text GLabel 1350 4500 0    50   Input ~ 0
+nCS0
+Wire Wire Line
+	1650 4500 1350 4500
+$Comp
+L power:+3V3 #PWR023
+U 1 1 627FBE42
+P 1500 3800
+F 0 "#PWR023" H 1500 3650 50  0001 C CNN
+F 1 "+3V3" H 1515 3973 50  0000 C CNN
+F 2 "" H 1500 3800 50  0001 C CNN
+F 3 "" H 1500 3800 50  0001 C CNN
+	1    1500 3800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1500 4000 1650 4000
+Wire Wire Line
+	1500 3800 1500 4000
+$Comp
+L Device:C C16
+U 1 1 6282285A
+P 850 3850
+AR Path="/5F3A1954/6282285A" Ref="C16"  Part="1" 
+AR Path="/60D2F94F/6282285A" Ref="C?"  Part="1" 
+F 0 "C16" H 965 3896 50  0000 L CNN
+F 1 ".1uF" H 965 3805 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric_Pad0.74x0.62mm_HandSolder" H 888 3700 50  0001 C CNN
+F 3 "~" H 850 3850 50  0001 C CNN
+F 4 "CAP CER 0.1UF 16V X7R 0603" H 850 3850 50  0001 C CNN "Description"
+F 5 "C0603C104K4RAC7081" H 850 3850 50  0001 C CNN "MPN"
+F 6 "KEMET" H 850 3850 50  0001 C CNN "Manufacturer"
+	1    850  3850
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR020
+U 1 1 628242C8
+P 850 3550
+F 0 "#PWR020" H 850 3400 50  0001 C CNN
+F 1 "+3V3" H 865 3723 50  0000 C CNN
+F 2 "" H 850 3550 50  0001 C CNN
+F 3 "" H 850 3550 50  0001 C CNN
+	1    850  3550
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR021
+U 1 1 62828E44
+P 850 4150
+F 0 "#PWR021" H 850 3900 50  0001 C CNN
+F 1 "GND" H 855 3977 50  0000 C CNN
+F 2 "" H 850 4150 50  0001 C CNN
+F 3 "" H 850 4150 50  0001 C CNN
+	1    850  4150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	850  4000 850  4150
+Wire Wire Line
+	850  3550 850  3700
+Wire Wire Line
+	1650 4200 1500 4200
+Wire Wire Line
+	1500 4200 1500 4000
+Connection ~ 1500 4000
+$Comp
+L Device:R R?
+U 1 1 62845945
+P 3600 4450
+AR Path="/5F227C5D/62845945" Ref="R?"  Part="1" 
+AR Path="/5F20DA36/62845945" Ref="R?"  Part="1" 
+AR Path="/5F3A1954/62845945" Ref="R29"  Part="1" 
+F 0 "R29" V 3500 4400 50  0000 L CNN
+F 1 "20R" V 3600 4350 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3530 4450 50  0001 C CNN
+F 3 "~" H 3600 4450 50  0001 C CNN
+F 4 "RES SMD 20 OHM 5% 1/10W 0603" H 3600 4450 50  0001 C CNN "Description"
+F 5 "ERJ-3GEYJ200V" H 3600 4450 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 3600 4450 50  0001 C CNN "Manufacturer"
+	1    3600 4450
+	0    1    1    0   
+$EndComp
+Text GLabel 3750 4450 2    50   Input ~ 0
+SW_DATA[0]
+Wire Wire Line
+	2800 4450 3450 4450
+Text Label 2950 4450 0    50   ~ 0
+DATAO_FLASH
+Wire Wire Line
+	2800 4250 3450 4250
+Text Label 2950 4250 0    50   ~ 0
+DATAI_FLASH
+Wire Wire Line
+	2800 4000 3450 4000
+Text Label 2950 4000 0    50   ~ 0
+CLK_FLASH
+Wire Wire Line
+	1650 4350 1500 4350
+Wire Wire Line
+	1500 4350 1500 4200
+Connection ~ 1500 4200
+$Comp
+L Device:R R?
+U 1 1 62878BBD
+P 3600 4250
+AR Path="/5F227C5D/62878BBD" Ref="R?"  Part="1" 
+AR Path="/5F20DA36/62878BBD" Ref="R?"  Part="1" 
+AR Path="/5F3A1954/62878BBD" Ref="R28"  Part="1" 
+F 0 "R28" V 3500 4200 50  0000 L CNN
+F 1 "20R" V 3600 4150 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3530 4250 50  0001 C CNN
+F 3 "~" H 3600 4250 50  0001 C CNN
+F 4 "RES SMD 20 OHM 5% 1/10W 0603" H 3600 4250 50  0001 C CNN "Description"
+F 5 "ERJ-3GEYJ200V" H 3600 4250 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 3600 4250 50  0001 C CNN "Manufacturer"
+	1    3600 4250
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6287A97C
+P 3600 4000
+AR Path="/5F227C5D/6287A97C" Ref="R?"  Part="1" 
+AR Path="/5F20DA36/6287A97C" Ref="R?"  Part="1" 
+AR Path="/5F3A1954/6287A97C" Ref="R27"  Part="1" 
+F 0 "R27" V 3500 3950 50  0000 L CNN
+F 1 "20R" V 3600 3900 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3530 4000 50  0001 C CNN
+F 3 "~" H 3600 4000 50  0001 C CNN
+F 4 "RES SMD 20 OHM 5% 1/10W 0603" H 3600 4000 50  0001 C CNN "Description"
+F 5 "ERJ-3GEYJ200V" H 3600 4000 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 3600 4000 50  0001 C CNN "Manufacturer"
+	1    3600 4000
+	0    1    1    0   
+$EndComp
+Text GLabel 3750 4000 2    50   Input ~ 0
+SW_D_CLK
+Text GLabel 3750 4250 2    50   Input ~ 0
+ASDO
+Text GLabel 4700 4850 0    50   Input ~ 0
+ASDO
+Wire Wire Line
+	5650 4850 4700 4850
+$Comp
+L Device:R R?
+U 1 1 6288BD20
+P 5700 2100
+AR Path="/5F449901/6288BD20" Ref="R?"  Part="1" 
+AR Path="/5F3A1954/6288BD20" Ref="R52"  Part="1" 
+F 0 "R52" V 5800 2100 50  0000 C CNN
+F 1 "4.7KR" V 5700 2100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 5630 2100 50  0001 C CNN
+F 3 "~" H 5700 2100 50  0001 C CNN
+F 4 "RES SMD 4.7K OHM 5% 1/10W 0603" H 5700 2100 50  0001 C CNN "Description"
+F 5 "ERJ-3GEYJ472V" H 5700 2100 50  0001 C CNN "MPN"
+F 6 "Panasonic Electronic Components" H 5700 2100 50  0001 C CNN "Manufacturer"
+	1    5700 2100
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	5700 1850 5700 1950
+Wire Wire Line
+	5700 1850 5400 1850
+Connection ~ 5400 1850
+Wire Wire Line
+	6200 2500 5700 2500
+Wire Wire Line
+	5700 2250 5700 2500
+Text Label 4950 5750 0    50   ~ 0
+nCONFIG
+Text Label 5800 2500 0    50   ~ 0
+nCONFIG
+$Comp
+L Connector_Generic:Conn_02x05_Odd_Even J7
+U 1 1 628B44DE
+P 2300 6300
+F 0 "J7" H 2350 6717 50  0000 C CNN
+F 1 "Conn_02x05_Odd_Even" H 2350 6626 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x05_P.54mm_Vertical_Shrouded" H 2300 6300 50  0001 C CNN
+F 3 "https://www.digikey.com/en/products/detail/sullins-connector-solutions/SBH11-PBPC-D05-ST-BK/1990062" H 2300 6300 50  0001 C CNN
+F 4 "SBH11-PBPC-D05-ST-BK" H 2300 6300 50  0001 C CNN "MPN"
+F 5 "Sullins Connector Solutions" H 2300 6300 50  0001 C CNN "Manufacturer"
+	1    2300 6300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 6200 1700 6200
+Text Label 2000 6200 2    50   ~ 0
+TDO
+Wire Wire Line
+	2600 6200 3000 6200
+$Comp
+L power:GND #PWR034
+U 1 1 628C94B9
+P 2750 6550
+F 0 "#PWR034" H 2750 6300 50  0001 C CNN
+F 1 "GND" H 2755 6377 50  0000 C CNN
+F 2 "" H 2750 6550 50  0001 C CNN
+F 3 "" H 2750 6550 50  0001 C CNN
+	1    2750 6550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2600 6100 2750 6100
+Wire Wire Line
+	2750 6100 2750 6500
+Wire Wire Line
+	2600 6500 2750 6500
+Connection ~ 2750 6500
+Wire Wire Line
+	2750 6500 2750 6550
 $EndSCHEMATC
