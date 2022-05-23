@@ -4,10 +4,13 @@ import pickle
 from pathlib import Path
 import numpy as np
 from pynq import Overlay
-from pynq import Xlnk
+import os
+#from pynq import Xlnk
+from pynq import allocate
 from foboslib.fobosctrl import FOBOSCtrl
 from foboslib.pynqlocal import PYNQCtrl
 from foboslib import openadc
+from foboslib.power import PowerManager
 #import numpy as np
 MSG_LEN_SIZE = 10
 MSG_LEN_SIZE = 10
@@ -15,9 +18,9 @@ OPCODE_SIZE = 4
 STATUS_SIZE = 4
 DONE_CMD = 9999
 RCV_BYTES = 512
-IP = '192.168.10.99'
+IP = '192.168.10.98'
 PORT = 9995
-OVERLAY_FILE = "pynq_ctrl.bit"
+OVERLAY_FILE = "/home/xilinx/fobos/software/fobos_ctrl-lpb.bit"
 SOCKET_TIMEOUT = 2 * 60
 ##change these settings. they must be dynamic
 TV_SIZE = 48
@@ -43,14 +46,18 @@ class server():
 
     def init(self):
         # instantiate hardware driver
+        #my_env = os.environ.copy()
+        #os.environ["XILINX_XRT"] = "/usr"
         overlay = Overlay(OVERLAY_FILE)
         self.ctrl = PYNQCtrl(overlay)
         self.fobosAcq = openadc.OpenADCScope(overlay)
+        self.powerManager = PowerManager(overlay)
         # self.fobosAcq.setAdcClockFreq(SAMPLING_FREQ)
         # self.fobosAcq.setGain(ADC_GAIN)
         self.samplesPerTrace = 1000
-        self.xlnk = Xlnk()
-        self.outputBuffer = self.xlnk.cma_array(shape=(int(self.samplesPerTrace / 4 + 2),), dtype=np.uint64)
+        #self.xlnk = Xlnk()
+        #self.outputBuffer = self.xlnk.cma_array(shape=(int(self.samplesPerTrace / 4 + 2),), dtype=np.uint64)
+        self.outputBuffer = allocate(shape=(int(self.samplesPerTrace / 4 + 2),), dtype=np.uint64)
         #Configure defaults
         self.ctrl.setDUTClk(DUT_CLK)
         self.ctrl.setOutLen(OUT_LEN)
@@ -58,6 +65,7 @@ class server():
         self.ctrl.setDUTInterface(self.interface)
         self.ctrl.forceReset()
         self.ctrl.releaseReset()
+        print("init complete")
     
     def sendResponse(self, status, response):
         ##send cmd
@@ -122,18 +130,20 @@ class server():
 
     def run(self):
         while True:
-            # print("PYNQ server ready. Waiting for connection ...")
-            # self.clt, addr = self.socket.accept()
-            # print(f'addr = {addr}=============')
-            # self.touchStatusFile()
+            print("PYNQ server ready. Waiting for connection ...")
+#            self.clt, addr = self.socket.accept()
+            #print(f'addr = {addr}=============')
+            #self.touchStatusFile()
+            #print("status file updated")
             self.acceptConnection()
-            print('connection accepted')
+            #print('connection accepted')
             self.init()
+
             while True:
                 opcode, param = self.recvMsg()
                 self.touchStatusFile()
-                # print(f'msg received : opcode={opcode}, param = {param}')
-                # time.sleep(1)
+                print(f'msg received : opcode={opcode}, param = {param}')
+                #time.sleep(1)
                 if int(opcode) == FOBOSCtrl.DISCONNECT:
                     self.fobosAcq.setGain(0) #clear ADC gain
                     self.sendResponse(0, pickle.dumps("Disconnect requested. Bye!"))
@@ -173,9 +183,9 @@ class server():
             elif opcode == FOBOSCtrl.PROCESS_GET_TRACE:
                 # print("get trace")
                 self.fobosAcq.arm(self.outputBuffer,int(self.samplesPerTrace/4))
-                print(param)
+                # print(param)
                 result = self.ctrl.processData(param)
-                print(result)
+                # print(result)
                 self.fobosAcq.waitForTrace()
                 trace = self.outputBuffer.view('uint16').tolist()
                 response = (result, trace[:self.samplesPerTrace],)
@@ -291,14 +301,129 @@ class server():
 
             elif opcode == FOBOSCtrl.SET_SAMPLES_PER_TRACE:
                 response = f"samples per trace  = {param}"
+                print("param:", param)
                 print(response)
                 self.samplesPerTrace =param
                 self.outputBuffer.freebuffer()
-                self.outputBuffer = self.xlnk.cma_array(shape=(int(self.samplesPerTrace / 4 + 2),), dtype=np.uint64)
+                self.outputBuffer = allocate(shape=(int(self.samplesPerTrace / 4 + 2),), dtype=np.uint64)
+            elif opcode == FOBOSCtrl.PWMGR_SET_GAIN_VAR:
+                response = f"Set var gain  = {param}"
+                print(response)
+                self.powerManager.GainVarSet(param)
+            elif opcode == FOBOSCtrl.PWMGR_GET_GAIN_VAR:
+                gain = self.powerManager.GainVarGet()
+                response = f"Get var gain = {gain}"
+            elif opcode == FOBOSCtrl.PWMGR_GET_VOLT_VAR:
+                volt = self.powerManager.MeasVoltVar()
+                response = f"Get var gain = {volt}"
+            elif opcode == FOBOSCtrl.PWMGR_GET_CURR_VAR:
+                curr = self.powerManager.MeasCurrVar()
+                response = f"Get var gain = {curr}"
+            
+            elif opcode == FOBOSCtrl.PWMGR_SET_HW_TRIG:
+                self.powerManager.TrigHwEnOn()
+                response = f'Set hardware trig enabled'
+            elif opcode == FOBOSCtrl.PWMGR_CLEAR_HW_TRIG:
+                self.powerManager.TrigHwEnOff()
+                response = f'Set hardware trig disabled'            
+            elif opcode == FOBOSCtrl.PWMGR_SET_SW_TRIG:       
+                self.powerManager.TrigSwEnOn()
+                response = f'Set software trig enabled'
+            elif opcode == FOBOSCtrl.PWMGR_CLEAR_SW_TRIG:
+                self.powerManager.TrigSwEnOff()
+                response = f'Set software trig disabled'
+            elif opcode == FOBOSCtrl.PWMGR_RESET:
+                self.powerManager.Reset()
+                response = f'Power manager reset'    
+            elif opcode == FOBOSCtrl.PWMGR_CLEAR_MEASUREMENTS:
+                self.powerManager.MeasClear()
+                response = f'Measurement registers cleared'
+            elif opcode == FOBOSCtrl.PWMGR_STAT_HW_TRIG:
+                stat = self.powerManager.TrigHwStat()
+                response = f"Get var gain = {stat}"
+            elif opcode == FOBOSCtrl.PWMGR_GET_COUNT:
+                count = self.powerManager.MeasCountValue()
+                response = f"Get measure count = {count}"
+            elif opcode == FOBOSCtrl.PWMGR_CHECK_OVERFLOW:
+                overflow = self.powerManager.MeasCountOverflow()
+                response = f"Get var gain = {overflow}"
+            elif opcode == FOBOSCtrl.PWMGR_CHECK_BUSY:
+                busy = self.powerManager.MeasBusy()
+                response = f"Get var gain = {busy}"
+            elif opcode == FOBOSCtrl.PWMGR_MAX_VOLT_VAR:
+                volt = self.powerManager.MeasMaxVoltVar()
+                response = f"Get var gain = {volt}"
+            elif opcode == FOBOSCtrl.PWMGR_AVG_VOLT_VAR:
+                volt = self.powerManager.MeasAvgVoltVar()
+                response = f"Get var gain = {volt}"
+            elif opcode == FOBOSCtrl.PWMGR_MAX_CURR_VAR:
+                curr = self.powerManager.MeasMaxCurrVar()
+                response = f"Get var gain = {curr}"
+            elif opcode == FOBOSCtrl.PWMGR_AVG_CURR_VAR:
+                curr = self.powerManager.MeasAvgCurrVar()
+                response = f"Get var gain = {curr}"
+            elif opcode == FOBOSCtrl.PWMGR_GET_DUT_CYCLES:
+                cc = self.ctrl.getWorkCount()
+                response = f"Get work count = {cc}"
+            ### Untested:
+            elif opcode == FOBOSCtrl.PWMGR_SET_GAIN_3V3:
+                val = self.ctrl.Gain3v3Set(param)
+                reponse = f"set 3v3 gain = {param}"
+            elif opcode == FOBOSCtrl.PWMGR_GET_GAIN_3V3:
+                val = self.ctrl.Gain3v3Get()
+                reponse = f"set 3v3 gain = {val}"        
+            elif opcode == FOBOSCtrl.PWMGR_GET_VOLT_3V3:
+                val = self.ctrl.MeasVolt3v3()
+                reponse = f"Get Volt 3v3 = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_GET_CURR_3V3:
+                val = self.ctrl.MeasCurr3v3()
+                reponse = f"Get Curr 3v3 = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_MAX_VOLT_3V3:
+                val = self.ctrl.MeasMaxVolt3v3()
+                reponse = f"Get Max Volt 3v3 = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_AVG_VOLT_3V3:
+                val = self.ctrl.MeasAvgVolt3v3()
+                reponse = f"Get Max Avg 3v3 = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_MAX_CURR_3V3:
+                val = self.ctrl.MeasMaxCurr3v3()
+                reponse = f"Get Max Curr 3v3 = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_AVG_CURR_3V3:
+                val = self.ctrl.MeasAvgCurr3v3()
+                reponse = f"Get Max Curr 3v3 = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_SET_GAIN_5V:
+                val = self.ctrl.Gain5vSet(param)
+                reponse = f"set = {param}"
+            elif opcode == FOBOSCtrl.PWMGR_GET_GAIN_5V:
+                val = self.ctrl.Gain5vGet()
+                reponse = f"set 5v gain = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_GET_VOLT_5V:
+                val = self.ctrl.MeasVolt5v()
+                reponse = f"Get Volt 5v = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_GET_CURR_5V:
+                val = self.ctrl.MeasCurr5v()
+                reponse = f"Get Curr 5v = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_MAX_VOLT_5V:
+                val = self.ctrl.MeasMaxVolt5v()
+                reponse = f"Get Max Volt 5v = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_AVG_VOLT_5V:
+                val = self.ctrl.MeasAvgVolt5v()
+                reponse = f"Get Max Avg 5v = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_MAX_CURR_5V:
+                val = self.ctrl.MeasMaxCurr5v()
+                reponse = f"Get Max Curr 5v = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_AVG_CURR_5V:
+                val = self.ctrl.MeasAvgCurr5v()
+                reponse = f"Get Max Curr 5v = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_STAT_SW_TRIG:
+                val = self.ctrl.TrigSwStat()
+                reponse = f"SW trig stat = {val}"
+            elif opcode == FOBOSCtrl.PWMGR_SET_VAR_ON:
+                val = self.ctrl.OutVarOn()
+                reponse = f"Out var on"
+            elif opcode == FOBOSCtrl.PWMGR_SET_VAR_OFF:
+                val = self.ctrl.OutVarOff()
+                reponse = f"Out var off"
 
-            elif opcode == FOBOSCtrl.CONF_DUT:
-                response = self.ctrl.sendDUTConf(param)
-                print('configured DUT warpper')
 
             else:
                 response = 'Not implemented'
@@ -317,4 +442,3 @@ class server():
 
 s = server(IP, PORT)
 s.run()
-

@@ -30,6 +30,7 @@ class PYNQCtrl(FOBOSCtrl):
     dutctrl_TRGMODE     = 0x08
     dutctrl_FORCE_RST   = 0x1c
     dutctrl_DUT         = 0x38
+    dutctrl_WORKCTR     = 0x3c
     ###trigger modes
     TRG_NORM            = 0X00
     TRG_FULL            = 0x01
@@ -197,6 +198,11 @@ class PYNQCtrl(FOBOSCtrl):
         """
         return self.dutctrl.read(PYNQCtrl.dutctrl_TRGLEN)
     
+    def getWorkCount(self):
+        """
+        get cycles elapsed during last hw trigger event
+        """
+        return self.dutctrl.read(PYNQCtrl.dutctrl_WORKCTR)
     
     def setTriggerMode(self, trigMode):
         """

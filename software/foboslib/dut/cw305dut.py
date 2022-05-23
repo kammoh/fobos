@@ -18,7 +18,7 @@
 #############################################################################
 # DUT utilities 
 # This can be used to program CW305 DUT
-# Requiremet : This requires Chipwhisperer utilities to be installed
+# Requiremet : This requires Chipwhispere utilities to be installed
 import os
 from chipwhisperer.capture.targets.CW305 import CW305
 
@@ -45,7 +45,6 @@ class CW305DUT:
             cw = CW305()
             cw.con(bsfile=self.bitFile, force=True)
             print("CW305 DUT programming done!")
-            cw.dis()
         else:
             print(f"FATAL Error: DUT programming bit file :{self.bitFile} does not exist. \nPlease set it to a valid .bit file. Exiting...")
             exit()
