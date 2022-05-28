@@ -31,7 +31,7 @@ class FOBOSCtrl:
     # config parameters numbers. Each number can serve as register number
     # or array index. These parameters must be sent to the hardware board.
     OUT_LEN = 0
-    TRIG_WAIT = 1
+    TRG_WAIT = 1
     TRG_LEN = 2
     TRG_MODE = 3
     TIME_TO_RST = 4
