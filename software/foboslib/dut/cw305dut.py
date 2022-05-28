@@ -45,6 +45,7 @@ class CW305DUT:
             cw = CW305()
             cw.con(bsfile=self.bitFile, force=True)
             print("CW305 DUT programming done!")
+            cw.dis()
         else:
             print(f"FATAL Error: DUT programming bit file :{self.bitFile} does not exist. \nPlease set it to a valid .bit file. Exiting...")
             exit()

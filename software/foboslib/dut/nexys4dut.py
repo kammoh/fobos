@@ -25,10 +25,13 @@ class Nexys4DUT():
          print("FATAL Error: DUT programming bit file not set. Please set it to a valid .bit file. Exiting...")
          exit()
 
-      cmd_init = ['sudo', '-u', self.programas, 
-                  'djtgcfg', 'init', '-d', self.deviceID]
-      cmd_prog = ['sudo', '-u', self.programas, 
-                  'djtgcfg', 'prog', '-d', self.deviceID, '-i', str(self.jtagID), '-f', self.bitFile]
+#      cmd_init = ['sudo', '-u', self.programas, 
+#                  'djtgcfg', 'init', '-d', self.deviceID]
+#      cmd_prog = ['sudo', '-u', self.programas, 
+#                  'djtgcfg', 'prog', '-d', self.deviceID, '-i', str(self.jtagID), '-f', self.bitFile]
+
+      cmd_init = ['djtgcfg', 'init', '-d', self.deviceID]
+      cmd_prog = ['djtgcfg', 'prog', '-d', self.deviceID, '-i', str(self.jtagID), '-f', self.bitFile]
       print("Programming device using the following commands:")
       print(" ".join(cmd_init))
       print(" ".join(cmd_prog))
