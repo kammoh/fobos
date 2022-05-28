@@ -18,7 +18,7 @@
 #############################################################################
 # DUT utilities 
 # This can be used to program CW305 DUT
-# Requiremet : This requires Chipwhisperer utilities to be installed
+# Requiremet : This requires Chipwhispere utilities to be installed
 import os
 from chipwhisperer.capture.targets.CW305 import CW305
 

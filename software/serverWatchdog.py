@@ -10,8 +10,9 @@ class FobosWatchdog:
 
     def __init__(self):
         self.statusFile = "/tmp/fobos_status.txt"
-        self.serverBin = "/home/xilinx/jupyter_notebooks/pynq_fobos/python3/pynqserver.py"
+        self.serverBin = "/home/xilinx/fobos/software/pynqserver.py"
         self.timeout = 4 * 60 # seconds
+        self.python3 = "/usr/local/share/pynq-venv/bin/python3"
     
     def checkTimeout(self):
         try:
@@ -47,7 +48,9 @@ class FobosWatchdog:
     def restartServer(self):
         cmd = self.serverBin
         # os.spawnl(os.P_NOWAIT, cmd)
-        pid = subprocess.Popen(['sudo', 'python3', self.serverBin]).pid
+#        my_env = os.environ.copy()
+#        my_env["XILINX_XRT"] = "/usr"
+        pid = subprocess.Popen(["sudo", "-i", self.python3, self.serverBin]).pid
         print(f'Watchdog: Ran server pid = {pid}')
 
     def killServer(self, pids):

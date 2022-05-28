@@ -76,7 +76,13 @@ class PowerDriver(DefaultIP):
                 1.65, 1.6, 1.55, 1.5, 1.45, 1.4, 1.35, 1.3, 1.25, 1.2, 1.15, 1.1, 1.05, 1, 0.95, 0.9]
                
     # to be loaded in future
-    callcoeffs = [ 0.01008823, -0.08145512,  0.22064704, -0.01857877]
+    callvarcoeffs = [ 0.00915188, -0.07801151,  0.20498496, -0.045486  ] 
+    call3v3coeffs = [ 0.00915188, -0.07801151,  0.20498496, -0.045486  ] 
+    call5vcoeffs = [ 0.00915188, -0.07801151,  0.20498496, -0.045486  ] 
+
+    currvarcoeffs = [-0.36547565, -0.0191488,   0.2069681,   0.00090635]
+    curr3v3coeffs = [-0.36547565, -0.0191488,   0.2069681,   0.00090635]
+    curr5vcoeffs = [-0.36547565, -0.0191488,   0.2069681,   0.00090635]
     callcurroffs = [250, 540, 250]  # 0 offset for 3v3, 5v, and var
 
     def __init__(self, description, *args, **kwargs):
@@ -163,37 +169,65 @@ class PowerDriver(DefaultIP):
     def checkVarOn(self):
         return (self.mmio.read(self.command) & self.out_enable)
 
-    def convertVolt(self, value):
+    def convertVoltVar(self, value):
         value = value * self.xadc_multiplier
-        value = value + self.callcoeffs[0]*value**3 + self.callcoeffs[1]*value**2 + self.callcoeffs[2]*value + self.callcoeffs[3]
+        value = value + self.callvarcoeffs[0]*value**3 + self.callvarcoeffs[1]*value**2 + self.callvarcoeffs[2]*value + self.callvarcoeffs[3]
         return value
-    
+   
+    def convertVolt5v(self, value):
+        value = value * self.xadc_multiplier
+        value = value + self.call5vcoeffs[0]*value**3 + self.call5vcoeffs[1]*value**2 + self.call5vcoeffs[2]*value + self.call5vcoeffs[3]
+        return value
+
+    def convertVolt3v3(self, value):
+        value = value * self.xadc_multiplier
+        value = value + self.call3v3coeffs[0]*value**3 + self.call3v3coeffs[1]*value**2 + self.call3v3coeffs[2]*value + self.call3v3coeffs[3]
+        return value
+
+    def convertCurrVar(self, value):
+        value = (value-self.callcurroffs[2]) * self.xadc_multiplier
+        value = value / (self.xbp_shunt * self.readGainVar())
+        value = value + self.currvarcoeffs[0]*value**3 + self.currvarcoeffs[1]*value**2 + self.currvarcoeffs[2]*value + self.currvarcoeffs[3]        
+        return value
+   
+    def convertCurr3v3(self, value):
+        value = (value-self.callcurroffs[0]) * self.xadc_multiplier
+        value = value / (self.xbp_shunt * self.readGainVar())
+        value = value + self.curr3v3coeffs[0]*value**3 + self.curr3v3coeffs[1]*value**2 + self.curr3v3coeffs[2]*value + self.curr3v3coeffs[3]        
+        return value
+
+    def convertCurr5v(self, value):
+        value = (value-self.callcurroffs[1]) * self.xadc_multiplier
+        value = value / (self.xbp_shunt * self.readGainVar())
+        value = value + self.curr5vcoeffs[0]*value**3 + self.curr5vcoeffs[1]*value**2 + self.curr5vcoeffs[2]*value + self.curr5vcoeffs[3]        
+
+        return value
+
     def readVolt3v3(self):
-        return self.convertVolt(self.mmio.read(self.volt3v3))
+        return self.convertVolt3v3(self.mmio.read(self.volt3v3))
 
     def readVolt5v(self):
-        return self.convertVolt(self.mmio.read(self.volt5v))
+        return self.convertVolt5v(self.mmio.read(self.volt5v))
 
     def readVoltVar(self):
-        return self.convertVolt(value = self.mmio.read(self.voltvar))
+        return self.convertVoltVar(value = self.mmio.read(self.voltvar))
        
     def readCurr3v3(self):
-        value = (self.mmio.read(self.current3v3)-self.callcurroffs[0]) * self.xadc_multiplier
-        value = value / (self.xbp_shunt * self.readGain3v3())
-        # value = value + self.callcoeffs[0]*value**3 + self.callcoeffs[1]*value**2 + self.callcoeffs[2]*value + self.callcoeffs[3]        
-        return value
+#        value = (self.mmio.read(self.current3v3)-self.callcurroffs[0]) * self.xadc_multiplier
+#        value = value / (self.xbp_shunt * self.readGain3v3())
+        return self.convertCurr3v3(self.mmio.read(self.current3v3))
 
     def readCurr5v(self):
-        value = (self.mmio.read(self.current5v)-self.callcurroffs[1]) * self.xadc_multiplier
-        value = value / (self.xbp_shunt * self.readGain5v())
-        # value = value + self.callcoeffs[0]*value**3 + self.callcoeffs[1]*value**2 + self.callcoeffs[2]*value + self.callcoeffs[3]        
-        return value
+#        value = (self.mmio.read(self.current5v)-self.callcurroffs[1]) * self.xadc_multiplier
+#        value = value / (self.xp_shunt * self.readGain5v())
+        return self.convertCurr5v(self.mmio.read(self.current5v))
     
     def readCurrVar(self):
-        value = (self.mmio.read(self.currentvar)-self.callcurroffs[2]) * self.xadc_multiplier
-        value = value / (self.xbp_shunt * self.readGainVar())
-        # value = value + self.callcoeffs[0]*value**3 + self.callcoeffs[1]*value**2 + self.callcoeffs[2]*value + self.callcoeffs[3]        
-        return value
+#        value = (self.mmio.read(self.currentvar)-self.callcurroffs[2]) * self.xadc_multiplier
+#        value = value / (self.xbp_shunt * self.readGainVar())
+#        value = value + self.currcoeffs[0]*value**3 + self.currcoeffs[1]*value**2 + self.currcoeffs[2]*value + self.currcoeffs[3]
+        
+        return self.concertCurrVar(self.mmio.read(self.currentvar))
     
     def enableSwTrig(self):
         cmd = self.mmio.read(self.command)
@@ -248,40 +282,40 @@ class PowerDriver(DefaultIP):
         return ((self.mmio.read(self.status) & self.busy) >> 1)
     
     def readMaxVolt3v3(self):
-        return self.convertVolt(self.mmio.read(self.maxvolt3v3))
+        return self.convertVolt3v3(self.mmio.read(self.maxvolt3v3))
     
     def readMaxVolt5v(self):
-        return self.convertVolt(self.mmio.read(self.maxvolt5v))
+        return self.convertVolt5v(self.mmio.read(self.maxvolt5v))
     
     def readMaxVoltVar(self):
-        return self.convertVolt(self.mmio.read(self.maxvoltvar))
+        return self.convertVoltVar(self.mmio.read(self.maxvoltvar))
     
     def readAvgVolt3v3(self):
-        return self.convertVolt(self.mmio.read(self.avgvolt3v3))
+        return self.convertVolt3v3(self.mmio.read(self.avgvolt3v3))
     
     def readAvgVolt5v(self):
-        return self.convertVolt(self.mmio.read(self.avgvolt5v))
+        return self.convertVolt5v(self.mmio.read(self.avgvolt5v))
     
     def readAvgVoltVar(self):
-        return self.convertVolt(self.mmio.read(self.avgvoltvar))
+        return self.convertVoltVar(self.mmio.read(self.avgvoltvar))
     
     def readMaxCurr3v3(self):
-        return self.convertVolt(self.mmio.read(self.maxcurrent3v3))
+        return self.convertVolt3v3(self.mmio.read(self.maxcurrent3v3))
     
     def readMaxCurr5v(self):
-        return self.convertVolt(self.mmio.read(self.maxcurrent5v))
+        return self.convertVolt5v(self.mmio.read(self.maxcurrent5v))
     
     def readMaxCurrVar(self):
-        return self.convertVolt(self.mmio.read(self.maxcurrentvar))
+        return self.convertCurrVar(self.mmio.read(self.maxcurrentvar))
+    
+    def readAvgCurr5v(self):
+        return self.convertCurr5v(self.mmio.read(self.avgcurrent3v3))
     
     def readAvgCurr3v3(self):
-        return self.convertVolt(self.mmio.read(self.avgcurrent3v3))
-    
-    def readAvgCurr3v3(self):
-        return self.convertVolt(self.mmio.read(self.avgcurrent5v))
+        return self.convertCurr3v3(self.mmio.read(self.avgcurrent5v))
     
     def readAvgCurrVar(self):
-        return self.convertVolt(self.mmio.read(self.avgcurrentvar))
+        return self.convertCurrVar(self.mmio.read(self.avgcurrentvar))
 
     
 class PowerManager():
@@ -385,8 +419,10 @@ class PowerManager():
     def TrigHwStat(self):
         if (self.PowerIF.statusHwTrig()):
             print("Hardware trigger has fired")
+            return 0
         else:
             print("Hardware trigger has not fired")
+            return 1
 
     def MeasClear(self):
         """
@@ -407,14 +443,17 @@ class PowerManager():
     def MeasCountValue(self):
         if (self.PowerIF.cntover()):
             print("Sample Counter has overflown.")
+            return -1
         else:
             return(self.PowerIF.samplecnt())
         
     def MeasCountOverflow(self):
         if (self.PowerIF.cntover()):
             print("Sample Counter has overflown.")
+            return 1
         else:
             print("Sample Counter has not overflown.")
+            return 0
             
     def MeasBusy(self):
         """

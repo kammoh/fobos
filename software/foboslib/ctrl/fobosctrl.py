@@ -31,7 +31,7 @@ class FOBOSCtrl:
     # config parameters numbers. Each number can serve as register number
     # or array index. These parameters must be sent to the hardware board.
     OUT_LEN = 0
-    TRIG_WAIT = 1
+    TRG_WAIT = 1
     TRG_LEN = 2
     TRG_MODE = 3
     TIME_TO_RST = 4
@@ -60,7 +60,48 @@ class FOBOSCtrl:
     PROCESS = 100
     PROCESS_GET_TRACE = 101
 
- 
+    # Power Manager Commands
+    PWMGR_SET_GAIN_VAR = 24
+    PWMGR_GET_GAIN_VAR = 25
+    PWMGR_GET_VOLT_VAR = 26
+    PWMGR_GET_CURR_VAR = 27
+    PWMGR_SET_HW_TRIG = 28
+    PWMGR_CLEAR_HW_TRIG = 29
+    PWMGR_RESET = 30
+    PWMGR_CLEAR_MEASUREMENTS = 31
+    PWMGR_STAT_HW_TRIG = 32
+    PWMGR_CHECK_OVERFLOW = 33
+    PWMGR_CHECK_BUSY = 34
+    PWMGR_MAX_VOLT_VAR = 35
+    PWMGR_AVG_VOLT_VAR = 36
+    PWMGR_MAX_CURR_VAR = 37
+    PWMGR_AVG_CURR_VAR = 38
+    PWMGR_GET_COUNT = 39
+    PWMGR_SET_SW_TRIG  = 40
+    PWMGR_CLEAR_SW_TRIG  = 41
+    PWMGR_GET_DUT_CYCLES = 42
+
+    PWMGR_SET_GAIN_5V  = 43
+    PWMGR_GET_GAIN_5V  = 44
+    PWMGR_GET_VOLT_5V  = 45
+    PWMGR_GET_CURR_5V  = 46
+    PWMGR_MAX_VOLT_5V  = 47
+    PWMGR_AVG_VOLT_5V  = 48
+    PWMGR_MAX_CURR_5V  = 49
+    PWMGR_AVG_CURR_5V  = 50
+    
+    PWMGR_SET_GAIN_3V3  = 51
+    PWMGR_GET_GAIN_3V3  = 52
+    PWMGR_GET_VOLT_3V3  = 53
+    PWMGR_GET_CURR_3V3  = 54
+    PWMGR_MAX_VOLT_3V3  = 55
+    PWMGR_AVG_VOLT_3V3  = 56
+    PWMGR_MAX_CURR_3V3  = 57
+    PWMGR_AVG_CURR_3V3  = 58
+
+    PWMGR_STAT_SW_TRIG = 59
+    PWMGR_SET_VAR_ON  = 60
+    PWMGR_SET_VAR_OFF = 61
 
     # Trigger parameters
     TRG_NORM = 0

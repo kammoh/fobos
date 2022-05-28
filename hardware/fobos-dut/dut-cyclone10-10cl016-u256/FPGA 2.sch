@@ -1,0 +1,82 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 7 9
+Title "FOBOS Cyclone-10 cl016 DUT"
+Date "2022-04-30"
+Rev "1.0"
+Comp "Cryptographic Engineering Research Group"
+Comment1 "License: Apache License Version 2.0"
+Comment2 "Copyright © Cryptographic Engineering Research Group"
+Comment3 "Author: Jens-Peter Kaps, Eddie Ferrufino"
+Comment4 "Project: FOBOS Cyclone-10 cl016 DUT"
+$EndDescr
+Text GLabel 2000 6050 0    50   Input ~ 0
+VCORE_CURRENT_GAIN_0
+Text GLabel 2000 6150 0    50   Input ~ 0
+VCORE_CURRENT_GAIN_1
+Text GLabel 2000 3650 0    50   Input ~ 0
+JA1
+Text GLabel 2000 4150 0    50   Input ~ 0
+JA7
+Text GLabel 2000 3750 0    50   Input ~ 0
+JA2
+Text GLabel 2000 4250 0    50   Input ~ 0
+JA8
+Text GLabel 2000 3850 0    50   Input ~ 0
+JA3
+Text GLabel 2000 4350 0    50   Input ~ 0
+JA9
+Text GLabel 2000 3950 0    50   Input ~ 0
+JA4
+Text GLabel 2050 4450 0    50   Input ~ 0
+JA10
+Text GLabel 2950 2700 0    50   Input ~ 0
+USER_LED_3
+Text GLabel 2950 2800 0    50   Input ~ 0
+USER_LED_4
+Text GLabel 3650 2600 0    50   Input ~ 0
+USER_BTN_2
+Text GLabel 2950 2600 0    50   Input ~ 0
+USER_LED_2
+$Comp
+L cerg:10CL016YU256I7G U?
+U 2 1 6290CB5A
+P 6000 3900
+AR Path="/5F22D594/6290CB5A" Ref="U?"  Part="2" 
+AR Path="/6004C151/6290CB5A" Ref="U1"  Part="2" 
+F 0 "U1" H 6330 3996 50  0000 L CNN
+F 1 "10CL016YU256I7G" H 6330 3905 50  0000 L CNN
+F 2 "BGA256C80P16X16_1400X1400X150N" H 6000 3900 50  0001 L BNN
+F 3 "" H 6000 3900 50  0001 L BNN
+F 4 "IPC7351B" H 6000 3900 50  0001 L BNN "STANDARD"
+F 5 "2019.12.30" H 6000 3900 50  0001 L BNN "PARTREV"
+F 6 "Intel" H 6000 3900 50  0001 L BNN "MANUFACTURER"
+F 7 "1.5mm" H 6000 3900 50  0001 L BNN "MAXIMUM_PACKAGE_HEIGHT"
+	2    6000 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L cerg:10CL016YU256I7G U?
+U 3 1 6290CB64
+P 7850 3800
+AR Path="/5F22D594/6290CB64" Ref="U?"  Part="3" 
+AR Path="/6004C151/6290CB64" Ref="U1"  Part="3" 
+F 0 "U1" H 8180 3846 50  0000 L CNN
+F 1 "10CL016YU256I7G" H 8180 3755 50  0000 L CNN
+F 2 "BGA256C80P16X16_1400X1400X150N" H 7850 3800 50  0001 L BNN
+F 3 "" H 7850 3800 50  0001 L BNN
+F 4 "IPC7351B" H 7850 3800 50  0001 L BNN "STANDARD"
+F 5 "2019.12.30" H 7850 3800 50  0001 L BNN "PARTREV"
+F 6 "Intel" H 7850 3800 50  0001 L BNN "MANUFACTURER"
+F 7 "1.5mm" H 7850 3800 50  0001 L BNN "MAXIMUM_PACKAGE_HEIGHT"
+	3    7850 3800
+	1    0    0    -1  
+$EndComp
+Text GLabel 2950 2500 0    50   Input ~ 0
+USER_LED_1
+Text GLabel 3650 2500 0    50   Input ~ 0
+USER_BTN_1
+$EndSCHEMATC
