@@ -22,6 +22,7 @@ __MACOSX
 *.log
 *.str
 FOBOSWorkspace
+fobosworkspace
 workspace/aes/capture
 workspace/dummyProject/capture
 temp
