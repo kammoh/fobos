@@ -3,14 +3,14 @@
 ##Author: Abubakr Abdulgadir
 ##March 2019
 
-from .fobosctrl import FOBOSCtrl
+from .ctrl.fobosctrl import FOBOSCtrl
 import pynq.lib.dma
 #from pynq import Xlnk
 from pynq import allocate
 import numpy as np
 from pynq import Overlay
 from .clkwizard import ClockWizard
-from .openadc import OpenADC
+from .scope.openadc import OpenADC
 
 
 class PYNQCtrl(FOBOSCtrl):

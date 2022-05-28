@@ -7,20 +7,19 @@ from pynq import Overlay
 import os
 #from pynq import Xlnk
 from pynq import allocate
-from foboslib.fobosctrl import FOBOSCtrl
+from foboslib.ctrl.fobosctrl import FOBOSCtrl
 from foboslib.pynqlocal import PYNQCtrl
-from foboslib import openadc
+from foboslib.scope import openadc
 from foboslib.power import PowerManager
 #import numpy as np
-MSG_LEN_SIZE = 10
 MSG_LEN_SIZE = 10
 OPCODE_SIZE = 4
 STATUS_SIZE = 4
 DONE_CMD = 9999
 RCV_BYTES = 512
-IP = '192.168.10.98'
+IP = '192.168.2.99'
 PORT = 9995
-OVERLAY_FILE = "/home/xilinx/fobos/software/fobos_ctrl-lpb.bit"
+OVERLAY_FILE = "/home/xilinx/fobos/software/pynq_ctrl.bit"
 SOCKET_TIMEOUT = 2 * 60
 ##change these settings. they must be dynamic
 TV_SIZE = 48
