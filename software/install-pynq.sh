@@ -348,6 +348,7 @@ if [ -f $sudofile ]; then
 fi
 
 echo "xilinx  ALL=(ALL) NOPASSWD:/usr/local/share/pynq-venv/bin/python3" > $sudofile
+chmod 440 $sudofile
 
 #--- add cronjob
 echo "Adding cron job to start the pynqserver watchdog every 5 minutes"?
