@@ -50,3 +50,5 @@ fp-info-cache
 .~lock*
 sds_trace_data.dat
 control/pynqctrl/vivado/NONE/
+fobos_pynq.conf
+pynq_conf.py
