@@ -118,7 +118,8 @@ architecture arch_imp of dut_controller_v1_0 is
 		    glitch_wait    : out std_logic_vector(31 downto 0);
 		    config_done    : out std_logic;
 		    --DUT specific ports
-            dut_select     : out std_logic_vector(31 downto 0)
+            dut_select     : out std_logic_vector(31 downto 0);
+            working_count  : in  std_logic_vector(31 downto 0)
 		);
 	end component dut_controller_v1_0_S_AXI;
 	---user defined 
@@ -179,6 +180,14 @@ architecture arch_imp of dut_controller_v1_0 is
          );
     end component;
 
+    component dut_working_counter is 
+    Port ( clk : in STD_LOGIC;
+           rst : in STD_LOGIC;
+           dut_working : in STD_LOGIC;
+           working_count : out STD_LOGIC_VECTOR (31 downto 0)
+           );
+    end component;
+
 	--signals for trigger module
 	signal rst            : std_logic;
 	signal trigger_length : std_logic_vector(31 downto 0);
@@ -201,6 +210,10 @@ architecture arch_imp of dut_controller_v1_0 is
 	
     --DUT specific ports
     signal dut_select     :std_logic_vector(31 downto 0); 
+    
+    -- signals for DUT working counter
+    signal working_count : std_logic_vector(31 downto 0);
+    signal trigger       : std_logic;
 
 	---end user defined 
 
@@ -251,8 +264,8 @@ begin
 			glitch_wait    => glitch_wait,
 			config_done    => config_done,
 		    --DUT specific ports
-            dut_select     => dut_select
-			
+            dut_select     => dut_select,
+			working_count  => working_count
 		);
 
 	-- Add user logic here
@@ -265,8 +278,10 @@ begin
 			trigger_length => trigger_length,
 			trigger_wait   => trigger_wait,
 			trigger_mode   => trigger_mode,
-			trigger_out    => trigger_out
+			trigger_out    => trigger
 		);
+		
+	trigger_out <= trigger;
 	timeoutmod : timeout_mod
 		port map(
 			clk           => s_axi_aclk,
@@ -324,6 +339,13 @@ begin
 	       dut_select => dut_select	       
 	       );
 
+	dutctr: dut_working_counter
+	    port map(
+	       clk => s_axi_aclk,
+	       rst => rst,
+	       dut_working    => dut_working,
+	       working_count  => working_count      
+	       );
 
 	-- User logic ends
 

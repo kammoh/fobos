@@ -33,6 +33,7 @@ entity dut_controller_v1_0_S_AXI is
 		config_done    : out std_logic;
 	    --DUT specific ports
         dut_select     : out std_logic_vector(31 downto 0); 
+        working_count  : in std_logic_vector(31 downto 0); 
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 
@@ -670,7 +671,7 @@ begin
 	-- and the slave is ready to accept the read address.
 	slv_reg_rden <= axi_arready and S_AXI_ARVALID and (not axi_rvalid) ;
 
-	process (slv_reg0, slv_reg1, slv_reg2, slv_reg3, slv_reg4, slv_reg5, slv_reg6, slv_reg7, slv_reg8, slv_reg9, slv_reg10, slv_reg11, slv_reg12, slv_reg13, slv_reg14, slv_reg15, slv_reg16, slv_reg17, slv_reg18, slv_reg19, slv_reg20, slv_reg21, slv_reg22, slv_reg23, slv_reg24, slv_reg25, slv_reg26, slv_reg27, slv_reg28, slv_reg29, slv_reg30, slv_reg31, axi_araddr, S_AXI_ARESETN, slv_reg_rden, timeout_status)
+	process (slv_reg0, slv_reg1, slv_reg2, slv_reg3, slv_reg4, slv_reg5, slv_reg6, slv_reg7, slv_reg8, slv_reg9, slv_reg10, slv_reg11, slv_reg12, slv_reg13, slv_reg14, slv_reg15, slv_reg16, slv_reg17, slv_reg18, slv_reg19, slv_reg20, slv_reg21, slv_reg22, slv_reg23, slv_reg24, slv_reg25, slv_reg26, slv_reg27, slv_reg28, slv_reg29, slv_reg30, slv_reg31, axi_araddr, S_AXI_ARESETN, slv_reg_rden, timeout_status, working_count)
 	variable loc_addr :std_logic_vector(OPT_MEM_ADDR_BITS downto 0);
 	begin
 	    --!default value
@@ -716,7 +717,7 @@ begin
 	      when b"01110" =>
 	        reg_data_out <= slv_reg14;
 	      when b"01111" =>
-	        reg_data_out <= slv_reg15;
+	        reg_data_out <= working_count(31 downto 0);
 	      when b"10000" =>
 	        reg_data_out <= slv_reg16;
 	      when b"10001" =>
