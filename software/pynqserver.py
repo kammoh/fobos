@@ -11,15 +11,14 @@ from foboslib.ctrl.fobosctrl import FOBOSCtrl
 from foboslib.pynqlocal import PYNQCtrl
 from foboslib.scope import openadc
 from foboslib.power import PowerManager
+from pynq_conf import IP, PORT, OVERLAY_FILE
+
 #import numpy as np
 MSG_LEN_SIZE = 10
 OPCODE_SIZE = 4
 STATUS_SIZE = 4
 DONE_CMD = 9999
 RCV_BYTES = 512
-IP = '192.168.2.99'
-PORT = 9995
-OVERLAY_FILE = "/home/xilinx/fobos/software/pynq_ctrl.bit"
 SOCKET_TIMEOUT = 2 * 60
 ##change these settings. they must be dynamic
 TV_SIZE = 48
@@ -361,67 +360,67 @@ class server():
             elif opcode == FOBOSCtrl.PWMGR_AVG_CURR_VAR:
                 curr = self.powerManager.MeasAvgCurrVar()
                 response = f"Get var gain = {curr}"
-            elif opcode == FOBOSCtrl.PWMGR_GET_DUT_CYCLES:
+            elif opcode == FOBOSCtrl.FOBOSCtrl_GET_DUT_CYCLES:
                 cc = self.ctrl.getWorkCount()
                 response = f"Get work count = {cc}"
             ### Untested:
             elif opcode == FOBOSCtrl.PWMGR_SET_GAIN_3V3:
-                val = self.ctrl.Gain3v3Set(param)
-                reponse = f"set 3v3 gain = {param}"
+                val = self.powerManager.Gain3v3Set(param)
+                response = f"set 3v3 gain = {param}"
             elif opcode == FOBOSCtrl.PWMGR_GET_GAIN_3V3:
-                val = self.ctrl.Gain3v3Get()
-                reponse = f"set 3v3 gain = {val}"        
+                val = self.powerManager.Gain3v3Get()
+                response = f"set 3v3 gain = {val}"        
             elif opcode == FOBOSCtrl.PWMGR_GET_VOLT_3V3:
-                val = self.ctrl.MeasVolt3v3()
-                reponse = f"Get Volt 3v3 = {val}"
+                val = self.powerManager.MeasVolt3v3()
+                response = f"Get Volt 3v3 = {val}"
             elif opcode == FOBOSCtrl.PWMGR_GET_CURR_3V3:
-                val = self.ctrl.MeasCurr3v3()
-                reponse = f"Get Curr 3v3 = {val}"
+                val = self.powerManager.MeasCurr3v3()
+                response = f"Get Curr 3v3 = {val}"
             elif opcode == FOBOSCtrl.PWMGR_MAX_VOLT_3V3:
-                val = self.ctrl.MeasMaxVolt3v3()
-                reponse = f"Get Max Volt 3v3 = {val}"
+                val = self.powerManager.MeasMaxVolt3v3()
+                response = f"Get Max Volt 3v3 = {val}"
             elif opcode == FOBOSCtrl.PWMGR_AVG_VOLT_3V3:
-                val = self.ctrl.MeasAvgVolt3v3()
-                reponse = f"Get Max Avg 3v3 = {val}"
+                val = self.powerManager.MeasAvgVolt3v3()
+                response = f"Get Max Avg 3v3 = {val}"
             elif opcode == FOBOSCtrl.PWMGR_MAX_CURR_3V3:
-                val = self.ctrl.MeasMaxCurr3v3()
-                reponse = f"Get Max Curr 3v3 = {val}"
+                val = self.powerManager.MeasMaxCurr3v3()
+                response = f"Get Max Curr 3v3 = {val}"
             elif opcode == FOBOSCtrl.PWMGR_AVG_CURR_3V3:
-                val = self.ctrl.MeasAvgCurr3v3()
-                reponse = f"Get Max Curr 3v3 = {val}"
+                val = self.powerManager.MeasAvgCurr3v3()
+                response = f"Get Max Curr 3v3 = {val}"
             elif opcode == FOBOSCtrl.PWMGR_SET_GAIN_5V:
-                val = self.ctrl.Gain5vSet(param)
-                reponse = f"set = {param}"
+                val = self.powerManager.Gain5vSet(param)
+                response = f"set = {param}"
             elif opcode == FOBOSCtrl.PWMGR_GET_GAIN_5V:
-                val = self.ctrl.Gain5vGet()
-                reponse = f"set 5v gain = {val}"
+                val = self.powerManager.Gain5vGet()
+                response = f"set 5v gain = {val}"
             elif opcode == FOBOSCtrl.PWMGR_GET_VOLT_5V:
-                val = self.ctrl.MeasVolt5v()
-                reponse = f"Get Volt 5v = {val}"
+                val = self.powerManager.MeasVolt5v()
+                response = f"Get Volt 5v = {val}"
             elif opcode == FOBOSCtrl.PWMGR_GET_CURR_5V:
-                val = self.ctrl.MeasCurr5v()
-                reponse = f"Get Curr 5v = {val}"
+                val = self.powerManager.MeasCurr5v()
+                response = f"Get Curr 5v = {val}"
             elif opcode == FOBOSCtrl.PWMGR_MAX_VOLT_5V:
-                val = self.ctrl.MeasMaxVolt5v()
-                reponse = f"Get Max Volt 5v = {val}"
+                val = self.powerManager.MeasMaxVolt5v()
+                response = f"Get Max Volt 5v = {val}"
             elif opcode == FOBOSCtrl.PWMGR_AVG_VOLT_5V:
-                val = self.ctrl.MeasAvgVolt5v()
-                reponse = f"Get Max Avg 5v = {val}"
+                val = self.powerManager.MeasAvgVolt5v()
+                response = f"Get Max Avg 5v = {val}"
             elif opcode == FOBOSCtrl.PWMGR_MAX_CURR_5V:
-                val = self.ctrl.MeasMaxCurr5v()
-                reponse = f"Get Max Curr 5v = {val}"
+                val = self.powerManager.MeasMaxCurr5v()
+                response = f"Get Max Curr 5v = {val}"
             elif opcode == FOBOSCtrl.PWMGR_AVG_CURR_5V:
-                val = self.ctrl.MeasAvgCurr5v()
-                reponse = f"Get Max Curr 5v = {val}"
+                val = self.powerManager.MeasAvgCurr5v()
+                response = f"Get Max Curr 5v = {val}"
             elif opcode == FOBOSCtrl.PWMGR_STAT_SW_TRIG:
-                val = self.ctrl.TrigSwStat()
-                reponse = f"SW trig stat = {val}"
+                val = self.powerManager.TrigSwStat()
+                response = f"SW trig stat = {val}"
             elif opcode == FOBOSCtrl.PWMGR_SET_VAR_ON:
-                val = self.ctrl.OutVarOn()
-                reponse = f"Out var on"
+                val = self.powerManager.OutVarOn()
+                response = f"Out var on"
             elif opcode == FOBOSCtrl.PWMGR_SET_VAR_OFF:
-                val = self.ctrl.OutVarOff()
-                reponse = f"Out var off"
+                val = self.powerManager.OutVarOff()
+                response = f"Out var off"
 
 
             else:
