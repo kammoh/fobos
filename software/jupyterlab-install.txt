@@ -1,0 +1,174 @@
+LINUX
+-----
+
+Tested on Ubuntu/Kubuntu 20.04
+
+based on 
+https://jupyterhub.readthedocs.io/en/stable/installation-guide-hard.html
+https://github.com/jupyterhub/jupyterhub-the-hard-way/blob/HEAD/docs/installation-guide-hard.md
+
+sudo apt-get install python3-venv
+
+sudo python3 -m venv /opt/jupyterhub/
+ls -l /opt
+ls -l /opt/jupyterhub/
+sudo /opt/jupyterhub/bin/python3 -m pip install wheel
+sudo /opt/jupyterhub/bin/python3 -m pip install jupyterhub jupyterlab
+sudo /opt/jupyterhub/bin/python3 -m pip install ipywidgets
+sudo apt install nodejs npm
+# if the following command gives permission warnings, install npm using a version manager like nvm
+sudo npm install -g configurable-http-proxy
+sudo mkdir -p /opt/jupyterhub/etc/jupyterhub/
+cd /opt/jupyterhub/etc/jupyterhub/
+sudo /opt/jupyterhub/bin/jupyterhub --generate-config
+sudo vim jupyterhub_config.py 
+
+ set "c.Spawner.notebook_dir = '~/notebooks/'     "
+ set "c.Spawner.default_url = '/lab'              "
+
+
+sudo mkdir -p /opt/jupyterhub/etc/systemd
+ 
+sudo vim /opt/jupyterhub/etc/systemd/jupyterhub.service
+
+---file contents:
+[Unit]
+Description=JupyterHub
+After=syslog.target network.target
+
+[Service]
+User=root
+Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/jupyterhub/bin"
+ExecStart=/opt/jupyterhub/bin/jupyterhub -f /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py
+
+[Install]
+WantedBy=multi-user.target
+---end of file
+
+sudo ln -s /opt/jupyterhub/etc/systemd/jupyterhub.service /etc/systemd/system/jupyterhub.service
+sudo systemctl daemon-reload
+sudo systemctl enable jupyterhub.service
+sudo systemctl start jupyterhub.service
+
+check if running
+sudo systemctl status jupyterhub.service
+
+
+cd 
+curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
+sudo install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/
+rm conda.gpg
+echo "deb [arch=amd64] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee /etc/apt/sources.list.d/conda.list
+sudo apt update
+sudo apt install conda
+sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
+sudo mkdir /opt/conda/envs/
+sudo /opt/conda/bin/conda create --prefix /opt/conda/envs/python python=3.8 ipykernel
+sudo /opt/conda/envs/python/bin/python -m ipykernel install --prefix=/opt/jupyterhub/ --name 'python' --display-name "Python (default)"
+
+
+  Install required packages
+sudo /opt/jupyterhub/bin/python3 -m pip install numpy
+sudo /opt/jupyterhub/bin/python3 -m pip install matplotlib
+sudo /opt/jupyterhub/bin/python3 -m pip install scipy
+
+
+
+
+
+  Install packages for PDF export of jupyter notebooks
+sudo apt-get install pandoc texlive-xetex texlive-fonts-recommended 
+
+
+  install fobos into /opt/fobos
+
+  
+ create notebooks folders in users home directories for each user
+ copy fobos notebooks and set foboslib link (should already be set correctly)
+cd /home/username/
+mkdir -p notebooks/fobos
+cd notebooks/fobos
+cp -a /opt/fobos/software/notebooks/* .
+
+
+--------
+INSTALL DUT SUPPORT
+
+---Chipwhisperer DUTs
+
+based on https://chipwhisperer.readthedocs.io/en/latest/linux-install.html
+as we only want to program the DUTs we won't install everything.
+
+sudo mkdir /opt/chipwhisperer
+sudo chown $USER /opt/chipwhisperer
+cd /opt
+git clone https://github.com/newaetech/chipwhisperer
+sudo cp chipwhisperer/hardware/50-newae.rules /etc/udev/rules.d/
+sudo udevadm control --reload-rules
+sudo usermod -aG dialout $USER
+sudo usermod -aG plugdev $USER
+
+## Add chip whisperer to jupyterhub package directory and install require packages
+sudo ln -s /opt/chipwhisperer/software/chipwhisperer/ /opt/jupyterhub/lib/python3.8/site-packages/
+
+## install cw required software
+sudo /opt/jupyterhub/bin/python3 -m pip install pyusb
+sudo /opt/jupyterhub/bin/python3 -m pip install libusb1
+sudo /opt/jupyterhub/bin/python3 -m pip install pyserial
+sudo /opt/jupyterhub/bin/python3 -m pip install tqdm
+sudo /opt/jupyterhub/bin/python3 -m pip install ECPy
+
+---Digilent DUTs
+
+they require djtcfg, Digilent Adept
+https://digilent.com/shop/software/digilent-adept/
+download for Linux
+ Adept for Linux Runtime 
+ Adept Utilities 
+
+DONE
+
+
+WINDOWS
+-------
+download git for windows from https://git-scm.com/downloads
+and install with default options
+
+download WinPython 3.8 from https://winpython.github.io/
+install (uncompress) on the PC into 
+C:\Users\username\WinPython
+start "WinPython Control Panel"
+Select "Advanced->Register distribution" from the menu
+You still have to manually add the path to where the python executable is to the system path
+check online on how to do this for your windows version
+Then reboot
+starting git bash
+type python and watch it crash
+works in cmd shell and in git cmd though
+
+extract fobos3.zip into C:\Users\username\
+
+open cmd as Administrator (in windows only an Administrator can set symbolic links)
+cd C:\Users\username
+cd fobos\software\notebooks
+del foboslib
+mklink /D foboslib ..\foboslib
+
+cd sca_labs
+del foboslib
+mklink /D foboslib ..\..\foboslib
+
+cd C:\Users\username\WinPython\notebooks
+mklink /D fobos ..\..\fobos\software\notebooks
+
+--------
+INSTALL DUT SUPPORT
+
+
+
+
+
+
+
+
+

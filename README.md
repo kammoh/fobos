@@ -3,7 +3,7 @@ FOBOS
 
 Flexible Open-source workBench fOr Side-channel analysis (FOBOS) is an "acquisition to analysis" solution which includes all necessary software to control the device under test (attack) (DUT), trigger the oscilloscope, obtain the measurements and analyze them using several power analysis techniques.
 
-FOBOS splits the Side Channel Analysis (SCA) setup into a separate control board and a DUT.
+FOBOS splits the Side Channel Analysis (SCA) setup into a control board, a DUT, and the SCA workstation. The firmware for the control board can be found in the folder `control`. The hardware description language files required to adapt a cryptographic algorithm to a particular FOBOS DUT are in the folder `DUT`. The `hardware` folder on the other hand contains circuit board design files for FOBOS boards such as the FOBOS Shield and several FOBOS DUTs. The `software` folder contains the scripts to run FOBOS. These python scripts run partially on the SCA workstation within a Jupyter notebook and partially on the Pynq DUT. The `docs` folder contains the FOBOS documentation.
 
 FOBOS Control Board
 -------------------
@@ -21,54 +21,34 @@ FOBOS DUT
 * `dut`
   VHDL sources for FOBOS wrapper and pin assignments to prepare a DUT for instantiating a target algorithm.
   * `fpga_wrapper`
-    Source code of the FOBOS wrapper common to all FPGA targets.
+    Source code of the FOBOS wrapper common to all FPGA targets and the contraint files for the supported DUTs.
   * `soc_wrapper`
     Source code for system on chip boards such as Zybo.
   * `example_cores`
     Contains implementations of example algorithms required for the tutorials.
-  * `fpga_boards`
-     Config files for supported FPGA DUT boards (should these be in fpga_wrapper?)
-     * `CW305`
-       NewAE CW305 Artix FPGA Target Board Xilinx Artix 7 FPGA
-     * `Nexys4DDR`
-       Digilent Inc Nexys 4 DDR board with Xilinx Artix 7 FPGA. Requires Xilinx ISE or Xilinx Vivado.
-     * `Nexys4`
-       Digilent Inc Nexys 4 board with Xilinx Artix 7 FPGA. Requires Xilinx ISE or Xilinx Vivado.
-     * `Nexys3`
-       Digilent Inc Nexys 3 board with Xilinx Spartan 6 FPGA. Requires Xilinx ISE.
-
+ 
 FOBOS Hardware
 --------------
 * `hardware`
   Printed Circuit Board design files for FOBOS boards. Requires KiCad.
   * `fobos-shield`
-    FOBOS Shield is a data aqcuisition boad that can be attached to the PYNQ-Z1 controller.
+    FOBOS Shield is a data aqcuisition and benchmarking boad that can be attached to the PYNQ-Z1 controller.
   * `fobos-mtc`
     FOBOS Multi Target Connector allows simple connection of several DUT boards to the FOBOS Shield.
-  * `dut-spartan7-s15`
-    FOBOS DUT with a Xilinx Spartan-7 xc7s15cpga196-2 device and power measurement circuitry.
-  * `dut-artix7-a12t-csg325`
-    FOBOS DUT with a Xilinx Artix-7 xc7a12tcsg325 device and power measurement circuitry.
-  * `dut-artix7-a12t-cpg238`
-    FOBOS DUT with a Xilinx Artix-7 xc7a12tcpg238 device and power measurement circuitry.
-  * `dut-cyclone10LP-016`
-    FOBOS DUT with an Interl Cyclone 10 LP 10CL016-YU256C6 device and power measurement circuitry.
-  * `dut-ecp5-25`
-    FOBOS DUT with a Lattice ECP5 LFE5U-25F-6BG381C device and power measurement circuitry.
+  * `fobos-dut`
+    Contains folders for each FOBOS DUT.
 
 FOBOS Software
 --------------
 * `software`
-  FOBOS is controlled by a series of Python scripts. They can be executed in several different ways.
+  FOBOS is controlled by a series of Python 3 scripts. They can be executed in several different ways.
   1. Command line, either on PYNQ or on a PC, tested on Windows 10 and Linux.
   1. Jupyter Notebook, either on PYNQ or on a PC, tested on Windows 10 and Linux.
-  1. Jupyter Hub, tested on Linux.
-  Requires Python 3.
 
-  * `foboslib` contains all FOBOS functions.
-  * `tutorials` contains the FOBOS tutorials.
-  * `notebooks` contains Jupyter notebooks for FOBOS.
-  * `fobos_workspace` is an empty directory in which FOBOS will store all files created at run-time.
+  * `foboslib` contains all common FOBOS functions.
+  * `notebooks` contains Jupyter notebooks that run within Jypyter Lab on a PC.
+  * `pynq=notebooks` contains Jupyter notebooks that run on within Jupyter Hub on Pynq.
+  * `examples` contains command line examples
 
 Documentation
 -------------
