@@ -130,7 +130,7 @@ xilinx.com:ip:axi_uart16550:2.0\
 xilinx.com:ip:axis_data_fifo:2.0\
 xilinx.com:ip:c_counter_binary:12.0\
 xilinx.com:ip:clk_wiz:6.0\
-cryptography.gmu.edu:CERG:dut_controller:1.0.2\
+cryptography.gmu.edu:CERG:dut_controller:1.0.3\
 cryptography.gmu.edu:CERG:dutcomm:1.0.2\
 CERG:cerg:openadc_interface_v1_0:1.0\
 CERG:cerg:powermanager:1.1\
@@ -344,7 +344,7 @@ proc create_root_design { parentCell } {
  ] $clk_wiz_adc
 
   # Create instance: dut_controller_0, and set properties
-  set dut_controller_0 [ create_bd_cell -type ip -vlnv cryptography.gmu.edu:CERG:dut_controller:1.0.2 dut_controller_0 ]
+  set dut_controller_0 [ create_bd_cell -type ip -vlnv cryptography.gmu.edu:CERG:dut_controller:1.0.3 dut_controller_0 ]
 
   # Create instance: dutcomm_0, and set properties
   set dutcomm_0 [ create_bd_cell -type ip -vlnv cryptography.gmu.edu:CERG:dutcomm:1.0.2 dutcomm_0 ]

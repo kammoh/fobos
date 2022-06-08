@@ -3,7 +3,7 @@
   <spirit:vendor>cryptography.gmu.edu</spirit:vendor>
   <spirit:library>CERG</spirit:library>
   <spirit:name>dut_controller</spirit:name>
-  <spirit:version>1.0.2</spirit:version>
+  <spirit:version>1.0.3</spirit:version>
   <spirit:busInterfaces>
     <spirit:busInterface>
       <spirit:name>S_AXI</spirit:name>
@@ -358,7 +358,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>6ad175d4</spirit:value>
+            <spirit:value>ffec275a</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -374,7 +374,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>6ad175d4</spirit:value>
+            <spirit:value>ffec275a</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1076,6 +1076,10 @@
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
+        <spirit:name>hdl/dut_working_ctr.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
         <spirit:name>hdl/fobos_package.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
@@ -1098,7 +1102,7 @@
       <spirit:file>
         <spirit:name>hdl/dut_controller_v1_0.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_9ef7798f</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_35d32eba</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -1113,6 +1117,10 @@
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/dut_switch.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>hdl/dut_working_ctr.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -1175,7 +1183,7 @@
     <spirit:fileSet>
       <spirit:name>xilinx_xpgui_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>xgui/dut_controller_v1_0_2.tcl</spirit:name>
+        <spirit:name>xgui/dut_controller_v1_0_3.tcl</spirit:name>
         <spirit:fileType>tclSource</spirit:fileType>
         <spirit:userFileType>CHECKSUM_44e59e51</spirit:userFileType>
         <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
@@ -1255,8 +1263,9 @@
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>user.org:user:dut_controller:1.0</xilinx:canUpgradeFrom>
         <xilinx:canUpgradeFrom>cryptography.gmu.edu:Cerg:dut_controller:1.0</xilinx:canUpgradeFrom>
+        <xilinx:canUpgradeFrom>cryptography.gmu.edu:CERG:dut_controller:1.0.2</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
-      <xilinx:coreCreationDateTime>2021-11-18T21:35:37Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2022-06-07T00:47:20Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="user.org:user:dut_controller:1.0_ARCHIVE_LOCATION">/home/bakry/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@34d49730_ARCHIVE_LOCATION">/home/bakry/repos/gitlab/fobos/capture/ctrl/ip_repo/dut_controller_1.0</xilinx:tag>
@@ -1506,13 +1515,41 @@
         <xilinx:tag xilinx:name="ui.data.coregen.dd@2e722dd4_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@75a5608b_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@1d6cf744_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e77638f_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6dad489_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5e514160_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@10610a8b_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4c833779_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2ebe3c1a_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6cba2bee_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c524dc2_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6939f25e_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@389a49b_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@308ecae4_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1263492b_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7f511f72_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@38a6b224_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@be7243f_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b6964e7_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@69b2d0f0_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@29610ef8_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@221411b7_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@79586edd_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@11e8723a_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@dd5e06b_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@77839b2a_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2a79ff1c_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c41828c_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@29f31ee_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b0c2d1e_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2bf47e08_ARCHIVE_LOCATION">/home/jkaps/projects/FOBOS/fobos3/control/ip_repo/dut_controller_1.0</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2020.2</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="4a1c78ab"/>
       <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="c30980da"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="36ac4df8"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="0a2cd345"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="c09ebd54"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="30979e6d"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="2a202dec"/>
