@@ -484,6 +484,306 @@ class PYNQCtrl(FOBOSCtrl):
         status, response = self.recvMsg()
         print(response)
 
+    def pwSetHwTrig(self, value):
+        if value == 1:
+            self.config += f'PWMGR_SET_HW_TRIG\n'
+            self.sendMsg(FOBOSCtrl.PWMGR_SET_HW_TRIG, "")
+        else:
+            self.config += f'PWMGR_CLEAR_HW_TRIG\n'
+            self.sendMsg(FOBOSCtrl.PWMGR_CLEAR_HW_TRIG, "")
+        
+        
+        status, response = self.recvMsg()
+        return status
+    
+    def pwSetSwTrig(self, value):
+        if value == 1:
+            self.config += f'PWMGR_SET_SW_TRIG\n'
+            self.sendMsg(FOBOSCtrl.PWMGR_SET_SW_TRIG, "")
+        else:
+            self.config += f'PWMGR_CLEAR_SW_TRIG\n'
+            self.sendMsg(FOBOSCtrl.PWMGR_CLEAR_SW_TRIG, "")
+            
+        status, response = self.recvMsg()
+        return response    
+    
+
+    def pwReset(self):
+        self.config += f'PWMGR_RESET\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_RESET, "")
+
+        status, response = self.recvMsg()
+        return status
+    
+    def pwClearMeasurements(self):
+        self.config += f'PWMGR_CLEAR_MEASUREMENTS\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_CLEAR_MEASUREMENTS, "")
+
+        status, response = self.recvMsg()
+        return status
+    
+    def pwCheckHwTrigStatus(self):
+        self.config += f'PWMGR_STAT_HW_TRIG\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_STAT_HW_TRIG, "")
+
+        status, response = self.recvMsg()
+        trigstat = int(response.split("=")[-1].replace(" ",""))
+        return trigstat
+    
+    def pwCheckSwTrigStatus(self):
+        self.config += f'PWMGR_STAT_SW_TRIG\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_STAT_SW_TRIG, "")
+
+        status, response = self.recvMsg()
+        trigstat = int(response.split("=")[-1].replace(" ",""))
+        return trigstat
+    
+    def pwCheckOverflow(self):
+        self.config += f'PWMGR_CHECK_OVERFLOW\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_CHECK_OVERFLOW, "")
+
+        status, response = self.recvMsg()
+        overflowstat = int(response.split("=")[-1].replace(" ",""))
+        return overflowstat
+
+    def pwCheckBusy(self):
+        self.config += f'PWMGR_CHECK_BUSY\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_CHECK_BUSY, "")
+
+        status, response = self.recvMsg()
+        busy = int(response.split("=")[-1].replace(" ",""))
+        return busy
+    
+    def pwGetMeasCount(self):
+        self.config += f'PWMGR_GET_COUNT\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_GET_COUNT, "")
+        
+        status, response = self.recvMsg()
+        curr = int(response.split("=")[-1].replace(" ",""))
+        return curr
+    
+    def getDutCycles(self):
+        self.config += f'FOBOSCtrl_GET_DUT_CYCLES\n'
+        self.sendMsg(FOBOSCtrl.FOBOSCtrl_GET_DUT_CYCLES, "")
+        
+        status, response = self.recvMsg()
+        curr = int(response.split("=")[-1].replace(" ",""))
+        return curr
+    
+    def pwSetGainVar(self, gain):
+        valid_gain = [25, 50, 100, 200]
+        if gain not in valid_gain:
+            print("Invalid gain value, select from {}".format(valid_gain))
+            return
+        else:
+            self.config += f'PWMGR_SET_GAIN_VAR = {gain}\n'
+            self.sendMsg(FOBOSCtrl.PWMGR_SET_GAIN_VAR, gain)
+            status, _ = self.recvMsg()
+            return status
+
+    def pwSetVarOn(self):
+        self.config += f'PWMGR_SET_VAR_ON\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_SET_VAR_ON, "")
+        
+        status, response = self.recvMsg()
+        return status
+         
+    def pwSetVarOff(self):
+        self.config += f'PWMGR_SET_VAR_OFF\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_SET_VAR_OFF, "")
+        
+        status, response = self.recvMsg()
+        return status
+        
+    def pwGetGainVar(self):
+        self.config += f'PWMGR_GET_GAIN_VAR\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_GET_GAIN_VAR, "")
+        
+        status, response = self.recvMsg()
+        gain = int(response.split("=")[-1].replace(" ",""))
+        return gain
+    
+    def pwGetVoltVar(self):
+        self.config += f'PWMGR_GET_VOLT_VAR\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_GET_VOLT_VAR, "")
+        
+        status, response = self.recvMsg()
+        volt = float(response.split("=")[-1].replace(" ",""))
+        return volt
+
+    def pwGetCurrVar(self):
+        self.config += f'PWMGR_GET_CURR_VAR\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_GET_CURR_VAR, "")
+        
+        status, response = self.recvMsg()
+        curr = float(response.split("=")[-1].replace(" ",""))
+        return curr
+    
+    def pwGetMaxVoltVar(self):
+        self.config += f'PWMGR_MAX_VOLT_VAR\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_MAX_VOLT_VAR, "")
+        
+        status, response = self.recvMsg()
+        volt = float(response.split("=")[-1].replace(" ",""))
+        return volt 
+   
+    def pwGetAvgVoltVar(self):
+        self.config += f'PWMGR_AVG_VOLT_VAR\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_AVG_VOLT_VAR, "")
+        
+        status, response = self.recvMsg()
+        volt = float(response.split("=")[-1].replace(" ",""))
+        return volt
+
+    def pwGetMaxCurrVar(self):
+        self.config += f'PWMGR_MAX_CURR_VAR\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_MAX_CURR_VAR, "")
+        
+        status, response = self.recvMsg()
+        curr = float(response.split("=")[-1].replace(" ",""))
+        return curr 
+   
+    def pwGetAvgCurrVar(self):
+        self.config += f'PWMGR_AVG_CURR_VAR\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_AVG_CURR_VAR, "")
+        
+        status, response = self.recvMsg()
+        curr = float(response.split("=")[-1].replace(" ",""))
+        return curr
+    
+    def pwSetGain5v(self, gain):
+        valid_gain = [25, 50, 100, 200]
+        if gain not in valid_gain:
+            print("Invalid gain value, select from {}".format(valid_gain))
+            return
+        else:
+            self.config += f'PWMGR_SET_GAIN_5V = {gain}\n'
+            self.sendMsg(FOBOSCtrl.PWMGR_SET_GAIN_5V, gain)
+            status, _ = self.recvMsg()
+        return status
+
+    def pwGetGain5v(self):
+        self.config += f'PWMGR_GET_GAIN_5V\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_GET_GAIN_5V, "")
+
+        status, response = self.recvMsg()
+        gain = int(response.split("=")[-1].replace(" ",""))
+        return gain
+    
+    def pwGetVolt5v(self):
+        self.config += f'PWMGR_GET_VOLT_5V\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_GET_VOLT_5V, "")
+        
+        status, response = self.recvMsg()
+        volt = float(response.split("=")[-1].replace(" ",""))
+        return volt
+
+    def pwGetCurr5v(self):
+        self.config += f'PWMGR_GET_CURR_5V\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_GET_CURR_5V, "")
+        
+        status, response = self.recvMsg()
+        curr = float(response.split("=")[-1].replace(" ",""))
+        return curr
+    
+    def pwGetMaxVolt5v(self):
+        self.config += f'PWMGR_MAX_VOLT_5V\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_MAX_VOLT_5V, "")
+        
+        status, response = self.recvMsg()
+        volt = float(response.split("=")[-1].replace(" ",""))
+        return volt 
+   
+    def pwGetAvgVolt5v(self):
+        self.config += f'PWMGR_AVG_VOLT_5V\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_AVG_VOLT_5V, "")
+        
+        status, response = self.recvMsg()
+        volt = float(response.split("=")[-1].replace(" ",""))
+        return volt
+
+    def pwGetMaxCurr5v(self):
+        self.config += f'PWMGR_MAX_CURR_5V\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_MAX_CURR_5V, "")
+        
+        status, response = self.recvMsg()
+        curr = float(response.split("=")[-1].replace(" ",""))
+        return curr 
+   
+    def pwGetAvgCurr5v(self):
+        self.config += f'PWMGR_AVG_CURR_5V\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_AVG_CURR_5V, "")
+        
+        status, response = self.recvMsg()
+        curr = float(response.split("=")[-1].replace(" ",""))
+        return curr
+    
+    def pwSetGain3v3(self, gain):
+        valid_gain = [25, 50, 100, 200]
+        if gain not in valid_gain:
+            print("Invalid gain value, select from {}".format(valid_gain))
+            return
+        else:
+            self.config += f'PWMGR_SET_GAIN_3V3 = {gain}\n'
+            self.sendMsg(FOBOSCtrl.PWMGR_SET_GAIN_3V3, gain)
+            status, _ = self.recvMsg()
+
+    def pwGetGain3v3(self):
+        self.config += f'PWMGR_GET_GAIN_3V3\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_GET_GAIN_3V3, "")
+        
+        status, response = self.recvMsg()
+        gain = int(response.split("=")[-1].replace(" ",""))
+        return gain
+    
+    def pwGetVolt3v3(self):
+        self.config += f'PWMGR_GET_VOLT_3V3\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_GET_VOLT_3V3, "")
+        
+        status, response = self.recvMsg()
+        volt = float(response.split("=")[-1].replace(" ",""))
+        return volt
+
+    def pwGetCurr3v3(self):
+        self.config += f'PWMGR_GET_CURR_3V3\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_GET_CURR_3V3, "")
+        
+        status, response = self.recvMsg()
+        curr = float(response.split("=")[-1].replace(" ",""))
+        return curr
+    
+    def pwGetMaxVolt3v3(self):
+        self.config += f'PWMGR_MAX_VOLT_3V3\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_MAX_VOLT_3V3, "")
+        
+        status, response = self.recvMsg()
+        volt = float(response.split("=")[-1].replace(" ",""))
+        return volt 
+   
+    def pwGetAvgVolt3v3(self):
+        self.config += f'PWMGR_AVG_VOLT_3V3\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_AVG_VOLT_3V3, "")
+        
+        status, response = self.recvMsg()
+        volt = float(response.split("=")[-1].replace(" ",""))
+        return volt
+
+    def pwGetMaxCurr3v3(self):
+        self.config += f'PWMGR_MAX_CURR_5V\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_MAX_CURR_5V, "")
+        
+        status, response = self.recvMsg()
+        curr = float(response.split("=")[-1].replace(" ",""))
+        return curr 
+   
+    def pwGetAvgCurr3v3(self):
+        self.config += f'PWMGR_AVG_CURR_3V3\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_AVG_CURR_3V3, "")
+        
+        status, response = self.recvMsg()
+        curr = float(response.split("=")[-1].replace(" ",""))
+        return curr        
+
 def main():
     import time
     ctrl = PYNQCtrl('192.168.10.99', 9995)
