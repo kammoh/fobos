@@ -1,6 +1,6 @@
 # Requirements
 
-1. Vivado 2020.2 is required to build the project. It must be on the PATH, i.e. it can be invoked directrly from the shell.
+Vivado 2020.2 is required to build the project. It must be on the PATH, i.e. it can be invoked directrly from the shell.
 
 # Build the project from source
 
@@ -10,21 +10,19 @@ Using a command line:
 2. `make create_project`
 3. `make synth`
 4. Go and make yourself a cup of coffee or tea, this is going to take a while
+5. When Vivado is done, you will have the files `pynq_ctrl.bit` and `pynq_ctrl.hwh` in this directory.
 
 
 # Preparing the control board
 
-**This section needs updating**
-1. Copy the `fobos/sources/pynq_controller/python3/` folder to the PYNQ board `~/jupyter_notebooks/pynq_fobos/` directory.
-2. Edit the file `~/jupyter_notebooks/pynq_fobos/python3/pynqserver.py` to change the IP address to the correct address of the PYNQ board (TO BE CHANGED TO BE AUTOMATIC).
+1. Copy the `fobos/software directory to the /home/xilinx/ directory on the Pynq board using scp or sftp.
+1. Copy the files `pynq_ctrl.bit` and `pynq_ctrl.hwh` from fobos/sources/pynq_controller/vivado to your Pynq board into the /home/xilinx/fobos/software/ directory.  
+1. Use ssh to get a comand prompt on the Pynq board, change directory to the fobos/software directory and run the script `sudo ./install-pynq.sh`. It will ask you several questions about your Pynq setup, install the necessary files, and start the pynqserver.
 
-2. Allow the xilinx user to be able to use sudo whithout password. This is needed to run control software which needs access to hardware. Use the command `sudo visudo` to add the following line to the sudoers file:
+# Modifying the Pynq board
+On the Pynq board, the 200 Ohm resistor R88 in the line IO29 of the ADC clock has to be removed and replaced with a blob of solder. The resistor attenuates the ADC clock signal too much.
 
- `xilinx ALL=(ALL) NOPASSWD:ALL`. 
-
-2. Add the following line to `/etc/crontab` to start/restart the control software 
-
-`*/5  *    * * *   xilinx   cd /home/xilinx/jupyter_notebooks/pynq_fobos/python3/ && sudo python3 /home/xilinx/jupyter_notebooks/pynq_fobos/python3/serverWatchdog.py >>/tmp/fobos.log 2>&1`
+<img src="figures/pynq-modifications-shield-rev2.jpg" alt="drawing" width="400"/>
 
 
 # Test Run
@@ -33,24 +31,22 @@ Using a command line:
 
 # Note about lock file
 
- Lock file is located at `/tmp/fobos.lock`. If this file is removed, the lock is released. (TO DO. create a method to avoid using the lock in signle user mode). Now locking is disabled.
+A lock file is created on the SCA Workstation each time a user tries to access the DUT. The file is located at `/tmp/fobos.lock`. Normally this file is automatically removed after the user releases the DUT connection. It the Jupyter Notebook crashes however, this file will stay and block access to the DUT. Remove this file manually and the lock is released. 
 
 # Modify the project
 
-1. Add your IPs under `fobos/sources/pynq_controller/vivado/ip_repo` under their own folders.
-2. Modify the block design using Vivado GUI.
-3. Export the updated block design to `fobos/sources/pynq_controller/vivado/src/bd/ctrl_top_wrapper.tcl` (File-> Export -> Export Block Design...). 
-4. Export the project tcl file to `fobos/sources/pynq_controller/vivado/build_proj.tcl`.
-5. Commit the changes to the ip_repo folder, ctrl_top.tcl and build_proj.tcl.
-
-# Synthesize the project
-
-1. Open the project in Vivado. In Vivado's sources window, right-click the block design file (ctrl_top.bd) and select "Generate Output Products...".
-2. The Generate Output Products window, select "Global" under Synthesis Options then click "Generate".
-3. After the output products generation completes, click Generate Bitstream.
-4. Copy the generated bitstream to `fobos/sources/pynq_controller/python3/`.
-5. Generate block diagram tcl file. Open the block diagram then issue the `write_bd_tcl` command in the TCL console.
-6. Copy the generated block diagram tcl file to `fobos/sources/pynq_controller/python3/`. Make sure it is named `ctrl_top_wrapper.tcl`.
+1. Follow the first 2 steps of the *Built the project from source* instructions.
+1. Open Vivado and open the newly created project `fobos/control/pynqctrl/vivado/pynq_controller/pynq_controller.xpr`
+1. Open the block design.
+1. New IPs can be added under `fobos/control/ip_repo` into their own folders.
+1. To modify existing IPs by right-click on the IP in the block design and select `Edit in IP Packager`
+1. When all changes are done run Synthesis and then Generate Bitstream
+1. Exit Vivado
+1. Copy the generated bit file and hwh file into the `fobos/sources/pynq_controller/vivado/` directory 
+   `cp pynq_controller/pynq_controller.gen/sources_1/bd/ctrl_top/hw_handoff/ctrl_top.hwh pynq_ctrl.hwh`
+   `cp pynq_controller/pynq_controller.runs/impl_1/ctrl_top_wrapper.bit pynq_ctrl.bit`
+1. Then copy these files to the Pynq board `/home/xilinx/fobos/software` directory for testing.
+1. Once everything works follow the instructions for *Committing updated project into GIT*
 
 
 # Committing updated project into GIT
