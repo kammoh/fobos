@@ -24,6 +24,7 @@ class FobosWatchdog:
                 print(f'Watchdog: Status file not updated for {delta} seconds. Timeout exceeded.')
                 return True
             else:
+                print(f'Watchdog: Status file not updated for {delta} seconds. Timeout not exceeded.')
                 return False
         except:
             return True

@@ -227,7 +227,7 @@ class PowerDriver(DefaultIP):
 #        value = value / (self.xbp_shunt * self.readGainVar())
 #        value = value + self.currcoeffs[0]*value**3 + self.currcoeffs[1]*value**2 + self.currcoeffs[2]*value + self.currcoeffs[3]
         
-        return self.concertCurrVar(self.mmio.read(self.currentvar))
+        return self.convertCurrVar(self.mmio.read(self.currentvar))
     
     def enableSwTrig(self):
         cmd = self.mmio.read(self.command)
