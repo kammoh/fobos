@@ -36,6 +36,7 @@ Also, scripts to perform leakage assesment are included.
    
    introduction
    setup
+   setup_basys3
    tvgen
    dut_board_setup
    dutdev

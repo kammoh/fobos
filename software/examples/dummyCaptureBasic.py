@@ -15,13 +15,13 @@
 #   limitations under the License.                                          #
 #                                                                           #
 #############################################################################
-import fobos
+from foboslib.ctrl import basys3ctrl
 # Constants###########################################################
 TRACE_NUM = 5
 OUT_LEN = 7
 # Instantiate FOBOS objects###########################################
 print("Sending configuration...")
-ctrl = fobos.Basys3Ctrl()
+ctrl = basys3ctrl.Basys3Ctrl()
 ctrl.enableTestMode()
 ctrl.setOutLen(OUT_LEN)
 # Run DUT operations
@@ -31,12 +31,12 @@ testVectors = ['00c0000761996dc996d4ac00c100070f7821507a22a00081000700800001',
                '00c0000767881b702afe5200c10007b08a5e036de72b0081000700800001',
                '00c0000726a1d601ccdf7a00c1000773539e52672d5d0081000700800001']
 
-print 'Sending data..'
+print ("Sending data..")
 traceNum = 0
 while traceNum < TRACE_NUM:
     data = testVectors[traceNum]
     status, result = ctrl.processData(data, OUT_LEN)
     if status != fobos.OK:
-        print "TIMEOUT"
+        print ("TIMEOUT")
     print(result)
     traceNum += 1
