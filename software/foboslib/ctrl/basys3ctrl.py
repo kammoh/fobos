@@ -28,9 +28,9 @@
 
 import serial
 import binascii
-from fobosctrl import FOBOSCtrl
-from dummyserial import DummySerial
-from detectctrl import HardwareDetector
+from foboslib.ctrl.fobosctrl import FOBOSCtrl
+from foboslib.dummyserial import DummySerial
+from foboslib.detectctrl import HardwareDetector
 
 
 class Basys3Ctrl(FOBOSCtrl):
@@ -109,10 +109,10 @@ class Basys3Ctrl(FOBOSCtrl):
         """
         #        WR_CONFIG       4 byte message   config number    config value
         cmd = bytearray([0xF0, 0x03] + [0x00, 0x06] +  [0x00, param] + [ (value & 0xFF000000) >> 24, (value & 0x00FF0000) >> 16, (value & 0x0000FF00) >> 8, value & 0x000000FF ])
-        print binascii.hexlify(cmd)
+        print (binascii.hexlify(cmd))
         self.ser.write(cmd)
         status = self.ser.read(self.STATUS_LEN)
-        print "Status= %s" % binascii.hexlify(status)
+        print ("Status= %s" % binascii.hexlify(status))
         return status
 
     def readConfig(self, param, devFile=None):
@@ -137,14 +137,14 @@ class Basys3Ctrl(FOBOSCtrl):
         #               RD_CONFIG       2 byte message   config number
         value = bytearray([0])
         cmd = bytearray([0xF0, 0x02] + [0x00, 0x02] + [0x00, param])
-        print binascii.hexlify(cmd)
+        print (binascii.hexlify(cmd))
         ser.write(cmd)
         status = ser.read(self.STATUS_LEN)
         if status == self.OK:
-            print "OK.    Status= %s" % binascii.hexlify(status)
+            print ("OK.    Status= %s" % binascii.hexlify(status))
             value = ser.read(FOBOSCtrl.PARAM_LEN)
         else:
-            print "ERROR. Status= %s" % binascii.hexlify(status)
+            print ("ERROR. Status= %s" % binascii.hexlify(status))
         return status, value
 
     def processData(self, data, outLen):
@@ -169,13 +169,13 @@ class Basys3Ctrl(FOBOSCtrl):
         lenMsb = vectorLen / 256
         #               PROCESS_DATA    message len         data
         cmd = bytearray([0xF0, 0x01] + [lenMsb, lenLsb]) + bytearray.fromhex(data.strip())
-        print binascii.hexlify(cmd)
+        print (binascii.hexlify(cmd))
         self.ser.write(cmd)
         # Read status
         status = self.ser.read(self.STATUS_LEN)
         result2 = ''
         if status == self.OK and self.timeToReset == 0:
-            print "OK.    Status= %s" % binascii.hexlify(status)
+            print ("OK.    Status= %s" % binascii.hexlify(status))
             result = self.ser.read(outLen)
             result = binascii.hexlify(result)
             # get result in correct format
@@ -184,7 +184,7 @@ class Basys3Ctrl(FOBOSCtrl):
                     result2 += ' '
                 result2 += result[i]
         else:
-            print "TIMEOUT. Status= %s" % binascii.hexlify(status)
+            print ("TIMEOUT. Status= %s" % binascii.hexlify(status))
         return status, result2
 
     def getModel(self):
