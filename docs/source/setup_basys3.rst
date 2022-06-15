@@ -1,16 +1,17 @@
 .. _control-basys3-setup-label:
 
 FOBOS Control on Basys 3 Setup
-***********
+******************************
 Below, we describe how to setup FOBOS 3.0 on the Basys 3 board. 
 
 Requirements
 ============
-1. A PC with Linux installed.
-1. Python3 is installed.
-1. Xilinx Vivado 2020.2 is in the search path.
-1. FOBOS 3 is downloaded and unpacked on the PC (see :ref:`fobos-pc-install`).
-1. Digilent Basys3 board (control board) is connected to the PC.
+
+#. A PC with Linux installed.
+#. Python3 is installed.
+#. Xilinx Vivado 2020.2 is in the search path.
+#. FOBOS 3 is downloaded and unpacked on the PC (see :ref:`fobos-pc-install`).
+#. Digilent Basys3 board (control board) is connected to the PC.
 
 
 Control board Setup
@@ -26,72 +27,94 @@ the control board.
     $ cd fobos/control/basys3ctrl/vivado
     $ make create_project
 
-2. A Vivado project will be created at fobos/control/basys3ctrl/vivado/basys3ctrl. Open it using Vivado.
+2. A Vivado project will be created at ``fobos/control/basys3ctrl/vivado/basys3ctrl``. Open it using Vivado (:numref:`fig_open_project`).
 
+.. _fig_open_project:
 .. figure::  figures/open_project.png
    :align:   center
+   :scale: 60 %
 
    Open Vivado project
 
 3. In Vivado's Flow Navigator window, click 'Generate Bitstream'.
 
    
-4. After bitstream is generated, export the hardware. Click File > Export > Export Hardware ... make sure to select the 'Include bitstream' option. Then press 'Next' until this process is finished.
+4. After bitstream is generated, export the hardware. Click File > Export > Export Hardware ... make sure to select the 'Include bitstream' option (:numref:`fig_export_hw`). Then press 'Next' until this process is finished (:numref:`fig_export_hw2`) .
 
+.. _fig_export_hw:
 .. figure::  figures/export_hardware.png
    :align:   center
+   :scale: 60 %
 
    Export Hardware
 
+.. _fig_export_hw2:
+.. figure::  figures/export_hardware2.png
+   :align:   center
+   :scale: 60 %
 
-5. Launch Xilinx Vitis (Tools > Launch Vitis IDE). This tool will create a workspace when you start it for the first time. Then a welcome screen will be displayed where you have to select 'Create Application Project'.
+   Export Hardware, 2nd Dialog
 
+5. Launch Xilinx Vitis (Tools > Launch Vitis IDE). This tool will create a workspace when you start it for the first time. Then a welcome screen will be displayed where you have to select 'Create Application Project' (:numref:`fig_vitis_start`).
+
+.. _fig_vitis_start:
 .. figure::  figures/vitis_start.png
    :align:   center
+   :scale: 40 %
 
    Launch Vitis
 
-6. Next, Vitis will ask you to select a hardware platform. Choose the 'Create a new platform from hardware (XSA)' tab and 'Browse...' to the xsa file that was created by Vivado when you exported the hardware. It should be `fobos/control/basys3ctrl/vivado/basys3ctrl/top_wrapper.xsa`.
+6. Next, Vitis will ask you to select a hardware platform. Choose the 'Create a new platform from hardware (XSA)' tab and 'Browse...' to the xsa file that was created by Vivado when you exported the hardware. It should be ``fobos/control/basys3ctrl/vivado/basys3ctrl/top_wrapper.xsa`` (:numref:`fig_vitis_platform`).
 
+.. _fig_vitis_platform:
 .. figure::  figures/vitis_platform.png
    :align:   center
+   :scale: 60 %
 
    Vitis Select Platform
 
-7. Set the project name to *ctrl* and click Next.
+7. Set the project name to *ctrl* and click Next (:numref:`fig_vitis_project`).
 
+.. _fig_vitis_project:
 .. figure::  figures/vitis_project.png
    :align:   center
+   :scale: 60 %
 
    Vitis New Project
 
 
-8. Click Next again.
+8. Click Next again (:numref:`fig_vitis_project2`).
 
+.. _fig_vitis_project2:
 .. figure::  figures/vitis_project2.png
    :align:   center
+   :scale: 60 %
 
    Vitis New Project 2
 
-9. Select the 'Empty Application' template.
+9. Select the 'Empty Application' template (:numref:`fig_vitis_empty`).
 
+.. _fig_vitis_empty:
 .. figure::  figures/vitis_empty.png
    :align:   center
+   :scale: 60 %
 
    Vitis Empty Application
 
 
-10. Link all the .c and .h files in the `fobos/control/basys3ctrl/sdk/src/` folder to the project. 
-   Right-click on the 'ctrl' folder in the left panel and select 'Import Sources ...'.  
-   Browse to the folder and make sure to check "Advanced-> Create links in the workspace" and "Create virtual folders" .
+10. Link all the .c and .h files in the ``fobos/control/basys3ctrl/sdk/src/`` folder to the project. 
+    Right-click on the 'ctrl' folder in the left panel and select 'Import Sources ...'.  
+    Browse to the folder and make sure to check "Advanced-> Create links in the workspace" and "Create virtual folders"  (:numref:`fig_vitis_import`).
 
+.. _fig_vitis_import:
 .. figure::  figures/vitis_import_sources.png
    :align:   center
+   :scale: 60 %
 
    Vitis Import Sources
 
 11. Program the control board FPGA. Connect the Basys3 board to your PC via USB. In the 'Xilinx' menu, select 'Program Device'.
-   Make sure the correct device is selected and then click on *Program*. If you have multiple boards connected to your PC, the 'Auto Detect' will likely fail and you have to specify the board manually. 
+    Make sure the correct device is selected and then click on *Program*. If you have multiple boards connected to your PC, the 'Auto Detect' will likely fail and you have to specify the board manually. 
 
 12. Right-click on the 'ctrl' folder in the left panel and select 'Build Project' 
 
@@ -100,7 +123,7 @@ the control board.
 14. You should see the word CERG in the seven-segment display of the Basys3 board.
 
 Storing the bitstream on a flash drive
-=====================================
+======================================
 To avoid opening Vitis every time you switch-on the Basys 3 board to program it, you can save the bitstream to a
 flash drive and the board will use it to program the FPGA when power is turned on.
 To do this, follow these few steps.
@@ -109,11 +132,11 @@ To do this, follow these few steps.
 
 2. Right-click on the Microblaze processor and select 'Associate ELF Files ...'.
 
-3. In the window that appear, click the '...' button associated with Design Sources and locate the ELF file created using the SDK (it should be located at *fobos/control/basys3ctrl/vivado/basys3ctrl/basys3ctrl.sdk/ctrl/Debug/*) and the name of the file is *ctrl.elf*.
+3. In the window that appear, click the '...' button associated with Design Sources and locate the ELF file created using the SDK (it should be located at ``fobos/control/basys3ctrl/vivado/basys3ctrl/basys3ctrl.sdk/ctrl/Debug/``) and the name of the file is *ctrl.elf*.
 
 4. Generate the bitstream.
 
-5. Copy the bitstream from *fobos/control/basys3ctrl/vivado/basys3ctrl/basys3ctrl.runs/impl_1/top_wrapper.bit* to a flash drive formatted with FAT32 file system (it must be the only .bit file in the root directory of the flash drive).
+5. Copy the bitstream from ``fobos/control/basys3ctrl/vivado/basys3ctrl/basys3ctrl.runs/impl_1/top_wrapper.bit`` to a flash drive formatted with FAT32 file system (it must be the only .bit file in the root directory of the flash drive).
 
 6. Connect your flash drive to the Basys3 board. Make sure that the *mode* jumper in the Basys3 board is set to the USB setting.
 
@@ -169,7 +192,7 @@ To do this, follow these few steps.
 Testing the control board
 =========================
 
-To make sure the control board is working, you can run the *dymmyCaptureBasic.py* script in the fobos/software/examples directory.
+To make sure the control board is working, you can run the *dymmyCaptureBasic.py* script in the ``fobos/software/examples`` directory.
 This script send data to the board which echos data back.
 
 .. code-block:: bash

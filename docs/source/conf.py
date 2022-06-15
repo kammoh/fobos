@@ -18,12 +18,12 @@
 # -- Project information -----------------------------------------------------
 
 project = 'FOBOS User Guide'
-copyright = '2019, Cryptographic Engineering Research Group (CERG)'
+copyright = '2022, Cryptographic Engineering Research Group (CERG)'
 author = 'Abubakr Abdulgadir, William Diehl and Jens-Peter Kaps'
 
 # The full version, including alpha/beta/rc tags
-release = '2.0'
-version = '2.0'
+release = '3.0'
+version = '3.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -91,7 +91,7 @@ html_css_files = [
 latex_elements = {
     'preamble': r'\usepackage{cergdoc}',
     'maketitle': r'''\topicpic{fobos-slide}
-        \subtitle{FOBOS v2.0, User Guide}
+        \subtitle{FOBOS v3.0, User Guide}
         \cergmaketitle{}''',
 }
 latex_additional_files = ["cergdoc.sty",
@@ -100,8 +100,10 @@ latex_additional_files = ["cergdoc.sty",
     "./cergimg/fobos-slide.jpg"]
 
 latex_documents = [
-    (master_doc, 'fobos2_user-guide.tex',
+    (master_doc, 'fobos3_user-guide.tex',
         'Flexible, Opensource workBench fOr Side-channel analysis (FOBOS)',
         'Abubakr Abdulgadir \\and William Diehl \\and Jens-Peter Kaps',
         'manual',True),
 ]
+
+numfig = True
