@@ -31,12 +31,12 @@ Also, scripts to perform leakage assesment are included.
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
+   :numbered:
    :hidden:
    
    introduction
-   setup
-   setup_basys3
+   controller/index
    tvgen
    dut_board_setup
    dutdev
@@ -54,7 +54,7 @@ Also, scripts to perform leakage assesment are included.
 Download Document
 =================
 
-* `FOBOS 2 User Guide <https://cryptography.gmu.edu/download.php?docid=2616>`_ in PDF format, please cite as [`Bibtex <https://cryptography.gmu.edu/bibtex.php?id=2616>`_]
+* `FOBOS 3 User Guide <https://cryptography.gmu.edu/download.php?docid=2616>`_ in PDF format, please cite as [`Bibtex <https://cryptography.gmu.edu/bibtex.php?id=2616>`_]
   
 Index
 =====
