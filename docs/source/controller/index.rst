@@ -45,8 +45,6 @@ The main differences are:
   :doc:`setup_pynq`
 
 .. toctree::
-   :maxdepth: 2
-   :numbered:
    :hidden:
    
    setup_basys3

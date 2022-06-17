@@ -1,7 +1,7 @@
 .. _control-basys3-setup-label:
 
-FOBOS Control on Basys 3 Setup
-==============================
+Basys 3 Setup
+=============
 Below, we describe how to setup FOBOS 3.0 on the Basys 3 board. 
 
 Requirements
@@ -14,7 +14,7 @@ Requirements
 #. Digilent Basys3 board (control board) is connected to the PC.
 
 
-Control board Setup
+Control Board Setup
 -------------------
 
 Follow these steps to compile the control software, generate the bitstream and program 
@@ -122,7 +122,7 @@ the control board.
 
 14. You should see the word CERG in the seven-segment display of the Basys3 board.
 
-Storing the bitstream on a flash drive
+Storing the Bitstream on a Flash Drive
 --------------------------------------
 To avoid opening Vitis every time you switch-on the Basys 3 board to program it, you can save the bitstream to a
 flash drive and the board will use it to program the FPGA when power is turned on.
@@ -189,7 +189,7 @@ To do this, follow these few steps.
 
     16. Now, power cycle your Basys3 board and your controller is ready to use!
 
-Testing the control board
+Testing the Control Board
 -------------------------
 
 To make sure the control board is working, you can run the *dymmyCaptureBasic.py* script in the ``fobos/software/examples`` directory.
