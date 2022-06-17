@@ -10,7 +10,7 @@ Requirements
 ------------
 #. A PC with Ubuntu 20.04 installed.
 #. FOBOS 3.0 ``fobos-v3.0.tgz`` file.
-#. ``sudo`` rights
+#. You must have ``sudo`` rights.
 
 Basic Downloads
 ---------------
@@ -112,7 +112,7 @@ These installation instructions are based on
        [Install]
        WantedBy=multi-user.target
 
-#.  Link this file to the Systemd's dirctory
+#.  Link this file to the Systemd's directory
 
     .. code-block:: bash
 
@@ -149,7 +149,7 @@ These installation instructions are based on
 `Install JupyterLab the Hard Way <https://github.com/jupyterhub/jupyterhub-the-hard-way/blob/HEAD/docs/installation-guide-hard.md>`_.
 We will use ``conda`` to manage the Python environments.
 
-#.  Get the Anaconda public gpg key
+#.  Get the Anaconda public GPG key
 
     .. code-block:: bash
 
@@ -198,16 +198,16 @@ Finally we get to install FOBOS to run in the JupyterLab we just created.
         sudo /opt/jupyterhub/bin/python3 -m pip install matplotlib
         sudo /opt/jupyterhub/bin/python3 -m pip install scipy
 
-#.  Install packages required for PDF export of jupyter notebooks
+#.  Install packages required for PDF export of Jupyter notebooks
 
     .. code-block:: bash
 
         sudo apt-get install pandoc texlive-xetex texlive-fonts-recommended 
 
-#.  Install FOBOS into ``/opt/fobos`` by simpy moving the whole package.
+#.  Install FOBOS into ``/opt/fobos`` by simply moving the whole package.
 
 #.  Create notebooks folders in all users home directories and 
-    copy fobos notebooks into the users notbook directories   
+    copy fobos notebooks into the users notebook directories   
 
     .. code-block:: bash
 
@@ -220,37 +220,61 @@ Finally we get to install FOBOS to run in the JupyterLab we just created.
 Install DUT Support
 -------------------
 
----Chipwhisperer DUTs
+#.  **Chipwhisperer DUTs**
 
-based on https://chipwhisperer.readthedocs.io/en/latest/linux-install.html
-as we only want to program the DUTs we won't install everything.
+    These installation instructions are based on 
+    `ChipWhisperer Lunix Installatioin <https://chipwhisperer.readthedocs.io/en/latest/linux-install.html>`_.
+    As we only want to program the DUTs we won't install everything.
+    
+    Create a directory for ChipWhisperer and clone it from git into this location
 
-sudo mkdir /opt/chipwhisperer
-sudo chown $USER /opt/chipwhisperer
-cd /opt
-git clone https://github.com/newaetech/chipwhisperer
-sudo cp chipwhisperer/hardware/50-newae.rules /etc/udev/rules.d/
-sudo udevadm control --reload-rules
-sudo usermod -aG dialout $USER
-sudo usermod -aG plugdev $USER
+    .. code-block:: bash
 
-## Add chip whisperer to jupyterhub package directory and install require packages
-sudo ln -s /opt/chipwhisperer/software/chipwhisperer/ /opt/jupyterhub/lib/python3.8/site-packages/
+        sudo mkdir /opt/chipwhisperer
+        sudo chown $USER /opt/chipwhisperer
+        cd /opt
+        git clone https://github.com/newaetech/chipwhisperer
 
-## install cw required software
-sudo /opt/jupyterhub/bin/python3 -m pip install pyusb
-sudo /opt/jupyterhub/bin/python3 -m pip install libusb1
-sudo /opt/jupyterhub/bin/python3 -m pip install pyserial
-sudo /opt/jupyterhub/bin/python3 -m pip install tqdm
-sudo /opt/jupyterhub/bin/python3 -m pip install ECPy
+    Set the udev rules and make all users members of the corresponding groups so that they 
+    can access the Chipwhisperer boards
 
----Digilent DUTs
+    .. code-block:: bash
 
-they require djtcfg, Digilent Adept
-https://digilent.com/shop/software/digilent-adept/
-download for Linux
- Adept for Linux Runtime 
- Adept Utilities 
+        sudo cp chipwhisperer/hardware/50-newae.rules /etc/udev/rules.d/
+        sudo udevadm control --reload-rules
+        sudo usermod -aG dialout $USER
+        sudo usermod -aG plugdev $USER
+    
+    Add ChipWhisperer to our JupyterHub package directory and install require packages
 
-DONE
+    .. code-block:: bash
 
+        sudo ln -s /opt/chipwhisperer/software/chipwhisperer/ /opt/jupyterhub/lib/python3.8/site-packages/
+    
+    Install the additional software packages that ChipWhisperer needs
+
+    .. code-block:: bash
+
+        sudo /opt/jupyterhub/bin/python3 -m pip install pyusb
+        sudo /opt/jupyterhub/bin/python3 -m pip install libusb1
+        sudo /opt/jupyterhub/bin/python3 -m pip install pyserial
+        sudo /opt/jupyterhub/bin/python3 -m pip install tqdm
+        sudo /opt/jupyterhub/bin/python3 -m pip install ECPy
+
+#.  **Digilent DUTs**
+
+    FPGA boards from Diliglent Inc. require the Digilent Adept tools. Download them from 
+    `Digilent Adept Wbsite <https://digilent.com/shop/software/digilent-adept/>`_ for Linux
+    the packages and install them.
+    
+    - Adept for Linux Runtime 
+    - Adept Utilities 
+
+    Make sure that all users are members of the correct groups.
+
+    .. code-block:: bash
+
+        sudo usermod -aG dialout $USER
+        sudo usermod -aG plugdev $USER
+
+Now the SCA Workstation should be ready.
