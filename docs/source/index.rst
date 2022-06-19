@@ -48,6 +48,7 @@ Features
    aes_cpa_example2
    t_test
    x_test
+   api/ctrl/modules
    reference_doc
    license
 
