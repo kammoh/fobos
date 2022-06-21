@@ -14,7 +14,8 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../software/foboslib/ctrl/'))
 autodoc_mock_imports = ["serial","foboslib","time","socket","pickle","numpy","sys"]
-
+autodoc_typehints = 'description'
+typehints_defaults = 'comma'
 
 # -- Project information -----------------------------------------------------
 
@@ -35,7 +36,9 @@ version = '3.0'
 extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.githubpages',
-    'sphinx.ext.autodoc'
+    'sphinx.ext.autodoc',
+    'sphinx.ext.coverage', 
+    'sphinx.ext.napoleon'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

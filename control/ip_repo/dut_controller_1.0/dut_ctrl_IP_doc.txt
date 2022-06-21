@@ -34,7 +34,7 @@ Glitch Module
 DUT Setting
 0x38    DUT_SELECT
             DUT_FOBOS (0x00): DUT that follows FOBOS spec
-            DUT_CW305 (0x01): FC_RST is mapped to FD2C_CLK as FC_RST is not wires on DUT_CW305
+            DUT_CW305 (0x01): FC_RST is mapped to FD2C_CLK as FC_RST is not wired on DUT_CW305
             DUT_MTC   (0x02): Microcontroller DUT on FOBOS_MTC adapter speaking I2C
             DUT_CW308 (0x03): Whatever changes will have to be made for that one
 

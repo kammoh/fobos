@@ -40,10 +40,10 @@ Features
    workstation/index
    controller/index
    dut/index
+   modules/index
    tvgen
    capture_data
    capture_scope
-   controller_features
    cpa
    aes_cpa_example2
    t_test
