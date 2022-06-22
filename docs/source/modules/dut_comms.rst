@@ -152,7 +152,7 @@ The selections are:
 - INTERFACE_4BIT: 4-bit half-duplex FIFO interface using the target connector on the FOBOS Shield
 - INTERFACE_8BIT: 4-bit full-duplex FIFO interface using PMOD connectors
 
-.. code-block:: python
+.. code-block:: py
 
     ctrl.setDUTInterface(FOBOSCtrl.Value)
 
@@ -162,7 +162,7 @@ Output Length
 FOBOS has to know how may output **Bytes** it has to expect from the DUT. 
 This is used to generate the tlast signal used to mark the end of the packet.
 
-.. code-block:: python
+.. code-block:: py
 
     ctrl.setOutLen(Value)
 

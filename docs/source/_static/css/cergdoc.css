@@ -25,4 +25,9 @@ h2{
 .highlight .mi{
   color: #026830;
 }
-
+.math {
+    text-align: left;
+}
+.eqno {
+    float: right;
+}
