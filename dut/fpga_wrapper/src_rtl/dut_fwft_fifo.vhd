@@ -16,7 +16,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity fwft_fifo is
+entity dut_fwft_fifo is
     generic(
         G_W         : integer; --! Width of I/O (bits)
         G_LOG2DEPTH : integer  --! LOG(2) of depth
@@ -38,9 +38,9 @@ entity fwft_fifo is
         --prog_full_th    : in    std_logic_vector(G_LOG2DEPTH - 1 downto 0);
         --prog_full       : out   std_logic
     );
-end entity fwft_fifo;
+end entity dut_fwft_fifo;
 
-architecture structure of fwft_fifo is
+architecture structure of dut_fwft_fifo is
 
     -- FIFO depth in words
     constant DEPTH_C : integer := 2**G_LOG2DEPTH;

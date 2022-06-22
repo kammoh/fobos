@@ -7,7 +7,7 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;  
 use ieee.numeric_std.all;
 
-entity sipo is
+entity dut_sipo is
 
 generic(       
     WI : natural:=4;  --input size in bits
@@ -24,9 +24,9 @@ port(
     dout     : out std_logic_vector(WO-1 downto 0)
 );
 
-end sipo;
+end dut_sipo;
 
-architecture behav of sipo is
+architecture behav of dut_sipo is
 
 signal sipo : std_logic_vector(WO-WI-1 downto 0);
 signal cnt, nx_cnt : unsigned(12-1 downto 0);

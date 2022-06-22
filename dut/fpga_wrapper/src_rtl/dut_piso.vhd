@@ -7,7 +7,7 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;  
 use ieee.numeric_std.all;
 
-entity piso is
+entity dut_piso is
 
 generic(       
     WI : natural := 16;  -- input size in bits
@@ -23,9 +23,9 @@ port(
     do_ready : in  std_logic;
     dout     : out std_logic_vector(WO-1 downto 0)
 );
-end piso;
+end dut_piso;
 
-architecture behav of piso is
+architecture behav of dut_piso is
 
 signal cnt, nx_cnt : unsigned(12-1 downto 0);
 type state_type is (S_WAIT, S_VALID);

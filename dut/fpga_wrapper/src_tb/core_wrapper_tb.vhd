@@ -18,9 +18,9 @@ signal clk : std_logic := '0';
 signal rst : std_logic := '0';
 signal err : std_logic := '0';
 
-FILE configFile: TEXT OPEN READ_MODE  is "configFile.txt";
-FILE dinFile: TEXT OPEN READ_MODE  is "dinFile.txt";
-FILE doutFile: TEXT OPEN WRITE_MODE is "doutFile.txt";
+FILE configFile: TEXT OPEN READ_MODE  is "../KAT/v1/configFile.txt";
+FILE dinFile: TEXT OPEN READ_MODE  is "../KAT/v1/dinFile.txt";
+FILE doutFile: TEXT OPEN WRITE_MODE is "../KAT/v1/doutFile.txt";
 
 
 -- crypto core signals
@@ -41,9 +41,10 @@ begin
 
     inst_core_wrapper : entity work.core_wrapper(behav)
     generic map(
-        FIFO_0_WIDTH   => 128,
-        FIFO_1_WIDTH   => 128,
-        FIFO_OUT_WIDTH => 128
+        FIFO_0_WIDTH   => 64,
+        FIFO_1_WIDTH   => 64,
+        FIFO_RDI_WIDTH => 384,
+        FIFO_OUT_WIDTH => 64
     )
     port map(
         clk => clk,
