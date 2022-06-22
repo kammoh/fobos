@@ -106,12 +106,8 @@ This module counts the number of clock cycles that passed between the DUT starti
 
 
 
-Port mapping
-============
-to be moved to Basys 3 PMOD section
-
-
-Below, we show how the pins on the Basys3 PMOD ports are assinged. ::
+..
+    Below, we show how the pins on the Basys3 PMOD ports are assinged. ::
 
     #JA
     #+----------+----------+----------+----------+
