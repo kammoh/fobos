@@ -88,7 +88,7 @@ class ProjectManager():
         if os.path.isdir(projDir):
             return projDir
         else:
-            # create it
+            # create it and return it!
             try:
                 os.mkdir(projDir)
             except OSError as e:
@@ -97,6 +97,7 @@ class ProjectManager():
             else:
                 print ("Successfully created workspace directory at %s" %
                        (projDir))
+                return projDir
 
     def createCaptureDir(self):
         """
