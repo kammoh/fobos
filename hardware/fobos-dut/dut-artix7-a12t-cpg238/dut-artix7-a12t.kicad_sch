@@ -1265,10 +1265,10 @@
     (property "Reference" "H1" (id 0) (at 34.29 188.0616 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "" (id 1) (at 34.29 190.373 0)
+    (property "Value" "MountingHole" (id 1) (at 34.29 190.373 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "" (id 2) (at 31.75 189.23 0)
+    (property "Footprint" "cerg:MH_4-40" (id 2) (at 31.75 189.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 31.75 189.23 0)
@@ -1282,10 +1282,10 @@
     (property "Reference" "H2" (id 0) (at 46.99 188.0616 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "" (id 1) (at 46.99 190.373 0)
+    (property "Value" "MountingHole" (id 1) (at 46.99 190.373 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "" (id 2) (at 44.45 189.23 0)
+    (property "Footprint" "cerg:MH_4-40" (id 2) (at 44.45 189.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 44.45 189.23 0)
@@ -1299,10 +1299,10 @@
     (property "Reference" "H3" (id 0) (at 59.69 188.0616 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "" (id 1) (at 59.69 190.373 0)
+    (property "Value" "MountingHole" (id 1) (at 59.69 190.373 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "" (id 2) (at 57.15 189.23 0)
+    (property "Footprint" "cerg:MH_4-40" (id 2) (at 57.15 189.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 57.15 189.23 0)
@@ -1316,10 +1316,10 @@
     (property "Reference" "H4" (id 0) (at 72.39 188.0616 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "" (id 1) (at 72.39 190.373 0)
+    (property "Value" "MountingHole" (id 1) (at 72.39 190.373 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "" (id 2) (at 69.85 189.23 0)
+    (property "Footprint" "cerg:MH_4-40" (id 2) (at 69.85 189.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 69.85 189.23 0)
@@ -1333,10 +1333,10 @@
     (property "Reference" "#LOGO1" (id 0) (at 140.97 179.705 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "" (id 1) (at 140.97 192.405 0)
+    (property "Value" "CERG-logo" (id 1) (at 140.97 192.405 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Footprint" "" (id 2) (at 140.97 182.7022 0))
+    (property "Footprint" "cerg:cerg" (id 2) (at 140.97 182.7022 0))
     (property "Datasheet" "" (id 3) (at 140.97 179.705 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -1448,9 +1448,6 @@
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-00005fe6b20c"
       (reference "#PWR01") (unit 1) (value "+1V0") (footprint "")
     )
-    (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-00005fdf12f8"
-      (reference "#PWR02") (unit 1) (value "+1V8") (footprint "")
-    )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-00005fda6ecc"
       (reference "#PWR03") (unit 1) (value "GND") (footprint "")
     )
@@ -1534,9 +1531,6 @@
     )
     (path "/00000000-0000-0000-0000-00005f20da36/00000000-0000-0000-0000-000060a8fbf0"
       (reference "#PWR030") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/00000000-0000-0000-0000-00005f20da36/00000000-0000-0000-0000-000060abda54"
-      (reference "#PWR031") (unit 1) (value "+3.3V") (footprint "")
     )
     (path "/00000000-0000-0000-0000-00005f3a1954/00000000-0000-0000-0000-000060e483db"
       (reference "#PWR032") (unit 1) (value "GND") (footprint "")
@@ -1754,6 +1748,15 @@
     (path "/00000000-0000-0000-0000-00006004c151/00000000-0000-0000-0000-000060388712"
       (reference "#PWR0149") (unit 1) (value "+3V3") (footprint "")
     )
+    (path "/00000000-0000-0000-0000-00005f3a1954/ab30a68f-61c3-425a-a43a-e9587a8eba62"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/00000000-0000-0000-0000-00005f449901/bb14f28a-4298-4a7c-a2f5-18a6242eef36"
+      (reference "#PWR?") (unit 1) (value "+5V") (footprint "")
+    )
+    (path "/00000000-0000-0000-0000-00005f3a1954/fc2d43f8-3212-4951-80b1-bd2e76ff15e7"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
     (path "/00000000-0000-0000-0000-00005f20da36/00000000-0000-0000-0000-00005f25f7b4"
       (reference "C1") (unit 1) (value "100nF") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
@@ -1946,6 +1949,12 @@
     (path "/00000000-0000-0000-0000-00005f3a1954/00000000-0000-0000-0000-000060b8f962"
       (reference "D6") (unit 1) (value "LG_L29K-G2J1-24-Z") (footprint "LED_SMD:LED_0603_1608Metric")
     )
+    (path "/00000000-0000-0000-0000-00005f3a1954/4ed46b60-89b7-4efd-92cd-2249e78c622d"
+      (reference "D?") (unit 1) (value "LG_L29K-G2J1-24-Z") (footprint "LED_SMD:LED_0603_1608Metric")
+    )
+    (path "/00000000-0000-0000-0000-00005f3a1954/56aa51c5-7c47-43c4-846d-ff5dbc8d0cb3"
+      (reference "D?") (unit 1) (value "LG_L29K-G2J1-24-Z") (footprint "LED_SMD:LED_0603_1608Metric")
+    )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-00005f45a1d8"
       (reference "F1") (unit 1) (value "MF-MSMF050-2") (footprint "Fuse:Fuse_1206_3216Metric")
     )
@@ -1998,10 +2007,16 @@
       (reference "JP2") (unit 1) (value "CurProbe") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-00005f45a258"
-      (reference "JP3") (unit 1) (value "Shunt1R") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+      (reference "JP3") (unit 1) (value "Shunt1V") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
     (path "/00000000-0000-0000-0000-00005f20da36/00000000-0000-0000-0000-000060a66495"
       (reference "JP4") (unit 1) (value "FC3V3_3V3_SHUNT") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+    )
+    (path "/00000000-0000-0000-0000-00005f449901/611ccf95-8f44-486c-9362-081eda055810"
+      (reference "JP?") (unit 1) (value "Shunt1V8") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+    )
+    (path "/00000000-0000-0000-0000-00005f449901/820a1c62-e7d6-4fd9-ab5a-a68226a0a5f3"
+      (reference "JP?") (unit 1) (value "Shunt3V3") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-00005f45a1f7"
       (reference "L1") (unit 1) (value "1k/500mA") (footprint "Inductor_SMD:L_0603_1608Metric")
@@ -2041,6 +2056,12 @@
     )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-000060c2bf42"
       (reference "Q8") (unit 1) (value "MMBT3904") (footprint "Package_TO_SOT_SMD:SOT-23")
+    )
+    (path "/00000000-0000-0000-0000-00005f3a1954/9d3f4056-22cc-4d70-bf3d-d716c6ab738e"
+      (reference "Q?") (unit 1) (value "BSS138") (footprint "Package_TO_SOT_SMD:SOT-23")
+    )
+    (path "/00000000-0000-0000-0000-00005f3a1954/ebf42449-f946-4d7c-a4cf-6566d4ce8993"
+      (reference "Q?") (unit 1) (value "BSS138") (footprint "Package_TO_SOT_SMD:SOT-23")
     )
     (path "/00000000-0000-0000-0000-00005f20da36/00000000-0000-0000-0000-00005f245a18"
       (reference "R1") (unit 1) (value "22R") (footprint "Resistor_SMD:R_0603_1608Metric")
@@ -2169,13 +2190,13 @@
       (reference "R42") (unit 1) (value "10KR") (footprint "Resistor_SMD:R_0603_1608Metric")
     )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-00005fefac29"
-      (reference "R43") (unit 1) (value "10KR") (footprint "Resistor_SMD:R_0603_1608Metric")
+      (reference "R43") (unit 1) (value "30K") (footprint "Resistor_SMD:R_0603_1608Metric")
     )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-00005fefb18b"
-      (reference "R44") (unit 1) (value "10KR") (footprint "Resistor_SMD:R_0603_1608Metric")
+      (reference "R44") (unit 1) (value "150K") (footprint "Resistor_SMD:R_0603_1608Metric")
     )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-00005fefb44e"
-      (reference "R45") (unit 1) (value "10KR") (footprint "Resistor_SMD:R_0603_1608Metric")
+      (reference "R45") (unit 1) (value "180K") (footprint "Resistor_SMD:R_0603_1608Metric")
     )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-00005fefbe50"
       (reference "R46") (unit 1) (value "120KR") (footprint "Resistor_SMD:R_0603_1608Metric")
@@ -2265,16 +2286,28 @@
       (reference "R74") (unit 1) (value "10KR") (footprint "Resistor_SMD:R_0603_1608Metric")
     )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-000060ba4ed6"
-      (reference "R75") (unit 1) (value "0.1R") (footprint "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder")
+      (reference "R75") (unit 1) (value "0R1") (footprint "Resistor_SMD:R_1206_3216Metric")
     )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-000060c1fb49"
-      (reference "R76") (unit 1) (value "0.1R") (footprint "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder")
+      (reference "R76") (unit 1) (value "0R1") (footprint "Resistor_SMD:R_1206_3216Metric")
     )
     (path "/00000000-0000-0000-0000-00005f22d594/00000000-0000-0000-0000-00006101fc56"
       (reference "R77") (unit 1) (value "1KR") (footprint "Resistor_SMD:R_0603_1608Metric")
     )
     (path "/00000000-0000-0000-0000-00005f22d594/00000000-0000-0000-0000-000061020238"
       (reference "R78") (unit 1) (value "1KR") (footprint "Resistor_SMD:R_0603_1608Metric")
+    )
+    (path "/00000000-0000-0000-0000-00005f3a1954/125dc889-8009-4161-b237-d444ab38af24"
+      (reference "R?") (unit 1) (value "10KR") (footprint "Resistor_SMD:R_0603_1608Metric")
+    )
+    (path "/00000000-0000-0000-0000-00005f3a1954/5a5519a2-56fc-4a1f-bbf6-4e9bc0e4f347"
+      (reference "R?") (unit 1) (value "800R") (footprint "Resistor_SMD:R_0603_1608Metric")
+    )
+    (path "/00000000-0000-0000-0000-00005f3a1954/97584d5e-8510-4122-a104-5e9683717e5a"
+      (reference "R?") (unit 1) (value "470R") (footprint "Resistor_SMD:R_0603_1608Metric")
+    )
+    (path "/00000000-0000-0000-0000-00005f3a1954/bcfabffc-94e7-4dec-bb59-8dd221d8f7a8"
+      (reference "R?") (unit 1) (value "100KR") (footprint "Resistor_SMD:R_0603_1608Metric")
     )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-000060aff5c6"
       (reference "S1") (unit 1) (value "JS202011SCQN") (footprint "cerg:Switch_Slide_JS202011SCQN")
@@ -2311,18 +2344,6 @@
     )
     (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-00005ffd44ac"
       (reference "TP5") (unit 1) (value "5281") (footprint "cerg:5281")
-    )
-    (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-000060c21ab4"
-      (reference "TP6") (unit 1) (value "5281") (footprint "cerg:5281")
-    )
-    (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-000060c22508"
-      (reference "TP7") (unit 1) (value "5281") (footprint "cerg:5281")
-    )
-    (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-000060c1ff6e"
-      (reference "TP8") (unit 1) (value "5281") (footprint "cerg:5281")
-    )
-    (path "/00000000-0000-0000-0000-00005f449901/00000000-0000-0000-0000-000060c21fe1"
-      (reference "TP9") (unit 1) (value "5281") (footprint "cerg:5281")
     )
     (path "/00000000-0000-0000-0000-000060d2f94f/00000000-0000-0000-0000-000060d317c1"
       (reference "U1") (unit 1) (value "XC7A12T-CPG238") (footprint "Package_BGA:Xilinx_CPG238")

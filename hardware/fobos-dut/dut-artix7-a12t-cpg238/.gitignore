@@ -16,3 +16,5 @@ _autosave-*
 
 # Netlist files (exported from Eeschema)
 *.net
+
+dut-artix7-a12t-backups
