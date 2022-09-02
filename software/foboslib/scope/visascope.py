@@ -38,7 +38,7 @@ class Scope():
          'OSCILLOSCOPE'    : "", 'OSCILLOSCOPE_IP'  : "", 'OSCILLOSCOPE_PORT' : "", 
          'RESOURCE'        : "", 'AUTOSCALE'        : "", 'IMPEDANCE'         : "",        
          'CHANNEL1_RANGE'  : "", 'CHANNEL2_RANGE'   : "", 'CHANNEL3_RANGE'    : "", 
-         'CHANNEL_4RANGE'  : "", 'CHANNEL1_DISPLAY' : "",
+         'CHANNEL_4RANGE'  : "", 'CHANNEL1_DISPLAY' : "", 'CHANNEL1_OFFSET'  : "",
          'CHANNEL2_DISPLAY': "", 'CHANNEL3_DISPLAY' : "", 'CHANNEL4_DISPLAY'  : "", 
          'TIME_RANGE'      : "", 'TIMEBASE_REF'     : "", 'TRIGGER_SOURCE'    : "",
          'TRIGGER_MODE'    : "", 'TRIGGER_SWEEP'    : "", 'TRIGGER_LEVEL'     : "",    
@@ -52,11 +52,14 @@ class Scope():
         # 'TRIG_HIGH' | 'FULL'
         self.cutMode = cutMode
 
+    def setNumSamples(self, num):
+        self.numSamples = num
+        
     def getConfig(self):
         return self.conf
 
     def setConfig(self, conf):
-        for key, value in conf.iteritems():
+        for key, value in conf.items():
             # print key , value
             self.conf[key] = value
 
@@ -67,8 +70,11 @@ class Scope():
         if self.conf['CHANNEL1_RANGE']:
             cmdString = ":CHANNEL1:RANGE " + self.conf['CHANNEL1_RANGE']
             self.send(cmdString + '\n')
+        if self.conf['CHANNEL1_OFFSET']:
+            cmdString = ":CHANNEL1:OFFSet " + self.conf['CHANNEL1_OFFSET']
+            self.send(cmdString + '\n')
         if self.conf['CHANNEL2_RANGE']:
-            cmdString = ":CHANNEL2:RANGE " + self.conf['CHANNEL2_RANGE']
+            cmdString = ":CHANNEL2:19762979200415934RANGE " + self.conf['CHANNEL2_RANGE']
             self.send(cmdString + '\n')
         if self.conf['CHANNEL3_RANGE']:
             cmdString = ":CHANNEL3:RANGE " + self.conf['CHANNEL3_RANGE']
@@ -98,7 +104,7 @@ class Scope():
             cmdString = ":TRIGGER:EDGE:SLOPE " + self.conf['TRIGGER_SLOPE']
             self.send(cmdString + '\n')
         if self.conf['ACQUIRE_TYPE']:
-            cmdString = ":ACQUIRE:TYPE " + self.conf['ACQUIRE_TYPE']
+            cmdString = ":ACQUIRE:19762979200415934TYPE " + self.conf['ACQUIRE_TYPE']
             self.send(cmdString + '\n')
         if self.conf['ACQUIRE_MODE']:
             cmdString = ":ACQUIRE:MODE " + self.conf['ACQUIRE_MODE']
@@ -114,7 +120,7 @@ class Scope():
         self.logger.info("Sending to scop: " + msg)
         # testing
         # return
-        self.socket.send(msg)
+        self.socket.send(msg.encode())
 
     def recv(self, numBytes):
         return self.socket.recv(numBytes)
@@ -122,9 +128,9 @@ class Scope():
     def openConnection(self):
         self.socket.connect((self.conf['OSCILLOSCOPE_IP'],
                             int(self.conf['OSCILLOSCOPE_PORT'])))
-        self.socket.send("*IDN?" + '\n')
+        self.socket.send(("*IDN?" + "\n").encode())
         oscID = self.socket.recv(200)
-        self.logger.info("\tConnected to Oscilloscope ID :" + oscID + '\n')
+        self.logger.info("\tConnected to Oscilloscope ID :" + oscID.decode("utf-8")  + '\n')
 
     def closeConnection(self):
         self.socket.close()
@@ -143,7 +149,21 @@ class Scope():
         channels = ', '.join(channels)
         cmdString = ":DIGITIZE " + channels
         self.send(cmdString.strip() + '\n')
-        # time.sleep(0.1)
+   
+    def runTrace(self):
+        channels = []
+        if self.conf['CHANNEL1_RANGE'] != 'OFF':
+            channels.append('CHAN1')
+        if self.conf['CHANNEL2_RANGE'] != 'OFF':
+            channels.append('CHAN2')
+        if self.conf['CHANNEL3_RANGE'] != 'OFF':
+            channels.append('CHAN3')
+        if self.conf['CHANNEL4_RANGE'] != 'OFF':
+            channels.append('CHAN4')
+
+        channels = ', '.join(channels)
+        cmdString = ":RUN " + channels
+        self.send(cmdString.strip() + '\n')
 
     def getAlignedTrace(self):
         powerChan = ""
@@ -158,11 +178,17 @@ class Scope():
 
         triggerChan = self.conf['TRIGGER_SOURCE']
 
+        print("1")
         powerSignal = self.readChannel(powerChan)
+        print("2")
         powerSignal = self.adjustSampleSize(self.numSamples, powerSignal)
+        print("3")
         triggerSignal = self.readChannel(triggerChan)
+        print("4")
         triggerSignal = self.adjustSampleSize(self.numSamples, triggerSignal)
+        print("5")
         alginedTrace = self.alginTrace(powerSignal, triggerSignal)
+        print("6")
         return alginedTrace
 
     def readChannel(self, channelName):
@@ -170,7 +196,7 @@ class Scope():
         self.send(":WAVEFORM:SOURCE " + channelName + ";MODE BYTE" + '\n')
         self.send(":WAVEFORM:POINTS " + str(self.numSamples) + '\n')
         self.send(":WAVEFORM:PREAMBLE?" + '\n')
-        preamble = self.recv(400)
+        preamble = self.recv(400).decode("utf-8")
         preamble = preamble.split(',')
         vdiv = 32 * float(preamble[7])
         off = float(preamble[8])
@@ -178,10 +204,14 @@ class Scope():
         delay = (float(preamble[2]) / 2) * float(preamble[4]) + float(preamble[5])
         self.send(":WAVEFORM:DATA?" + '\n')
         tData = int(preamble[2])
-        wavedata = ""
+        # print(preamble)
+
         temp = self.recv(11)
         temp = self.recv(tData)
-        wavedata = wavedata + temp
+ 
+        
+
+        wavedata = temp
         while (len(wavedata) < tData):
             temp = self.recv(tData)
             wavedata = wavedata + temp
@@ -189,7 +219,7 @@ class Scope():
         imgY1 = (rawImg - float(preamble[9])) * float(preamble[7]) + float(preamble[8])
         measuredData = numpy.array(imgY1, dtype=numpy.float64)
         t2 = time.time()
-        print "++++++++++++++++++++++++++++++++++++++++t2-t1=%s" % str(t2 - t1)
+        # print("++++++++++++++++++++++++++++++++++++++++t2-t1=%s" % str(t2 - t1))
         return measuredData
 
 
@@ -199,17 +229,17 @@ class Scope():
         tempArray = numpy.zeros(0)
         start = 0
         end = len(measuredTriggerData)
-        threshold = self.conf['TRIGGER_LEVEL']
-        for sampleNo in range(0, len(measuredTriggerData)):
+        threshold = int(self.conf['TRIGGER_LEVEL'])
+        for sampleNo in range(0, len(measuredTriggerData)):            
             if(measuredTriggerData[sampleNo] > threshold and firstTriggerHigh == False):
                 start = sampleNo
                 firstTriggerHigh = True
-                if cutMode != "TRIG_HIGH":
+                if self.cutMode != "TRIG_HIGH":
                     break
             elif(measuredTriggerData[sampleNo] < threshold  and firstTriggerHigh == True):
                 end = sampleNo
                 break
-        print "Cutting trace : start= " + str(start) + " end=" + str(end)
+        print("Cutting trace : start= " + str(start) + " end=" + str(end))
         return measuredPowerData[start:end]
 
     def adjustSampleSize(self, sampleLength, dataArray):
@@ -221,12 +251,12 @@ class Scope():
         elif (arrLen > sampleLength):
             diff = arrLen - sampleLength
             for count in range(0, diff):
-                newDataArray = np.delete(newDataArray, -1, 0)
+                newDataArray = numpy.delete(newDataArray, -1, 0)
             return newDataArray
         elif (arrLen < sampleLength):
             diff = sampleLength - arrLen
             for count in range(0, diff):
-                newDataArray = np.append(newDataArray, 0)
+                newDataArray = numpy.append(newDataArray, 0)
             return newDataArray
 
 
@@ -257,7 +287,7 @@ def main():
     sc = Scope()
     sc.openConnection()
     sc.setConfig(scopConfig)
-    print sc.getConfig()
+    print(sc.getConfig())
     sc.openConnection()
     sc.arm()
     sc.closeConnection()
