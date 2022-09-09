@@ -1,0 +1,5 @@
+[project]
+name = "foboslib"
+readme = "README.md"
+license = { file = "LICENSE.txt" }
+version = "3.0"
