@@ -102,6 +102,7 @@ class FOBOSCtrl:
     PWMGR_STAT_SW_TRIG = 59
     PWMGR_SET_VAR_ON  = 60
     PWMGR_SET_VAR_OFF = 61
+    PWMGR_SET_VAR_VOLT = 62
 
     # Trigger parameters
     TRG_NORM = 0

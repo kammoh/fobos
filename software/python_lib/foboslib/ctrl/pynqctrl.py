@@ -784,6 +784,12 @@ class PYNQCtrl(FOBOSCtrl):
         curr = float(response.split("=")[-1].replace(" ",""))
         return curr        
 
+    def pwOutVarSet(self, volt):
+        self.config += f'PWMGR_SET_VAR_VOLT = {volt}\n'
+        self.sendMsg(FOBOSCtrl.PWMGR_SET_VAR_VOLT, volt)
+        status, _ = self.recvMsg()
+        return status
+    
 def main():
     import time
     ctrl = PYNQCtrl('192.168.10.99', 9995)

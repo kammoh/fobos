@@ -22,10 +22,14 @@
 # This class hides the Powermanager hardware of the FOBOS Shield rev 2
 # Rev 2 had 3 power channels: 3v3, 5v, Var supplying nominal 3.3V, 5V, 
 # and a variable voltage between 0.9V and 3.65V respectively
-
-
+import os, sys
 from pynq import DefaultIP
+import pandas as pd 
 import time
+
+# import conf from parent folder
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from pynq_conf import FOBOS_HOME
 
 class PowerDriver(DefaultIP):
     """
@@ -74,25 +78,41 @@ class PowerDriver(DefaultIP):
     varvolts = [3.65, 3.6, 3.55, 3.5, 3.45, 3.4, 3.35, 3.3, 3.25, 3.2, 3.15, 3.1, 3.05, 3, 2.95, 2.9, 2.85, 2.8, 2.75, 2.7,
                 2.65, 2.6, 2.55, 2.5, 2.45, 2.4, 2.35, 2.3, 2.25, 2.2, 2.15, 2.1, 2.05, 2, 1.95, 1.9, 1.85, 1.8, 1.75, 1.7,
                 1.65, 1.6, 1.55, 1.5, 1.45, 1.4, 1.35, 1.3, 1.25, 1.2, 1.15, 1.1, 1.05, 1, 0.95, 0.9]
-               
-    # to be loaded in future
-    callvarcoeffs = [ 0.00915188, -0.07801151,  0.20498496, -0.045486  ] 
-    call3v3coeffs = [ 0.00915188, -0.07801151,  0.20498496, -0.045486  ] 
-    call5vcoeffs = [ 0.00915188, -0.07801151,  0.20498496, -0.045486  ] 
 
-    currvarcoeffs = [-0.36547565, -0.0191488,   0.2069681,   0.00090635]
-    curr3v3coeffs = [-0.36547565, -0.0191488,   0.2069681,   0.00090635]
-    curr5vcoeffs = [-0.36547565, -0.0191488,   0.2069681,   0.00090635]
-    callcurroffs = [250, 540, 250]  # 0 offset for 3v3, 5v, and var
-
+    enCalibration = True
+    calibration_file = "{}/software/power_conf.csv".format(FOBOS_HOME)
+    
+    callcurroffs = [250, 540, 250]
+    
     def __init__(self, description, *args, **kwargs):
         """
         Construct a new 'Power' object.
         """
-        super().__init__(description=description)        
+        super().__init__(description=description)   
+        try:
+            self.calibration_df = pd.read_csv(self.calibration_file)
+        except:
+            self.calibration_df = None
+            print("Unable to load power manager calibration file")
 
     bindto = ['CERG:cerg:powermanager:1.1']
 
+    def enableCalibration(self, cal):
+        self.enCalibration = cal
+    
+    def GetCalibration(self, src, mtype, gain):
+        if (self.calibration_df is None):
+            return [0,0,0,0]
+        
+        cond = (self.calibration_df['source'] == src) & (self.calibration_df['gain'] == gain) & (self.calibration_df['type'] == mtype)
+        if len(self.calibration_df.loc[cond].values.tolist()) < 1:
+            return [0,0,0,0]
+        else:
+            
+            coeffs = self.calibration_df.loc[cond].values.tolist()[0][3]
+            coeffs = [float(x) for x in coeffs.strip('][').split(', ')]
+            return list(coeffs)
+    
     def writeGain3v3(self, gain):
         try:
             gainbits = self.xbpgains.index(gain)
@@ -169,38 +189,50 @@ class PowerDriver(DefaultIP):
     def checkVarOn(self):
         return (self.mmio.read(self.command) & self.out_enable)
 
+    
     def convertVoltVar(self, value):
         value = value * self.xadc_multiplier
-        value = value + self.callvarcoeffs[0]*value**3 + self.callvarcoeffs[1]*value**2 + self.callvarcoeffs[2]*value + self.callvarcoeffs[3]
+        if self.enCalibration:
+            coeffs = self.GetCalibration("VAR", "VOLT", self.readGainVar()) 
+            value = value + coeffs[0]*value**3 + coeffs[1]*value**2 + coeffs[2]*value + coeffs[3]   
         return value
    
     def convertVolt5v(self, value):
         value = value * self.xadc_multiplier
-        value = value + self.call5vcoeffs[0]*value**3 + self.call5vcoeffs[1]*value**2 + self.call5vcoeffs[2]*value + self.call5vcoeffs[3]
+        if self.enCalibration:
+            coeffs = self.GetCalibration("5V", "VOLT", self.readGainVar()) 
+            value = value + coeffs[0]*value**3 + coeffs[1]*value**2 + coeffs[2]*value + coeffs[3]   
         return value
 
     def convertVolt3v3(self, value):
         value = value * self.xadc_multiplier
-        value = value + self.call3v3coeffs[0]*value**3 + self.call3v3coeffs[1]*value**2 + self.call3v3coeffs[2]*value + self.call3v3coeffs[3]
+        if self.enCalibration:
+            coeffs = self.GetCalibration("3V3", "VOLT", self.readGainVar()) 
+            value = value + coeffs[0]*value**3 + coeffs[1]*value**2 + coeffs[2]*value + coeffs[3]   
         return value
 
     def convertCurrVar(self, value):
         value = (value-self.callcurroffs[2]) * self.xadc_multiplier
         value = value / (self.xbp_shunt * self.readGainVar())
-        value = value + self.currvarcoeffs[0]*value**3 + self.currvarcoeffs[1]*value**2 + self.currvarcoeffs[2]*value + self.currvarcoeffs[3]        
+        if self.enCalibration:
+            coeffs = self.GetCalibration("VAR", "CURR", self.readGainVar()) 
+            value = value + coeffs[0]*value**3 + coeffs[1]*value**2 + coeffs[2]*value + coeffs[3]   
         return value
    
     def convertCurr3v3(self, value):
         value = (value-self.callcurroffs[0]) * self.xadc_multiplier
         value = value / (self.xbp_shunt * self.readGainVar())
-        value = value + self.curr3v3coeffs[0]*value**3 + self.curr3v3coeffs[1]*value**2 + self.curr3v3coeffs[2]*value + self.curr3v3coeffs[3]        
+        if self.enCalibration:
+            coeffs = self.GetCalibration("3V3", "CURR", self.readGainVar()) 
+            value = value + coeffs[0]*value**3 + coeffs[1]*value**2 + coeffs[2]*value + coeffs[3]   
         return value
 
     def convertCurr5v(self, value):
         value = (value-self.callcurroffs[1]) * self.xadc_multiplier
         value = value / (self.xbp_shunt * self.readGainVar())
-        value = value + self.curr5vcoeffs[0]*value**3 + self.curr5vcoeffs[1]*value**2 + self.curr5vcoeffs[2]*value + self.curr5vcoeffs[3]        
-
+        if self.enCalibration:
+            coeffs = self.GetCalibration("5V", "CURR", self.readGainVar()) 
+            value = value + coeffs[0]*value**3 + coeffs[1]*value**2 + coeffs[2]*value + coeffs[3]   
         return value
 
     def readVolt3v3(self):
@@ -213,20 +245,12 @@ class PowerDriver(DefaultIP):
         return self.convertVoltVar(value = self.mmio.read(self.voltvar))
        
     def readCurr3v3(self):
-#        value = (self.mmio.read(self.current3v3)-self.callcurroffs[0]) * self.xadc_multiplier
-#        value = value / (self.xbp_shunt * self.readGain3v3())
         return self.convertCurr3v3(self.mmio.read(self.current3v3))
 
     def readCurr5v(self):
-#        value = (self.mmio.read(self.current5v)-self.callcurroffs[1]) * self.xadc_multiplier
-#        value = value / (self.xp_shunt * self.readGain5v())
         return self.convertCurr5v(self.mmio.read(self.current5v))
     
     def readCurrVar(self):
-#        value = (self.mmio.read(self.currentvar)-self.callcurroffs[2]) * self.xadc_multiplier
-#        value = value / (self.xbp_shunt * self.readGainVar())
-#        value = value + self.currcoeffs[0]*value**3 + self.currcoeffs[1]*value**2 + self.currcoeffs[2]*value + self.currcoeffs[3]
-        
         return self.convertCurrVar(self.mmio.read(self.currentvar))
     
     def enableSwTrig(self):
@@ -325,8 +349,9 @@ class PowerManager():
 
     PowerIF = None
 
-    def __init__(self, overlay):
+    def __init__(self, overlay, useCalibration=True):
         self.PowerIF = overlay.powermanager_0
+        self.PowerIF.enableCalibration(useCalibration)
         # read callibration values. If file does not exist promt user to run callibration
         # self.PowerIF.loadCal()
         
@@ -457,7 +482,7 @@ class PowerManager():
             
     def MeasBusy(self):
         """
-        After a trigger (HW or SW) fires, the powermanager will be busy
+        After a trigger (HW or SW) fiuntitledres, the powermanager will be busy
         until the trigger is released. While its busy, the maximum and 
         average values will be updated and won't be steady.
         -----
