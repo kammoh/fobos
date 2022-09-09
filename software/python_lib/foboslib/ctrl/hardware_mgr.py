@@ -13,9 +13,11 @@ class HardwareManager():
             if toc - tic > self.TIMEOUT:
                 print('Hardware manager: timeout while waiting for control board. Please try again later.')
                 return False
+            self.unlock()
             if not self.isLocked():
                 try:
-                    open(self.LOCK_FILE_PATH, 'a').close()
+                    print(f"opening {self.LOCK_FILE_PATH}")
+                    open(self.LOCK_FILE_PATH, 'w').close()
                 except Exception as e:
                     print(e)
                     return False
