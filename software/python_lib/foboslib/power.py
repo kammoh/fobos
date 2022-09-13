@@ -70,6 +70,7 @@ class PowerDriver(DefaultIP):
     oflow         = 0x00000400
 
     # XADC and XBP  parameters
+    xadc_limit = 65520
     xadc_resolution = 65535  # 2^16 -1
     xadc_max = 5 # Volt
     xadc_multiplier = xadc_max / xadc_resolution
@@ -191,6 +192,9 @@ class PowerDriver(DefaultIP):
 
     
     def convertVoltVar(self, value):
+        if (value >= self.xadc_limit):
+            print("XADC clipped! Value read: {}".format(value))
+            return -1
         value = value * self.xadc_multiplier
         if self.enCalibration:
             coeffs = self.GetCalibration("VAR", "VOLT", self.readGainVar()) 
@@ -198,6 +202,9 @@ class PowerDriver(DefaultIP):
         return value
    
     def convertVolt5v(self, value):
+        if (value >= self.xadc_limit):
+            print("XADC clipped! Value read: {}".format(value))
+            return -1
         value = value * self.xadc_multiplier
         if self.enCalibration:
             coeffs = self.GetCalibration("5V", "VOLT", self.readGainVar()) 
@@ -205,6 +212,9 @@ class PowerDriver(DefaultIP):
         return value
 
     def convertVolt3v3(self, value):
+        if (value >= self.xadc_limit):
+            print("XADC clipped! Value read: {}".format(value))
+            return -1
         value = value * self.xadc_multiplier
         if self.enCalibration:
             coeffs = self.GetCalibration("3V3", "VOLT", self.readGainVar()) 
@@ -212,6 +222,9 @@ class PowerDriver(DefaultIP):
         return value
 
     def convertCurrVar(self, value):
+        if (value >= self.xadc_limit):
+            print("XADC clipped! Value read: {}".format(value))
+            return -1
         value = (value-self.callcurroffs[2]) * self.xadc_multiplier
         value = value / (self.xbp_shunt * self.readGainVar())
         if self.enCalibration:
@@ -220,18 +233,24 @@ class PowerDriver(DefaultIP):
         return value
    
     def convertCurr3v3(self, value):
+        if (value >= self.xadc_limit):
+            print("XADC clipped! Value read: {}".format(value))
+            return -1
         value = (value-self.callcurroffs[0]) * self.xadc_multiplier
-        value = value / (self.xbp_shunt * self.readGainVar())
+        value = value / (self.xbp_shunt * self.readGain3v3())
         if self.enCalibration:
-            coeffs = self.GetCalibration("3V3", "CURR", self.readGainVar()) 
+            coeffs = self.GetCalibration("3V3", "CURR", self.readGain3v3()) 
             value = value + coeffs[0]*value**3 + coeffs[1]*value**2 + coeffs[2]*value + coeffs[3]   
         return value
 
     def convertCurr5v(self, value):
+        if (value >= self.xadc_limit):
+            print("XADC clipped! Value read: {}".format(value))
+            return -1
         value = (value-self.callcurroffs[1]) * self.xadc_multiplier
-        value = value / (self.xbp_shunt * self.readGainVar())
+        value = value / (self.xbp_shunt * self.readGain5v())
         if self.enCalibration:
-            coeffs = self.GetCalibration("5V", "CURR", self.readGainVar()) 
+            coeffs = self.GetCalibration("5V", "CURR", self.readGain5v()) 
             value = value + coeffs[0]*value**3 + coeffs[1]*value**2 + coeffs[2]*value + coeffs[3]   
         return value
 
@@ -324,19 +343,19 @@ class PowerDriver(DefaultIP):
         return self.convertVoltVar(self.mmio.read(self.avgvoltvar))
     
     def readMaxCurr3v3(self):
-        return self.convertVolt3v3(self.mmio.read(self.maxcurrent3v3))
+        return self.convertCurr3v3(self.mmio.read(self.maxcurrent3v3))
     
     def readMaxCurr5v(self):
-        return self.convertVolt5v(self.mmio.read(self.maxcurrent5v))
+        return self.convertCurr5v(self.mmio.read(self.maxcurrent5v))
     
     def readMaxCurrVar(self):
         return self.convertCurrVar(self.mmio.read(self.maxcurrentvar))
     
     def readAvgCurr5v(self):
-        return self.convertCurr5v(self.mmio.read(self.avgcurrent3v3))
+        return self.convertCurr5v(self.mmio.read(self.avgcurrent5v))
     
     def readAvgCurr3v3(self):
-        return self.convertCurr3v3(self.mmio.read(self.avgcurrent5v))
+        return self.convertCurr3v3(self.mmio.read(self.avgcurrent3v3))
     
     def readAvgCurrVar(self):
         return self.convertCurrVar(self.mmio.read(self.avgcurrentvar))
