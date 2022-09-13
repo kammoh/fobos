@@ -36,9 +36,9 @@ class CW305DUT:
         Uses NewAE Chipwhisperer library to program CW305 
         This requires Chipwhisperer to be installed
         """
-        if self.bitFile == "":
+        if not self.bitFile:
             print("FATAL Error: DUT programming bit file not set. Please set it to a valid .bit file. Exiting...")
-            exit()
+            return
 
         if os.path.isfile(self.bitFile) == True:
             print("programming DUT. Please wait ...")
@@ -48,7 +48,6 @@ class CW305DUT:
             cw.dis()
         else:
             print(f"FATAL Error: DUT programming bit file :{self.bitFile} does not exist. \nPlease set it to a valid .bit file. Exiting...")
-            exit()
 
 def test():
     dut = CW305DUT()

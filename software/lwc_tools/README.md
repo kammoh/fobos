@@ -6,9 +6,9 @@
     ```
 2. Convert into shared format.
 
-    ```python gen_shared.py --rdi-file rdi.txt --pdi-file pdi.txt --sdi-file sdi.txt --rdi-width 384 --pdi-width 32 --sdi-width 32 --pdi-shares 2 --sdi-shares 2 --rdi-words 1000
+    ```python3 gen_shared.py --rdi-file KAT/rdi.txt --pdi-file KAT/pdi.txt --sdi-file KAT/sdi.txt --rdi-width 384 --pdi-width 32 --sdi-width 32 --pdi-shares 2 --sdi-shares 2 --rdi-words 1000
     ```
 3. Convert to FOBOS-ready TVLA test vectors.
 
-    ```python lwc_2_fobos_tv.py --width 32 --shares 2 --num_vectors 10 --pdi_file pdi_shared_2.txt --sdi_file sdi_shared_2.txt --do_file do.txt
+    ```python3 lwc_2_fobos_tv.py --width 32 --shares 2 --num_vectors 10 --pdi_file KAT/pdi_shared_2.txt --sdi_file KAT/sdi_shared_2.txt --do_file KAT/do.txt
     ```
