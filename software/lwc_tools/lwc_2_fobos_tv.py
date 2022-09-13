@@ -15,9 +15,9 @@ np.random.seed(0)
 
 
 def get_pdi_str(pdi, rand):
-    # get sdi strig form list
+    # get sdi string form list
     pdi_str = ''
-    # fixed/ranom public data to simulate DPA
+    # fixed/random public data to simulate DPA
     for item in pdi:
         label = item[0].strip()
         data = item[1].strip()
@@ -35,7 +35,7 @@ def get_pdi_str(pdi, rand):
     return pdi_str
 
 def get_sdi_str(sdi):
-    # get sdi strig form list
+    # get sdi string form list
     sdi_str = ''
     for item in sdi:
         label = item[0].strip()

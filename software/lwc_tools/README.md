@@ -10,5 +10,5 @@
     ```
 3. Convert to FOBOS-ready TVLA test vectors.
 
-    ```python lwc_2_fobos_tv.py --width 32 --shares 2 --num_vectors 10 --pdi_file pdi_shared_2.txt --sdi_file sdi_shared_2.txt --do_file do.txt
+    ```python lwc_2_fobos_tv.py --width 32 --shares 2 --num_vectors 1000000 --pdi_file pdi_shared_2.txt --sdi_file sdi_shared_2.txt --do_file do.txt
     ```
