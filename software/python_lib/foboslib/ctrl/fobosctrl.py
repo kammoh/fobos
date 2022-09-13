@@ -21,12 +21,12 @@
 # Aug 7 2018
 # This class provide constants used by fobos contoller protocol
 
-import os
+from enum import IntEnum
+
 
 class FOBOSCtrl:
-
     # General Constants
-    ACK_LEN = 4    # acknowledgement length in bytes
+    ACK_LEN = 4  # acknowledgement length in bytes
     PARAM_LEN = 4  # config prarameter length in bytes
     # config parameters numbers. Each number can serve as register number
     # or array index. These parameters must be sent to the hardware board.
@@ -40,21 +40,21 @@ class FOBOSCtrl:
     TIMEOUT = 7
     SET_DUT_CLK = 8
     SET_TEST_MODE = 9
-    #power glitch
+    # power glitch
     POWER_GLITCH_WAIT = 11
     POWER_GLITCH_ENABLE = 12
     POWER_GLITCH_PATTERN0 = 13
     POWER_GLITCH_PATTERN1 = 14
-    POWER_GLITCH_PATTERN2 = 15 #reserved
-    POWER_GLITCH_PATTERN3 = 16 #reserved
+    POWER_GLITCH_PATTERN2 = 15  # reserved
+    POWER_GLITCH_PATTERN3 = 16  # reserved
     SET_DUT_INTERFACE = 17
     DISCONNECT = 18
-      ####ADC
+    ####ADC
     SET_SAMPLING_FREQ = 19
     SET_ADC_GAIN = 20
     SET_SAMPLES_PER_TRACE = 21
     SET_ADC_HILO = 22
-    
+
     SET_DUT = 23
 
     PROCESS = 100
@@ -77,48 +77,53 @@ class FOBOSCtrl:
     PWMGR_MAX_CURR_VAR = 37
     PWMGR_AVG_CURR_VAR = 38
     PWMGR_GET_COUNT = 39
-    PWMGR_SET_SW_TRIG  = 40
-    PWMGR_CLEAR_SW_TRIG  = 41
+    PWMGR_SET_SW_TRIG = 40
+    PWMGR_CLEAR_SW_TRIG = 41
     FOBOSCtrl_GET_DUT_CYCLES = 42
 
-    PWMGR_SET_GAIN_5V  = 43
-    PWMGR_GET_GAIN_5V  = 44
-    PWMGR_GET_VOLT_5V  = 45
-    PWMGR_GET_CURR_5V  = 46
-    PWMGR_MAX_VOLT_5V  = 47
-    PWMGR_AVG_VOLT_5V  = 48
-    PWMGR_MAX_CURR_5V  = 49
-    PWMGR_AVG_CURR_5V  = 50
-    
-    PWMGR_SET_GAIN_3V3  = 51
-    PWMGR_GET_GAIN_3V3  = 52
-    PWMGR_GET_VOLT_3V3  = 53
-    PWMGR_GET_CURR_3V3  = 54
-    PWMGR_MAX_VOLT_3V3  = 55
-    PWMGR_AVG_VOLT_3V3  = 56
-    PWMGR_MAX_CURR_3V3  = 57
-    PWMGR_AVG_CURR_3V3  = 58
+    PWMGR_SET_GAIN_5V = 43
+    PWMGR_GET_GAIN_5V = 44
+    PWMGR_GET_VOLT_5V = 45
+    PWMGR_GET_CURR_5V = 46
+    PWMGR_MAX_VOLT_5V = 47
+    PWMGR_AVG_VOLT_5V = 48
+    PWMGR_MAX_CURR_5V = 49
+    PWMGR_AVG_CURR_5V = 50
+
+    PWMGR_SET_GAIN_3V3 = 51
+    PWMGR_GET_GAIN_3V3 = 52
+    PWMGR_GET_VOLT_3V3 = 53
+    PWMGR_GET_CURR_3V3 = 54
+    PWMGR_MAX_VOLT_3V3 = 55
+    PWMGR_AVG_VOLT_3V3 = 56
+    PWMGR_MAX_CURR_3V3 = 57
+    PWMGR_AVG_CURR_3V3 = 58
 
     PWMGR_STAT_SW_TRIG = 59
-    PWMGR_SET_VAR_ON  = 60
+    PWMGR_SET_VAR_ON = 60
     PWMGR_SET_VAR_OFF = 61
     PWMGR_SET_VAR_VOLT = 62
 
+    # test mode parameters
+    ENABLED = 1
+    DISABLED = 0
+
+    ##DUT
+    NEXYS3 = 0x00
+    NEXYS4 = 0x00
+    CW305 = 0x01
+    ##########################
+
+
+class TriggerType(IntEnum):
     # Trigger parameters
     TRG_NORM = 0
     TRG_FULL = 1
     TRG_NORM_CLK = 2
     TRG_FULL_CLK = 3
-    # test mode parameters
-    ENABLED = 1
-    DISABLED = 0
 
+
+class InterfaceType(IntEnum):
     ###interface types - 4bit interface is default
-    INTERFACE_4BIT      = 0x00
-    INTERFACE_8BIT      = 0x01
-    
-    ##DUT
-    NEXYS3      = 0x00
-    NEXYS4      = 0x00
-    CW305       = 0x01
-    ##########################
+    INTERFACE_4BIT = 0x00
+    INTERFACE_8BIT = 0x01

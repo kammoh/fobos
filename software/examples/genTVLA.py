@@ -6,8 +6,8 @@ PDI_LEN     = 16     #legnth of pdi(plaintext etc.) in bytes
 SDI_LEN     = 16     #length of sdi(key) in bytes
 RDI_LEN     = 0      #length of rdi(random data) in bytes
 OUTPUT_LEN  = 16     #expected output(ciphertext) length in bytes
-SDI 	    = '0123456789abcdef123456789abcdef0'
-PDI 	    = 'da39a3ee5e6b4b0d3255bfef95601890'
+SDI         = '0123456789abcdef123456789abcdef0'
+PDI         = 'da39a3ee5e6b4b0d3255bfef95601890'
 #store the files you generate into this directory
 TV_FILE     = "/home/xilinx/fobosworkspace/aes_tvla/dinFileFVR.txt" 
 CHOICE_FILE     = "/home/xilinx/fobosworkspace/aes_tvla/fvrChoice.txt" 
