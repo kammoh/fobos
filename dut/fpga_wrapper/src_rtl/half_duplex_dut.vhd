@@ -86,12 +86,6 @@ begin
         );
 
     dut : entity work.core_wrapper(behav)
-        generic map(
-            FIFO_0_WIDTH   => 64,
-            FIFO_1_WIDTH   => 64,
-            FIFO_RDI_WIDTH => 384,
-            FIFO_OUT_WIDTH => 64
-        )
         port map(
             clk      => clk_c2d,
             rst      => d_rst,

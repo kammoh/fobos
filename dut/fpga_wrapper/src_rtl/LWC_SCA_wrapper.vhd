@@ -93,7 +93,7 @@ begin
     end if;
   end process;
 
-  INST_PDI_FIFO : entity work.ASYM_FIFO
+  INST_PDI_FIFO : entity work.asym_fifo
     generic map(
       G_WR_W     => XW,
       G_RD_W     => PDI_SHARES * W,
@@ -114,7 +114,7 @@ begin
       -- stat_almost_empty => stat_almost_empty
     );
 
-  INST_SDI_FIFO : entity work.ASYM_FIFO
+  INST_SDI_FIFO : entity work.asym_fifo
     generic map(
       G_WR_W     => XW,
       G_RD_W     => SDI_SHARES * SW,
@@ -135,7 +135,7 @@ begin
       -- stat_almost_empty => stat_almost_empty
     );
 
-  INST_DO_FIFO : entity work.ASYM_FIFO
+  INST_DO_FIFO : entity work.asym_fifo
     generic map(
       G_WR_W     => PDI_SHARES * W,
       G_RD_W     => XW,

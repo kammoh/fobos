@@ -36,10 +36,11 @@ rtl.sources = [
     "src_rtl/LWC_SCA_wrapper.vhd",
     "src_rtl/writestrobe_gen.vhd",
     "src_rtl/core_wrapper.vhd",
+    "src_rtl/half_duplex_interface.vhd",
+    "src_rtl/half_duplex_dut.vhd",
 ]
 # includes = []
-rtl.top = "LWC_SCA"
-# top = "LWC_SCA_wrapper"
+rtl.top = "half_duplex_dut"
 rtl.clock.port = "clk"
 # clock.port = "clk"
 # reset.port = "reset"
@@ -96,3 +97,7 @@ order = 1
 
 [flows.vivado_synth]
 fpga.part = "xc7a100tftg256-3"
+xdc_files = ["constraints/cw305.xdc"]
+clocks.main_clock.freq = 100
+write_bitstream = true
+qor_suggestions = true

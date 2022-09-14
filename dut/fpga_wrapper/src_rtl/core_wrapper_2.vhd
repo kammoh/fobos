@@ -121,6 +121,8 @@ architecture behav of core_wrapper is
     signal wrapper_pdi_valid, wrapper_pdi_ready : std_logic;
     signal wrapper_sdi_valid, wrapper_sdi_ready : std_logic;
     signal wrapper_do_data  : std_logic_vector(4 - 1 downto 0);
+    signal wrapper_pdi_data  : std_logic_vector(4 - 1 downto 0);
+    signal wrapper_sdi_data  : std_logic_vector(4 - 1 downto 0);
     signal lwc_do_fire      : std_logic;
     --==================
 
@@ -258,10 +260,10 @@ begin
         port map(
             clk         => clk,
             rst         => rst,
-            pdi_data    => din,
+            pdi_data    => wrapper_pdi_data,
             pdi_valid   => wrapper_pdi_valid,
             pdi_ready   => wrapper_pdi_ready,
-            sdi_data    => din,
+            sdi_data    => wrapper_sdi_data,
             sdi_valid   => wrapper_sdi_valid,
             sdi_ready   => wrapper_sdi_ready,
             do_data     => wrapper_do_data,

@@ -105,6 +105,7 @@ architecture RTL of LFSR is
       end if;
     end loop;
     assert FALSE report "specified lfsr length was not found in TAPS_TABLE" severity FAILURE;
+    return taps; -- just to avoid a Vivado warning
   end function;
 
   function lfsr_feedback(sr : std_logic_vector) return std_logic is
