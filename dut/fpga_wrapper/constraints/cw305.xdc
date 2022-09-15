@@ -14,7 +14,7 @@
 
 #clock
 set_property -dict {PACKAGE_PIN N14 IOSTANDARD LVCMOS33} [get_ports clk_c2d]
-create_clock -period 50.000 -name sys_clk [get_ports clk_c2d]
+# create_clock -period 50.000 -name sys_clk [get_ports clk_c2d]
 
 #handshake
 set_property -dict { PACKAGE_PIN N16    IOSTANDARD LVCMOS33 } [get_ports { io }];

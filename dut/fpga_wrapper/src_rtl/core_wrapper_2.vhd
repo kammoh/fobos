@@ -31,7 +31,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.ALL;
 
-entity core_wrapper is
+entity core_wrapper2 is
 
     generic(
         PDI_SHARES     : positive := 2;

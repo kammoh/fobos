@@ -184,7 +184,7 @@ begin
 
     GEN_READ_BIG_ENDIAN : if G_BIGENDIAN generate
       GEN_READ_SWAP : for i in 0 to NUM_READ_CHUNKS - 1 generate
-        read_data((NUM_READ_CHUNKS - i) * G_WR_W - 1 downto (NUM_READ_CHUNKS + i - 1) * G_WR_W) <= read_tmp((i + 1) * G_WR_W - 1 downto i * G_WR_W);
+        read_data((NUM_READ_CHUNKS - i) * G_WR_W - 1 downto (NUM_READ_CHUNKS - i - 1) * G_WR_W) <= read_tmp((i + 1) * G_WR_W - 1 downto i * G_WR_W);
       end generate;
     end generate;
 
