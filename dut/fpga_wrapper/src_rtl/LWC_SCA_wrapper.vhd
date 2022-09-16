@@ -158,7 +158,7 @@ begin
       rout_ready => lwc_rdi_ready
     );
 
-  uut : entity work.LWC_SCA
+  INST_LWC : entity work.LWC_SCA
     generic map(
       G_DO_FIFO_DEPTH => 1
     )
