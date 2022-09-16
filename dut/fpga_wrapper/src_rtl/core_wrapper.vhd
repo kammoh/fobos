@@ -27,9 +27,9 @@ use work.LWC_config.all;
 entity core_wrapper is
 
     generic(
-        PDI_FIFO_DEPTH : positive := (3 + 16 + 16 + 16) * 64; -- headers, nonce, pt/ct, ad
-        SDI_FIFO_DEPTH : positive := (1 + 128) * 64; -- header, key
-        DO_FIFO_DEPTH  : positive := (2 + 16 + 16) * 64 -- headers, ct/pt, tag
+        PDI_FIFO_DEPTH : positive := (3 + 16 + 16 + 16); -- headers, nonce, pt/ct, ad
+        SDI_FIFO_DEPTH : positive := (1 + 16); -- header, key
+        DO_FIFO_DEPTH  : positive := (2 + 16 + 16) -- headers, ct/pt, tag
     );
     port(
         clk      : in  std_logic;
