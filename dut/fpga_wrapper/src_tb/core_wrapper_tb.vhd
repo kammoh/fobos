@@ -27,24 +27,24 @@ architecture behav of core_wrapper_tb is
     FILE doutFile   : TEXT OPEN WRITE_MODE is G_DOUT_FNAME;
 
     -- crypto core signals
-    signal di_ready    : std_logic;
-    signal din         : std_logic_vector(3 downto 0);
-    signal di_valid    : std_logic := '0';
-    signal do_ready    : std_logic := '0';
-    signal dout        : std_logic_vector(3 downto 0);
-    signal do_valid    : std_logic;
+    signal di_ready                  : std_logic;
+    signal din                       : std_logic_vector(3 downto 0);
+    signal di_valid                  : std_logic := '0';
+    signal do_ready                  : std_logic := '0';
+    signal dout                      : std_logic_vector(3 downto 0);
+    signal do_valid                  : std_logic;
     --
-    signal writestrobe : std_logic;
-    signal config_done : std_logic := '0';
-    signal stop_clk    : std_logic := '0';
+    signal writestrobe, do_was_valid : std_logic;
+    signal config_done               : std_logic := '0';
+    signal stop_clk                  : std_logic := '0';
 
 begin
 
     clk <= not clk after period / 2 when stop_clk = '0' else '0';
 
     inst_core_wrapper : entity work.core_wrapper(behav)
-        -- generic map(
-        -- )
+            -- generic map(
+            -- )
         port map(
             clk      => clk,
             rst      => rst,
@@ -116,13 +116,18 @@ begin
         wait;
     end process;
 
-    strobe_gen : entity work.writestrobe_gen(behav)
-        port map(
-            clk         => clk,
-            rst         => rst,
-            do_valid    => do_valid,
-            writestrobe => writestrobe
-        );
+    process(clk) is
+    begin
+        if (rising_edge(clk)) then
+            if (rst = '1') then
+                do_was_valid <= '0';
+            else
+                do_was_valid <= do_valid;
+            end if;
+        end if;
+    end process;
+
+    writestrobe <= do_was_valid and not do_valid;
 
     do_ready <= '1';
 

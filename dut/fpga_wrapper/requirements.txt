@@ -1,0 +1,2 @@
+xeda
+git+https://github.com/GMUCERG/LWC.git#egg=cryptotvgen&subdirectory=software/cryptotvgen

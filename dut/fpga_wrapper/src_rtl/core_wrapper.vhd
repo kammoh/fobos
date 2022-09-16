@@ -1,6 +1,6 @@
 --##############################################################################
 --#                                                                            #
---# Copyright 2018 Cryptographic Engineering Research Group (CERG)             #
+--# Copyright 2022 Cryptographic Engineering Research Group (CERG)             #
 --# George Mason University                                                    #
 --#    http://cryptography.gmu.edu/fobos                                       #                            
 --#                                                                            #
@@ -18,46 +18,18 @@
 --#                                                                            #
 --##############################################################################
 
--- v5 is prototype that supports N = 4
--- FOBOS_DUT(din) and FOBOS_DUT(dout) are 4 bit interfaces
--- W and SW are independently any multiple of 4
--- Supports pdi, sdi, rdi
--- Reinit fifo not supported
--- Only interface width (N=4) supported
-
---! Caution: W = 8, 16, 32, 64, 128 supported in prototype; DO FIFO must be modified for other cases
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.ALL;
 
+use work.LWC_config.all;
+
 entity core_wrapper is
 
     generic(
-        PDI_SHARES     : positive := 2;
-        SDI_SHARES     : positive := 2;
-        W              : positive := 32;
-        SW             : positive := 32;
-        RW             : positive := 96;
-        --
         PDI_FIFO_DEPTH : positive := (3 + 16 + 16 + 16) * 64; -- headers, nonce, pt/ct, ad
         SDI_FIFO_DEPTH : positive := (1 + 128) * 64; -- header, key
         DO_FIFO_DEPTH  : positive := (2 + 16 + 16) * 64 -- headers, ct/pt, tag
-        -- data fifos generics     
-        -- FIFO_0_WIDTH       : natural := 128; -- in bits
-        -- FIFO_1_WIDTH       : natural := 128;
-        -- FIFO_2_WIDTH       : natural := 128;
-        -- FIFO_3_WIDTH       : natural := 128;
-        -- FIFO_OUT_WIDTH     : natural := 128;
-        -- FIFO_0_LOG2DEPTH   : natural := 8;
-        -- FIFO_1_LOG2DEPTH   : natural := 8;
-        -- FIFO_2_LOG2DEPTH   : natural := 8;
-        -- FIFO_3_LOG2DEPTH   : natural := 8;
-        -- FIFO_OUT_LOG2DEPTH : natural := 8;
-        -- rdi-related generics
-        -- FIFO_RDI_WIDTH     : natural := 32; --in bits -- WARNING: Must be a multiple of 32-bits
-        -- FIFO_RDI_LOG2DEPTH : natural := 8;
-        -- RAND_WORDS         : natural := 1000
     );
     port(
         clk      : in  std_logic;
@@ -75,10 +47,10 @@ end core_wrapper;
 
 architecture behav of core_wrapper is
 
-    type state_type is (CLR, INST0, INST1, INST2, INST3, PARAM0, PARAM1,
-                        PARAM2, PARAM3, LOAD_FIFO, RUN, UNLOAD,
-                         CONF_PRNG, SND_ACK, DELAY, INVALID_INST);
+    type state_type is (CLR, INST0, INST1, INST2, INST3, PARAM0, PARAM1, PARAM2, PARAM3, -- 0..8
+                        LOAD_FIFO, RUN, UNLOAD, CONF_PRNG, SND_ACK, DELAY, INVALID_INST); -- 9..15
     signal state_r, nx_state : state_type;
+    signal dbg_state         : natural;
     signal cnt_r, nx_cnt     : unsigned(15 downto 0);
 
     signal ins_reg0_en, ins_reg1_en, ins_reg2_en, ins_reg3_en         : std_logic;
@@ -87,60 +59,23 @@ architecture behav of core_wrapper is
     signal ins_reg0_r, ins_reg1_r, ins_reg2_r, ins_reg3_r         : std_logic_vector(3 downto 0);
     signal param_reg0_r, param_reg1_r, param_reg2_r, param_reg3_r : std_logic_vector(3 downto 0);
 
-    signal write_fifo                                                     : std_logic;
-    signal write_reg                                                      : std_logic;
-    signal fifo_rst                                                       : std_logic;
-    signal reg_rst                                                        : std_logic;
-    -- sipo signals
-    -- signal sipo0_di_valid, sipo1_di_valid, sipo2_di_valid, sipo3_di_valid : std_logic;
-    -- signal sipo0_di_ready, sipo1_di_ready, sipo2_di_ready, sipo3_di_ready : std_logic;
-
-    -- signal sipo0_do_valid, sipo1_do_valid, sipo2_do_valid, sipo3_do_valid : std_logic;
-    -- signal sipo0_do_ready, sipo1_do_ready, sipo2_do_ready, sipo3_do_ready : std_logic;
-
-    -- signal sipo0_dout : std_logic_vector(FIFO_0_WIDTH - 1 downto 0);
-    -- signal sipo1_dout : std_logic_vector(FIFO_1_WIDTH - 1 downto 0);
-    -- signal sipo2_dout : std_logic_vector(FIFO_2_WIDTH - 1 downto 0);
-    -- signal sipo3_dout : std_logic_vector(FIFO_3_WIDTH - 1 downto 0);
-
-    -- fifo signals
-    -- signal fifo0_do_valid, fifo1_do_valid, fifo2_do_valid, fifo3_do_valid : std_logic;
-    -- signal fifo0_do_ready, fifo1_do_ready, fifo2_do_ready, fifo3_do_ready : std_logic;
-    -- signal out_fifo_do_valid, out_fifo_do_ready                           : std_logic;
-
-    -- signal fifo0_dout    : std_logic_vector(FIFO_0_WIDTH - 1 downto 0);
-    -- signal fifo1_dout    : std_logic_vector(FIFO_1_WIDTH - 1 downto 0);
-    -- signal fifo2_dout    : std_logic_vector(FIFO_2_WIDTH - 1 downto 0);
-    -- signal fifo3_dout    : std_logic_vector(FIFO_3_WIDTH - 1 downto 0);
-    -- signal out_fifo_dout : std_logic_vector(FIFO_OUT_WIDTH - 1 downto 0);
+    signal write_fifo : std_logic;
+    signal write_reg  : std_logic;
+    signal fifo_rst   : std_logic;
+    signal reg_rst    : std_logic;
 
     --==================
     constant FIFO_OUT_WIDTH : positive := PDI_SHARES * W;
 
-    signal wrapper_do_valid, wrapper_do_ready : std_logic;
+    signal wrapper_do_valid, wrapper_do_ready   : std_logic;
     signal wrapper_pdi_valid, wrapper_pdi_ready : std_logic;
     signal wrapper_sdi_valid, wrapper_sdi_ready : std_logic;
-    signal wrapper_do_data  : std_logic_vector(4 - 1 downto 0);
-    signal lwc_do_fire      : std_logic;
+    signal wrapper_do_data                      : std_logic_vector(4 - 1 downto 0);
+    signal lwc_do_fire                          : std_logic;
     --==================
 
     -- configuration registers
     signal conf_reg0_r, conf_reg1_r, conf_reg2_r, conf_reg3_r, conf_reg4_r, conf_reg5_r, conf_reg6_r, conf_reg7_r : std_logic_vector(15 downto 0);
-
-    -- crypto signals
-    -- signal crypto_di0_valid, crypto_di1_valid, crypto_di2_valid, crypto_di3_valid : std_logic;
-    -- signal crypto_di0_ready, crypto_di1_ready, crypto_di2_ready, crypto_di3_ready : std_logic;
-    -- signal crypto_di0_data                                                        : std_logic_vector(FIFO_0_WIDTH - 1 downto 0);
-    -- signal crypto_di1_data                                                        : std_logic_vector(FIFO_1_WIDTH - 1 downto 0);
-    -- signal crypto_di2_data                                                        : std_logic_vector(FIFO_2_WIDTH - 1 downto 0);
-    -- signal crypto_di3_data                                                        : std_logic_vector(FIFO_3_WIDTH - 1 downto 0);
-
-    -- signal crypto_do_valid, crypto_do_ready : std_logic;
-    -- signal crypto_do_data                   : std_logic_vector(FIFO_OUT_WIDTH - 1 downto 0);
-
-    -- crypto rdi signals
-    -- signal crypto_rdi_data                    : std_logic_vector(FIFO_RDI_WIDTH - 1 downto 0);
-    -- signal crypto_rdi_valid, crypto_rdi_ready : std_logic;
 
     -- cmd
     signal opcode   : std_logic_vector(3 downto 0);
@@ -153,102 +88,18 @@ architecture behav of core_wrapper is
     signal crypto_input_en : std_logic;
     signal outlen          : std_logic_vector(16 - 1 downto 0); -- expected outlen in bytes
 
-    -- randomness generation
-    -- signal rand_requested_r, nx_rand_requested : std_logic;
-    -- signal rand_generated_r, nx_rand_generated : std_logic;
-    -- signal prng_seeded_r, nx_prng_seeded       : std_logic;
-    -- signal rand_words_r, nx_rand_words         : std_logic_vector(16 - 1 downto 0);
-    -- signal rand_cnt_r, nx_rand_cnt             : unsigned(16 - 1 downto 0);
-
-    -- signal prng_en                              : std_logic;
-    -- signal prng_reseed                          : std_logic;
-    -- signal prng_seed                            : std_logic_vector(128 - 1 downto 0);
-    -- signal prng_rdi_data                        : std_logic_vector(64 - 1 downto 0);
-    -- signal prng_rdi_valid, prng_rdi_ready       : std_logic;
-    -- 
-    -- signal rnd_piso_do_valid, rnd_piso_do_ready : std_logic;
-    -- signal rnd_piso_do_data                     : std_logic_vector(31 downto 0);
-
-    -- signal rnd_sipo_do_valid, rnd_sipo_do_ready : std_logic;
-    -- signal rnd_sipo_do_data                     : std_logic_vector(FIFO_RDI_WIDTH - 1 downto 0);
-
-    -- signal rdi_fifo_do_valid, rdi_fifo_do_ready : std_logic;
-    -- signal rdi_fifo_dout                        : std_logic_vector(FIFO_RDI_WIDTH - 1 downto 0);
-    --
     signal sel_out        : std_logic;
     signal ctrl_status    : std_logic_vector(4 - 1 downto 0);
     -- constants
     constant CMD_START    : std_logic_vector(3 downto 0) := x"1";
     constant CMD_GEN_RAND : std_logic_vector(3 downto 0) := x"2";
 
-    -- --
-    -- COMPONENT ila_0
-    --     PORT(
-    --         clk    : IN STD_LOGIC;
-    --         probe0 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-    --         probe1 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-    --         probe2 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-    --         probe3 : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-    --         probe4 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-    --         probe5 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-    --         probe6 : IN STD_LOGIC_VECTOR(3 DOWNTO 0)
-    --     );
-    -- END COMPONENT;
-
-    attribute mark_debug : string;
-    attribute mark_debug of di_valid : signal is "true";
-    attribute mark_debug of di_ready : signal is "true";
-    attribute mark_debug of din : signal is "true";
-    attribute mark_debug of do_valid : signal is "true";
-    attribute mark_debug of do_ready : signal is "true";
-    attribute mark_debug of dout : signal is "true";
-    attribute mark_debug of rst : signal is "true";
-
 begin
-    --commads
-    --CMD_START : stars crypto core
-    --  params:
-    --      Data stored in fifos
-    --      out_len : conf_reg_1
-    --CMD_GEN_RAND : generate random data before each execution of crypto core
-    --  params: 
-    --      and_words_r : stored first in conf_reg_2 
-    --                    number of 32-bit words to generate before EACH execution of the crypto cor
-    --                    These words will be fed to the core through the rdi FIFO
-    --      prng_seed   : stored in conf_reg7 || conf_reg_6 || conf_reg_5 || conf_reg_4
-    --                    64-bit seed for the prng. Registers are not needed after the 
-    -- BEGING USER CRYPTO  =============================================================================
-    -- Instantiate your core here
-    -- crypto_core : entity work.LWC_SCA(structure)
-    --     port map(
-    --         clk       => clk,
-    --         rst       => not crypto_input_en,
-    --         -- data signals
-    --         pdi_data  => crypto_di0_data,
-    --         pdi_valid => crypto_di0_valid,
-    --         pdi_ready => crypto_di0_ready,
-    --         sdi_data  => crypto_di1_data,
-    --         sdi_valid => crypto_di1_valid,
-    --         sdi_ready => crypto_di1_ready,
-    --         do_data   => crypto_do_data,
-    --         do_ready  => crypto_do_ready,
-    --         do_valid  => crypto_do_valid--! if rdi_interface for side-channel protected versions is required, uncomment the rdi interface
-    --         , rdi_data => crypto_rdi_data,
-    --         rdi_ready => crypto_rdi_ready,
-    --         rdi_valid => crypto_rdi_valid
-    --     );
-    -- END USER CRYPTO
-    --=============================================
-    -- allow data into crypto core only when crypto_input_en is asserted
-    -- crypto_di0_valid <= fifo0_do_valid and crypto_input_en;
+
+    dbg_state <= state_type'pos(state_r);
 
     SCA_WRAPPER_INST : entity work.LWC_SCA_wrapper
         generic map(
-            PDI_SHARES     => PDI_SHARES,
-            SDI_SHARES     => SDI_SHARES,
-            W              => W,
-            SW             => SW,
-            RW             => RW,
             XRW            => 0,
             XW             => 4,
             PDI_FIFO_DEPTH => PDI_FIFO_DEPTH,
@@ -267,30 +118,12 @@ begin
             do_data     => wrapper_do_data,
             do_valid    => wrapper_do_valid,
             do_ready    => wrapper_do_ready,
-            rdi_data    => (others => '0'), --wrapper_rdi_data,
-            rdi_valid   => '0',         -- wrapper_rdi_valid,
-            rdi_ready   => open,        -- wrapper_rdi_ready,
+            rdi_data    => (others => '0'),
+            rdi_valid   => '0',
+            rdi_ready   => open,
             in_enable   => crypto_input_en,
             lwc_do_fire => lwc_do_fire
         );
-
-    -- crypto_di1_valid <= fifo1_do_valid and crypto_input_en;
-    -- crypto_di2_valid <= fifo2_do_valid and crypto_input_en;
-    -- crypto_di3_valid <= fifo3_do_valid and crypto_input_en;
-
-    -- fifo0_do_ready <= crypto_di0_ready and crypto_input_en;
-    -- fifo1_do_ready <= crypto_di1_ready and crypto_input_en;
-    -- fifo2_do_ready <= crypto_di2_ready and crypto_input_en;
-    -- fifo3_do_ready <= crypto_di3_ready and crypto_input_en;
-
-    -- crypto_di0_data <= fifo0_dout;
-    -- crypto_di1_data <= fifo1_dout;
-    -- crypto_di2_data <= fifo2_dout;
-    -- crypto_di3_data <= fifo3_dout;
-
-    -- crypto_rdi_valid  <= rdi_fifo_do_valid and crypto_input_en;
-    -- rdi_fifo_do_ready <= crypto_rdi_ready and crypto_input_en;
-    -- crypto_rdi_data   <= rdi_fifo_dout;
 
     --=========================================================================================
     opcode   <= ins_reg2_r;
@@ -300,109 +133,6 @@ begin
     outlen   <= conf_reg1_r;
     cmd      <= conf_reg0_r(3 downto 0);
     --
-
-    --    prng_seed       <= 0x"00000000_00000000" & conf_reg7_r & conf_reg6_r & conf_reg5_r & conf_reg4_r;
-    -- prng_seed <= (others => '0');
-    --==========================================================================================
-
-    -- -- in fifo0 and sipo ==============================
-    -- sipo0 : entity work.dut_sipo(behav)
-    --     generic map(
-    --         WI => 4,
-    --         WO => FIFO_0_WIDTH
-    --     )
-    --     port map(
-    --         clk      => clk,
-    --         rst      => fifo_rst,
-    --         di_valid => sipo0_di_valid,
-    --         di_ready => sipo0_di_ready,
-    --         din      => din,
-    --         do_valid => sipo0_do_valid,
-    --         do_ready => sipo0_do_ready,
-    --         dout     => sipo0_dout
-    --     );
-
-    -- fifo0 : entity work.dut_fwft_fifo(structure)
-    --     generic map(
-    --         G_W         => FIFO_0_WIDTH,
-    --         G_LOG2DEPTH => FIFO_0_LOG2DEPTH
-    --     )
-    --     port map(
-    --         clk        => clk,
-    --         rst        => fifo_rst,
-    --         din_valid  => sipo0_do_valid,
-    --         din_ready  => sipo0_do_ready,
-    --         din        => sipo0_dout,
-    --         dout_valid => fifo0_do_valid,
-    --         dout_ready => fifo0_do_ready,
-    --         dout       => fifo0_dout
-    --     );
-
-    -- -- in fifo1 and sipo ==============================
-    -- sipo1 : entity work.dut_sipo(behav)
-    --     generic map(
-    --         WI => 4,
-    --         WO => FIFO_1_WIDTH
-    --     )
-    --     port map(
-    --         clk      => clk,
-    --         rst      => fifo_rst,
-    --         di_valid => sipo1_di_valid,
-    --         di_ready => sipo1_di_ready,
-    --         din      => din,
-    --         do_valid => sipo1_do_valid,
-    --         do_ready => sipo1_do_ready,
-    --         dout     => sipo1_dout
-    --     );
-
-    -- fifo1 : entity work.dut_fwft_fifo(structure)
-    --     generic map(
-    --         G_W         => FIFO_1_WIDTH,
-    --         G_LOG2DEPTH => FIFO_1_LOG2DEPTH
-    --     )
-    --     port map(
-    --         clk        => clk,
-    --         rst        => fifo_rst,
-    --         din_valid  => sipo1_do_valid,
-    --         din_ready  => sipo1_do_ready,
-    --         din        => sipo1_dout,
-    --         dout_valid => fifo1_do_valid,
-    --         dout_ready => fifo1_do_ready,
-    --         dout       => fifo1_dout
-    --     );
-
-    -- --==============================================
-    -- out_fifo : entity work.dut_fwft_fifo(structure)
-    --     generic map(
-    --         G_W         => FIFO_OUT_WIDTH,
-    --         G_LOG2DEPTH => FIFO_OUT_LOG2DEPTH
-    --     )
-    --     port map(
-    --         clk        => clk,
-    --         rst        => fifo_rst,
-    --         din_valid  => crypto_do_valid,
-    --         din_ready  => crypto_do_ready,
-    --         din        => crypto_do_data,
-    --         dout_valid => out_fifo_do_valid,
-    --         dout_ready => out_fifo_do_ready,
-    --         dout       => out_fifo_dout
-    --     );
-
-    -- out_piso : entity work.dut_piso(behav) --WANING is output stage leaking when we get data into 4 bits? Block input to piso untill done
-    --     generic map(
-    --         WI => FIFO_OUT_WIDTH,
-    --         WO => 4
-    --     )
-    --     port map(
-    --         clk      => clk,
-    --         rst      => fifo_rst,
-    --         di_valid => out_fifo_do_valid,
-    --         di_ready => out_fifo_do_ready,
-    --         din      => out_fifo_dout,
-    --         do_valid => out_piso_do_valid,
-    --         do_ready => out_piso_do_ready,
-    --         dout     => out_piso_dout
-    --     );
 
     dout <= ctrl_status when sel_out = '1' else wrapper_do_data;
     --==============================================
@@ -431,41 +161,20 @@ begin
         sel_out          <= '0';        --select output from ctrl (to send status)
         ctrl_status      <= (others => '0');
         status           <= '0';
-        --prng
-        -- prng_en          <= '0';
-        -- prng_reseed      <= '0';
 
         --
         nx_state <= state_r;
         nx_cnt   <= cnt_r;
-        -- nx_rand_requested <= rand_requested_r;
-        -- nx_prng_seeded    <= prng_seeded_r;
-        -- nx_rand_generated <= rand_generated_r;
-        -- nx_rand_words     <= rand_words_r;
-        -- nx_rand_cnt       <= rand_cnt_r;
-
         case (state_r) is
-            -- when CONF_PRNG =>
-            --     prng_en        <= '1';
-            --     prng_reseed    <= '1';
-            --     nx_prng_seeded <= '1';
-            --     nx_state       <= CLR;
             when CLR =>
                 fifo_rst    <= '1';
                 clr_cmd_reg <= '1';
                 nx_cnt      <= (others => '0');
-                --rand_requested_r = '1' then
-                -- nx_state    <= GEN_RAND;
                 nx_state    <= INST0;
-            --else
-            --   nx_state <= INST0;
-            --end if;
 
             when INST0 =>
                 if cmd = CMD_GEN_RAND then
                     clr_cmd_reg <= '1';
-                    -- nx_rand_requested <= '1';
-                    -- nx_rand_words     <= conf_reg2_r;
                     nx_state    <= DELAY;
                 elsif cmd = CMD_START then -- start cmd
                     clr_cmd_reg <= '1';
@@ -540,8 +249,19 @@ begin
                 end if;
 
             when LOAD_FIFO =>
-                di_ready <= '1';
-                if di_valid = '1' then
+                case dest_sel is
+                    when x"0" =>
+                        di_ready <= wrapper_pdi_ready;
+                        assert wrapper_pdi_ready = '1' report "wrapper_pdi_ready is not 1" severity error;
+                    when x"1" =>
+                        di_ready <= wrapper_sdi_ready;
+                        assert wrapper_sdi_ready = '1' report "wrapper_sdi_ready is not 1" severity error;
+                    when others =>
+                        assert false report "bad dest_sel" severity error;
+                        null;
+                end case;
+
+                if di_ready = '1' and di_valid = '1' then
                     if cnt_r = unsigned(word_cnt) then
                         nx_cnt      <= (others => '0');
                         ins_reg0_en <= '1';
@@ -602,29 +322,6 @@ begin
                     end if;
                 end if;
 
-            -- when GEN_RAND =>
-            --     prng_en <= '1';
-            --     --if prng_seeded_r = '1' then
-            --     if prng_rdi_valid = '1' then
-            --         --                        if rand_cnt_r = rand_words_r -1 then
-            --         if rand_cnt_r = RAND_WORDS - 1 then
-            --             nx_rand_cnt       <= (others => '0');
-            --             nx_rand_generated <= '1';
-            --             nx_state          <= INST0;
-            --         else
-            --             nx_rand_cnt <= rand_cnt_r + 1;
-            --         end if;
-            --     end if;
-            --else
-            --  nx_state <= CONF_PRNG;        
-            --end if;
-
-            --            when CONF_PRNG =>
-            --                prng_en <= '1';
-            --                prng_reseed <= '1';
-            --                nx_prng_seeded <= '1';
-            --                nx_state <= GEN_RAND;
-
             when INVALID_INST =>
                 status   <= '1';
                 nx_state <= INVALID_INST; --hang wait for user reset
@@ -639,21 +336,11 @@ begin
     begin
         if rising_edge(clk) then
             if rst = '1' then
-                state_r          <= CONF_PRNG;
-                cnt_r            <= (others => '0');
-                -- rand_requested_r <= '0';
-                -- rand_generated_r <= '0';
-                -- prng_seeded_r    <= '0';
-                -- rand_words_r     <= (others => '0');
-                -- rand_cnt_r       <= (others => '0');
+                state_r <= CONF_PRNG;
+                cnt_r   <= (others => '0');
             else
-                state_r          <= nx_state;
-                cnt_r            <= nx_cnt;
-                -- rand_requested_r <= nx_rand_requested;
-                -- rand_generated_r <= nx_rand_generated;
-                -- prng_seeded_r    <= nx_prng_seeded;
-                -- rand_words_r     <= nx_rand_words;
-                -- rand_cnt_r       <= nx_rand_cnt;
+                state_r <= nx_state;
+                cnt_r   <= nx_cnt;
             end if;
 
             if ins_reg0_en = '1' then
@@ -769,80 +456,4 @@ begin
         end if;
     end process;
 
-    -- PRNG =======================================================
-    --Trivium PRNG
-    -- trivium_inst : entity work.prng_trivium_enhanced(structural)
-    --     generic map(N => 1)
-    --     port map(
-    --         clk        => clk,
-    --         rst        => rst,
-    --         en_prng    => prng_en,
-    --         seed       => prng_seed,
-    --         reseed     => prng_reseed,
-    --         reseed_ack => open,
-    --         rdi_data   => prng_rdi_data,
-    --         rdi_ready  => prng_rdi_ready,
-    --         rdi_valid  => prng_rdi_valid
-    --     );
-
-    -- rnd_piso : entity work.dut_piso(behav)
-    --     generic map(
-    --         WI => 64,
-    --         WO => 32
-    --     )
-    --     port map(
-    --         clk      => clk,
-    --         rst      => fifo_rst,
-    --         di_valid => prng_rdi_valid,
-    --         di_ready => prng_rdi_ready,
-    --         din      => prng_rdi_data,
-    --         do_valid => rnd_piso_do_valid,
-    --         do_ready => rnd_piso_do_ready,
-    --         dout     => rnd_piso_do_data
-    --     );
-
-    -- rnd_sipo : entity work.dut_sipo(behav)
-    --     generic map(
-    --         WI => 32,
-    --         WO => FIFO_RDI_WIDTH
-    --     )
-    --     port map(
-    --         clk      => clk,
-    --         rst      => fifo_rst,
-    --         di_valid => rnd_piso_do_valid,
-    --         di_ready => rnd_piso_do_ready,
-    --         din      => rnd_piso_do_data,
-    --         do_valid => rnd_sipo_do_valid,
-    --         do_ready => rnd_sipo_do_ready,
-    --         dout     => rnd_sipo_do_data
-    --     );
-
-    -- rdi_fifo : entity work.dut_fwft_fifo(structure)
-    --     generic map(
-    --         G_W         => FIFO_RDI_WIDTH,
-    --         G_LOG2DEPTH => FIFO_RDI_LOG2DEPTH
-    --     )
-    --     port map(
-    --         clk        => clk,
-    --         rst        => fifo_rst,
-    --         din_valid  => rnd_sipo_do_valid,
-    --         din_ready  => rnd_sipo_do_ready,
-    --         din        => rnd_sipo_do_data,
-    --         dout_valid => rdi_fifo_do_valid,
-    --         dout_ready => rdi_fifo_do_ready,
-    --         dout       => rdi_fifo_dout
-    --     );
-
-    --! DEBUG
-    --    U_ILA : ila_0
-    --    port map(
-    --        clk => clk,
-    --        Probe0 => (others=>rst),
-    --        Probe1 => (others=>di_valid),
-    --        Probe2 => (others=>di_ready),
-    --        Probe3 => din,
-    --        Probe4 => (others=>do_valid),
-    --        Probe5 => (others=>do_ready),
-    --        Probe6 => dout
-    --    );
 end behav;

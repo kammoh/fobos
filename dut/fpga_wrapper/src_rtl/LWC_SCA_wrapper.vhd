@@ -2,13 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+use work.LWC_config.all;
+
 entity LWC_SCA_wrapper is
   generic(
-    PDI_SHARES     : positive := 2;
-    SDI_SHARES     : positive := 2;
-    W              : positive := 32;
-    SW             : positive := 32;
-    RW             : positive := 96;
     XRW            : natural  := 0;
     XW             : natural  := 4;
     PDI_FIFO_DEPTH : positive := (3 + 16 + 16 + 16) * 64; -- headers, nonce, pt/ct, ad
@@ -67,7 +64,9 @@ architecture RTL of LWC_SCA_wrapper is
   signal lwc_do_valid, lwc_do_ready, lwc_do_last : std_logic;
 begin
 
-  lwc_do_fire <= lwc_do_valid and lwc_do_ready;
+  lwc_do_fire   <= lwc_do_valid and lwc_do_ready;
+  do_fifo_valid <= lwc_do_valid;
+  lwc_do_ready  <= do_fifo_ready;
 
   process(all) is
   begin
@@ -77,19 +76,12 @@ begin
     lwc_sdi_valid  <= '0';
     sdi_fifo_ready <= '0';
     --
-    -- do_fifo_valid  <= '0';
-    -- lwc_do_ready  <= '0';
-    do_fifo_valid  <= lwc_do_valid;
-    lwc_do_ready   <= do_fifo_ready;
     if in_enable = '1' and lwc_rdi_valid = '1' then
       lwc_pdi_valid  <= pdi_fifo_valid;
       pdi_fifo_ready <= lwc_pdi_ready;
       --
       lwc_sdi_valid  <= sdi_fifo_valid;
       sdi_fifo_ready <= lwc_sdi_ready;
-      --
-      -- do_fifo_valid  <= lwc_do_valid;
-      -- lwc_do_ready  <= do_fifo_ready;
     end if;
   end process;
 
@@ -108,10 +100,6 @@ begin
       deq_data  => lwc_pdi_data,
       deq_valid => pdi_fifo_valid,
       deq_ready => pdi_fifo_ready
-      -- stat_full         => stat_full,
-      -- stat_almost_full  => stat_almost_full,
-      -- stat_empty        => stat_empty,
-      -- stat_almost_empty => stat_almost_empty
     );
 
   INST_SDI_FIFO : entity work.asym_fifo
@@ -129,10 +117,6 @@ begin
       deq_data  => lwc_sdi_data,
       deq_valid => sdi_fifo_valid,
       deq_ready => sdi_fifo_ready
-      -- stat_full         => stat_full,
-      -- stat_almost_full  => stat_almost_full,
-      -- stat_empty        => stat_empty,
-      -- stat_almost_empty => stat_almost_empty
     );
 
   INST_DO_FIFO : entity work.asym_fifo
@@ -150,10 +134,6 @@ begin
       deq_data  => do_data,
       deq_valid => do_valid,
       deq_ready => do_ready
-      -- stat_full         => stat_full,
-      -- stat_almost_full  => stat_almost_full,
-      -- stat_empty        => stat_empty,
-      -- stat_almost_empty => stat_almost_empty
     );
 
   INST_LFSR : entity work.LFSR
