@@ -1,32 +1,11 @@
 [[design]]
-name = "TinyJAMBU-DOM1-v1"
+name = "fobos_dut"
+dependencies = [
+    { base_uri = "https://github.com/GMUCERG/TinyJAMBU-SCA.git#dev", design_file = "./TinyJAMBU-DOM1-v1.toml" },
+]
 
 
 rtl.sources = [
-    # LWC:
-    "cc/src_rtl/hpc3_and.vhd",
-    "cc/src_rtl/design_pkg.vhd",
-    "cc/src_rtl/LWC_config.vhd",
-    "cc/src_rtl/LWC/NIST_LWAPI_pkg.vhd",
-    "cc/src_rtl/tinyjambu_dp_ops.vhd",
-    "cc/src_rtl/reg_n.vhd",
-    "cc/src_rtl/dom_mul_reg.vhd",
-    "cc/src_rtl/dom_mul.vhd",
-    "cc/src_rtl/dom_mul_dep.vhd",
-    "cc/src_rtl/hpc3_mul.vhd",
-    "cc/src_rtl/dom_nlfsr_reg_feed.vhd",
-    "cc/src_rtl/dom_nlfsr.vhd",
-    "cc/src_rtl/tinyjambu_datapath.vhd",
-    "cc/src_rtl/tinyjambu_control.vhd",
-    "cc/src_rtl/tag_verif.vhd",
-    "cc/src_rtl/CryptoCore_SCA.vhd",
-    "cc/src_rtl/LWC/PISO.vhd",
-    "cc/src_rtl/LWC/SIPO.vhd",
-    "cc/src_rtl/LWC/FIFO.vhd",
-    "cc/src_rtl/LWC/PreProcessor.vhd",
-    "cc/src_rtl/LWC/PostProcessor.vhd",
-    "cc/src_rtl/LWC/LWC_SCA.vhd",
-    ## wrapper:
     "src_rtl/LFSR.vhd",
     "src_rtl/asym_fifo.vhd",
     "src_rtl/LWC_SCA_wrapper.vhd",

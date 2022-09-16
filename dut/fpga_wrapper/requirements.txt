@@ -1,2 +1,3 @@
-xeda
+# xeda
+git+https://github.com/XedaHQ/xeda.git#egg=xeda
 git+https://github.com/GMUCERG/LWC.git#egg=cryptotvgen&subdirectory=software/cryptotvgen
