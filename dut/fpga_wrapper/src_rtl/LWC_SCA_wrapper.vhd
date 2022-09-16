@@ -8,9 +8,9 @@ entity LWC_SCA_wrapper is
   generic(
     XRW            : natural  := 0;
     XW             : natural  := 4;
-    PDI_FIFO_DEPTH : positive := (3 + 16 + 16 + 16) * 64; -- headers, nonce, pt/ct, ad
-    SDI_FIFO_DEPTH : positive := (1 + 128) * 64; -- header, key
-    DO_FIFO_DEPTH  : positive := (2 + 16 + 16) * 64 -- headers, ct/pt, tag
+    PDI_FIFO_DEPTH : positive;
+    SDI_FIFO_DEPTH : positive;
+    DO_FIFO_DEPTH  : positive
   );
   port(
     clk         : in  std_logic;
@@ -35,6 +35,9 @@ entity LWC_SCA_wrapper is
     in_enable   : in  std_logic := '1';
     lwc_do_fire : out std_logic
   );
+
+
+  attribute keep_hierarchy : string;
 end entity LWC_SCA_wrapper;
 
 architecture RTL of LWC_SCA_wrapper is
@@ -62,6 +65,8 @@ architecture RTL of LWC_SCA_wrapper is
   signal do_fifo_valid, do_fifo_ready            : std_logic;
   signal lwc_sdi_valid, lwc_sdi_ready            : std_logic;
   signal lwc_do_valid, lwc_do_ready, lwc_do_last : std_logic;
+
+  attribute keep_hierarchy of INST_LWC : label is "yes";
 begin
 
   lwc_do_fire   <= lwc_do_valid and lwc_do_ready;

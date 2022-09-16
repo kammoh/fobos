@@ -1,7 +1,7 @@
 [[design]]
 name = "fobos_dut"
 dependencies = [
-    { base_uri = "https://github.com/GMUCERG/TinyJAMBU-SCA.git#dev", design_file = "./TinyJAMBU-DOM1-v1.toml" },
+    { base_uri = "git+https://github.com/GMUCERG/TinyJAMBU-SCA.git#dev", design_file = "./TinyJAMBU-DOM1-v1.toml" },
 ]
 
 
@@ -21,7 +21,6 @@ rtl.clocks.sys_clk.port = "clk_c2d"
 # reset.port = "reset"
 # reset.active_high = true
 # reset.asynchronous = false
-rtl.parameters = { W = 256, SW = 128 }
 
 language.vhdl.version = "2008"
 # vhdl.synopsys = false

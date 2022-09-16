@@ -22,10 +22,6 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity half_duplex_dut is
-    generic(
-        W  : integer := 128;
-        SW : integer := 128
-    );
     port(
         clk_c2d       : in    STD_LOGIC;
         d_rst         : in    STD_LOGIC; --also resets the dut
