@@ -136,7 +136,8 @@ begin
 
     dout <= ctrl_status when sel_out = '1' else wrapper_do_data;
     --==============================================
-    comb : process(all)
+    -- comb : process(all)
+    comb : process(state_r, lwc_do_fire, outlen, dest_sel, wrapper_sdi_ready, di_valid, wrapper_do_valid, wrapper_pdi_ready, cmd, word_cnt, di_ready, opcode, do_ready, cnt_r)
     begin
         --default values
         di_ready         <= '0';
@@ -378,7 +379,7 @@ begin
         end if;
     end process;
 
-    decoder : process(all)
+    decoder : process(dest_sel, write_fifo)
     begin
         wrapper_pdi_valid <= '0';
         wrapper_sdi_valid <= '0';

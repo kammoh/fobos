@@ -5,7 +5,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use std.textio.all;
-use ieee.std_logic_textio.all;
 
 entity core_wrapper_tb is
     generic(

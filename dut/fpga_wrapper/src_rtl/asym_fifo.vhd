@@ -23,12 +23,12 @@ use ieee.numeric_std.all;
 
 entity asym_fifo is
   generic(
-    G_WR_W      : positive := 4;        -- write (enqueue) width in bits, must be powers of 2
-    G_RD_W      : positive := 16;       -- read (dequeue) width in bits, must be powers of 2
-    G_CAPACITY  : positive := 4096;     -- memory capacity in bits, must be powers of 2
-    G_BIGENDIAN : boolean  := TRUE;
-    G_OUT_REG   : boolean  := FALSE;
-    G_RAM_STYLE : string   := "block"   -- also try: "mixed", "ultra"
+    G_WR_W       : positive := 4;       -- write (enqueue) width in bits, must be powers of 2
+    G_RD_W       : positive := 16;      -- read (dequeue) width in bits, must be powers of 2
+    G_CAPACITY   : positive := 4096;    -- memory capacity in bits, must be powers of 2
+    G_BIG_ENDIAN : boolean  := TRUE;
+    G_OUT_REG    : boolean  := FALSE;   -- FIXME broken
+    G_RAM_STYLE  : string   := "block"  -- also try: "mixed", "ultra"
   );
 
   port(
@@ -73,7 +73,7 @@ architecture RTL of asym_fifo is
   function slv_chunk(slv : std_logic_vector; chunk_width, i : natural) return std_logic_vector is
     constant NUM_CHUNKS : natural := slv'length / chunk_width;
   begin
-    if G_BIGENDIAN then
+    if G_BIG_ENDIAN then
       return slv((NUM_CHUNKS - i) * chunk_width - 1 downto (NUM_CHUNKS - i - 1) * chunk_width);
     else
       return slv((i + 1) * chunk_width - 1 downto i * chunk_width);
@@ -126,9 +126,11 @@ begin
   next_rd_ptr <= rd_ptr + 1;            -- mod (2 ** DEPTH_BITS)
   next_wr_ptr <= wr_ptr + 1;            -- mod (2 ** DEPTH_BITS)
 
-  GEN_OVERLAP : if rd_ptr'length = 0 or wr_ptr'length = 0 generate
+  GEN_OVERLAP_ZERO_WIDTH : if rd_ptr'length = 0 or wr_ptr'length = 0 generate
     overlap <= TRUE;
-  else generate
+  end generate;
+  
+  GEN_OVERLAP : if rd_ptr'length /=0 and wr_ptr'length /= 0 generate
     overlap <= rd_ptr(rd_ptr'length - 1 downto WR_RD_LOG2) = wr_ptr(wr_ptr'length - 1 downto RD_WR_LOG2);
   end generate;
 
@@ -182,13 +184,13 @@ begin
     can_deq   <= is_full or not overlap;
     enq_ready <= '0' when is_full else '1';
 
-    GEN_READ_BIG_ENDIAN : if G_BIGENDIAN generate
+    GEN_READ_BIG_ENDIAN : if G_BIG_ENDIAN generate
       GEN_READ_SWAP : for i in 0 to NUM_READ_CHUNKS - 1 generate
         read_data((NUM_READ_CHUNKS - i) * G_WR_W - 1 downto (NUM_READ_CHUNKS - i - 1) * G_WR_W) <= read_tmp((i + 1) * G_WR_W - 1 downto i * G_WR_W);
       end generate;
     end generate;
 
-    GEN_READ_LITTLE_ENDIAN : if not G_BIGENDIAN generate
+    GEN_READ_LITTLE_ENDIAN : if not G_BIG_ENDIAN generate
       read_data <= read_tmp;
     end generate;
 

@@ -23,7 +23,6 @@ end package body;
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.numeric_std_unsigned.all;
 
 use work.utils_pkg.all;
 
@@ -92,7 +91,7 @@ architecture RTL of LFSR is
     end if;
   end function;
 
-  constant N_SEED : natural := GET_N_SEED;
+  constant N_SEED : natural  := GET_N_SEED;
   constant NUM_FF : positive := maximum(LFSR_LEN, G_OUT_BITS);
 
   function get_taps(len : positive) return T_TAPS is
@@ -105,7 +104,7 @@ architecture RTL of LFSR is
       end if;
     end loop;
     assert FALSE report "specified lfsr length was not found in TAPS_TABLE" severity FAILURE;
-    return taps; -- just to avoid a Vivado warning
+    return taps;                        -- just to avoid a Vivado warning
   end function;
 
   function lfsr_feedback(sr : std_logic_vector) return std_logic is
@@ -183,7 +182,7 @@ begin
             if rin_valid then
               -- if seed_counter = N_SEED - 1 then --
               -- This saves a few LUTs, more seeding cycles and rand input, and absorbs (redundantly) more randomness:
-              if (and seed_counter) = '1' then -- all ones
+              if seed_counter = (seed_counter'range => '1') then -- all ones
                 seed_counter <= (others => '0');
                 reseeding    <= FALSE;
               else

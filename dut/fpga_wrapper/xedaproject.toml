@@ -1,9 +1,8 @@
 [[design]]
 name = "fobos_dut"
 dependencies = [
-    { base_uri = "git+https://github.com/GMUCERG/TinyJAMBU-SCA.git#dev", design_file = "./TinyJAMBU-DOM1-v1.toml" },
+    "git+https://github.com/GMUCERG/TinyJAMBU-SCA.git?branch=dev#./TinyJAMBU-DOM1-v1.toml",
 ]
-
 
 rtl.sources = [
     "src_rtl/LFSR.vhd",

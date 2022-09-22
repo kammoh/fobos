@@ -73,22 +73,12 @@ begin
   do_fifo_valid <= lwc_do_valid;
   lwc_do_ready  <= do_fifo_ready;
 
-  process(all) is
-  begin
-    lwc_pdi_valid  <= '0';
-    pdi_fifo_ready <= '0';
-    --
-    lwc_sdi_valid  <= '0';
-    sdi_fifo_ready <= '0';
-    --
-    if in_enable = '1' and lwc_rdi_valid = '1' then
-      lwc_pdi_valid  <= pdi_fifo_valid;
-      pdi_fifo_ready <= lwc_pdi_ready;
-      --
-      lwc_sdi_valid  <= sdi_fifo_valid;
-      sdi_fifo_ready <= lwc_sdi_ready;
-    end if;
-  end process;
+  lwc_pdi_valid  <= pdi_fifo_valid and in_enable and lwc_rdi_valid;
+  pdi_fifo_ready <= lwc_pdi_ready and in_enable and lwc_rdi_valid;
+  --
+  lwc_sdi_valid  <= sdi_fifo_valid and in_enable and lwc_rdi_valid;
+  sdi_fifo_ready <= lwc_sdi_ready and in_enable and lwc_rdi_valid;
+
 
   INST_PDI_FIFO : entity work.asym_fifo
     generic map(
