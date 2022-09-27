@@ -63,6 +63,7 @@ architecture behav of core_wrapper is
     signal write_reg  : std_logic;
     signal fifo_rst   : std_logic;
     signal reg_rst    : std_logic;
+    signal di_ready_o : std_logic;
 
     --==================
     constant FIFO_OUT_WIDTH : positive := PDI_SHARES * W;
@@ -97,6 +98,7 @@ architecture behav of core_wrapper is
 begin
 
     dbg_state <= state_type'pos(state_r);
+    di_ready  <= di_ready_o;
 
     SCA_WRAPPER_INST : entity work.LWC_SCA_wrapper
         generic map(
@@ -137,10 +139,10 @@ begin
     dout <= ctrl_status when sel_out = '1' else wrapper_do_data;
     --==============================================
     -- comb : process(all)
-    comb : process(state_r, lwc_do_fire, outlen, dest_sel, wrapper_sdi_ready, di_valid, wrapper_do_valid, wrapper_pdi_ready, cmd, word_cnt, di_ready, opcode, do_ready, cnt_r)
+    comb : process(state_r, lwc_do_fire, outlen, dest_sel, wrapper_sdi_ready, di_valid, wrapper_do_valid, wrapper_pdi_ready, cmd, word_cnt, di_ready_o, opcode, do_ready, cnt_r)
     begin
         --default values
-        di_ready         <= '0';
+        di_ready_o         <= '0';
         do_valid         <= '0';
         --
         ins_reg0_en      <= '0';
@@ -181,7 +183,7 @@ begin
                     clr_cmd_reg <= '1';
                     nx_state    <= RUN;
                 else
-                    di_ready <= '1';
+                    di_ready_o <= '1';
                     if di_valid = '1' then
                         ins_reg0_en <= '1';
                         nx_state    <= INST1;
@@ -190,49 +192,49 @@ begin
                 end if;
 
             when INST1 =>
-                di_ready <= '1';
+                di_ready_o <= '1';
                 if di_valid = '1' then
                     ins_reg1_en <= '1';
                     nx_state    <= INST2;
                 end if;
 
             when INST2 =>
-                di_ready <= '1';
+                di_ready_o <= '1';
                 if di_valid = '1' then
                     ins_reg2_en <= '1';
                     nx_state    <= INST3;
                 end if;
 
             when INST3 =>
-                di_ready <= '1';
+                di_ready_o <= '1';
                 if di_valid = '1' then
                     ins_reg3_en <= '1';
                     nx_state    <= PARAM0;
                 end if;
 
             when PARAM0 =>
-                di_ready <= '1';
+                di_ready_o <= '1';
                 if di_valid = '1' then
                     param_reg0_en <= '1';
                     nx_state      <= PARAM1;
                 end if;
 
             when PARAM1 =>
-                di_ready <= '1';
+                di_ready_o <= '1';
                 if di_valid = '1' then
                     param_reg1_en <= '1';
                     nx_state      <= PARAM2;
                 end if;
 
             when PARAM2 =>
-                di_ready <= '1';
+                di_ready_o <= '1';
                 if di_valid = '1' then
                     param_reg2_en <= '1';
                     nx_state      <= PARAM3;
                 end if;
 
             when PARAM3 =>
-                di_ready <= '1';
+                di_ready_o <= '1';
                 if di_valid = '1' then
                     param_reg3_en <= '1';
                     case (opcode) is
@@ -252,17 +254,17 @@ begin
             when LOAD_FIFO =>
                 case dest_sel is
                     when x"0" =>
-                        di_ready <= wrapper_pdi_ready;
+                        di_ready_o <= wrapper_pdi_ready;
                         assert wrapper_pdi_ready = '1' report "wrapper_pdi_ready is not 1" severity error;
                     when x"1" =>
-                        di_ready <= wrapper_sdi_ready;
+                        di_ready_o <= wrapper_sdi_ready;
                         assert wrapper_sdi_ready = '1' report "wrapper_sdi_ready is not 1" severity error;
                     when others =>
                         assert false report "bad dest_sel" severity error;
                         null;
                 end case;
 
-                if di_ready = '1' and di_valid = '1' then
+                if di_ready_o = '1' and di_valid = '1' then
                     if cnt_r = unsigned(word_cnt) then
                         nx_cnt      <= (others => '0');
                         ins_reg0_en <= '1';

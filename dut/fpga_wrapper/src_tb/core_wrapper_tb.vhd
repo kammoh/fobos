@@ -2,21 +2,29 @@
 --Author: Abubakr Abdulgadir
 --Date  : 4/12/2022
 
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
 use std.textio.all;
+
+-- if VHDL < 2008, otherwise comment out
+use work.std_logic_1164_additions.all;
 
 entity core_wrapper_tb is
     generic(
-        G_CONFIG_FNAME : string := "../KAT/v1/configFile.txt";
-        G_DIN_FNAME    : string := "../KAT/v1/dinFile.txt";
-        G_DOUT_FNAME   : string := "../KAT/v1/doutFile.txt"
+        G_CONFIG_FNAME     : string := "../KAT/v1/configFile.txt";
+        G_DIN_FNAME        : string := "../KAT/v1/dinFile.txt";
+        G_DOUT_FNAME       : string := "../KAT/v1/doutFile.txt";
+        G_CLK_PERIOD_PS    : positive := 10_000; --! Simulation clock period in picoseconds
+        G_PRERESET_WAIT_PS : natural  := 0;      --! Time (in picoseconds) to wait before reseting UUT. Xilinx GSR takes 100ns, required for post-synth simulation
+        G_INPUT_DELAY_PS   : natural  := 1_500   --! Input delay in picoseconds
     );
 end core_wrapper_tb;
 
 architecture behav of core_wrapper_tb is
 
-    constant period : time      := 10 ns;
+    constant period      : TIME := G_CLK_PERIOD_PS * ps;
+    constant input_delay : TIME := G_INPUT_DELAY_PS * ps;
+
     signal clk      : std_logic := '0';
     signal rst      : std_logic := '0';
     signal err      : std_logic := '0';
@@ -26,20 +34,24 @@ architecture behav of core_wrapper_tb is
     FILE doutFile   : TEXT OPEN WRITE_MODE is G_DOUT_FNAME;
 
     -- crypto core signals
-    signal di_ready                  : std_logic;
-    signal din                       : std_logic_vector(3 downto 0);
-    signal di_valid                  : std_logic := '0';
-    signal do_ready                  : std_logic := '0';
-    signal dout                      : std_logic_vector(3 downto 0);
-    signal do_valid                  : std_logic;
+    signal di_ready                   : std_logic;
+    signal din, din_delayed           : std_logic_vector(3 downto 0);
+    signal di_valid, di_valid_delayed : std_logic := '0';
+    signal do_ready, do_ready_delayed : std_logic := '0';
+    signal dout                       : std_logic_vector(3 downto 0);
+    signal do_valid                   : std_logic;
     --
-    signal writestrobe, do_was_valid : std_logic;
-    signal config_done               : std_logic := '0';
-    signal stop_clk                  : std_logic := '0';
+    signal writestrobe, do_was_valid  : std_logic;
+    signal config_done                : std_logic := '0';
+    signal stop_clk                   : std_logic := '0';
 
 begin
 
     clk <= not clk after period / 2 when stop_clk = '0' else '0';
+
+    din_delayed       <= transport din after input_delay;
+    di_valid_delayed  <= transport di_valid after input_delay;
+    do_ready_delayed  <= transport do_ready after input_delay;
 
     inst_core_wrapper : entity work.core_wrapper(behav)
             -- generic map(
@@ -47,11 +59,11 @@ begin
         port map(
             clk      => clk,
             rst      => rst,
-            di_valid => di_valid,
+            di_valid => di_valid_delayed,
             di_ready => di_ready,
             do_valid => do_valid,
-            do_ready => do_ready,
-            din      => din,
+            do_ready => do_ready_delayed,
+            din      => din_delayed,
             dout     => dout
         );
 

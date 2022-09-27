@@ -21,12 +21,14 @@ rtl.clocks.sys_clk.port = "clk_c2d"
 # reset.active_high = true
 # reset.asynchronous = false
 
-language.vhdl.version = "2008"
+language.vhdl.version = "2002"
 # vhdl.synopsys = false
 # verilog.version = "2001"
 # systemverilog.version = "2009"
 
 tb.sources = [
+    ## if VHDL < 2008, otherwise remove to avoid conflicts
+    "src_tb/std_logic_1164_additions.vhd",
     "src_tb/core_wrapper_tb.vhd",
     # "src_tb/LWC_TB_SCA_wrapper_conf.vhd",
 ]
@@ -82,3 +84,13 @@ impl.steps.POWER_OPT_DESIGN.IS_ENABLED = "true"
 impl.steps.POST_PLACE_POWER_OPT_DESIGN.IS_ENABLED = "true"
 write_bitstream = true
 qor_suggestions = true
+
+
+[flows.vivado_alt_synth]
+fpga.part = "xc7a100tftg256-3"
+xdc_files = ["constraints/cw305.xdc"]
+clocks.sys_clk.port = "clk_c2d"
+clocks.sys_clk.freq = 50
+impl.steps.power_opt.is_enabled = true
+write_bitstream = true
+

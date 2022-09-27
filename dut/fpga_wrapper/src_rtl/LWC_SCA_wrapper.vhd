@@ -28,16 +28,16 @@ entity LWC_SCA_wrapper is
     do_valid    : out std_logic;
     do_ready    : in  std_logic;
     --! Random Input
-    rdi_data    : in  std_logic_vector(XRW - 1 downto 0); -- external RW
-    rdi_valid   : in  std_logic;
+    rdi_data    : in  std_logic_vector(XRW - 1 downto 0) := (others => '-'); -- external RW
+    rdi_valid   : in  std_logic := '0';
     rdi_ready   : out std_logic;
     --
     in_enable   : in  std_logic := '1';
     lwc_do_fire : out std_logic
   );
 
-
   attribute keep_hierarchy : string;
+
 end entity LWC_SCA_wrapper;
 
 architecture RTL of LWC_SCA_wrapper is
@@ -134,9 +134,7 @@ begin
   INST_LFSR : entity work.LFSR
     generic map(
       G_IN_BITS  => XRW,
-      G_OUT_BITS => RW,
-      G_LFSR_LEN => 0,
-      G_INIT_VAL => x"4b7fdaeb869cf6592ab97a59"
+      G_OUT_BITS => RW
     )
     port map(
       clk        => clk,
