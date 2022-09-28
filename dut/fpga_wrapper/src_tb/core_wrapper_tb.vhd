@@ -27,7 +27,6 @@ architecture behav of core_wrapper_tb is
 
     signal clk      : std_logic := '0';
     signal rst      : std_logic := '0';
-    signal err      : std_logic := '0';
 
     FILE configFile : TEXT OPEN READ_MODE is G_CONFIG_FNAME;
     FILE dinFile    : TEXT OPEN READ_MODE is G_DIN_FNAME;
@@ -71,7 +70,6 @@ begin
         variable line_data : LINE;
         variable word      : std_logic_vector(3 downto 0);
         variable read_good : boolean := True;
-        variable space     : character;
     begin
         --! Send Config------------------------------------------------
         rst <= '1';
