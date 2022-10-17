@@ -106,7 +106,8 @@ begin
             XW             => 4,
             PDI_FIFO_DEPTH => PDI_FIFO_DEPTH,
             SDI_FIFO_DEPTH => SDI_FIFO_DEPTH,
-            DO_FIFO_DEPTH  => DO_FIFO_DEPTH
+            DO_FIFO_DEPTH  => DO_FIFO_DEPTH,
+            FIFOS_OUT_REG  => FALSE
         )
         port map(
             clk         => clk,
@@ -142,7 +143,7 @@ begin
     comb : process(state_r, lwc_do_fire, outlen, dest_sel, wrapper_sdi_ready, di_valid, wrapper_do_valid, wrapper_pdi_ready, cmd, word_cnt, di_ready_o, opcode, do_ready, cnt_r)
     begin
         --default values
-        di_ready_o         <= '0';
+        di_ready_o       <= '0';
         do_valid         <= '0';
         --
         ins_reg0_en      <= '0';

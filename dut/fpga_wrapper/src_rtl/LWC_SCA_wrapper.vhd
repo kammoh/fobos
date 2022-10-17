@@ -6,11 +6,13 @@ use work.LWC_config.all;
 
 entity LWC_SCA_wrapper is
   generic(
-    XRW            : natural  := 0;
-    XW             : natural  := 4;
-    PDI_FIFO_DEPTH : positive;
-    SDI_FIFO_DEPTH : positive;
-    DO_FIFO_DEPTH  : positive
+    XRW             : natural  := 0;
+    XW              : natural  := 64;
+    PDI_FIFO_DEPTH  : positive := 2;
+    SDI_FIFO_DEPTH  : positive := 2;
+    DO_FIFO_DEPTH   : positive := 2;
+    FIFOS_OUT_REG   : boolean  := TRUE;
+    FIFOS_RAM_STYLE : string   := "block"
   );
   port(
     clk         : in  std_logic;
@@ -25,6 +27,7 @@ entity LWC_SCA_wrapper is
     sdi_ready   : out std_logic;
     --! Data out ports
     do_data     : out std_logic_vector(XW - 1 downto 0);
+    do_last     : out std_logic := '0';
     do_valid    : out std_logic;
     do_ready    : in  std_logic;
     --! Random Input
@@ -52,6 +55,8 @@ architecture RTL of LWC_SCA_wrapper is
     end loop;
     return r;
   end function;
+
+  constant XSW: natural := XW;
 
   signal lwc_pdi_data : std_logic_vector(PDI_SHARES * W - 1 downto 0);
   signal lwc_sdi_data : std_logic_vector(SDI_SHARES * SW - 1 downto 0);
@@ -82,9 +87,11 @@ begin
 
   INST_PDI_FIFO : entity work.asym_fifo
     generic map(
-      G_WR_W     => XW,
-      G_RD_W     => PDI_SHARES * W,
-      G_CAPACITY => 2 ** log2ceil(PDI_FIFO_DEPTH * PDI_SHARES * W)
+      G_WR_W      => XW,
+      G_RD_W      => PDI_SHARES * W,
+      G_CAPACITY  => 2 ** log2ceil(PDI_FIFO_DEPTH * PDI_SHARES * W),
+      G_OUT_REG   => FIFOS_OUT_REG,
+      G_RAM_STYLE => FIFOS_RAM_STYLE
     )
     port map(
       clk       => clk,
@@ -99,9 +106,11 @@ begin
 
   INST_SDI_FIFO : entity work.asym_fifo
     generic map(
-      G_WR_W     => XW,
-      G_RD_W     => SDI_SHARES * SW,
-      G_CAPACITY => 2 ** log2ceil(SDI_FIFO_DEPTH * SDI_SHARES * SW)
+      G_WR_W      => XSW,
+      G_RD_W      => SDI_SHARES * SW,
+      G_CAPACITY  => 2 ** log2ceil(SDI_FIFO_DEPTH * SDI_SHARES * SW),
+      G_OUT_REG   => FIFOS_OUT_REG,
+      G_RAM_STYLE => FIFOS_RAM_STYLE
     )
     port map(
       clk       => clk,
@@ -116,9 +125,11 @@ begin
 
   INST_DO_FIFO : entity work.asym_fifo
     generic map(
-      G_WR_W     => PDI_SHARES * W,
-      G_RD_W     => XW,
-      G_CAPACITY => 2 ** log2ceil(DO_FIFO_DEPTH * PDI_SHARES * W)
+      G_WR_W      => PDI_SHARES * W,
+      G_RD_W      => XW,
+      G_CAPACITY  => 2 ** log2ceil(DO_FIFO_DEPTH * PDI_SHARES * W),
+      G_OUT_REG   => FIFOS_OUT_REG,
+      G_RAM_STYLE => FIFOS_RAM_STYLE
     )
     port map(
       clk       => clk,
@@ -152,9 +163,6 @@ begin
     );
 
   INST_LWC : entity work.LWC_SCA
-    generic map(
-      G_DO_FIFO_DEPTH => 1
-    )
     port map(
       clk       => clk,
       rst       => rst,

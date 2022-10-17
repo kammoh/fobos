@@ -1,8 +1,11 @@
 [[design]]
 name = "fobos_dut"
+
 dependencies = [
-    "git+https://github.com/GMUCERG/TinyJAMBU-SCA.git?branch=dev#./TinyJAMBU-DOM1-v1.toml",
+    # "git+https://github.com/GMUCERG/TinyJAMBU-SCA.git?branch=dev#./TinyJAMBU-DOM1-v1.toml",
+    "../../../LWC-Masking/GIFT-COFB/GIFT-COFB_first_order/GIFT-COFB_first_order.toml",
 ]
+
 
 rtl.sources = [
     "src_rtl/LFSR.vhd",
@@ -39,7 +42,7 @@ tb.top = "core_wrapper_tb"
 [design.tb.parameters]
 # {file: "xx"} is an extension to specify a string generic/parameter pointing to a relative path:
 G_CONFIG_FNAME = { file = "./configFile.txt" }
-G_DIN_FNAME = { file = "FOBOS_KAT/TinyJAMBU-DOM1-v1/dinFile.txt" }
+# G_DIN_FNAME = { file = "FOBOS_KAT/TinyJAMBU-DOM1-v1/dinFile.txt" }
 G_DOUT_FNAME = { path = "./doutFile.txt" }
 # G_FNAME_SDI = { file = "KAT/TinyJAMBU-DOM1-v1/sdi_shared_2.txt" }
 # G_FNAME_RDI = { file = "KAT/TinyJAMBU-DOM1-v1/rdi.txt" }
@@ -73,21 +76,21 @@ target = ["timing", "sda", "dpa"]
 order = 1
 
 [flows.vivado_synth]
-fpga.part = "xc7a100tftg256-3"
+fpga.part = "xc7a100tftg256-2L"
 xdc_files = ["constraints/cw305.xdc"]
 clocks.sys_clk.port = "clk_c2d"
 clocks.sys_clk.freq = 50
-synth.strategy = "Flow_AreaOptimized_high"
-impl.strategy = "Area_ExploreWithRemap"
-impl.steps.PHYS_OPT_DESIGN.IS_ENABLED = "true"
-impl.steps.POWER_OPT_DESIGN.IS_ENABLED = "true"
-impl.steps.POST_PLACE_POWER_OPT_DESIGN.IS_ENABLED = "true"
+synth.strategy = ""
+impl.strategy = ""
+# impl.steps.PHYS_OPT_DESIGN.IS_ENABLED = "true"
+# impl.steps.POWER_OPT_DESIGN.IS_ENABLED = "true"
+# impl.steps.POST_PLACE_POWER_OPT_DESIGN.IS_ENABLED = "true"
 write_bitstream = true
-qor_suggestions = true
+# qor_suggestions = true
 
 
 [flows.vivado_alt_synth]
-fpga.part = "xc7a100tftg256-3"
+fpga.part = "xc7a100tftg256-2L"
 xdc_files = ["constraints/cw305.xdc"]
 clocks.sys_clk.port = "clk_c2d"
 clocks.sys_clk.freq = 50

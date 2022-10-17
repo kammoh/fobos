@@ -45,8 +45,8 @@ entity LFSR is
   generic(
     G_IN_BITS  : natural := 0;
     G_OUT_BITS : positive;
-    G_LFSR_LEN : natural := 63;   -- LFSR length (lower bound), 0 = heuristically select LFSR_LEN based on G_OUT_BITS
-    G_INIT_VAL : std_logic_vector := x"4b7fdaeb869cf6592ab97a59"
+    G_LFSR_LEN : natural := 0;   -- LFSR length (lower bound), 0 = heuristically select LFSR_LEN based on G_OUT_BITS
+    G_INIT_VAL : std_logic_vector := x"17339D82D78DA5BBD48284F414EA31AC9A936B271A5F85E573C3E243787FB4C4DEC7E333630F3C311754789B635625501346E88DC4BC8E92FE6C8F390CA6E553"
   );
   port(
     clk        : in  std_logic;
@@ -146,18 +146,19 @@ architecture RTL of LFSR is
   signal next_sr : std_logic_vector(NUM_FF - 1 downto 0);
 
   function SR_INIT return std_logic_vector is
-    variable ret : std_logic_vector(NUM_FF - 1 downto 0) := (others => '-');
+    variable ret : std_logic_vector(NUM_FF - 1 downto 0) := (others => '0');
   begin
     if G_IN_BITS = 0 then
-      assert G_INIT_VAL'length >= G_OUT_BITS report "G_INIT_VAL length should be >= G_OUT_BITS" severity FAILURE;
+      -- assert G_INIT_VAL'length >= G_OUT_BITS report "G_INIT_VAL length should be >= G_OUT_BITS" severity FAILURE;
       -- ret := G_INIT_VAL(NUM_FF - 1 downto 0);
-      for i in ret'range loop
+      for i in 0 to compat_minimum(NUM_FF, G_INIT_VAL'length) - 1 loop
         ret(i) := G_INIT_VAL(i);
       end loop;
-    else
-      assert G_INIT_VAL'length = 0 report "G_INIT_VAL should be empty" severity FAILURE;
+    -- else
+      -- assert G_INIT_VAL'length = 0 report "G_INIT_VAL should be empty" severity FAILURE;
     end if;
-    return lfsr_update(ret); -- run one round of LFSR updates to fill all remaining zeros
+    ret := lfsr_update(ret); -- run LFSR updates to fill all remaining zeros
+    return ret;
   end function;
 
   -- Registers

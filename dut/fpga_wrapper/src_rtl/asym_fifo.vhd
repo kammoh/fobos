@@ -177,13 +177,19 @@ begin
     end if;
   end process;
 
-  GEN_READ_WIDER : if G_RD_W >= G_WR_W generate
+  GEN_READ_WIDER_OR_EQ : if G_RD_W >= G_WR_W generate
     signal read_tmp          : std_logic_vector(G_RD_W - 1 downto 0);
     constant NUM_READ_CHUNKS : positive := G_RD_W / G_WR_W;
   begin
 
-    almost_empty <= next_rd_ptr & (RD_WR_LOG2 - 1 downto 0 => '0') = wr_ptr;
-    almost_full  <= next_wr_ptr = rd_ptr & (RD_WR_LOG2 - 1 downto 0 => '0');
+    GEN_READ_WIDER : if G_RD_W > G_WR_W generate
+      almost_empty <= next_rd_ptr & (RD_WR_LOG2 - 1 downto 0 => '0') = wr_ptr;
+      almost_full  <= next_wr_ptr = rd_ptr & (RD_WR_LOG2 - 1 downto 0 => '0');
+    end generate;
+    GEN_READ_EQ : if G_RD_W = G_WR_W generate
+      almost_empty <= next_rd_ptr = wr_ptr;
+      almost_full  <= next_wr_ptr = rd_ptr;
+    end generate;
 
     can_deq     <= is_full or not overlap;
     enq_ready_o <= '0' when is_full else '1';
